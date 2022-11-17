@@ -23,7 +23,7 @@ const HomeHeader = (): JSX.Element => {
         fontSize="display-l"
         color="inherit"
       >
-        AWS UI Vite App
+        AWS App
       </Box>
       <Box
         variant="p"
@@ -31,7 +31,7 @@ const HomeHeader = (): JSX.Element => {
         color="inherit"
         className={classes.home_header_secondary}
       >
-        Descriptive sentence about the impressive AWS UI Vite App
+        Descriptive sentence about the impressive AWS UI App
       </Box>
     </Box>
   );
@@ -56,31 +56,136 @@ const HomeFeatures = (): JSX.Element => {
         <ColumnLayout columns={2} variant="text-grid">
           <div>
             <Box variant="h3" padding={{ top: 'n' }}>
-              Feature 1
+              EC2 Instance
             </Box>
             <Box variant="p">
               Call to action sentence about benefits of{' '}
               <Link
                 variant="primary"
-                href="/feature1"
+                href="/ec2_instance"
                 onFollow={defaultOnFollowHandler}
               >
-                Feature 1
+                EC2 Instance
               </Link>{' '}
             </Box>
           </div>
           <div>
             <Box variant="h3" padding={{ top: 'n' }}>
-              Feature 2
+              S3
             </Box>
             <Box variant="p">
               Call to action sentence about benefits of{' '}
               <Link
                 variant="primary"
-                href="/feature2"
+                href="/s3"
                 onFollow={defaultOnFollowHandler}
               >
-                Feature 2
+                S3
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              CloudFront
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/cloudfront"
+                onFollow={defaultOnFollowHandler}
+              >
+                CloudFront
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              SQS
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/sqs"
+                onFollow={defaultOnFollowHandler}
+              >
+                SQS
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              Amazon Connect
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/connect"
+                onFollow={defaultOnFollowHandler}
+              >
+                Amazon Connect
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              VPC
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/vpc"
+                onFollow={defaultOnFollowHandler}
+              >
+                VPC
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              IAM
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/iam"
+                onFollow={defaultOnFollowHandler}
+              >
+                IAM
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              Amazon Rekognition
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/rekognition"
+                onFollow={defaultOnFollowHandler}
+              >
+                Amazon Rekognition
+              </Link>{' '}
+            </Box>
+          </div>
+          <div>
+            <Box variant="h3" padding={{ top: 'n' }}>
+              Cloudshell
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/cloudshell"
+                onFollow={defaultOnFollowHandler}
+              >
+                Cloudshell
               </Link>{' '}
             </Box>
           </div>

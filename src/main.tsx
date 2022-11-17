@@ -14,8 +14,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
-          <Route path="feature1" element={<Feature1 />} />
-          <Route path="feature2" element={<Feature2 />} />
+          <Route path="ec2_instance" element={<Feature1 />} />
+          <Route path="s3" element={<Feature2 />} />
         </Route>
       </Routes>
     </Router>

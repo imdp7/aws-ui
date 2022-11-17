@@ -85,7 +85,7 @@ const Feature1Details = (): JSX.Element => {
 export const Feature1 = (): JSX.Element => {
   return (
     <SpaceBetween size="l">
-      <Header variant="h1">Feature 1</Header>
+      <Header variant="h1">EC2 Instance</Header>
 
       <Feature1Details />
     </SpaceBetween>

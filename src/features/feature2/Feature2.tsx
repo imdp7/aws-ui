@@ -25,17 +25,15 @@ export const Feature2HelpPanel = (): JSX.Element => {
           <ul>
             <li>
               <Link external href="https://docs.example.com/Feature2">
-                Feature 2 docs
+                S3 docs
               </Link>
             </li>
           </ul>
         </div>
       }
-      header={<h2>Feature 2</h2>}
+      header={<h2>S3</h2>}
     >
-      <Box variant="p">
-        Paragraph containing informative help info about Feature 2
-      </Box>
+      <Box variant="p">Paragraph containing informative help info about S3</Box>
     </HelpPanel>
   );
 };
@@ -83,7 +81,7 @@ const Feature2DetailsTable = (): JSX.Element => {
 export const Feature2 = (): JSX.Element => {
   return (
     <SpaceBetween size="l">
-      <Header variant="h1">Feature 2</Header>
+      <Header variant="h1">S3</Header>
 
       <Feature2DetailsTable />
     </SpaceBetween>

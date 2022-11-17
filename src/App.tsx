@@ -10,14 +10,22 @@ import {
   SideNavigation,
   SideNavigationProps,
   Toggle,
+  Link,
 } from '@awsui/components-react';
 import './App.css';
 import classes from './app.module.scss';
 import { applyMode, Mode } from '@awsui/global-styles';
 
-const HOME_LINK = { text: 'AWS UI Vite App', href: '/' };
-const FEATURE1_LINK = { text: 'Feature 1', href: '/feature1' };
-const FEATURE2_LINK = { text: 'Feature 2', href: '/feature2' };
+const HOME_LINK = { text: 'AWS App', href: '/' };
+const FEATURE1_LINK = { text: 'EC2 Instance', href: '/ec2_instance' };
+const FEATURE2_LINK = { text: 'S3', href: '/s3' };
+const FEATURE3_LINK = { text: 'Cloudfront', href: '/cloudfront' };
+const FEATURE4_LINK = { text: 'SQS', href: '/sqs' };
+const FEATURE5_LINK = { text: 'Amazon Connect', href: '/connect' };
+const FEATURE6_LINK = { text: 'VPC', href: '/vpc' };
+const FEATURE7_LINK = { text: 'IAM', href: '/iam' };
+const FEATURE8_LINK = { text: 'Amazon Rekognition', href: '/rekognition' };
+const FEATURE9_LINK = { text: 'Cloudshell', href: '/cloudshell' };
 
 const getBreadCrumbItems = (href: string): BreadcrumbGroupProps.Item[] => {
   switch (href) {
@@ -35,6 +43,13 @@ const navigationHeader: SideNavigationProps.Header = HOME_LINK;
 const navigationItems: SideNavigationProps.Item[] = [
   { ...FEATURE1_LINK, type: 'link' },
   { ...FEATURE2_LINK, type: 'link' },
+  { ...FEATURE3_LINK, type: 'link' },
+  { ...FEATURE4_LINK, type: 'link' },
+  { ...FEATURE5_LINK, type: 'link' },
+  { ...FEATURE6_LINK, type: 'link' },
+  { ...FEATURE7_LINK, type: 'link' },
+  { ...FEATURE8_LINK, type: 'link' },
+  { ...FEATURE9_LINK, type: 'link' },
   { type: 'divider' },
   {
     type: 'link',
@@ -105,8 +120,19 @@ const AppHeader = (): JSX.Element => {
 
   return (
     <Box variant="div" id="h" className={classes.app_header_footer}>
-      <Box float="left" padding={{ left: 'm', top: 'xxs' }} color="inherit">
-        App Header
+      <Box
+        float="left"
+        padding={{ left: 'm', top: 'xxs', bottom: 'm' }}
+        color="inherit"
+      >
+        <Link href="/">
+          <img
+            src="https://icones.pro/wp-content/uploads/2021/08/logo-amazon-orange.png"
+            height="20"
+            width="25"
+            alt="header"
+          />
+        </Link>
       </Box>
       <Box
         float="right"
@@ -134,12 +160,12 @@ const AppFooter = (): JSX.Element => {
     <Box variant="div" id="f" className={classes.app_header_footer}>
       <Box
         variant="div"
-        float="left"
+        float="right"
         padding={{ left: 'm' }}
         color="inherit"
         fontWeight="light"
       >
-        App Footer
+        <span>Help</span>
       </Box>
     </Box>
   );
