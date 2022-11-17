@@ -16,7 +16,7 @@ import './App.css';
 import classes from './app.module.scss';
 import { applyMode, Mode } from '@awsui/global-styles';
 
-const HOME_LINK = { text: 'AWS App', href: '/' };
+const HOME_LINK = { text: 'AWS Cloud Services', href: '/' };
 const FEATURE1_LINK = { text: 'EC2 Instance', href: '/ec2_instance' };
 const FEATURE2_LINK = { text: 'S3', href: '/s3' };
 const FEATURE3_LINK = { text: 'Cloudfront', href: '/cloudfront' };

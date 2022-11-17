@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import feature2DataReducer from '../features/feature2/feature2DataSlice';
+import feature2DataReducer from '../features/S3/feature2DataSlice';
 
 export const store = configureStore({
   reducer: {

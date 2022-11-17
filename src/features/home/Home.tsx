@@ -23,7 +23,7 @@ const HomeHeader = (): JSX.Element => {
         fontSize="display-l"
         color="inherit"
       >
-        AWS App
+        AWS Cloud Services
       </Box>
       <Box
         variant="p"
