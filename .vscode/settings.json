@@ -1,0 +1,29 @@
+{
+  "markdownlint.config": {
+    "MD028": false,
+    "MD034": false,
+    "MD041": false,
+    "MD025": {
+      "front_matter_title": ""
+    }
+  },
+  "cSpell.words": ["vitejs", "vitest"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  // show eslint icon at bottom toolbar
+  "eslint.alwaysShowStatus": true,
+  // tell the ESLint plugin to run on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, aws-jwt-verify.tgz",
+    "cdk.json": "cdk.context.json, cdk-outputs.json",
+    "vite.config.*": "vitest.config.*, cypress.*",
+    "tsconfig.json": ".eslint*, .prettier*"
+  }
+}

@@ -1,0 +1,7 @@
+@use '@awsui/design-tokens/index.scss' as awsui;
+
+.app_header_footer {
+  color: awsui.$color-text-home-header-default !important;
+  background-color: awsui.$color-background-home-header;
+  width: 100%;
+}
