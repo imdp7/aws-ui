@@ -1,4 +1,5 @@
 @use '@awsui/design-tokens/index.scss' as awsui;
+@use '@cloudscape-design/global-styles/index.css';
 
 .app_header_footer {
   color: awsui.$color-text-home-header-default !important;

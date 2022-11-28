@@ -1,4 +1,7 @@
-import React from 'react';
+import * as React from 'react';
+import ec2 from '../../../assets/ec2/Res_Amazon-EC2_A1-Instance_48_Light.png';
+import s3 from '../../../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_Dark.png';
+import rds from '../../../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
 import {
   Box,
   ColumnLayout,
@@ -6,6 +9,7 @@ import {
   Link,
   LinkProps,
 } from '@awsui/components-react';
+import { Alert } from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 import classes from './home.module.scss';
 
@@ -38,6 +42,8 @@ const HomeHeader = (): JSX.Element => {
 };
 
 const HomeFeatures = (): JSX.Element => {
+  const [visible, setVisible] = React.useState(true);
+
   const navigate = useNavigate();
 
   const defaultOnFollowHandler = (
@@ -50,12 +56,31 @@ const HomeFeatures = (): JSX.Element => {
   return (
     <div>
       <Box variant="h1" tagOverride="h2" padding={{ bottom: 's', top: 'l' }}>
+        Console Home
+      </Box>
+      <Alert
+        onDismiss={() => setVisible(false)}
+        visible={visible}
+        dismissAriaLabel="Close alert"
+        dismissible
+        header="Introducing the new widgets Applications."
+      >
+        {' '}
+      </Alert>
+      <Box variant="h1" tagOverride="h2" padding={{ bottom: 's', top: 'l' }}>
         Benefits and features
       </Box>
       <Container>
         <ColumnLayout columns={2} variant="text-grid">
-          <div>
-            <Box variant="h3" padding={{ top: 'n' }}>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
+            <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
               EC2 Instance
             </Box>
             <Box variant="p">
@@ -69,7 +94,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={s3} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               S3
             </Box>
@@ -84,7 +116,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               CloudFront
             </Box>
@@ -99,7 +138,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               SQS
             </Box>
@@ -114,7 +160,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               Amazon Connect
             </Box>
@@ -129,7 +182,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               VPC
             </Box>
@@ -144,7 +204,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               IAM
             </Box>
@@ -159,7 +226,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               Amazon Rekognition
             </Box>
@@ -174,7 +248,14 @@ const HomeFeatures = (): JSX.Element => {
               </Link>{' '}
             </Box>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={ec2} alt="logo" />
             <Box variant="h3" padding={{ top: 'n' }}>
               Cloudshell
             </Box>
@@ -186,6 +267,28 @@ const HomeFeatures = (): JSX.Element => {
                 onFollow={defaultOnFollowHandler}
               >
                 Cloudshell
+              </Link>{' '}
+            </Box>
+          </div>
+          <div
+            style={{
+              display: 'block',
+              justifyItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <img src={rds} alt="logo" />
+            <Box variant="h3" padding={{ top: 'n' }}>
+              RDS
+            </Box>
+            <Box variant="p">
+              Call to action sentence about benefits of{' '}
+              <Link
+                variant="primary"
+                href="/rds"
+                onFollow={defaultOnFollowHandler}
+              >
+                RDS
               </Link>{' '}
             </Box>
           </div>
