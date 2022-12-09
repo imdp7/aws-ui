@@ -13,6 +13,7 @@ import {
   Header,
   Link,
   SideNavigation,
+  Popover,
   SpaceBetween,
 } from '@cloudscape-design/components';
 import { appLayoutLabels, externalLinkProps } from '../../common/labels';
@@ -24,71 +25,194 @@ import { useNotifications } from './use-notifications';
 
 export const navHeader = {
   text: 'EC2 Instance',
-  href: '/ec2_instance/dashboard',
+  href: 'dashboard',
 };
-export const navItems = [
-  {
-    type: 'section',
-    text: 'Reports and analytics',
-    items: [
-      { type: 'link', text: 'Distributions', href: '#/distributions' },
-      { type: 'link', text: 'Cache statistics', href: '#/cache' },
-      { type: 'link', text: 'Monitoring and alarms', href: '#/monitoring' },
-      { type: 'link', text: 'Popular objects', href: '#/popular' },
-      { type: 'link', text: 'Top referrers', href: '#/referrers' },
-      { type: 'link', text: 'Usage', href: '#/usage' },
-      { type: 'link', text: 'Viewers', href: '#/viewers' },
-    ],
-  },
-  {
-    type: 'section',
-    text: 'Private content',
-    items: [
-      { type: 'link', text: 'How-to guide', href: '#/howto' },
-      { type: 'link', text: 'Origin access identity', href: '#/origin' },
-    ],
-  },
-];
 
-export const ec2NavItems = [
-  { type: 'link', text: 'Instances', href: '/ec2_instance/instances' },
+export const ec2navItems = [
+  { type: 'link', text: 'Dashboard', href: 'dashboard' },
   {
     type: 'link',
-    text: 'Instance types',
-    href: '/ec2_instances/instance-types',
+    text: 'Events',
+    href: 'events',
+    info: (
+      <Box color="text-status-info" display="inline">
+        <Popover
+          header="Introducing events"
+          size="medium"
+          triggerType="text"
+          content={
+            <>
+              AWS can schedule events for your instances, such as reboot,
+              stop/start, or retirement.{' '}
+              <Link external={true} href="">
+                Learn more
+              </Link>
+            </>
+          }
+          renderWithPortal={true}
+          dismissAriaLabel="Close"
+        >
+          <Box
+            color="text-status-info"
+            fontSize="body-s"
+            fontWeight="bold"
+            data-testid="new-feature-announcement-trigger"
+          >
+            New
+          </Box>
+        </Popover>
+      </Box>
+    ),
+  },
+  { type: 'link', text: 'Tags', href: 'tags' },
+  { type: 'link', text: 'Reports', href: 'reports' },
+  { type: 'link', text: 'Limits', href: 'limits' },
+  {
+    text: 'Instances',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Instances', href: 'instances' },
+      {
+        type: 'link',
+        text: 'Launch templates',
+        href: 'launchEC2',
+        info: (
+          <Box color="text-status-info" display="inline">
+            <Popover
+              header="Introducing launch templates"
+              size="medium"
+              triggerType="text"
+              content={
+                <>
+                  Launch templates is a new capability that enables a new way to
+                  templatize your launch requests. Launch templates streamline
+                  and simplify the launch process for auto scaling, spot fleet,
+                  spot, and on-demand instances.{' '}
+                  <Link external>Learn more</Link>
+                </>
+              }
+              renderWithPortal={true}
+              dismissAriaLabel="Close"
+            >
+              <Box color="text-status-info" fontSize="body-s" fontWeight="bold">
+                New
+              </Box>
+            </Popover>
+          </Box>
+        ),
+      },
+      { type: 'link', text: 'Spot requests', href: 'spot_requests' },
+      {
+        type: 'link',
+        text: 'Reserved instances',
+        href: 'reserved_instances',
+      },
+      { type: 'link', text: 'Dedicated hosts', href: 'dedicated_hosts' },
+      {
+        type: 'link',
+        text: 'Scheduled instances',
+        href: 'scheduled_instances',
+        info: (
+          <Box color="text-status-info" display="inline">
+            <Popover
+              data-testid="beta"
+              header="Beta feature"
+              size="medium"
+              triggerType="text"
+              content={
+                <>
+                  We are improving the way to create scheduled instances.{' '}
+                  <Link external>Learn more</Link>
+                </>
+              }
+              renderWithPortal={true}
+              dismissAriaLabel="Close"
+            >
+              <Box color="text-status-info" fontSize="body-s" fontWeight="bold">
+                Beta
+              </Box>
+            </Popover>
+          </Box>
+        ),
+      },
+      {
+        type: 'link',
+        text: 'Capacity reservations',
+        href: 'capacity_reservations',
+      },
+    ],
   },
   {
-    type: 'link',
-    text: 'Launch templates',
-    href: '/ec2_instances/launch-templates',
+    text: 'Images',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'AMIs', href: 'amis' },
+      { type: 'link', text: 'Bundle tasks', href: 'bundle_tasks' },
+    ],
   },
   {
-    type: 'link',
-    text: 'Spot requests',
-    href: '/ec2_instances/spot-requests',
+    text: 'Elastic block store',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Volumes', href: 'volumes' },
+      { type: 'link', text: 'Snapshots', href: 'snapshots' },
+      {
+        type: 'link',
+        text: 'Lifecycle manager',
+        href: 'lifecycle_manager',
+      },
+    ],
   },
   {
-    type: 'link',
-    text: 'Saving plans',
-    href: '/ec2_instances//saving-plans',
+    text: ' Network & security',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Security groups', href: 'security_groups' },
+      { type: 'link', text: 'Elastic IPs', href: 'elastic_ips' },
+      { type: 'link', text: 'Placement groups', href: 'placement_groups' },
+      { type: 'link', text: 'Key pairs', href: 'key_pairs' },
+      {
+        type: 'link',
+        text: 'Network interfaces',
+        href: 'network_interfaces',
+      },
+    ],
   },
   {
-    type: 'link',
-    text: 'Reserved instances',
-    href: '/ec2_instances/reserved-instances',
+    text: 'Load balancing',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Load balancers', href: 'load_balancers' },
+      { type: 'link', text: 'Target groups', href: 'target_groups' },
+    ],
+  },
+  {
+    text: 'Auto scaling',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      {
+        type: 'link',
+        text: 'Launch configurations',
+        href: 'launch_configurations',
+      },
+      {
+        type: 'link',
+        text: 'Auto scaling groups',
+        href: 'auto_scaling_groups',
+      },
+    ],
   },
   { type: 'divider' },
   {
     type: 'link',
-    text: 'Notifications',
-    info: <Badge color="red">23</Badge>,
-    href: '/ec2_instances/notifications',
-  },
-  {
-    type: 'link',
-    text: 'Documentation',
-    external: true,
-    href: '/ec2_instances/documentation',
+    href: '/density_settings',
+    text: 'Density settings',
   },
 ];
 
@@ -180,7 +304,7 @@ const defaultOnFollowHandler = (ev) => {
 export function Navigation({
   activeHref,
   header = navHeader,
-  items = navItems,
+  items = ec2navItems,
   onFollowHandler = defaultOnFollowHandler,
 }) {
   return (
@@ -219,9 +343,9 @@ export const CustomAppLayout = forwardRef((props, ref) => {
   );
 });
 
-export const CounterLink = ({ children }) => {
+export const CounterLink = ({ link, children }) => {
   return (
-    <Link variant="awsui-value-large" href="#">
+    <Link variant="awsui-value-large" href={link}>
       {children}
     </Link>
   );

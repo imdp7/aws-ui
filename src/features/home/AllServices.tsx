@@ -1,33 +1,24 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { AppHeader } from './features/common/TopNavigations';
-import './App.css';
-import { store } from './app/store';
-import classes from './app.module.scss';
-import { applyMode, Mode } from '@awsui/global-styles';
-import ec2 from '../assets/ec2/Res_Amazon-EC2_A1-Instance_48_Dark.png';
-import s3 from '../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_Dark.png';
-import rds from '../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
+import React, { useState } from 'react';
 import {
+  Alert,
   Box,
   ColumnLayout,
   Container,
-  Link,
   Header,
-  Icon,
-  LinkProps,
-  Alert,
-  AppLayout,
+  Link,
   SpaceBetween,
+  AppLayout,
 } from '@cloudscape-design/components';
-import { useOutletContext } from 'react-router';
-import { InfoLink, ValueWithLabel } from './features/common/common';
-import { HelpPanels } from './features/EC2/components/header';
-import { appLayoutLabels } from './features/common/labels';
-import { Notifications } from './features/EC2/commons/common-components';
+import { AppHeader } from '../common/TopNavigations';
+import { InfoLink } from '../EC2/commons/common-components';
+import { HelpPanels } from '../EC2/components/header';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import ec2 from '../../../assets/ec2/Res_Amazon-EC2_A1-Instance_48_Dark.png';
+import s3 from '../../../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_Dark.png';
+import rds from '../../../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
+import classes from '../../app.module.scss';
+import { appLayoutLabels } from '../common/labels';
 
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/dashboard'],
@@ -47,22 +38,6 @@ const arrayData = [
   ['CodeStar', `${ec2}`, 'codestar'],
   ['AWS MGN', `${s3}`, 'awsmgn'],
 ];
-
-const AppFooter = (): JSX.Element => {
-  return (
-    <Box variant="div" id="f" className={classes.app_header_footer}>
-      <Box
-        variant="div"
-        float="right"
-        padding={{ left: 'm' }}
-        color="inherit"
-        fontWeight="light"
-      >
-        <span>Help</span>
-      </Box>
-    </Box>
-  );
-};
 
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
@@ -99,7 +74,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
             />
           }
         >
-          Console Home
+          All Services
         </Header>
         <Box
           variant="p"
@@ -107,39 +82,17 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
           color="inherit"
           className={classes.home_header_secondary}
         >
-          Descriptive sentence about the impressive AWS UI App
+          Descriptive information about all services by AWS
         </Box>
       </Box>
     </SpaceBetween>
   );
 };
 
-const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
-  const [visible, setVisible] = React.useState(true);
-
-  const navigate = useNavigate();
-
-  const defaultOnFollowHandler = (
-    event: CustomEvent<LinkProps.FollowDetail>
-  ): void => {
-    navigate(event.detail.href as string);
-    event.preventDefault();
-  };
-  const updateTools = useOutletContext<(element: JSX.Element) => void>();
+const Content = ({ loadHelpPanelContent }): JSX.Element => {
   return (
-    <SpaceBetween size="xs">
+    <SpaceBetween size="l">
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
-      <div>
-        <Alert
-          onDismiss={() => setVisible(false)}
-          visible={visible}
-          dismissAriaLabel="Close alert"
-          dismissible
-          header="Introducing the new widgets Applications."
-        >
-          {' '}
-        </Alert>
-      </div>
       <Container
         header={
           <Header
@@ -149,7 +102,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                 onFollow={() =>
                   loadHelpPanelContent(
                     <HelpPanels
-                      title="Recently Visited"
+                      title="Services by category"
                       des="Jump in where you left off and navigate to the AWS services you most recently worked with."
                       h5="To view all AWS services choose View all AWS services at the bottom of the widget."
                     />
@@ -158,45 +111,21 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               />
             }
           >
-            Recently visited
+            Services by category
           </Header>
         }
-        footer={
-          <Box
-            variant="h5"
-            tagOverride="h5"
-            //padding={{ bottom: 's', top: 'l' }}
-            textAlign="center"
-          >
-            <Link href="/console/services">View all AWS services</Link>
-          </Box>
-        }
       >
-        <ColumnLayout columns={4} borders="vertical">
-          {arrayData.map((d) => (
-            <div
-              key={d[0]}
-              style={{
-                display: 'block',
-                justifyItems: 'center',
-                textAlign: 'center',
-              }}
-            >
-              <img src={`${d[1]}`} alt="logo" />
-              <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
-                {d[0]}
-              </Box>
-              <Box variant="p">
-                Call to action sentence about benefits of{' '}
-                <Link
-                  variant="secondary"
-                  href={`${d[2]}`}
-                  onFollow={defaultOnFollowHandler}
-                >
-                  {d[0]}
-                </Link>{' '}
-              </Box>
-            </div>
+        <ColumnLayout columns={3}>
+          {arrayData.map((d, i) => (
+            <>
+              <Link variant="secondary" href={`${d[2]}`}>
+                <Container key={i}>
+                  <Box variant="h3">{d[0]}</Box>
+                  <Box key={i}>{d[1]}</Box>
+                  <Box key={i}>{d[2]}</Box>
+                </Container>
+              </Link>
+            </>
           ))}
         </ColumnLayout>
       </Container>
@@ -204,14 +133,16 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   );
 };
 
-const HomePage = (): JSX.Element => {
+function AllServices(): JSX.Element {
+  const [visible, setVisible] = React.useState(true);
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
-      title="Console Home"
+      title="All Services"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtimport { AppHeader } from '../common/TopNavigations';
+ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
@@ -233,29 +164,33 @@ const HomePage = (): JSX.Element => {
     setTools(element);
     setToolsOpen(true);
   };
-  // https://reactrouter.com/docs/en/v6/api#outlet
+  const navigate = useNavigate();
+
+  //   const defaultOnFollowHandler = (
+  //     event: CustomEvent<LinkProps.FollowDetail>
+  //   ): void => {
+  //     navigate(event.detail.href as string);
+  //     event.preventDefault();
+  //   };
+
   return (
-    <div>
+    <>
       <AppHeader />
       <AppLayout
-        content={
-          <SpaceBetween size="s">
-            <HomeFeatures loadHelpPanelContent={loadHelpPanelContent} />
-          </SpaceBetween>
-        }
-        contentType="wizard"
+        navigationHide={true}
+        content={<Content loadHelpPanelContent={loadHelpPanelContent} />}
         stickyNotifications={true}
         // disableContentPaddings={true}
         toolsOpen={toolsOpen}
         tools={toolsContent}
-        navigationHide={true}
+        contentType="wizard"
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
         footerSelector="#f"
       />
-    </div>
+      ;
+    </>
   );
-};
+}
 
-export default HomePage;
+export default AllServices;

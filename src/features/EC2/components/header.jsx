@@ -6,10 +6,10 @@ import React from 'react';
 import { HelpPanel, Icon, Button, Header } from '@cloudscape-design/components';
 import { ExternalLinkItem, InfoLink } from '../commons/common-components';
 
-export function EC2Info() {
+export function HelpPanels(props) {
   return (
     <HelpPanel
-      header={<h2>EC2 Instances</h2>}
+      header={<h2>{props.title}</h2>}
       footer={
         <>
           <h3>
@@ -50,28 +50,57 @@ export function EC2Info() {
         </>
       }
     >
-      <p>
-        Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
-        resizeable computing capacity&mdash;literally, servers in Amazon's data
-        centers&mdash;that you use to build and host your software systems.
-      </p>
+      <p>{props?.info}</p>
+      <p>{props?.des}</p>
+      <h5>{props?.h5}</h5>
+      {props?.ul ? (
+        <>
+          {props?.ul.map((t, i) => {
+            return (
+              <>
+                <b key={i}>{t?.h5}</b>
+                <ul>
+                  <li key={i}>{t?.text}</li>
+                </ul>
+              </>
+            );
+          })}
+        </>
+      ) : null}
     </HelpPanel>
   );
 }
-
 export function DashboardHeader(props) {
   return (
     <Header
       variant="h1"
+      description={props.description}
       info={
         <InfoLink
-          onFollow={() => props.loadHelpPanelContent(<EC2Info />)}
+          onFollow={() =>
+            props.loadHelpPanelContent(
+              <HelpPanels
+                title={props.title}
+                des={props?.des}
+                h5={props.h5}
+                ul={props.ul}
+              />
+            )
+          }
           ariaLabel={'Information about service dashboard.'}
         />
       }
-      actions={<Button variant="primary">Launch instance</Button>}
+      actions={
+        <>
+          {props.buttonText ? (
+            <Button variant="primary" href={props.href}>
+              {props.buttonText}
+            </Button>
+          ) : null}
+        </>
+      }
     >
-      EC2 Dashboard
+      {props.title}
     </Header>
   );
 }

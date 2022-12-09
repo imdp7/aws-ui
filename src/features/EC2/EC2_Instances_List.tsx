@@ -15,7 +15,7 @@ import {
   Notifications,
   TableEmptyState,
   TableNoMatchState,
-} from '../EC2/commons/common-components.jsx';
+} from './commons/common-components.jsx';
 import { paginationLabels } from '../common/labels';
 import { useLocalStorage } from '../common/localStorage';
 import { EC2ToolsContent, FullPageHeader } from './common-components';
@@ -31,7 +31,7 @@ import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
 import { InfoLink, ValueWithLabel } from '../common/common';
 import { AppHeader } from '../common/TopNavigations';
 
-function EC2_HOME() {
+function EC2_Instances_List() {
   const [preferences, setPreferences] = useLocalStorage(
     'React-InstancesTable-Preferences',
     DEFAULT_PREFERENCES
@@ -71,19 +71,15 @@ function EC2_HOME() {
       <AppHeader />
       <AppLayout
         ref={appLayout}
-        contentType="table"
         headerSelector="#header"
-        navigation={
-          <Navigation
-            items={ec2NavItems}
-            activeHref="/ec2_instance/instances"
-          />
-        }
+        navigation={<Navigation activeHref="instances" />}
         breadcrumbs={<Breadcrumbs />}
         notifications={<Notifications successNotification={true} />}
         tools={<EC2ToolsContent />}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
+        disableBodyScroll={true}
+        contentType="cards"
         splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={onSplitPanelToggle}
         splitPanelSize={splitPanelSize}
@@ -103,6 +99,7 @@ function EC2_HOME() {
               <FullPageHeader
                 resourceName="Instances"
                 createButtonText="Create instance"
+                link="/ec2_instance/launchEC2"
                 selectedItems={collectionProps.selectedItems}
                 totalItems={INSTANCES}
                 loadHelpPanelContent={() => {
@@ -143,4 +140,4 @@ function EC2_HOME() {
   );
 }
 
-export default EC2_HOME;
+export default EC2_Instances_List;

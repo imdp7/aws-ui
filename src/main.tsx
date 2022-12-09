@@ -6,18 +6,28 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EC2_Instance from './features/EC2/EC2';
 import { Feature2 } from './features/S3/S3';
 import HomePage from './HomPage';
-import { Instances } from './features/EC2/Instances';
-import EC2_HOME from './features/EC2/EC2_HOME';
+import EC2_Instances_List from './features/EC2/EC2_Instances_List';
+import { EC2_Instances_Detail } from './features/EC2/EC2_Instance_Detail';
+import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
+import EC2 from './features/EC2/EC2';
+import PageNotFound from './PageNotFound';
+import AllServices from './features/home/AllServices';
 // https://reactrouter.com/docs/en/v6/getting-started/concepts
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<App />} />
         <Route index element={<App />} />
-        <Route path="ec2_instance/dashboard" element={<EC2_Instance />} />
-        <Route path="ec2_instance/instances" element={<EC2_HOME />} />
         <Route path="s3" element={<Feature2 />} />
+        <Route path="console/services" element={<AllServices />} />
+        <Route path="/ec2_instance">
+          <Route path="dashboard" index element={<EC2_Instance />} />
+          <Route path="instances" element={<EC2_Instances_List />} />
+          <Route path=":id" element={<EC2_Instances_Detail />} />
+          <Route path="launchEC2" element={<LaunchEC2 />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
       </Routes>
     </Router>
   </React.StrictMode>,

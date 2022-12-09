@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 export const resourcesBreadcrumbs = [
   {
-    text: 'Service',
-    href: '#',
+    text: 'EC2',
+    href: 'dashboard',
   },
   {
-    text: 'Distributions',
-    href: '#',
+    text: 'Instances',
+    href: 'instances',
   },
 ];
 

@@ -11,8 +11,23 @@
 }
 
 #h {
-  position: fixed;
+  position: sticky;
   top: 0;
-  height: 30px;
+  padding-bottom: 30px;
+  height: 24px;
   z-index: 1002;
+}
+.summary-panel {
+  position: sticky;
+  height: 30%;
+  width: 100%;
+}
+
+.footer_panel {
+  display: flex;
+  justify-content: space-between;
+}
+.header-panel {
+  display: flex;
+  justify-content: space-between;
 }

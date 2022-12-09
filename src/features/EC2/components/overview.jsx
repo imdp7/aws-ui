@@ -22,19 +22,19 @@ export default function ServiceOverview() {
       <ColumnLayout columns="4" variant="text-grid">
         <div>
           <Box variant="awsui-key-label">Running instances</Box>
-          <CounterLink>0</CounterLink>
+          <CounterLink link={'instances'}>50</CounterLink>
         </div>
         <div>
           <Box variant="awsui-key-label">Volumes</Box>
-          <CounterLink>0</CounterLink>
+          <CounterLink link={'volumes'}>126</CounterLink>
         </div>
         <div>
           <Box variant="awsui-key-label">Security groups</Box>
-          <CounterLink>0</CounterLink>
+          <CounterLink link={'security-groups'}>116</CounterLink>
         </div>
         <div>
           <Box variant="awsui-key-label">Load balancers</Box>
-          <CounterLink>0</CounterLink>
+          <CounterLink link={'lb'}>28</CounterLink>
         </div>
       </ColumnLayout>
     </Container>

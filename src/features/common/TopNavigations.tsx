@@ -4,8 +4,9 @@ import { TopNavigation, Input } from '@awsui/components-react';
 
 export const AppHeader = (): JSX.Element => {
   const [value, setValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   return (
-    <div>
+    <div id="h">
       <TopNavigation
         identity={{
           href: '/',
@@ -138,7 +139,15 @@ export const AppHeader = (): JSX.Element => {
           overflowMenuBackIconAriaLabel: 'Back',
           overflowMenuDismissIconAriaLabel: 'Close menu',
         }}
-        // search={<Input type="search" placeholder="Search" ariaLabel="Search" />}
+        search={
+          <Input
+            ariaLabel="Input field"
+            value={searchValue}
+            type="search"
+            placeholder="Search"
+            onChange={({ detail }) => setSearchValue(detail.value)}
+          />
+        }
       />
     </div>
   );

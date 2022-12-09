@@ -31,7 +31,7 @@ export const COLUMN_DEFINITIONS_MAIN = [
   {
     id: 'id',
     header: 'Instance ID',
-    cell: (item) => <Link href="#">{item.id}</Link>,
+    cell: (item) => <Link href={`${item.id}`}>{item.id}</Link>,
   },
   {
     id: 'state',
