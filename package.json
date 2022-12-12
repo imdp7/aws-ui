@@ -1,5 +1,5 @@
 {
-  "name": "awsui-react-ts-vite-template",
+  "name": "aws-ui",
   "version": "0.0.2",
   "scripts": {
     "dev": "vite",
