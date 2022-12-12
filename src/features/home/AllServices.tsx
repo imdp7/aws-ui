@@ -55,7 +55,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
               onFollow={() =>
                 loadHelpPanelContent(
                   <HelpPanels
-                    title="Console Home"
+                    title="All Services"
                     info="Console Home displays widgets with important information about your AWS environment."
                     des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
                     ul={[
@@ -118,7 +118,7 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
         <ColumnLayout columns={3}>
           {arrayData.map((d, i) => (
             <>
-              <Link variant="secondary" href={`${d[2]}`}>
+              <Link variant="secondary" href={`/${d[2]}`}>
                 <Container key={i}>
                   <Box variant="h3">{d[0]}</Box>
                   <Box key={i}>{d[1]}</Box>
