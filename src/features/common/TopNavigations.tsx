@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { TopNavigation, Input } from '@awsui/components-react';
+import { TopNavigation, Input } from '@cloudscape-design/components';
 
 export const AppHeader = (): JSX.Element => {
   const [value, setValue] = useState('');

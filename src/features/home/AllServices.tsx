@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Box,
@@ -172,6 +172,10 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
   //     navigate(event.detail.href as string);
   //     event.preventDefault();
   //   };
+
+  useEffect(() => {
+    document.title = 'AWS Services';
+  }, []);
 
   return (
     <>

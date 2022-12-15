@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AppLayout,
   Table,
@@ -65,6 +65,10 @@ function EC2_Instances_List() {
     onSplitPanelResize,
   } = useSplitPanel(collectionProps.selectedItems);
   const appLayout = useRef();
+
+  useEffect(() => {
+    document.title = 'EC2 Instances Console';
+  }, []);
 
   return (
     <>

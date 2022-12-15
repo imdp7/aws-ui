@@ -404,6 +404,8 @@ export default function EC2(): JSX.Element {
   const [homePage, setHomePage] = useState<boolean>();
   useEffect(() => {
     setHomePage(location.pathname == '/');
+
+    document.title = 'EC2 Management Console';
   }, [location]);
 
   // https://reactrouter.com/docs/en/v6/apioutlet

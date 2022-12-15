@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import React, { createRef, useState } from 'react';
+import React, { createRef, useState, useRef } from 'react';
 import {
   AppLayout,
   Button,
@@ -45,6 +45,7 @@ import {
   logsSelectionLabels,
   paginationLabels,
 } from '../../features/common/labels';
+import { appLayout } from './commons/common-components';
 import { getFilterCounterText } from '../../features/common/tableCounterStrings';
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
@@ -137,6 +138,7 @@ function LogsTable() {
 }
 
 export class EC2_Instances_Detail extends React.Component {
+  appLayout: React.RefObject<unknown>;
   constructor(props) {
     super(props);
     this.state = { toolsIndex: 0, toolsOpen: false };
@@ -194,12 +196,12 @@ export class EC2_Instances_Detail extends React.Component {
         ),
       },
     ];
-
+    const appLayout = useRef();
     return (
       <>
         <AppHeader />
         <AppLayout
-          ref={this.appLayout}
+          ref={appLayout}
           content={
             <ContentLayout
               header={

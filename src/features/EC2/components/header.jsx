@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
@@ -9,7 +8,7 @@ import { ExternalLinkItem, InfoLink } from '../commons/common-components';
 export function HelpPanels(props) {
   return (
     <HelpPanel
-      header={<h2>{props.title}</h2>}
+      header={<h2 key={props.title}>{props.title}</h2>}
       footer={
         <>
           <h3>
@@ -21,6 +20,7 @@ export function HelpPanels(props) {
           <ul>
             <li>
               <ExternalLinkItem
+                key={props.title}
                 href="#"
                 text="User Guide for Linux Instances"
               />
@@ -54,18 +54,18 @@ export function HelpPanels(props) {
       <p>{props?.des}</p>
       <h5>{props?.h5}</h5>
       {props?.ul ? (
-        <>
-          {props?.ul.map((t, i) => {
+        <div>
+          {props?.ul.map((t) => {
             return (
               <>
-                <b key={i}>{t?.h5}</b>
+                <b key={t.h5}>{t?.h5}</b>
                 <ul>
-                  <li key={i}>{t?.text}</li>
+                  <li key={t.h5}>{t?.text}</li>
                 </ul>
               </>
             );
           })}
-        </>
+        </div>
       ) : null}
     </HelpPanel>
   );

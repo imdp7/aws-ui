@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AppHeader } from '../../common/TopNavigations';
 import { AppFooter } from '../../common/AppFooter';
 import '../../../App.css';
@@ -79,10 +79,12 @@ const createInstance = () => {
       id: 'message_1',
     },
   ]);
-  return <Flashbar items={items} />;
+  return <Flashbar items={[]} />;
 };
 
-function LaunchEC2() {
+function LaunchEC2(): JSX.Element {
+  const appLayout = useRef();
+
   const [openNavigation, setOpenNavigation] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(
@@ -104,8 +106,11 @@ function LaunchEC2() {
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
-    appLayout.current?.focusToolsClose();
   };
+
+  useEffect(() => {
+    document.title = 'Launch an EC2';
+  }, []);
 
   return (
     <>
@@ -135,10 +140,6 @@ function LaunchEC2() {
             <Content loadHelpPanelContent={loadHelpPanelContent} />
           </SpaceBetween>
         }
-        loadHelpPanelContent={() => {
-          setToolsOpen(true);
-          appLayout.current?.focusToolsClose();
-        }}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation activeHref="launchEC2" />}
         toolsOpen={toolsOpen}
