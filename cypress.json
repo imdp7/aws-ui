@@ -1,5 +1,5 @@
 {
   "testFiles": "**/*.cypress.{ts,tsx}",
   "componentFolder": "src",
-  "baseUrl": "http://localhost:3000/"
+  "baseUrl": "/"
 }
