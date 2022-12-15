@@ -22,10 +22,10 @@ ReactDOM.render(
         <Route path="s3" element={<Feature2 />} />
         <Route path="console/services" element={<AllServices />} />
         <Route path="/ec2_instance">
-          <Route path="dashboard" index element={<EC2_Instance />} />
-          <Route path="instances" element={<EC2_Instances_List />} />
-          <Route path=":id" element={<EC2_Instances_Detail />} />
-          <Route path="launchEC2" element={<LaunchEC2 />} />
+          <Route path="/dashboard" index element={<EC2_Instance />} />
+          <Route path="/instances" element={<EC2_Instances_List />} />
+          <Route path="/:id" element={<EC2_Instances_Detail />} />
+          <Route path="/launchEC2" element={<LaunchEC2 />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
