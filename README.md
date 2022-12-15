@@ -1,3 +1,5 @@
+![Language-Support: Stable](https://img.shields.io/badge/language--support-stable-success.svg?style=for-the-badge)
+
 # AWS UI React TypeScript Vite template
 
 This is an [AWS UI](https://github.com/aws/awsui-documentation) starter template built using [Vite](https://vitejs.dev/).
