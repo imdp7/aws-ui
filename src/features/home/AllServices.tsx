@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import {
-  Alert,
   Box,
   ColumnLayout,
   Container,
@@ -158,7 +157,6 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
-    appLayout.current?.focusToolsClose();
   };
   const updateTools = (element: JSX.Element): void => {
     setTools(element);

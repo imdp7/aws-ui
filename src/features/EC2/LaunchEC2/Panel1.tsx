@@ -106,7 +106,7 @@ function Panel1({
             <div>GiB</div>
             <Select
               selectedOption={storage}
-              onChange={({ detail }) => setStorage(detail.selectedOption)}
+              //onChange={({ detail }) => setStorage(detail.selectedOption)}
               options={[
                 { label: 'General Purpose SSD (gp3)', value: '1' },
                 { label: 'General Purpose SSD (gp2)', value: '2' },
@@ -149,7 +149,6 @@ function Panel1({
             sections: [
               {
                 id: 'image',
-                content: (e) => e.image,
               },
             ],
           }}
@@ -157,7 +156,6 @@ function Panel1({
           items={[
             {
               name: 'Amazon',
-              alt: 'First',
             },
             {
               name: 'macOS',
@@ -198,12 +196,12 @@ function Panel1({
             </Box>
           }
         />
-        <Box display="block" variant="code" style={{ text: 'lg' }}>
+        <Box display="block" variant="code" s>
           Amazon Machine Image (AMI)
         </Box>
         <Select
-          selectedOption={selectedOption}
-          onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+          selectedOption={null}
+          //onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
           options={[
             {
               label: 'Option 1',
@@ -248,9 +246,9 @@ function Panel1({
               </Box>
               <Select
                 empty
-                onChange={({ detail }) =>
-                  setArchitecture(detail.selectedOption)
-                }
+                // onChange={({ detail }) =>
+                //   setArchitecture(detail.selectedOption)
+                // }
                 selectedOption={architecture}
                 loadingText="loading"
                 options={[{ label: '64-bit (x86)' }, { label: '64-bit (ARM)' }]}
@@ -289,21 +287,21 @@ function Panel1({
     itemsCopy.splice(itemIndex, 1);
     setItems(itemsCopy);
   };
-  const getOnChangeHandler = (key, item, index) => {
-    if (readOnlyWithErrors) {
-      return () => {
-        /*noop*/
-      };
-    }
+  // const getOnChangeHandler = (key, item, index) => {
+  //   if (readOnlyWithErrors) {
+  //     return () => {
+  //       /*noop*/
+  //     };
+  //   }
 
-    return ({ detail }) => {
-      const itemsCopy = items.slice();
-      const updatedItem = assign({}, item);
-      updatedItem[key] = detail.value;
-      itemsCopy.splice(index, 1, updatedItem);
-      setItems(itemsCopy);
-    };
-  };
+  //   return ({ detail }) => {
+  //     const itemsCopy = items.slice();
+  //     const updatedItem = assign({}, item);
+  //     updatedItem[key] = detail.value;
+  //     itemsCopy.splice(index, 1, updatedItem);
+  //     setItems(itemsCopy);
+  //   };
+  // };
 
   return (
     <div>
@@ -467,8 +465,8 @@ function Panel1({
           //     headerDescription="here"
         >
           <Select
-            selectedOption={selectedOption}
-            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+            selectedOption={null}
+            //onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
             options={[{}]}
             ariaRequired
             expandToViewport
@@ -492,9 +490,9 @@ function Panel1({
           <ColumnLayout columns={2} variant="text-grid">
             <Select
               //selectedOption={selectedOption}
-              onChange={({ detail }) =>
-                setSelectedOption(detail.selectedOption)
-              }
+              // onChange={({ detail }) =>
+              //   setSelectedOption(detail.selectedOption)
+              // }
               options={[]}
               loadingText="Loading instances"
               placeholder="Choose an option"
@@ -590,7 +588,7 @@ function Panel1({
                   <Box>
                     <Select
                       selectedOption={ip}
-                      onChange={({ detail }) => setIP(detail.selectedOption)}
+                      //onChange={({ detail }) => setIP(detail.selectedOption)}
                       options={[
                         { label: '0.0.0.0', description: 'Anywhere' },
                         { label: 'Custom', value: '' },
@@ -648,7 +646,7 @@ function Panel1({
                   <Box>GiB</Box>
                   <Select
                     selectedOption={storage}
-                    onChange={({ detail }) => setStorage(detail.selectedOption)}
+                    //onChange={({ detail }) => setStorage(detail.selectedOption)}
                     options={[
                       { label: 'General Purpose SSD (gp3)', value: '1' },
                       { label: 'General Purpose SSD (gp2)', value: '2' },

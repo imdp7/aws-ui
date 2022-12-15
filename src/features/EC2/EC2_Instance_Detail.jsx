@@ -45,7 +45,6 @@ import {
   logsSelectionLabels,
   paginationLabels,
 } from '../../features/common/labels';
-import { appLayout } from './commons/common-components';
 import { getFilterCounterText } from '../../features/common/tableCounterStrings';
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
@@ -107,7 +106,7 @@ function LogsTable() {
       ariaLabels={logsSelectionLabels}
       selectionType="multi"
       selectedItems={selectedItems}
-      onSelectionChange={(evt) => setSelectedItems(evt.detail.selectedItems)}
+      //onSelectionChange={(evt) => setSelectedItems(evt.detail.selectedItems)}
       header={
         <TableHeader
           title="Logs"
@@ -138,7 +137,6 @@ function LogsTable() {
 }
 
 export class EC2_Instances_Detail extends React.Component {
-  appLayout: React.RefObject<unknown>;
   constructor(props) {
     super(props);
     this.state = { toolsIndex: 0, toolsOpen: false };
@@ -147,7 +145,6 @@ export class EC2_Instances_Detail extends React.Component {
 
   loadHelpPanelContent(index) {
     this.setState({ toolsIndex: index, toolsOpen: true });
-    this.appLayout.current?.focusToolsClose();
   }
 
   render() {
@@ -196,12 +193,12 @@ export class EC2_Instances_Detail extends React.Component {
         ),
       },
     ];
-    const appLayout = useRef();
+
     return (
       <>
         <AppHeader />
         <AppLayout
-          ref={appLayout}
+          ref={this.appLayout}
           content={
             <ContentLayout
               header={

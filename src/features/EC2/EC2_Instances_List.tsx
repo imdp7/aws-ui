@@ -11,7 +11,6 @@ import { appLayoutLabels } from '../common/labels';
 import { getFilterCounterText } from '../common/tableCounterStrings';
 import {
   Navigation,
-  ec2NavItems,
   Notifications,
   TableEmptyState,
   TableNoMatchState,
@@ -28,7 +27,6 @@ import {
 } from './table-config';
 import { getPanelContent, Breadcrumbs, useSplitPanel } from './utils';
 import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
-import { InfoLink, ValueWithLabel } from '../common/common';
 import { AppHeader } from '../common/TopNavigations';
 
 function EC2_Instances_List() {
@@ -64,7 +62,6 @@ function EC2_Instances_List() {
     splitPanelSize,
     onSplitPanelResize,
   } = useSplitPanel(collectionProps.selectedItems);
-  const appLayout = useRef();
 
   useEffect(() => {
     document.title = 'EC2 Instances Console';
@@ -74,7 +71,6 @@ function EC2_Instances_List() {
     <>
       <AppHeader />
       <AppLayout
-        ref={appLayout}
         headerSelector="#header"
         navigation={<Navigation activeHref="instances" />}
         breadcrumbs={<Breadcrumbs />}
@@ -108,7 +104,6 @@ function EC2_Instances_List() {
                 totalItems={INSTANCES}
                 loadHelpPanelContent={() => {
                   setToolsOpen(true);
-                  appLayout.current?.focusToolsClose();
                 }}
               />
             }

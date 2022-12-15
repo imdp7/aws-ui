@@ -227,7 +227,6 @@ const HomePage = (): JSX.Element => {
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
-    appLayout.current?.focusToolsClose();
   };
   const updateTools = (element: JSX.Element): void => {
     setTools(element);

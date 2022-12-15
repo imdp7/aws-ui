@@ -2,31 +2,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useEffect, useRef, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AppLayout from '@cloudscape-design/components/app-layout';
-import Box from '@cloudscape-design/components/box';
 import BreadcrumbGroup from '@cloudscape-design/components/breadcrumb-group';
-import Button from '@cloudscape-design/components/button';
 import ContentLayout from '@cloudscape-design/components/content-layout';
-import FormField from '@cloudscape-design/components/form-field';
 import Grid from '@cloudscape-design/components/grid';
-import Link from '@cloudscape-design/components/link';
-import Modal from '@cloudscape-design/components/modal';
-import Popover from '@cloudscape-design/components/popover';
 import SpaceBetween from '@cloudscape-design/components/space-between';
-import SideNavigation from '@cloudscape-design/components/side-navigation';
-import Tiles from '@cloudscape-design/components/tiles';
 import '@cloudscape-design/global-styles/dark-mode-utils.css';
 import './styles/dashboard.scss';
 import './styles/density-switch-images.scss';
 import { appLayoutLabels } from '../common/labels';
-import {
-  densityStorage,
-  densityLocalStorageKey,
-  updateDensity,
-} from '../common/apply-mode';
-import * as localStorage from '../common/localStorage';
-
 import { DashboardHeader, HelpPanels } from './components/header';
 import {
   FeaturesSpotlight,
@@ -45,7 +29,6 @@ import { AppHeader } from '../common/TopNavigations';
 import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
-import EC2_HOME from './EC2_Instances_List';
 import { AppFooter } from '../common/AppFooter';
 import { Navigation } from './commons/common-components';
 
@@ -394,12 +377,10 @@ export default function EC2(): JSX.Element {
         centers&mdash;that you use to build and host your software systems."
     />
   );
-  const appLayout = useRef();
 
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
-    appLayout.current?.focusToolsClose();
   };
   const [homePage, setHomePage] = useState<boolean>();
   useEffect(() => {
@@ -441,7 +422,6 @@ export default function EC2(): JSX.Element {
         contentType="table"
         disableBodyScroll={true}
         headerSelector="#topnav"
-        ref={appLayout}
         breadcrumbs={!homePage && <Breadcrumbs />}
         navigation={
           <Navigation
