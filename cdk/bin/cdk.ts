@@ -8,5 +8,5 @@ new CdkStack(app, 'MyAWSUIAppStack', {
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 
   // TODO: change stackName below as required
-  stackName: 'my-awsui-app-stack',
+  stackName: 'aws-ui',
 });
