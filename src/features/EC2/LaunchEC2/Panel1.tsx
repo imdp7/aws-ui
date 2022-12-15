@@ -196,7 +196,7 @@ function Panel1({
             </Box>
           }
         />
-        <Box display="block" variant="code" s>
+        <Box display="block" variant="code">
           Amazon Machine Image (AMI)
         </Box>
         <Select
