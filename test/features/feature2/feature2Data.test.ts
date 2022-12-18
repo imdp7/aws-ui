@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFeature2Data } from '../../../src/features/feature2/feature2DataSlice';
+import { createFeature2Data } from '../../../src/features/S3/feature2DataSlice';
 
 describe('Feature 2 Data', () => {
   it('defaults work', () => {

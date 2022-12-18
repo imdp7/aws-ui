@@ -22,6 +22,7 @@ import {
   Alert,
   AppLayout,
   SpaceBetween,
+  Grid,
 } from '@cloudscape-design/components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
@@ -67,7 +68,7 @@ const AppFooter = (): JSX.Element => {
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
   return (
-    <SpaceBetween size="m">
+    <SpaceBetween size="s">
       <Box
         margin={{ bottom: 'l' }}
         padding={{ horizontal: 'xxxl', vertical: 'l' }}
@@ -127,80 +128,169 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   };
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
   return (
-    <SpaceBetween size="xs">
+    <>
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
-      <div>
-        <Alert
-          onDismiss={() => setVisible(false)}
-          visible={visible}
-          dismissAriaLabel="Close alert"
-          dismissible
-          header="Introducing the new widgets Applications."
+
+      <Alert
+        onDismiss={() => setVisible(false)}
+        visible={visible}
+        dismissAriaLabel="Close alert"
+        dismissible
+        header="Introducing the new widgets Applications."
+      >
+        {' '}
+      </Alert>
+      <SpaceBetween size="m" direction="vertical">
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Recently Visited"
+                        des="Jump in where you left off and navigate to the AWS services you most recently worked with."
+                        h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Recently visited
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">View all AWS services</Link>
+            </Box>
+          }
         >
-          {' '}
-        </Alert>
-      </div>
-      <Container
-        header={
-          <Header
-            variant="h2"
-            info={
-              <InfoLink
-                onFollow={() =>
-                  loadHelpPanelContent(
-                    <HelpPanels
-                      title="Recently Visited"
-                      des="Jump in where you left off and navigate to the AWS services you most recently worked with."
-                      h5="To view all AWS services choose View all AWS services at the bottom of the widget."
-                    />
-                  )
+          <ColumnLayout columns={4} borders="vertical">
+            {arrayData.map((d) => (
+              <div
+                key={d[0]}
+                style={{
+                  display: 'block',
+                  justifyItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
+                <img src={`${d[1]}`} alt="logo" />
+                <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
+                  {d[0]}
+                </Box>
+                <Box variant="p">
+                  Call to action sentence about benefits of{' '}
+                  <Link
+                    variant="secondary"
+                    href={`${d[2]}`}
+                    onFollow={defaultOnFollowHandler}
+                  >
+                    {d[0]}
+                  </Link>{' '}
+                </Box>
+              </div>
+            ))}
+          </ColumnLayout>
+        </Container>
+        <Grid
+          gridDefinition={[
+            { colspan: { default: 12, xxs: 4 } },
+            { colspan: { default: 12, xxs: 8 } },
+          ]}
+        >
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Recently Visited"
+                          des="Jump in where you left off and navigate to the AWS services you most recently worked with."
+                          h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                        />
+                      )
+                    }
+                  />
                 }
-              />
+              >
+                AWS Health
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to AWS Health</Link>
+              </Box>
             }
           >
-            Recently visited
-          </Header>
-        }
-        footer={
-          <Box
-            variant="h5"
-            tagOverride="h5"
-            //padding={{ bottom: 's', top: 'l' }}
-            textAlign="center"
+            <ColumnLayout borders="horizontal">
+              <Box variant="pre">Open Issues</Box>
+              <ColumnLayout columns={2}>
+                <Box>0</Box>
+                <Box>Past 7 days</Box>
+              </ColumnLayout>
+              <div>Content</div>
+              <div>Content</div>
+              <div>Content</div>
+              <div>Content</div>
+              <div>Content</div>
+              <div>Content</div>
+              <div>Content</div>
+            </ColumnLayout>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Recently Visited"
+                          des="Jump in where you left off and navigate to the AWS services you most recently worked with."
+                          h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Cost and Usage
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to AWS Cost Management</Link>
+              </Box>
+            }
           >
-            <Link href="/console/services">View all AWS services</Link>
-          </Box>
-        }
-      >
-        <ColumnLayout columns={4} borders="vertical">
-          {arrayData.map((d) => (
-            <div
-              key={d[0]}
-              style={{
-                display: 'block',
-                justifyItems: 'center',
-                textAlign: 'center',
-              }}
-            >
-              <img src={`${d[1]}`} alt="logo" />
-              <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
-                {d[0]}
-              </Box>
-              <Box variant="p">
-                Call to action sentence about benefits of{' '}
-                <Link
-                  variant="secondary"
-                  href={`${d[2]}`}
-                  onFollow={defaultOnFollowHandler}
-                >
-                  {d[0]}
-                </Link>{' '}
-              </Box>
-            </div>
-          ))}
-        </ColumnLayout>
-      </Container>
-    </SpaceBetween>
+            Hellu
+          </Container>
+        </Grid>
+      </SpaceBetween>
+    </>
   );
 };
 
