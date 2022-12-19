@@ -78,7 +78,7 @@ const Feature2DetailsTable = (): JSX.Element => {
   );
 };
 
-export const Feature2 = (): JSX.Element => {
+export const S3 = (): JSX.Element => {
   return (
     <SpaceBetween size="l">
       <Header variant="h1">S3</Header>

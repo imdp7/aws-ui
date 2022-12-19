@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppLayout from '@cloudscape-design/components/app-layout';
 import BreadcrumbGroup from '@cloudscape-design/components/breadcrumb-group';
 import ContentLayout from '@cloudscape-design/components/content-layout';
@@ -24,7 +24,7 @@ import InstancesLimits from './components/instance-limits';
 import Events from './components/events';
 import CPUUtilisation from './components/cpu-utilisation';
 import NetworkTraffic from './components/network-traffic';
-import { navHeader, Notifications } from './commons/common-components';
+import { Notifications } from './commons/common-components';
 import { AppHeader } from '../common/TopNavigations';
 import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -365,7 +365,7 @@ function Content(props) {
   );
 }
 
-export default function EC2(): JSX.Element {
+function EC2(): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [activeHref, setActiveHref] = React.useState('dashboard');
   const [loading, setLoading] = useState(false);
@@ -405,8 +405,8 @@ export default function EC2(): JSX.Element {
                     buttonText="Launch instance"
                     href="launchEC2"
                     des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
-        resizeable computing capacity&mdash;literally, servers in Amazon's data
-        centers&mdash;that you use to build and host your software systems."
+                         resizeable computing capacity&mdash;literally, servers in Amazon's data
+                         centers&mdash;that you use to build and host your software systems."
                   />
                 }
               >
@@ -446,3 +446,5 @@ export default function EC2(): JSX.Element {
     </>
   );
 }
+
+export default EC2;

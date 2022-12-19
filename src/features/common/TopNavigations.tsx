@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { TopNavigation, Input } from '@cloudscape-design/components';
-
+import '../../App.css';
 export const AppHeader = (): JSX.Element => {
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
