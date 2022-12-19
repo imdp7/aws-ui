@@ -227,7 +227,6 @@ export class EC2_Instances_Detail extends React.Component {
           }
           ariaLabels={appLayoutLabels}
           notifications={<Notifications />}
-          disableBodyScroll={true}
           contentType="wizard"
         />
       </>

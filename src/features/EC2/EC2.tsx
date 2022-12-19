@@ -365,7 +365,7 @@ function Content(props) {
   );
 }
 
-function EC2(): JSX.Element {
+export default function EC2(): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [activeHref, setActiveHref] = React.useState('dashboard');
   const [loading, setLoading] = useState(false);
@@ -395,33 +395,29 @@ function EC2(): JSX.Element {
       <AppHeader />
       <AppLayout
         content={
-          <>
-            <Provider store={store}>
-              <ContentLayout
-                header={
-                  <DashboardHeader
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    title="EC2 Dashboard"
-                    buttonText="Launch instance"
-                    href="launchEC2"
-                    des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+          <Provider store={store}>
+            <ContentLayout
+              header={
+                <DashboardHeader
+                  loadHelpPanelContent={loadHelpPanelContent}
+                  title="EC2 Dashboard"
+                  buttonText="Launch instance"
+                  href="launchEC2"
+                  des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
                          resizeable computing capacity&mdash;literally, servers in Amazon's data
                          centers&mdash;that you use to build and host your software systems."
-                  />
-                }
-              >
-                <Content loadHelpPanelContent={loadHelpPanelContent} />
-              </ContentLayout>
+                />
+              }
+            >
+              <Content loadHelpPanelContent={loadHelpPanelContent} />
+            </ContentLayout>
 
-              <SpaceBetween size={'m'}>
-                <Outlet context={loadHelpPanelContent} />
-              </SpaceBetween>
-            </Provider>
-          </>
+            <SpaceBetween size={'m'}>
+              <Outlet context={loadHelpPanelContent} />
+            </SpaceBetween>
+          </Provider>
         }
         contentType="table"
-        disableBodyScroll={true}
-        headerSelector="#topnav"
         breadcrumbs={!homePage && <Breadcrumbs />}
         navigation={
           <Navigation
@@ -446,5 +442,3 @@ function EC2(): JSX.Element {
     </>
   );
 }
-
-export default EC2;

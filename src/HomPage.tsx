@@ -688,7 +688,7 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
         }
         contentType="wizard"
         stickyNotifications={true}
-        // disableContentPaddings={true}
+        //disableContentPaddings={true}
         toolsOpen={toolsOpen}
         tools={toolsContent}
         navigationHide={true}

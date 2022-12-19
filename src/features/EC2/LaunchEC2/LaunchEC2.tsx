@@ -148,7 +148,6 @@ function LaunchEC2(): JSX.Element {
         ariaLabels={appLayoutLabels}
         notifications={<Notifications />}
         contentType="wizard"
-        disableBodyScroll={true}
       />
       <AppFooter />
     </>

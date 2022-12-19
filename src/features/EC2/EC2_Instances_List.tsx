@@ -78,7 +78,6 @@ function EC2_Instances_List() {
         tools={<EC2ToolsContent />}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-        disableBodyScroll={true}
         contentType="cards"
         splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={onSplitPanelToggle}

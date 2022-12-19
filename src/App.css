@@ -2,21 +2,6 @@
   padding-top: 30px !important;
   padding-bottom: 24px !important;
 }
-
-/* #f {
-  position: fixed;
-  bottom: 0;
-  height: 24px;
-  z-index: 1001;
-} */
-
-/* #h {
-  position: sticky;
-  top: 0;
-  padding-bottom: 30px;
-  height: 24px;
-  z-index: 1002;
-} */
 .summary-panel {
   position: sticky;
   height: 30%;
