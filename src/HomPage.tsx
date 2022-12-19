@@ -129,7 +129,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
     </SpaceBetween>
   );
 };
-function strReduce(string: string) {
+function strReduce(string = '') {
   return string.substring(0, length);
 }
 
@@ -269,17 +269,6 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
             </Grid>
             <Box variant="awsui-key-label" color="text-status-inactive">
               Scheduled changes
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Other notifications
             </Box>
             <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
               <Box color="text-status-info" variant="h1" textAlign="center">
@@ -478,19 +467,6 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                 </Link>
               </Box>
             </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Other notifications
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-inactive" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                <Link href="#" variant="primary">
-                  Details
-                </Link>
-              </Box>
-            </Grid>
           </Container>
         </Grid>
         <Grid
@@ -644,17 +620,6 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
             </Grid>
             <Box variant="awsui-key-label" color="text-status-inactive">
               Scheduled changes
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Other notifications
             </Box>
             <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
               <Box color="text-status-info" variant="h1" textAlign="center">
