@@ -1,4 +1,4 @@
-!(https://img.shields.io/badge/language--support-stable-success.svg?style=for-the-badge)
+![Language-Support: Stable](https://img.shields.io/badge/language--support-stable-success.svg?style=for-the-badge)
 
 
 # AWS UI React TypeScript Vite template
