@@ -19,10 +19,12 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="s3" element={<S3 />} />
         <Route path="console/services" element={<AllServices />} />
-        <Route path="ec2_instance/dashboard" element={<EC2_Instance />} />
-        <Route path="ec2_instance/instances" element={<EC2_Instances_List />} />
-        <Route path="ec2_instance/:id" element={<EC2_Instances_Detail />} />
-        <Route path="ec2_instance/launchEC2" element={<LaunchEC2 />} />
+        <Route path="/ec2_instance">
+          <Route path="dashboard" index element={<EC2_Instance />} />
+          <Route path="instances" element={<EC2_Instances_List />} />
+          <Route path=":id" element={<EC2_Instances_Detail />} />
+          <Route path="launchEC2" element={<LaunchEC2 />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
