@@ -1,5 +1,4 @@
-![Language-Support: Stable](https://img.shields.io/badge/language--support-stable-success.svg?style=for-the-badge)
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1b6dfc88-438f-472b-a571-9bdf88964ef6/deploy-status)](https://app.netlify.com/sites/awsui/deploys)
 
 # AWS UI React TypeScript Vite template
 
