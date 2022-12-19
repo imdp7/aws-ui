@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useState, useEffect } from 'react';
@@ -128,6 +129,9 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
     </SpaceBetween>
   );
 };
+function strReduce(string: string) {
+  return string.substring(0, length);
+}
 
 const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const [visible, setVisible] = React.useState(true);
@@ -505,15 +509,71 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                     onFollow={() =>
                       loadHelpPanelContent(
                         <HelpPanels
-                          title="AWS Health"
-                          des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
+                          title="Explore AWS"
+                          des="Explore AWS products, services, resources, events, and more."
                         />
                       )
                     }
                   />
                 }
               >
-                AWS Health
+                Explore AWS
+              </Header>
+            }
+          >
+            <SpaceBetween size="m">
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                <Link external fontSize="heading-s">
+                  {' '}
+                  AWS Certifications
+                </Link>
+                <Box>Propel your career forward with AWS Certification.</Box>
+              </Box>
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                <Link external fontSize="heading-s">
+                  {' '}
+                  Free AWS Training
+                </Link>
+                <Box>
+                  Advance your career with AWS Cloud Practitioner Essentials—a
+                  free, six-hour, foundational course.
+                </Box>
+              </Box>
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                <Link external fontSize="heading-s">
+                  AWS Training
+                </Link>
+                <Box>Free digital courses to help you develop your skills.</Box>
+              </Box>
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                <Link external fontSize="heading-s">
+                  Free AWS Digital Training
+                </Link>
+                <Box>
+                  Learn the AWS Cloud today to create opportunities tomorrow:
+                  find out how.
+                </Box>
+              </Box>
+            </SpaceBetween>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Latest announcements"
+                          des="View the latest announcement for the AWS services you're using. Learn about new capabilities that you can use to experiment and innovate. These announcements are personalized to your account."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Latest Announcements
               </Header>
             }
             footer={
@@ -523,7 +583,51 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                 //padding={{ bottom: 's', top: 'l' }}
                 textAlign="center"
               >
-                <Link href="/console/services">Go to AWS Health</Link>
+                <Link href="/console/services">View all Announcements</Link>
+              </Box>
+            }
+          >
+            <Box color="text-status-info" variant="h2">
+              <Link>
+                {strReduce(
+                  'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
+                )}
+              </Link>
+              <Link>
+                {strReduce(
+                  'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
+                )}
+              </Link>
+            </Box>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Cost and usage"
+                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Recent AWS Blogs
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to AWS Cost Management</Link>
               </Box>
             }
           >
@@ -572,60 +676,6 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             </Grid>
           </Container>
-          <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Cost and usage"
-                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Cost and Usage
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">Go to AWS Cost Management</Link>
-              </Box>
-            }
-          >
-            <SpaceBetween size="s">
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                Open Issues
-              </Box>
-              <ColumnLayout columns={4}>
-                {arrayData.map((d) => (
-                  <div
-                    key={d[0]}
-                    style={{
-                      display: 'flex',
-                      justifyItems: 'center',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <img src={`${d[1]}`} alt="logo" />
-                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
-                      {d[0]}
-                    </Box>
-                  </div>
-                ))}
-              </ColumnLayout>
-            </SpaceBetween>
-          </Container>
         </Grid>
       </SpaceBetween>
     </>
@@ -639,7 +689,8 @@ const HomePage = (): JSX.Element => {
     <HelpPanels
       title="Console Home"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtimport { selectFeature2Data } from './features/S3/feature2DataSlice';
+ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
