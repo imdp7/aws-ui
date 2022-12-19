@@ -23,6 +23,7 @@ import {
   AppLayout,
   SpaceBetween,
   Grid,
+  Button,
 } from '@cloudscape-design/components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
@@ -76,6 +77,19 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
       >
         <Header
           variant="h1"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button>Reset to default layout</Button>
+              <Button
+                ariaLabel="AddWidget"
+                variant="primary"
+                iconName="add-plus"
+                loadingText="loading"
+              >
+                Add Widgets
+              </Button>
+            </SpaceBetween>
+          }
           info={
             <InfoLink
               onFollow={() =>
@@ -140,7 +154,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
       >
         {' '}
       </Alert>
-      <SpaceBetween size="m" direction="vertical">
+      <SpaceBetween size="m">
         <Container
           header={
             <Header
@@ -216,9 +230,8 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                     onFollow={() =>
                       loadHelpPanelContent(
                         <HelpPanels
-                          title="Recently Visited"
-                          des="Jump in where you left off and navigate to the AWS services you most recently worked with."
-                          h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                          title="AWS Health"
+                          des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
                         />
                       )
                     }
@@ -239,20 +252,50 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             }
           >
-            <ColumnLayout borders="horizontal">
-              <Box variant="pre">Open Issues</Box>
-              <ColumnLayout columns={2}>
-                <Box>0</Box>
-                <Box>Past 7 days</Box>
-              </ColumnLayout>
-              <div>Content</div>
-              <div>Content</div>
-              <div>Content</div>
-              <div>Content</div>
-              <div>Content</div>
-              <div>Content</div>
-              <div>Content</div>
-            </ColumnLayout>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Open Issues
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Scheduled changes
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
           </Container>
           <Container
             header={
@@ -263,9 +306,8 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                     onFollow={() =>
                       loadHelpPanelContent(
                         <HelpPanels
-                          title="Recently Visited"
-                          des="Jump in where you left off and navigate to the AWS services you most recently worked with."
-                          h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                          title="Cost and usage"
+                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
                         />
                       )
                     }
@@ -286,7 +328,303 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             }
           >
-            Hellu
+            <SpaceBetween size="s">
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                Open Issues
+              </Box>
+              <ColumnLayout columns={4}>
+                {arrayData.map((d) => (
+                  <div
+                    key={d[0]}
+                    style={{
+                      display: 'flex',
+                      justifyItems: 'center',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <img src={`${d[1]}`} alt="logo" />
+                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
+                      {d[0]}
+                    </Box>
+                  </div>
+                ))}
+              </ColumnLayout>
+            </SpaceBetween>
+          </Container>
+        </Grid>
+
+        <Grid
+          gridDefinition={[
+            { colspan: { default: 12, xxs: 8 } },
+            { colspan: { default: 12, xxs: 4 } },
+          ]}
+        >
+          <Container
+            header={
+              <Header
+                variant="h2"
+                description="Start building with simple wizards and automated workflows."
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Build a solution"
+                          des="Access workflows and wizards that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Build a solution
+              </Header>
+            }
+          >
+            <SpaceBetween size="s">
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                Open Issues
+              </Box>
+              <ColumnLayout columns={4}>
+                {arrayData.map((d) => (
+                  <div
+                    key={d[0]}
+                    style={{
+                      display: 'flex',
+                      justifyItems: 'center',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <img src={`${d[1]}`} alt="logo" />
+                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
+                      {d[0]}
+                    </Box>
+                  </div>
+                ))}
+              </ColumnLayout>
+            </SpaceBetween>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Trusted Advisor"
+                          des="Accounts with AWS Business Support or AWS Enterprise Support can see an overview of automated checks on the Trusted Advisor widget. Core security checks and checks for service quotas are available to all accounts on the Trusted Advisor console, inclusive of AWS Developer Support and AWS Basic Support plans."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Trusted Advisor
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to Trusted Advisor</Link>
+              </Box>
+            }
+          >
+            <Box variant="awsui-key-label" color="text-status-error">
+              Action recommended
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-error" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                <Link href="#" variant="primary">
+                  Details
+                </Link>
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-info">
+              Investigation recommended
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                <Link href="#" variant="primary">
+                  Details
+                </Link>
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-success">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-success" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                <Link href="#" variant="primary">
+                  Details
+                </Link>
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-inactive" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                <Link href="#" variant="primary">
+                  Details
+                </Link>
+              </Box>
+            </Grid>
+          </Container>
+        </Grid>
+        <Grid
+          gridDefinition={[
+            { colspan: { default: 12, xxs: 4 } },
+            { colspan: { default: 12, xxs: 4 } },
+            { colspan: { default: 12, xxs: 4 } },
+          ]}
+        >
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="AWS Health"
+                          des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                AWS Health
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to AWS Health</Link>
+              </Box>
+            }
+          >
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Open Issues
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Scheduled changes
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              Other notifications
+            </Box>
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+              <Box color="text-status-info" variant="h1" textAlign="center">
+                0
+              </Box>
+              <Box float="right" textAlign="center">
+                7 days ago
+              </Box>
+            </Grid>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                info={
+                  <InfoLink
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Cost and usage"
+                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
+                        />
+                      )
+                    }
+                  />
+                }
+              >
+                Cost and Usage
+              </Header>
+            }
+            footer={
+              <Box
+                variant="h5"
+                tagOverride="h5"
+                //padding={{ bottom: 's', top: 'l' }}
+                textAlign="center"
+              >
+                <Link href="/console/services">Go to AWS Cost Management</Link>
+              </Box>
+            }
+          >
+            <SpaceBetween size="s">
+              <Box variant="awsui-key-label" color="text-status-inactive">
+                Open Issues
+              </Box>
+              <ColumnLayout columns={4}>
+                {arrayData.map((d) => (
+                  <div
+                    key={d[0]}
+                    style={{
+                      display: 'flex',
+                      justifyItems: 'center',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <img src={`${d[1]}`} alt="logo" />
+                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
+                      {d[0]}
+                    </Box>
+                  </div>
+                ))}
+              </ColumnLayout>
+            </SpaceBetween>
           </Container>
         </Grid>
       </SpaceBetween>
@@ -340,7 +678,7 @@ const HomePage = (): JSX.Element => {
         navigationHide={true}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
+        // notifications={<Notifications />}
         footerSelector="#f"
       />
     </div>
