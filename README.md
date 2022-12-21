@@ -1,5 +1,8 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1b6dfc88-438f-472b-a571-9bdf88964ef6/deploy-status)](https://app.netlify.com/sites/awsui/deploys)
 
+
+![Alt text](./assets/Screenshots/1.jpg?raw=true "Home Page")
+
 # AWS UI React TypeScript Vite template
 
 This is an [AWS UI](https://github.com/aws/awsui-documentation) starter template built using [Vite](https://vitejs.dev/).
