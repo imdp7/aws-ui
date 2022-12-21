@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* src/App.js */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Amplify, API, graphqlOperation, I18n } from 'aws-amplify';
 import { withAuthenticator, translations } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';

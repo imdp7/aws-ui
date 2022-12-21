@@ -654,8 +654,7 @@ const HomePage = (props): JSX.Element => {
     <HelpPanels
       title="Console Home"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtimport { selectFeature2Data } from './features/S3/feature2DataSlice';
-ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
