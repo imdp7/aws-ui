@@ -10,6 +10,7 @@ import { EC2_Instances_Detail } from './features/EC2/EC2_Instance_Detail';
 import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
 import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
+//import Auth from './Auth/Auth'
 // https://reactrouter.com/docs/en/v6/getting-started/concepts
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<App />} />
+        {/*<Route path="/auth" element={<Auth />} />*/}
         <Route path="s3" element={<S3 />} />
         <Route path="console/services" element={<AllServices />} />
         <Route path="/ec2_instance">
