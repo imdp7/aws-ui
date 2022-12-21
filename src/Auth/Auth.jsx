@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* eslint-disable react/prop-types */
 /* src/App.js */
 import React, { useEffect, useState } from 'react';
@@ -108,7 +107,7 @@ const styles = {
 };
 
 export default withAuthenticator(Auth);
-=======
+
 import { Amplify } from 'aws-amplify';
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
