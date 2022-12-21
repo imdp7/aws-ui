@@ -1,9 +1,9 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1b6dfc88-438f-472b-a571-9bdf88964ef6/deploy-status)](https://app.netlify.com/sites/awsui/deploys)
 
-![Screenshot](assets/Screenshots/1.png)
-![Screenshot](assets/Screenshots/2.png)
-![Screenshot](assets/Screenshots/3.png)
-![Screenshot](assets/Screenshots/4.png)
+![Screenshot](assets/Screenshots/1.png "HomePage")
+![Screenshot](assets/Screenshots/2.png "EC2 Dashboard")
+![Screenshot](assets/Screenshots/3.png "EC2 Instances")
+![Screenshot](assets/Screenshots/4.png "Create an EC2 Instance")
 
 # AWS UI React TypeScript Vite template
 
