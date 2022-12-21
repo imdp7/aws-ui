@@ -35,7 +35,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-awsui-dev-65008-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiawsui"
       },
-      "lastPushTimeStamp": "2022-12-20T12:21:18.069Z",
+      "lastPushTimeStamp": "2022-12-21T15:26:15.722Z",
       "lastPushDirHash": "FIE/V3483lYoTbIGpMltzqqXrTk="
     }
   },
@@ -67,7 +67,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-awsui-dev-65008-deployment/amplify-cfn-templates/auth/awsui6ff10e79-cloudformation-template.json",
         "logicalId": "authawsui6ff10e79"
       },
-      "lastPushTimeStamp": "2022-12-20T12:21:18.240Z",
+      "lastPushTimeStamp": "2022-12-21T15:26:15.725Z",
       "output": {
         "UserPoolId": "us-east-1_z0jjxebIr",
         "AppClientIDWeb": "26eeoncos8r3qqerikbmgub8s",
