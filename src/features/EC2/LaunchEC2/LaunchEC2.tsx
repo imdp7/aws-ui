@@ -82,7 +82,7 @@ const createInstance = () => {
   return <Flashbar items={[]} />;
 };
 
-function LaunchEC2(): JSX.Element {
+function LaunchEC2(props): JSX.Element {
   const appLayout = useRef();
 
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -114,7 +114,7 @@ function LaunchEC2(): JSX.Element {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader {...props} />
       <AppLayout
         content={
           <SpaceBetween size="l">

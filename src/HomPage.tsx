@@ -647,7 +647,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   );
 };
 
-const HomePage = (): JSX.Element => {
+const HomePage = (props): JSX.Element => {
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
   const [toolsContent, setToolsContent] = useState(
@@ -679,7 +679,7 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
   // https://reactrouter.com/docs/en/v6/api#outlet
   return (
     <div>
-      <AppHeader />
+      <AppHeader {...props} />
       <AppLayout
         content={
           <SpaceBetween size="s">

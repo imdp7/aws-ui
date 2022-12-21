@@ -365,7 +365,7 @@ function Content(props) {
   );
 }
 
-export default function EC2(): JSX.Element {
+export default function EC2(props): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [activeHref, setActiveHref] = React.useState('dashboard');
   const [loading, setLoading] = useState(false);
@@ -392,7 +392,7 @@ export default function EC2(): JSX.Element {
   // https://reactrouter.com/docs/en/v6/apioutlet
   return (
     <>
-      <AppHeader />
+      <AppHeader {...props} />
       <AppLayout
         content={
           <Provider store={store}>

@@ -29,7 +29,7 @@ import { getPanelContent, Breadcrumbs, useSplitPanel } from './utils';
 import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
 import { AppHeader } from '../common/TopNavigations';
 
-function EC2_Instances_List() {
+function EC2_Instances_List(props) {
   const [preferences, setPreferences] = useLocalStorage(
     'React-InstancesTable-Preferences',
     DEFAULT_PREFERENCES
@@ -69,7 +69,7 @@ function EC2_Instances_List() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader {...props} />
       <AppLayout
         headerSelector="#header"
         navigation={<Navigation activeHref="instances" />}

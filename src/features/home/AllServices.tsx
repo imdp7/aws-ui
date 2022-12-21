@@ -132,7 +132,7 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
   );
 };
 
-function AllServices(): JSX.Element {
+function AllServices(props): JSX.Element {
   const [visible, setVisible] = React.useState(true);
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
@@ -141,7 +141,8 @@ function AllServices(): JSX.Element {
       title="All Services"
       info="Console Home displays widgets with important information about your AWS environment."
       des="Amazon EC2 allows you to create virtimport { AppHeader } from '../common/TopNavigations';
-ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+ual machines, or instances, that run on the AWSimport props from '../../../node_modules/ramda/es/props';
+ Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
@@ -177,7 +178,7 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
 
   return (
     <>
-      <AppHeader />
+      <AppHeader {...props} />
       <AppLayout
         navigationHide={true}
         content={<Content loadHelpPanelContent={loadHelpPanelContent} />}

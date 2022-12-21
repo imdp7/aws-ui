@@ -1,12 +1,19 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { TopNavigation, Input } from '@cloudscape-design/components';
 import '../../App.css';
-export const AppHeader = (): JSX.Element => {
+
+interface State {
+  user: string;
+  signOut: () => void;
+}
+
+export const AppHeader = (props: State): JSX.Element => {
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   return (
-    <div id="h">
+    <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
       <TopNavigation
         identity={{
           href: '/',
@@ -99,9 +106,12 @@ export const AppHeader = (): JSX.Element => {
           },
           {
             type: 'menu-dropdown',
-            text: 'Darshan Patel',
-            description: 'email@example.com',
+            text: `${props.user}`,
+            description: `${props.user}`,
             iconName: 'user-profile',
+            onItemClick: () => {
+              props.signOut();
+            },
             items: [
               { id: 'profile', text: 'Profile' },
               { id: 'preferences', text: 'Preferences' },
@@ -127,7 +137,10 @@ export const AppHeader = (): JSX.Element => {
                   },
                 ],
               },
-              { id: 'signout', text: 'Sign out' },
+              {
+                id: 'signout',
+                text: 'Sign out',
+              },
             ],
           },
         ]}

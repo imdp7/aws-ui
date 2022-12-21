@@ -1,75 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+/* src/App.js */
+import React, { useEffect, useState } from 'react';
+import { Amplify, API, graphqlOperation, I18n } from 'aws-amplify';
+import { withAuthenticator, translations } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import awsExports from './aws-exports';
 import './App.css';
 import classes from './app.module.scss';
 import HomePage from './HomPage';
+import '@awsui/global-styles/index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import EC2 from './features/EC2/EC2';
+import { S3 } from './features/S3/S3';
+import EC2_Instances_List from './features/EC2/EC2_Instances_List';
+import { EC2_Instances_Detail } from './features/EC2/EC2_Instance_Detail';
+import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
+import PageNotFound from './PageNotFound';
+import AllServices from './features/home/AllServices';
 
-// const AppHeader = (): JSX.Element => {
-//   const [checked, setChecked] = useState(false);
+I18n.putVocabularies(translations);
+I18n.setLanguage('en');
 
-//   return (
-//     <Box variant="div" id="h" className={classes.app_header_footer}>
-//       <Box
-//         float="left"
-//         padding={{ left: 'm', top: 'xxs', bottom: 'm' }}
-//         color="inherit"
-//       >
-//         <Link href="/">
-//           <img
-//             src="https://icones.pro/wp-content/uploads/2021/08/logo-amazon-orange.png"
-//             height="20"
-//             width="25"
-//             alt="header"
-//           />
-//         </Link>
-//       </Box>
-//       <Box
-//         float="right"
-//         padding={{ right: 's', top: 'xxs' }}
-//         textAlign="right"
-//         color="inherit"
-//       >
-//         <Toggle
-//           onChange={({ detail }) => {
-//             setChecked(detail.checked);
-//             applyMode(detail.checked ? Mode.Dark : Mode.Light);
-//           }}
-//           checked={checked}
-//           className={classes.app_header_footer}
-//         >
-//           Dark Mode
-//         </Toggle>
-//       </Box>
-//     </Box>
-//   );
-// };
+Amplify.configure(awsExports);
 
-// const AppFooter = (): JSX.Element => {
-//   return (
-//     <Box variant="div" id="f" className={classes.app_header_footer}>
-//       <Box
-//         variant="div"
-//         float="right"
-//         padding={{ left: 'm' }}
-//         color="inherit"
-//         fontWeight="light"
-//       >
-//         <span>Help</span>
-//       </Box>
-//     </Box>
-//   );
-// };
-
-const App = (): JSX.Element => {
-  const location = useLocation();
-  const [homePage, setHomePage] = useState<boolean>();
-
-  // https://reactrouter.com/docs/en/v6/api#outlet
+const App = ({ user, signOut }): JSX.Element => {
   return (
     <>
-      <HomePage />
+      <Router>
+        <Routes>
+          <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="/"
+            element={<HomePage user={user.username} signOut={signOut} />}
+          />
+          <Route path="s3" element={<S3 />} />
+          <Route
+            path="console/services"
+            element={<AllServices user={user.username} signOut={signOut} />}
+          />
+          <Route path="/ec2_instance">
+            <Route
+              path="dashboard"
+              index
+              element={<EC2 user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="instances"
+              element={
+                <EC2_Instances_List user={user.username} signOut={signOut} />
+              }
+            />
+            <Route
+              path=":id"
+              element={
+                <EC2_Instances_Detail user={user.username} signOut={signOut} />
+              }
+            />
+            <Route
+              path="launchEC2"
+              element={<LaunchEC2 user={user.username} signOut={signOut} />}
+            />
+          </Route>
+        </Routes>
+      </Router>
     </>
   );
 };
 
-export default App;
+export default withAuthenticator(App);

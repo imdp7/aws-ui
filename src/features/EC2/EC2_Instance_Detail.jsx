@@ -196,7 +196,7 @@ export class EC2_Instances_Detail extends React.Component {
 
     return (
       <>
-        <AppHeader />
+        <AppHeader {...props} />
         <AppLayout
           ref={this.appLayout}
           content={
