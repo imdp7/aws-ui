@@ -114,6 +114,7 @@ function LaunchEC2(props): JSX.Element {
 
   return (
     <>
+    <SpaceBetween size="xxxxs">
       <AppHeader {...props} />
       <AppLayout
         content={
@@ -150,6 +151,7 @@ function LaunchEC2(props): JSX.Element {
         contentType="wizard"
       />
       <AppFooter />
+      </SpaceBetween>
     </>
   );
 }

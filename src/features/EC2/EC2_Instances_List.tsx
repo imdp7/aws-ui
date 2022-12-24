@@ -69,6 +69,7 @@ function EC2_Instances_List(props) {
 
   return (
     <>
+    
       <AppHeader {...props} />
       <AppLayout
         headerSelector="#header"

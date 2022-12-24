@@ -296,9 +296,9 @@ export const TableHeader = (props) => {
   );
 };
 
-const defaultOnFollowHandler = (ev) => {
+const defaultOnFollowHandler = (e) => {
   // keep the locked href for our demo pages
-  ev.preventDefault();
+  e.preventDefault();
 };
 
 export function Navigation({

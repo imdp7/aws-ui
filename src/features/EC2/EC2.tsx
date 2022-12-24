@@ -24,7 +24,7 @@ import InstancesLimits from './components/instance-limits';
 import Events from './components/events';
 import CPUUtilisation from './components/cpu-utilisation';
 import NetworkTraffic from './components/network-traffic';
-import { Notifications } from './commons/common-components';
+import { Notifications,ec2navItems } from './commons/common-components';
 import { AppHeader } from '../common/TopNavigations';
 import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -392,6 +392,7 @@ export default function EC2(props): JSX.Element {
   // https://reactrouter.com/docs/en/v6/apioutlet
   return (
     <>
+    <SpaceBetween size="xxxxs">
       <AppHeader {...props} />
       <AppLayout
         content={
@@ -412,7 +413,7 @@ export default function EC2(props): JSX.Element {
               <Content loadHelpPanelContent={loadHelpPanelContent} />
             </ContentLayout>
 
-            <SpaceBetween size={'m'}>
+            <SpaceBetween size={'xxs'}>
               <Outlet context={loadHelpPanelContent} />
             </SpaceBetween>
           </Provider>
@@ -422,14 +423,13 @@ export default function EC2(props): JSX.Element {
         navigation={
           <Navigation
             activeHref={activeHref}
-            onFollow={(event) => {
-              if (!event.detail.external) {
-                event.preventDefault();
-                setActiveHref(event.detail.href);
-              }
-            }}
-
-            //onFollow={(e) => onFollowHandler(e)}
+            onFollow={event => {
+        if (!event.detail.external) {
+          event.preventDefault();
+          setActiveHref(event.detail.href);
+        }
+      }}
+      items={ec2navItems}
           />
         }
         tools={toolsContent}
@@ -439,6 +439,7 @@ export default function EC2(props): JSX.Element {
         notifications={<Notifications />}
       />
       <AppFooter />
+    </SpaceBetween>
     </>
   );
 }

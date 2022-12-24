@@ -152,14 +152,16 @@ function Panel1({
               },
             ],
           }}
-          cardsPerRow={[{ cards: 1 }, { minWidth: 50, cards: 4 }]}
+          cardsPerRow={[{ cards: 1 }, { minWidth: 500, cards: 4 }]}
           items={[
-            {
-              name: 'Amazon',
-            },
+            
             {
               name: 'macOS',
               alt: 'Second',
+            },
+            {
+              name: 'Amazon',
+              alt:'first'
             },
             {
               name: 'Ubuntu',
@@ -185,7 +187,7 @@ function Panel1({
           loadingText="Loading resources"
           selectionType="single"
           trackBy="name"
-          visibleSections={['description', 'type', 'size']}
+          visibleSections={['name']}
           empty={
             <Box textAlign="center" color="inherit">
               <b>No resources</b>
@@ -355,61 +357,6 @@ function Panel1({
             </FormField>
           </SpaceBetween>
         </Container>
-        {/* <Container
-          variant="stacked"
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    props.loadHelpPanelContent(
-                      <HelpPanels
-                        title="Resource tags"
-                        des="A tag is a label that you assign to an AWS resource. Each tag consists of a key and an optional value, both of which you define."
-                        ul={[
-                          {
-                            h5: 'Key',
-                            text: 'Up to 128 Unicode characters in UTF-8',
-                          },
-                          {
-                            h5: 'Value',
-                            text: 'Optional tag value up to 256 characters in UTF-8',
-                          },
-                          {
-                            h5: 'Resource Type',
-                            text: 'The resource type on which the tag will be created when an instance is launched from the launch template.',
-                          },
-                        ]}
-                      />
-                    )
-                  }
-                  ariaLabel={'Information about service health.'}
-                />
-              }
-            >
-              Name and tags
-            </Header>
-          }
-        >
-          <FormField
-            //     description="This is a description."
-            label="Name"
-          >
-            <ColumnLayout columns={2} variant="text-grid">
-              <Input
-                onChange={({ detail }) => setValue(detail.value)}
-                value={value}
-                ariaRequired
-                autoComplete={false}
-                disableBrowserAutocorrect
-                placeholder="e.g. My Web Server"
-                step={1}
-              />
-              <Link>Add Additional tags</Link>
-            </ColumnLayout>
-          </FormField>
-        </Container> */}
 
         {/* Section */}
 
