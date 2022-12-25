@@ -27,7 +27,10 @@ const App = ({ user, signOut }): JSX.Element => {
     <>
       <Router>
         <Routes>
-          <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="*"
+            element={<PageNotFound user={user.username} signOut={signOut} />}
+          />
           <Route
             path="/"
             element={<HomePage user={user.username} signOut={signOut} />}

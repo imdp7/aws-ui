@@ -58,8 +58,8 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   return (
     <SpaceBetween size="s">
       <Box
-        margin={{ bottom: 'l' }}
-        padding={{ horizontal: 'xxxl', vertical: 'l' }}
+        margin={{ bottom: 's' }}
+        padding={{ horizontal: 'xxl', vertical: 'm' }}
         className={classes.home_header}
       >
         <Header
@@ -126,17 +126,17 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   return (
     <>
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
-
-      <Alert
-        onDismiss={() => setVisible(false)}
-        visible={visible}
-        dismissAriaLabel="Close alert"
-        dismissible
-        header="Introducing the new widgets Applications."
-      >
-        {' '}
-      </Alert>
       <SpaceBetween size="m">
+        <Alert
+          onDismiss={() => setVisible(false)}
+          visible={visible}
+          dismissAriaLabel="Close alert"
+          dismissible
+          header="Introducing the new widgets Applications."
+        >
+          {' '}
+        </Alert>
+
         <Container
           header={
             <Header
@@ -180,7 +180,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                 }}
               >
                 <img src={`${d[1]}`} alt="logo" />
-                <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
+                <Box variant="h3" padding={{ top: 'n', left: 'n' }}>
                   {d[0]}
                 </Box>
                 <Box variant="p">
@@ -315,7 +315,13 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                   >
                     <img src={`${d[1]}`} alt="logo" />
                     <Box variant="p" padding={{ top: 'n', left: 'l' }}>
-                      {d[0]}
+                      <Link
+                        variant="secondary"
+                        href={`${d[2]}`}
+                        onFollow={defaultOnFollowHandler}
+                      >
+                        {d[0]}
+                      </Link>{' '}
                     </Box>
                   </div>
                 ))}
@@ -368,7 +374,13 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                   >
                     <img src={`${d[1]}`} alt="logo" />
                     <Box variant="p" padding={{ top: 'n', left: 'l' }}>
-                      {d[0]}
+                      <Link
+                        variant="secondary"
+                        href={`${d[2]}`}
+                        onFollow={defaultOnFollowHandler}
+                      >
+                        {d[0]}
+                      </Link>{' '}
                     </Box>
                   </div>
                 ))}
