@@ -114,8 +114,9 @@ function LaunchEC2(props): JSX.Element {
 
   return (
     <>
-    <SpaceBetween size="xxxxs">
-      <AppHeader {...props} />
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <AppHeader {...props} />
+      </div>
       <AppLayout
         content={
           <SpaceBetween size="l">
@@ -149,9 +150,9 @@ function LaunchEC2(props): JSX.Element {
         ariaLabels={appLayoutLabels}
         notifications={<Notifications />}
         contentType="wizard"
+        headerSelector="#h"
       />
       <AppFooter />
-      </SpaceBetween>
     </>
   );
 }

@@ -677,14 +677,17 @@ const HomePage = (props): JSX.Element => {
   };
   // https://reactrouter.com/docs/en/v6/api#outlet
   return (
-    <div>
-      <AppHeader {...props} />
+    <>
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <AppHeader {...props} />
+      </div>
       <AppLayout
         content={
           <SpaceBetween size="s">
             <HomeFeatures loadHelpPanelContent={loadHelpPanelContent} />
           </SpaceBetween>
         }
+        headerSelector="#h"
         contentType="wizard"
         stickyNotifications={true}
         //disableContentPaddings={true}
@@ -696,7 +699,7 @@ const HomePage = (props): JSX.Element => {
         // notifications={<Notifications />}
         footerSelector="#f"
       />
-    </div>
+    </>
   );
 };
 

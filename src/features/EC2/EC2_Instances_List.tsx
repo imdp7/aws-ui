@@ -69,10 +69,11 @@ function EC2_Instances_List(props) {
 
   return (
     <>
-    
-      <AppHeader {...props} />
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <AppHeader {...props} />
+      </div>
       <AppLayout
-        headerSelector="#header"
+        headerSelector="#h"
         navigation={<Navigation activeHref="instances" />}
         breadcrumbs={<Breadcrumbs />}
         notifications={<Notifications successNotification={true} />}

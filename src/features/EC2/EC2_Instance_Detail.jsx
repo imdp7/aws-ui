@@ -2,7 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { createRef, useState, useRef } from 'react';
-import {useNavigation, useParams} from 'react-router-dom'
+import { useNavigation, useParams } from 'react-router-dom';
 import {
   AppLayout,
   Button,
@@ -148,7 +148,6 @@ export class EC2_Instances_Detail extends React.Component {
     this.setState({ toolsIndex: index, toolsOpen: true });
   }
 
-
   render() {
     const tabs = [
       {
@@ -198,8 +197,10 @@ export class EC2_Instances_Detail extends React.Component {
 
     return (
       <>
-       <SpaceBetween size="xxxxs">
-        <AppHeader {...props} />
+        <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+          <AppHeader {...props} />
+        </div>
+
         <AppLayout
           ref={this.appLayout}
           content={
@@ -232,7 +233,6 @@ export class EC2_Instances_Detail extends React.Component {
           notifications={<Notifications />}
           contentType="wizard"
         />
-        </SpaceBetween>
       </>
     );
   }
