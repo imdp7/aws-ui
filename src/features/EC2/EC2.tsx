@@ -24,13 +24,17 @@ import InstancesLimits from './components/instance-limits';
 import Events from './components/events';
 import CPUUtilisation from './components/cpu-utilisation';
 import NetworkTraffic from './components/network-traffic';
-import { Notifications, ec2navItems } from './commons/common-components';
+import {
+  Notifications,
+  ec2navItems,
+  Navigation,
+} from './commons/common-components';
 import { AppHeader } from '../common/TopNavigations';
 import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
 import { AppFooter } from '../common/AppFooter';
-import { Navigation } from './commons/common-components';
+import { Box } from '@cloudscape-design/components';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -52,288 +56,6 @@ function Breadcrumbs() {
     />
   );
 }
-
-// export function Navigation() {
-//   const savePreference = (value) => densityStorage.save(value);
-//   const storedPreference = localStorage.load(densityLocalStorageKey);
-
-//   const [visible, setVisible] = useState(false);
-//   const [value, setValue] = useState(storedPreference ?? 'comfortable');
-
-//   useEffect(() => {
-//     setValue(storedPreference ?? 'comfortable');
-//     updateDensity(storedPreference);
-//   }, [storedPreference]);
-
-//   const onFollowHandler = (e) => {
-//     e.preventDefault();
-//     e.detail.href === '/density_settings' ? setVisible(true) : null;
-//   };
-
-//   const onDismissHandler = () => {
-//     setValue(storedPreference ?? 'comfortable');
-//     setVisible(false);
-//   };
-
-//   const onSubmit = (value) => {
-//     setValue(value);
-//     updateDensity(value);
-//     savePreference(value);
-//     setVisible(false);
-//   };
-
-//   const navItems = [
-//     { type: 'link', text: 'Dashboard', href: '/ec2_instance/dashboard' },
-//     {
-//       type: 'link',
-//       text: 'Events',
-//       href: '/events',
-//       info: (
-//         <Box color="text-status-info" display="inline">
-//           <Popover
-//             header="Introducing events"
-//             size="medium"
-//             triggerType="text"
-//             content={
-//               <>
-//                 AWS can schedule events for your instances, such as reboot,
-//                 stop/start, or retirement.{' '}
-//                 <Link external={true} href="">
-//                   Learn more
-//                 </Link>
-//               </>
-//             }
-//             renderWithPortal={true}
-//             dismissAriaLabel="Close"
-//           >
-//             <Box
-//               color="text-status-info"
-//               fontSize="body-s"
-//               fontWeight="bold"
-//               data-testid="new-feature-announcement-trigger"
-//             >
-//               New
-//             </Box>
-//           </Popover>
-//         </Box>
-//       ),
-//     },
-//     { type: 'link', text: 'Tags', href: '/tags' },
-//     { type: 'link', text: 'Reports', href: '/reports' },
-//     { type: 'link', text: 'Limits', href: '/limits' },
-//     {
-//       text: 'Instances',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         { type: 'link', text: 'Instances', href: '/ec2_instance/instances' },
-//         {
-//           type: 'link',
-//           text: 'Launch templates',
-//           href: '/launch_templates',
-//           info: (
-//             <Box color="text-status-info" display="inline">
-//               <Popover
-//                 header="Introducing launch templates"
-//                 size="medium"
-//                 triggerType="text"
-//                 content={
-//                   <>
-//                     Launch templates is a new capability that enables a new way
-//                     to templatize your launch requests. Launch templates
-//                     streamline and simplify the launch process for auto scaling,
-//                     spot fleet, spot, and on-demand instances.{' '}
-//                     <Link external>Learn more</Link>
-//                   </>
-//                 }
-//                 renderWithPortal={true}
-//                 dismissAriaLabel="Close"
-//               >
-//                 <Box
-//                   color="text-status-info"
-//                   fontSize="body-s"
-//                   fontWeight="bold"
-//                 >
-//                   New
-//                 </Box>
-//               </Popover>
-//             </Box>
-//           ),
-//         },
-//         { type: 'link', text: 'Spot requests', href: '/spot_requests' },
-//         {
-//           type: 'link',
-//           text: 'Reserved instances',
-//           href: '/reserved_instances',
-//         },
-//         { type: 'link', text: 'Dedicated hosts', href: '/dedicated_hosts' },
-//         {
-//           type: 'link',
-//           text: 'Scheduled instances',
-//           href: '/scheduled_instances',
-//           info: (
-//             <Box color="text-status-info" display="inline">
-//               <Popover
-//                 data-testid="beta"
-//                 header="Beta feature"
-//                 size="medium"
-//                 triggerType="text"
-//                 content={
-//                   <>
-//                     We are improving the way to create scheduled instances.{' '}
-//                     <Link external>Learn more</Link>
-//                   </>
-//                 }
-//                 renderWithPortal={true}
-//                 dismissAriaLabel="Close"
-//               >
-//                 <Box
-//                   color="text-status-info"
-//                   fontSize="body-s"
-//                   fontWeight="bold"
-//                 >
-//                   Beta
-//                 </Box>
-//               </Popover>
-//             </Box>
-//           ),
-//         },
-//         {
-//           type: 'link',
-//           text: 'Capacity reservations',
-//           href: '/capacity_reservations',
-//         },
-//       ],
-//     },
-//     {
-//       text: 'Images',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         { type: 'link', text: 'AMIs', href: '/amis' },
-//         { type: 'link', text: 'Bundle tasks', href: '/bundle_tasks' },
-//       ],
-//     },
-//     {
-//       text: 'Elastic block store',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         { type: 'link', text: 'Volumes', href: '/volumes' },
-//         { type: 'link', text: 'Snapshots', href: '/snapshots' },
-//         {
-//           type: 'link',
-//           text: 'Lifecycle manager',
-//           href: '/lifecycle_manager',
-//         },
-//       ],
-//     },
-//     {
-//       text: ' Network & security',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         { type: 'link', text: 'Security groups', href: '/security_groups' },
-//         { type: 'link', text: 'Elastic IPs', href: '/elastic_ips' },
-//         { type: 'link', text: 'Placement groups', href: '/placement_groups' },
-//         { type: 'link', text: 'Key pairs', href: '/key_pairs' },
-//         {
-//           type: 'link',
-//           text: 'Network interfaces',
-//           href: '/network_interfaces',
-//         },
-//       ],
-//     },
-//     {
-//       text: 'Load balancing',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         { type: 'link', text: 'Load balancers', href: '/load_balancers' },
-//         { type: 'link', text: 'Target groups', href: '/target_groups' },
-//       ],
-//     },
-//     {
-//       text: 'Auto scaling',
-//       type: 'section',
-//       defaultExpanded: true,
-//       items: [
-//         {
-//           type: 'link',
-//           text: 'Launch configurations',
-//           href: '/launch_configurations',
-//         },
-//         {
-//           type: 'link',
-//           text: 'Auto scaling groups',
-//           href: '/auto_scaling_groups',
-//         },
-//       ],
-//     },
-//     { type: 'divider' },
-//     {
-//       type: 'link',
-//       href: '/density_settings',
-//       text: 'Density settings',
-//     },
-//   ];
-
-//   return (
-//     <>
-//       <SideNavigation
-//         header={navHeader}
-//         items={navItems}
-//         activeHref="/ec2_instance/dashboard"
-//         onFollow={(e) => onFollowHandler(e)}
-//       />
-//       <Modal
-//         onDismiss={() => onDismissHandler()}
-//         visible={visible}
-//         size="medium"
-//         closeAriaLabel="Close modal"
-//         footer={
-//           <Box float="right">
-//             <SpaceBetween direction="horizontal" size="xs">
-//               <Button variant="link" onClick={() => onDismissHandler()}>
-//                 Cancel
-//               </Button>
-//               <Button variant="primary" onClick={() => onSubmit(value)}>
-//                 Confirm
-//               </Button>
-//             </SpaceBetween>
-//           </Box>
-//         }
-//         header="Density settings"
-//       >
-//         <FormField
-//           label="Content density"
-//           description="Choose the preferred level of content density for this console."
-//         >
-//           <Tiles
-//             onChange={({ detail }) => setValue(detail.value)}
-//             value={value}
-//             items={[
-//               {
-//                 value: 'comfortable',
-//                 label: 'Comfortable',
-//                 description:
-//                   'Default spacing that optimizes information consumption.',
-//                 image: '',
-//               },
-//               {
-//                 value: 'compact',
-//                 label: 'Compact',
-//                 description:
-//                   'Reduced spacing that provides more visibility over content.',
-//                 image: '',
-//               },
-//             ]}
-//           />
-//         </FormField>
-//       </Modal>
-//     </>
-//   );
-// }
 
 function Content(props) {
   return (
@@ -420,6 +142,7 @@ export default function EC2(props): JSX.Element {
           </Provider>
         }
         headerSelector="#h"
+        footerSelector="#f"
         contentType="table"
         breadcrumbs={!homePage && <Breadcrumbs />}
         navigation={

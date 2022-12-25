@@ -2,6 +2,32 @@
   padding-top: 30px !important;
   padding-bottom: 24px !important;
 }
+#layout {
+  padding: 0.4rem 2rem;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+#layout span {
+  margin: 0rem 0.5rem;
+}
+#layout span #link {
+  color: white;
+  margin: 0px 10px;
+}
+#links {
+  color: #9ba9ab;
+  font-size: 90%;
+}
+#layout #right {
+  margin-left: auto;
+  order: 2;
+}
+#layout #text {
+  color: white;
+  font-size: 85%;
+}
 .summary-panel {
   position: sticky;
   height: 30%;

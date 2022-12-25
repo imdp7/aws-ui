@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -31,6 +32,7 @@ import { InfoLink, ValueWithLabel } from './features/common/common';
 import { HelpPanels } from './features/EC2/components/header';
 import { appLayoutLabels } from './features/common/labels';
 import { Notifications } from './features/EC2/commons/common-components';
+import { AppFooter } from './features/common/AppFooter';
 
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/dashboard'],
@@ -50,22 +52,6 @@ const arrayData = [
   ['CodeStar', `${ec2}`, 'codestar'],
   ['AWS MGN', `${s3}`, 'awsmgn'],
 ];
-
-const AppFooter = (): JSX.Element => {
-  return (
-    <Box variant="div" id="f" className={classes.app_header_footer}>
-      <Box
-        variant="div"
-        float="right"
-        padding={{ left: 'm' }}
-        color="inherit"
-        fontWeight="light"
-      >
-        <span>Help</span>
-      </Box>
-    </Box>
-  );
-};
 
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
@@ -117,14 +103,6 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
         >
           Console Home
         </Header>
-        <Box
-          variant="p"
-          fontWeight="light"
-          color="inherit"
-          className={classes.home_header_secondary}
-        >
-          Descriptive sentence about the impressive AWS UI App
-        </Box>
       </Box>
     </SpaceBetween>
   );
@@ -654,7 +632,8 @@ const HomePage = (props): JSX.Element => {
     <HelpPanels
       title="Console Home"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtimport { AppFooter } from './features/common/AppFooter';
+ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
@@ -699,6 +678,7 @@ const HomePage = (props): JSX.Element => {
         // notifications={<Notifications />}
         footerSelector="#f"
       />
+      <AppFooter />
     </>
   );
 };

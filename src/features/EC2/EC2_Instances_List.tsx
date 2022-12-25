@@ -28,6 +28,7 @@ import {
 import { getPanelContent, Breadcrumbs, useSplitPanel } from './utils';
 import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
 import { AppHeader } from '../common/TopNavigations';
+import { AppFooter } from '../common/AppFooter';
 
 function EC2_Instances_List(props) {
   const [preferences, setPreferences] = useLocalStorage(
@@ -136,6 +137,7 @@ function EC2_Instances_List(props) {
         }
         ariaLabels={appLayoutLabels}
       />
+      <AppFooter />
     </>
   );
 }

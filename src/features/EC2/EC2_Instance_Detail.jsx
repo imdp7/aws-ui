@@ -50,6 +50,7 @@ import { getFilterCounterText } from '../../features/common/tableCounterStrings'
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
 import { AppHeader } from '../common/TopNavigations';
+import { AppFooter } from '../common/AppFooter';
 
 const Details = ({ loadHelpPanelContent }) => (
   <Container
@@ -198,7 +199,7 @@ export class EC2_Instances_Detail extends React.Component {
     return (
       <>
         <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
-          <AppHeader {...props} />
+          <AppHeader />
         </div>
 
         <AppLayout
@@ -221,7 +222,7 @@ export class EC2_Instances_Detail extends React.Component {
               </SpaceBetween>
             </ContentLayout>
           }
-          headerSelector="#header"
+          headerSelector="#h"
           breadcrumbs={<Breadcrumbs />}
           navigation={<Navigation activeHref="instances" />}
           tools={ToolsContent[this.state.toolsIndex]}
@@ -233,6 +234,7 @@ export class EC2_Instances_Detail extends React.Component {
           notifications={<Notifications />}
           contentType="wizard"
         />
+        <AppFooter />
       </>
     );
   }
