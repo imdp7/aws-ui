@@ -14,7 +14,7 @@ export const resourcesBreadcrumbs = [
 export const resourceDetailBreadcrumbs = [
   ...resourcesBreadcrumbs,
   {
-    text: 'SLCCSMWOHOFUY0',
+    text: 'XLOWCQQFJJHM80',
     href: '#',
   },
 ];

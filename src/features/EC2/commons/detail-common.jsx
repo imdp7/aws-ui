@@ -17,11 +17,7 @@ import {
 } from '@cloudscape-design/components';
 import { useAsyncData } from '../commons/use-async-data';
 import DataProvider from '../commons/data-provider';
-import {
-  TableHeader,
-  TableEmptyState,
-  InfoLink,
-} from '../commons/common-components';
+import { TableHeader, TableEmptyState } from '../commons/common-components';
 import {
   ORIGINS_COLUMN_DEFINITIONS,
   BEHAVIORS_COLUMN_DEFINITIONS,
@@ -33,7 +29,7 @@ import {
   originsSelectionLabels,
 } from '../../common/labels';
 import CopyText from './copy-text';
-
+import { DashboardHeader } from '../components/header';
 export const DEMO_DISTRIBUTION = {
   id: 'SLCCSMWOHOFUY0',
   domainName: 'abcdef01234567890.cloudfront.net',
@@ -43,16 +39,19 @@ export const DEMO_DISTRIBUTION = {
   logging: 'Off',
 };
 
-export const Breadcrumbs = () => (
+export const Breadcrumbs = ({ id }) => (
   <BreadcrumbGroup
-    items={resourceDetailBreadcrumbs}
+    items={[
+      { text: 'EC2', href: 'dashboard' },
+      { text: 'Instances', href: 'instances' },
+      { text: id, href: '#' + id },
+    ]}
     expandAriaLabel="Show path"
     ariaLabel="Breadcrumbs"
   />
 );
 
-export const PageHeader = ({ buttons, match }) => {
-  console.log(match);
+export const PageHeader = ({ buttons, id }) => {
   return (
     <Header
       variant="h1"
@@ -76,7 +75,7 @@ export const PageHeader = ({ buttons, match }) => {
         </SpaceBetween>
       }
     >
-      {DEMO_DISTRIBUTION.id}
+      {id}
     </Header>
   );
 };
@@ -107,12 +106,13 @@ export const GeneralConfig = () => (
 export const SettingsDetails = ({
   distribution = DEMO_DISTRIBUTION,
   isInProgress,
+  id,
 }) => (
   <ColumnLayout columns={4} variant="text-grid">
     <SpaceBetween size="l">
       <div>
         <Box variant="awsui-key-label">Distribution ID</Box>
-        <div>{distribution.id}</div>
+        <div>{id}</div>
       </div>
       <div>
         <Box variant="awsui-key-label">Domain name</Box>
@@ -307,11 +307,11 @@ export function TagsTable({ loadHelpPanelContent }) {
       header={
         <Header
           variant="h2"
-          counter={`(${tags.length})`}
           info={
-            <InfoLink
-              onFollow={() => loadHelpPanelContent(2)}
-              ariaLabel={'Information about tags.'}
+            <DashboardHeader
+              loadHelpPanelContent={loadHelpPanelContent}
+              title="Tags"
+              des="Information about tags."
             />
           }
           actions={<Button>Manage tags</Button>}
@@ -322,9 +322,7 @@ export function TagsTable({ loadHelpPanelContent }) {
               search and filter your resources or track your AWS costs.
             </>
           }
-        >
-          Tags
-        </Header>
+        ></Header>
       }
     />
   );

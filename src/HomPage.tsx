@@ -680,14 +680,14 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
         }
         headerSelector="#h"
         contentType="wizard"
-        stickyNotifications={true}
+        // stickyNotifications={true}
         //disableContentPaddings={true}
         toolsOpen={toolsOpen}
         tools={toolsContent}
         navigationHide={true}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        // notifications={<Notifications />}
+        notifications={<Notifications />}
         footerSelector="#f"
       />
       <AppFooter />

@@ -75,6 +75,7 @@ function EC2_Instances_List(props) {
       </div>
       <AppLayout
         headerSelector="#h"
+        footerSelector="#f"
         navigation={<Navigation activeHref="instances" />}
         breadcrumbs={<Breadcrumbs />}
         notifications={<Notifications successNotification={true} />}

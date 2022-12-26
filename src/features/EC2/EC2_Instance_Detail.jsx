@@ -12,6 +12,10 @@ import {
   Pagination,
   SpaceBetween,
   Table,
+  Box,
+  Alert,
+  Link,
+  Modal,
   Tabs,
   TextFilter,
 } from '@cloudscape-design/components';
@@ -38,7 +42,6 @@ import {
   TableEmptyState,
   TableNoMatchState,
   TableHeader,
-  InfoLink,
   Notifications,
 } from './commons/common-components';
 import {
@@ -49,27 +52,29 @@ import {
 import { getFilterCounterText } from '../../features/common/tableCounterStrings';
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
+import { DashboardHeader } from './components/header';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 
-const Details = ({ loadHelpPanelContent }) => (
+const Details = ({ loadHelpPanelContent, id }) => (
   <Container
     header={
       <Header
         variant="h2"
         info={
-          <InfoLink
-            onFollow={() => loadHelpPanelContent(1)}
-            ariaLabel={'Information about details.'}
+          <DashboardHeader
+            loadHelpPanelContent={loadHelpPanelContent}
+            title="Details"
+            des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+                         resizeable computing capacity&mdash;literally, servers in Amazon's data
+                         centers&mdash;that you use to build and host your software systems."
           />
         }
         actions={<Button>Edit</Button>}
-      >
-        Details
-      </Header>
+      />
     }
   >
-    <SettingsDetails isInProgress={false} />
+    <SettingsDetails id={id} isInProgress={false} />
   </Container>
 );
 
@@ -138,104 +143,145 @@ function LogsTable() {
   );
 }
 
-export class EC2_Instances_Detail extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { toolsIndex: 0, toolsOpen: false };
-    this.appLayout = createRef();
-  }
+function DeleteModal({ distributions, visible, onDiscard, onDelete }) {
+  const isMultiple = distributions.length > 1;
+  return (
+    <Modal
+      visible={visible}
+      onDismiss={onDiscard}
+      header={isMultiple ? 'Delete distributions' : 'Delete distribution'}
+      closeAriaLabel="Close dialog"
+      footer={
+        <Box float="right">
+          <SpaceBetween direction="horizontal" size="xs">
+            <Button variant="link" onClick={onDiscard}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={onDelete}>
+              Delete
+            </Button>
+          </SpaceBetween>
+        </Box>
+      }
+    >
+      {distributions.length > 0 && (
+        <SpaceBetween size="m">
+          {isMultiple ? (
+            <Box variant="span">
+              Delete{' '}
+              <Box variant="span" fontWeight="bold">
+                {distributions.length} distributions
+              </Box>{' '}
+              permanently? This action cannot be undone.
+            </Box>
+          ) : (
+            <Box variant="span">
+              Delete distribution{' '}
+              <Box variant="span" fontWeight="bold">
+                {distributions[0].id}
+              </Box>{' '}
+              permanently? This action cannot be undone.
+            </Box>
+          )}
 
-  loadHelpPanelContent(index) {
-    this.setState({ toolsIndex: index, toolsOpen: true });
-  }
+          <Alert statusIconAriaLabel="Info">
+            Proceeding with this action will delete distribution(s) with all
+            content and can impact related resources.{' '}
+            <Link external={true} href="#">
+              Learn more
+            </Link>
+          </Alert>
+        </SpaceBetween>
+      )}
+    </Modal>
+  );
+}
 
-  render() {
-    const tabs = [
-      {
-        label: 'Details',
-        id: 'details',
-        content: (
-          <Details
-            loadHelpPanelContent={this.loadHelpPanelContent.bind(this)}
-          />
-        ),
-      },
-      {
-        label: 'Logs',
-        id: 'logs',
-        content: <LogsTable />,
-      },
-      {
-        label: 'Origins',
-        id: 'origins',
-        content: <OriginsTable />,
-      },
-      {
-        label: 'Behaviors',
-        id: 'behaviors',
-        content: <BehaviorsTable />,
-      },
-      {
-        label: 'Invalidations',
-        id: 'invalidations',
-        content: (
-          <EmptyTable
-            title="Invalidation"
-            columnDefinitions={INVALIDATIONS_COLUMN_DEFINITIONS}
-          />
-        ),
-      },
-      {
-        label: 'Tags',
-        id: 'tags',
-        content: (
-          <TagsTable
-            loadHelpPanelContent={this.loadHelpPanelContent.bind(this)}
-          />
-        ),
-      },
-    ];
+export function EC2_Instances_Detail(props) {
+  const { id } = useParams();
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [toolsIndex, setToolsIndex] = useState(0);
 
-    return (
-      <>
-        <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
-          <AppHeader />
-        </div>
+  const loadHelpPanelContent = (toolsContent) => {
+    setToolsOpen(true);
+    setToolsContent(toolsContent);
+  };
 
-        <AppLayout
-          ref={this.appLayout}
-          content={
-            <ContentLayout
-              header={
-                <PageHeader
-                  buttons={[
-                    { text: 'Actions', items: INSTANCE_DROPDOWN_ITEMS },
-                    { text: 'Edit' },
-                    { text: 'Delete' },
-                  ]}
-                />
-              }
-            >
-              <SpaceBetween size="l">
-                <GeneralConfig />
-                <Tabs tabs={tabs} ariaLabel="Resource details" />
-              </SpaceBetween>
-            </ContentLayout>
-          }
-          headerSelector="#h"
-          breadcrumbs={<Breadcrumbs />}
-          navigation={<Navigation activeHref="instances" />}
-          tools={ToolsContent[this.state.toolsIndex]}
-          toolsOpen={this.state.toolsOpen}
-          onToolsChange={({ detail }) =>
-            this.setState({ toolsOpen: detail.open })
-          }
-          ariaLabels={appLayoutLabels}
-          notifications={<Notifications />}
-          contentType="wizard"
+  const tabs = [
+    {
+      label: 'Details',
+      id: 'details',
+      content: <Details id={id} loadHelpPanelContent={loadHelpPanelContent} />,
+    },
+    {
+      label: 'Logs',
+      id: 'logs',
+      content: <LogsTable />,
+    },
+    {
+      label: 'Origins',
+      id: 'origins',
+      content: <OriginsTable />,
+    },
+    {
+      label: 'Behaviors',
+      id: 'behaviors',
+      content: <BehaviorsTable />,
+    },
+    {
+      label: 'Invalidations',
+      id: 'invalidations',
+      content: (
+        <EmptyTable
+          title="Invalidation"
+          columnDefinitions={INVALIDATIONS_COLUMN_DEFINITIONS}
         />
-        <AppFooter />
-      </>
-    );
-  }
+      ),
+    },
+    {
+      label: 'Tags',
+      id: 'tags',
+      content: <TagsTable loadHelpPanelContent={loadHelpPanelContent} />,
+    },
+  ];
+
+  return (
+    <>
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <AppHeader {...props} />
+      </div>
+
+      <AppLayout
+        content={
+          <ContentLayout
+            header={
+              <PageHeader
+                id={id}
+                buttons={[
+                  { text: 'Actions', items: INSTANCE_DROPDOWN_ITEMS },
+                  { text: 'Edit' },
+                  { text: 'Delete' },
+                ]}
+              />
+            }
+          >
+            <SpaceBetween size="l">
+              <GeneralConfig />
+              <Tabs tabs={tabs} ariaLabel="Resource details" />
+            </SpaceBetween>
+          </ContentLayout>
+        }
+        headerSelector="#h"
+        breadcrumbs={<Breadcrumbs id={id} />}
+        navigation={<Navigation activeHref="instances" />}
+        tools={ToolsContent[toolsIndex]}
+        toolsOpen={toolsOpen}
+        onToolsChange={({ detail }) => setToolsOpen(detail.open)}
+        ariaLabels={appLayoutLabels}
+        notifications={<Notifications />}
+        contentType="wizard"
+      />
+      <AppFooter />
+    </>
+  );
 }

@@ -21,11 +21,12 @@ function Routes({ user, signOut }) {
         />
         <Route path="s3" element={<S3 />} />
         <Route path="console/services" element={<AllServices />} />
-        <Route path="/ec2_instance">
+        <Route path="ec2_instance">
+          <Route path="/*" element={<PageNotFound />} />
           <Route path="dashboard" index element={<EC2 />} />
           <Route path="instances" element={<EC2_Instances_List />} />
-          <Route path=":id" element={<EC2_Instances_Detail />} />
           <Route path="launchEC2" element={<LaunchEC2 />} />
+          <Route path=":id" element={<EC2_Instances_Detail />} />
         </Route>
       </Routes>
     </Router>

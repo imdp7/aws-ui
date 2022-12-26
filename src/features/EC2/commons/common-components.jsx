@@ -317,7 +317,11 @@ export function Navigation({
   );
 }
 
-export function Notifications({ successNotification }) {
+export function Notifications({
+  successNotification,
+  deletedTotal,
+  resourceName,
+}) {
   const notifications = useNotifications(successNotification);
   return <Flashbar items={notifications} />;
 }
