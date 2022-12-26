@@ -1,8 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { TopNavigation, Input } from '@cloudscape-design/components';
+import {
+  TopNavigation,
+  Input,
+  Box,
+  Toggle,
+} from '@cloudscape-design/components';
 import '../../App.css';
+import classes from '../../app.module.scss';
+import { applyMode, Mode } from '@awsui/global-styles';
 
 interface State {
   user: string;
@@ -10,10 +17,22 @@ interface State {
 }
 
 export const AppHeader = (props: State): JSX.Element => {
-  const [value, setValue] = useState('');
+  const [checked, setChecked] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+      <Box float="right" padding={{ right: 'xs', top: 'm' }} textAlign="right">
+        <Toggle
+          onChange={({ detail }) => {
+            setChecked(detail.checked);
+            applyMode(detail.checked ? Mode.Dark : Mode.Light);
+          }}
+          checked={checked}
+          className={classes.app_header_footer}
+        >
+          {checked ? 'Dark' : 'Light'}
+        </Toggle>
+      </Box>
       <TopNavigation
         identity={{
           href: '/',
