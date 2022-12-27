@@ -21,7 +21,7 @@ export const AppHeader = (props: State): JSX.Element => {
   const [searchValue, setSearchValue] = useState('');
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
-      <Box float="right" padding={{ right: 'xs', top: 'm' }} textAlign="right">
+      <Box float="right" padding={{ right: 'xl', top: 'm' }} textAlign="right">
         <Toggle
           onChange={({ detail }) => {
             setChecked(detail.checked);

@@ -49,6 +49,7 @@ function Breadcrumbs() {
 
 const Content = ({ loadHelpPanelContent }) => {
   return (
+    <SpaceBetween size="xxs" direction="horizontal">
     <Grid
       gridDefinition={[
         { colspan: { default: 12, xxs: 8 } },
@@ -65,6 +66,7 @@ const Content = ({ loadHelpPanelContent }) => {
         <Panel2 createInstance={createInstance} />
       </div>
     </Grid>
+    </SpaceBetween>
   );
 };
 const createInstance = () => {
