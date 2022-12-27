@@ -32,6 +32,7 @@ export const COLUMN_DEFINITIONS_MAIN = [
     id: 'id',
     header: 'Instance ID',
     cell: (item) => <Link href={`${item.id}`}>{item.id}</Link>,
+    minWidth: 180,
   },
   {
     id: 'state',
@@ -46,21 +47,57 @@ export const COLUMN_DEFINITIONS_MAIN = [
         </StatusIndicator>
       </>
     ),
+    minWidth: 120,
   },
   {
     id: 'type',
     header: 'Instance type',
     cell: (item) => item.type,
+    minWidth: 140,
+  },
+  {
+    id: 'launchTime',
+    header: 'Launch Time',
+    cell: (item) => item.launchTime,
+    minWidth: 120,
+  },
+  {
+    id: 'availabilityZone',
+    header: `AZ's`,
+    cell: (item) => item.availabilityZone,
+    minWidth: 120,
+  },
+  {
+    id: 'volume',
+    header: 'Volume',
+    cell: (item) => item.volume,
+    minWidth: 60,
+  },
+  {
+    id: 'loadBalancers',
+    header: 'Load Balancers',
+    cell: (item) => item.loadBalancers,
+    minWidth: 100,
   },
   {
     id: 'publicDns',
     header: 'Public DNS',
     cell: (item) => item.publicDns,
+    minWidth: 160,
+    minWidth: 100,
+  },
+  {
+    id: 'inboundRules',
+    header: 'Inbound Rules',
+    cell: (item) => item.inboundRules.map(i => i.protocol),
+    minWidth: 160,
+    minWidth: 100,
   },
   {
     id: 'monitoring',
     header: 'Monitoring',
     cell: (item) => item.monitoring,
+    minWidth: 100,
   },
 ];
 

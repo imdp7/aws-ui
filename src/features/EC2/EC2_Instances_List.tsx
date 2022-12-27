@@ -67,7 +67,7 @@ function EC2_Instances_List(props) {
   useEffect(() => {
     document.title = 'EC2 Instances Console';
   }, []);
-
+  // console.log(collectionProps)
   return (
     <>
       <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
@@ -103,6 +103,7 @@ function EC2_Instances_List(props) {
                 resourceName="Instances"
                 createButtonText="Create instance"
                 link="/ec2_instance/launchEC2"
+                lik={`${collectionProps.selectedItems[0]?.id}`}
                 selectedItems={collectionProps.selectedItems}
                 totalItems={INSTANCES}
                 loadHelpPanelContent={() => {

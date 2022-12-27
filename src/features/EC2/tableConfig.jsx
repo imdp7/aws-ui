@@ -15,7 +15,7 @@ export const COLUMN_DEFINITIONS = addColumnSortLabels([
     header: 'Distribution ID',
     cell: (item) => (
       <div>
-        <Link href="#">{item.id}</Link>
+        <Link href={`${item.id}`}>{item.id}</Link>
       </div>
     ),
     minWidth: 180,
