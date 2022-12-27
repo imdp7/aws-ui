@@ -236,7 +236,7 @@ function Panel1({
             <img
               src="https://pngimg.com/uploads/amazon/amazon_PNG5.png"
               height='50'
-              width="80"
+              width="50"
               alt="placeholder"
             />
           ),

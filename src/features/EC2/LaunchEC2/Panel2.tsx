@@ -29,14 +29,13 @@ function Panel2(props) {
 
   return (
     <div className="summary-panel">
-      <SpaceBetween size="xxl" direction="vertical">
+      <SpaceBetween size="l" direction="vertical">
         <ExpandableSection
           variant="container"
           headerText="Summary"
           defaultExpanded
-          //     headerDescription="here"
         >
-          <ColumnLayout borders="horizontal" columns={2}>
+          <ColumnLayout borders="horizontal">
             <FormField
               //     description="This is a description."
               label="Number of Instances"

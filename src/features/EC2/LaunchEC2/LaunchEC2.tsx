@@ -51,16 +51,18 @@ const Content = ({ loadHelpPanelContent }) => {
   return (
     <SpaceBetween size="xxs" direction="horizontal">
     <Grid
+      style={{position:'relative'}}
       gridDefinition={[
-        { colspan: { default: 12, xxs: 8 } },
-        { colspan: { default: 12, xxs: 4 } },
+        { colspan: { l: 8, m: 8, default: 12 }},
+        { colspan: { l: 4, m: 4, default: 12 }},
+        
       ]}
     >
       {/* Main Panel */}
       <div>
         <Panel1 loadHelpPanelContent={loadHelpPanelContent} />
       </div>
-      <div>
+      <div style={{position:'sticky',top:'70px'}}>
         {/* Summary Panel */}
 
         <Panel2 createInstance={createInstance} />
