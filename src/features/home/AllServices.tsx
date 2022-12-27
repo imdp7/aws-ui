@@ -120,7 +120,6 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
               <Link variant="secondary" href={`/${d[2]}`}>
                 <Container key={i}>
                   <Box variant="h3">{d[0]}</Box>
-                  <Box key={i}>{d[1]}</Box>
                   <Box key={i}>{d[2]}</Box>
                 </Container>
               </Link>
