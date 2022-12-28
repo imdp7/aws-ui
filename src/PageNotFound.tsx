@@ -66,6 +66,7 @@ function PageNotFound(props) {
         headerSelector="#h"
         footerSelector="#f"
         disableBodyScroll={true}
+        toolsHide={true}
       />
       <AppFooter />
     </>

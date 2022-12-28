@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useId } from './use-id';
 import { useDisclaimerFlashbarItem } from './disclaimer-flashbar-item';
 
-export function useNotifications(successNotification) {
-  const successId = useId();
-  const [successDismissed, dismissSuccess] = useState(false);
+export default function useNotifications({ deletedTotal, resourceName }) {
+  const [deletedDismissed, setDeletedDismissed] = useState(0);
+  const [inProgressCount, setInProgressCount] = useState(0);
+  const deletingFlashMessageId = useId();
+  const successFlashMessageId = useId();
+  const deleted = deletedTotal - deletedDismissed;
   const [disclaimerDismissed, dismissDisclaimer] = useState(false);
-
   const disclaimerItem = useDisclaimerFlashbarItem(() =>
     dismissDisclaimer(true)
   );
@@ -19,17 +21,35 @@ export function useNotifications(successNotification) {
     notifications.push(disclaimerItem);
   }
 
-  if (successNotification & !successDismissed) {
+  if (inProgressCount) {
     notifications.push({
-      type: 'success',
-      content: 'Resource created successfully',
-      statusIconAriaLabel: 'success',
+      loading: true,
+      type: 'info',
+      statusIconAriaLabel: 'info',
+      dismissible: false,
       dismissLabel: 'Dismiss message',
-      dismissible: true,
-      onDismiss: () => dismissSuccess(true),
-      id: successId,
+      content: `Deleting ${inProgressCount} ${resourceName}${
+        inProgressCount > 1 ? 's' : ''
+      }.`,
+      id: deletingFlashMessageId,
     });
   }
 
-  return notifications;
+  if (deleted) {
+    notifications.push({
+      type: 'success',
+      dismissible: true,
+      statusIconAriaLabel: 'success',
+      dismissLabel: 'Dismiss message',
+      content: `Successfully deleted ${deleted} ${resourceName}${
+        deleted > 1 ? 's' : ''
+      }.`,
+      onDismiss: () => setDeletedDismissed(deletedTotal),
+      id: successFlashMessageId,
+    });
+  }
+
+  const notifyInProgress = setInProgressCount;
+
+  return { notifications, notifyInProgress };
 }

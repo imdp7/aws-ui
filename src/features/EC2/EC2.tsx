@@ -24,6 +24,7 @@ import InstancesLimits from './components/instance-limits';
 import Events from './components/events';
 import CPUUtilisation from './components/cpu-utilisation';
 import NetworkTraffic from './components/network-traffic';
+import useNotifications from './commons/use-notifications';
 import {
   Notifications,
   ec2navItems,
@@ -34,7 +35,7 @@ import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
 import { AppFooter } from '../common/AppFooter';
-import { Box } from '@cloudscape-design/components';
+import { Flashbar } from '@cloudscape-design/components';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -91,6 +92,9 @@ export default function EC2(props): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [activeHref, setActiveHref] = React.useState('dashboard');
   const [loading, setLoading] = useState(false);
+  const { notifications, notifyInProgress } = useNotifications({
+    resourceName: 'instance',
+  });
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="EC2 Instances"
@@ -161,7 +165,7 @@ export default function EC2(props): JSX.Element {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
+        notifications={<Flashbar items={notifications} />}
       />
       <AppFooter />
     </>

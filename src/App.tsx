@@ -16,6 +16,7 @@ import { EC2_Instances_Detail } from './features/EC2/EC2_Instance_Detail';
 import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
 import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
+import { applyMode, Mode } from '@awsui/global-styles';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');

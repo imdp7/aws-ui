@@ -21,7 +21,7 @@ import {
   getHeaderCounterText,
   getServerHeaderCounterText,
 } from '../../common/tableCounterStrings';
-import { useNotifications } from './use-notifications';
+import useNotifications from './use-notifications';
 
 export const navHeader = {
   text: 'EC2 Instance',

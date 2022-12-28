@@ -14,6 +14,7 @@ import {
   Table,
   Box,
   Alert,
+  Flashbar,
   Link,
   Modal,
   Tabs,
@@ -42,7 +43,6 @@ import {
   TableEmptyState,
   TableNoMatchState,
   TableHeader,
-  Notifications,
 } from './commons/common-components';
 import {
   appLayoutLabels,
@@ -53,6 +53,7 @@ import { getFilterCounterText } from '../../features/common/tableCounterStrings'
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
 import { DashboardHeader } from './components/header';
+import useNotifications from './commons/use-notifications';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 
@@ -201,6 +202,9 @@ export function EC2_Instances_Detail(props) {
   const { id } = useParams();
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsIndex, setToolsIndex] = useState(0);
+  const { notifications, notifyInProgress } = useNotifications({
+    resourceName: 'instance',
+  });
 
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
@@ -278,7 +282,7 @@ export function EC2_Instances_Detail(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
+        notifications={<Flashbar items={notifications} />}
         contentType="wizard"
       />
       <AppFooter />

@@ -31,7 +31,6 @@ import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
 import { HelpPanels } from './features/EC2/components/header';
 import { appLayoutLabels } from './features/common/labels';
-import { Notifications } from './features/EC2/commons/common-components';
 import { AppFooter } from './features/common/AppFooter';
 
 const arrayData = [
@@ -680,14 +679,11 @@ ual machines, or instances, that run on the AWS Cloud. Quickly get started by fo
         }
         headerSelector="#h"
         contentType="wizard"
-        // stickyNotifications={true}
-        //disableContentPaddings={true}
         toolsOpen={toolsOpen}
         tools={toolsContent}
         navigationHide={true}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
         footerSelector="#f"
       />
       <AppFooter />

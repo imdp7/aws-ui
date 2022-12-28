@@ -21,6 +21,7 @@ import { navHeader, Notifications } from '../commons/common-components';
 import Panel1 from './Panel1';
 import Panel2 from './Panel2';
 import { Navigation } from '../commons/common-components';
+import useNotifications from '../commons/use-notifications';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -50,24 +51,23 @@ function Breadcrumbs() {
 const Content = ({ loadHelpPanelContent }) => {
   return (
     <SpaceBetween size="xxs" direction="horizontal">
-    <Grid
-      style={{position:'relative'}}
-      gridDefinition={[
-        { colspan: { l: 8, m: 8, default: 12 }},
-        { colspan: { l: 4, m: 4, default: 12 }},
-        
-      ]}
-    >
-      {/* Main Panel */}
-      <div>
-        <Panel1 loadHelpPanelContent={loadHelpPanelContent} />
-      </div>
-      <div style={{position:'sticky',top:'70px'}}>
-        {/* Summary Panel */}
+      <Grid
+        style={{ position: 'relative' }}
+        gridDefinition={[
+          { colspan: { l: 8, m: 8, default: 12 } },
+          { colspan: { l: 4, m: 4, default: 12 } },
+        ]}
+      >
+        {/* Main Panel */}
+        <div>
+          <Panel1 loadHelpPanelContent={loadHelpPanelContent} />
+        </div>
+        <div style={{ position: 'sticky', top: '70px' }}>
+          {/* Summary Panel */}
 
-        <Panel2 createInstance={createInstance} />
-      </div>
-    </Grid>
+          <Panel2 createInstance={createInstance} />
+        </div>
+      </Grid>
     </SpaceBetween>
   );
 };
@@ -91,6 +91,10 @@ function LaunchEC2(props): JSX.Element {
 
   const [openNavigation, setOpenNavigation] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const { notifications, notifyInProgress } = useNotifications({
+    resourceName: 'instance',
+  });
+
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Launch an instance"
@@ -152,7 +156,7 @@ function LaunchEC2(props): JSX.Element {
         tools={toolsContent}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Notifications />}
+        notifications={<Flashbar items={notifications} />}
         contentType="wizard"
         headerSelector="#h"
       />

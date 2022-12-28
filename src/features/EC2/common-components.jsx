@@ -36,7 +36,16 @@ export const FullPageHeader = ({
       title={resourceName}
       actionButtons={
         <SpaceBetween size="xs" direction="horizontal">
-          <Button disabled={!isOnlyOneSelected} href={props.lik}>View details</Button>
+          <Button
+            disabled={!isOnlyOneSelected}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `${props.lik}`;
+            }}
+            //href={props.lik}
+          >
+            View details
+          </Button>
           <Button disabled={!isOnlyOneSelected}>Edit</Button>
           <Button disabled={props.selectedItems.length === 0}>Delete</Button>
           <Button variant="primary" href={props.link}>
@@ -105,7 +114,15 @@ export const InstanceHeader = ({ ...props }) => {
       title="Instances"
       actionButtons={
         <SpaceBetween size="xs" direction="horizontal">
-          <Button disabled={!isOnlyOneSelected} href={props.link}>View details</Button>
+          <Button
+            disabled={!isOnlyOneSelected}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `${props.lik}`;
+            }}
+          >
+            View details
+          </Button>
           <Button disabled={!isOnlyOneSelected}>Edit</Button>
           <Button disabled={props.selectedItems.length === 0}>Delete</Button>
           <Button variant="primary">Create instance</Button>
