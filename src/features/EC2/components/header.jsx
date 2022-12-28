@@ -4,6 +4,7 @@
 import React from 'react';
 import { HelpPanel, Icon, Button, Header } from '@cloudscape-design/components';
 import { ExternalLinkItem, InfoLink } from '../commons/common-components';
+import { useNavigate } from 'react-router-dom';
 
 export function HelpPanels(props) {
   return (
@@ -71,6 +72,7 @@ export function HelpPanels(props) {
   );
 }
 export function DashboardHeader(props) {
+  const navigate = useNavigate();
   return (
     <Header
       variant="h1"
@@ -93,7 +95,13 @@ export function DashboardHeader(props) {
       actions={
         <>
           {props.buttonText ? (
-            <Button variant="primary" href={props.href}>
+            <Button
+              variant="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/ec2_instance/launchEC2');
+              }}
+            >
               {props.buttonText}
             </Button>
           ) : null}
