@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
@@ -25,6 +26,11 @@ const COLUMN_DEFINITIONS = [
     id: 'id',
     header: 'Instance ID',
     cell: (item) => <Link href={`${item.id}`}>{item.id}</Link>,
+  },
+  {
+    id: 'id',
+    header: 'Instance Name',
+    cell: (item) => <Link href={`${item.id}`}>{item.name}</Link>,
   },
   {
     id: 'state',
@@ -88,7 +94,7 @@ export default function InstancesTable({
     paginationProps,
   } = useCollection(instances, {
     filtering: {
-      empty: <TableEmptyState resourceName="Instance" />,
+      empty: <TableEmptyState resourceName="Instance" link="launchEC2" />,
       noMatch: (
         <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
       ),
@@ -109,6 +115,8 @@ export default function InstancesTable({
       columnDefinitions={COLUMN_DEFINITIONS}
       items={items}
       selectionType="multi"
+      resizableColumns={true}
+      stripedRows
       ariaLabels={{
         itemSelectionLabel: (_data, row) => `select ${row.id}`,
         allItemsSelectionLabel: () => 'select all',

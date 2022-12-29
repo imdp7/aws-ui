@@ -11,8 +11,8 @@ import { CounterLink } from '../commons/common-components';
 import INSTANCES from '../../resources/ec2-instances';
 
 const sg = INSTANCES.filter((x) => x.numOfvCpu >= 5).length;
-const lb = INSTANCES.filter((x) => x.volume >= 5).length;
 const volume = INSTANCES.filter((x) => x.numOfvCpu >= 7).length;
+const lb = INSTANCES.filter((x) => x.volume >= 2 && x.volume <= 4).length;
 export default function ServiceOverview() {
   return (
     <Container

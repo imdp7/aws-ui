@@ -41,7 +41,7 @@ export function FeaturesSpotlight() {
     >
       <ColumnLayout columns={2} variant="text-grid">
         <div>
-          <Box color="text-label">August 26, 2019</Box>
+          <Box color="text-label">December 26, 2022</Box>
           <Box padding={{ vertical: 'xxs' }}>
             <Link href="#">Amazon EC2 Fleet Functionality</Link>
           </Box>
@@ -58,7 +58,7 @@ export function FeaturesSpotlight() {
           </Box>
         </div>
         <div>
-          <Box color="text-label">September 9, 2019</Box>
+          <Box color="text-label">January 3, 2023</Box>
           <Box padding={{ vertical: 'xxs' }}>
             <Link href="#">
               Amazon EC2 Hibernation Now Available on Amazon Linux 2

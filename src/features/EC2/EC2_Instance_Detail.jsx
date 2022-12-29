@@ -114,7 +114,8 @@ function LogsTable() {
       ariaLabels={logsSelectionLabels}
       selectionType="multi"
       selectedItems={selectedItems}
-      //onSelectionChange={(evt) => setSelectedItems(evt.detail.selectedItems)}
+      resizableColumns
+      onSelectionChange={(evt) => setSelectedItems(evt.detail.selectedItems)}
       header={
         <TableHeader
           title="Logs"

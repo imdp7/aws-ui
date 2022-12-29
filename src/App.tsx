@@ -5,7 +5,6 @@ import { withAuthenticator, translations } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import awsExports from './aws-exports';
 import './App.css';
-import classes from './app.module.scss';
 import HomePage from './HomPage';
 import '@awsui/global-styles/index.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -16,13 +15,11 @@ import { EC2_Instances_Detail } from './features/EC2/EC2_Instance_Detail';
 import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
 import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
-import { applyMode, Mode } from '@awsui/global-styles';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
 
 Amplify.configure(awsExports);
-
 const App = ({ user, signOut }): JSX.Element => {
   return (
     <>

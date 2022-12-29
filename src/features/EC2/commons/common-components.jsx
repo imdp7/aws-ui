@@ -248,7 +248,7 @@ export const TableNoMatchState = (props) => (
   </Box>
 );
 
-export const TableEmptyState = ({ resourceName }) => (
+export const TableEmptyState = ({ resourceName, link }) => (
   <Box margin={{ vertical: 'xs' }} textAlign="center" color="inherit">
     <SpaceBetween size="xxs">
       <div>
@@ -257,7 +257,9 @@ export const TableEmptyState = ({ resourceName }) => (
           No {resourceName.toLowerCase()}s associated with this resource.
         </Box>
       </div>
-      <Button>Create {resourceName.toLowerCase()}</Button>
+      <Button onClick={() => (window.location.href = `${link}`)}>
+        Create {resourceName.toLowerCase()}
+      </Button>
     </SpaceBetween>
   </Box>
 );

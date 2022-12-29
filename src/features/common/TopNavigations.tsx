@@ -9,7 +9,8 @@ import {
 } from '@cloudscape-design/components';
 import '../../App.css';
 import classes from '../../app.module.scss';
-import { applyMode, Mode } from '@awsui/global-styles';
+import { applyMode, Mode, Density, applyDensity } from '@awsui/global-styles';
+import { SpaceBetween } from '@cloudscape-design/components';
 
 interface State {
   user: string;
@@ -17,28 +18,42 @@ interface State {
 }
 
 export const AppHeader = (props: State): JSX.Element => {
-  const [checked, setChecked] = useState(false);
+  const [mode, setMode] = useState(false);
+  const [density, setDensity] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
       <Box float="right" padding={{ right: 'xl', top: 'm' }} textAlign="right">
-        <Toggle
-          onChange={({ detail }) => {
-            setChecked(detail.checked);
-            applyMode(detail.checked ? Mode.Dark : Mode.Light);
-          }}
-          checked={checked}
-          className={classes.app_header_footer}
-        >
-          {checked ? 'Dark' : 'Light'}
-        </Toggle>
+        <SpaceBetween size="s" direction="horizontal">
+          <Toggle
+            onChange={({ detail }) => {
+              setMode(detail.checked);
+              applyMode(detail.checked ? Mode.Dark : Mode.Light);
+            }}
+            checked={mode}
+            className={classes.app_header_footer}
+          >
+            {mode ? 'Dark' : 'Light'}
+          </Toggle>
+          <Toggle
+            onChange={({ detail }) => {
+              setDensity(detail.checked);
+              applyDensity(
+                detail.checked ? Density.Comfortable : Density.Compact
+              );
+            }}
+            checked={density}
+            className={classes.app_header_footer}
+          >
+            {density ? 'Comfort' : 'Compact'}
+          </Toggle>
+        </SpaceBetween>
       </Box>
       <TopNavigation
         identity={{
           href: '/',
-          title: 'AWS',
           logo: {
-            src: 'https://icones.pro/wp-content/uploads/2021/08/logo-amazon-orange.png',
+            src: 'https://www.tamr.com/wp-content/uploads/2020/07/Logo-AWS.png',
             alt: 'Service',
           },
         }}

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 const getElement = (array, loopedIndex) => array[loopedIndex % array.length];
 
-export default Array.from({ length: 250 }).map((item, i) => ({
-  id: `XLOWCQQFJJHM8${i}`,
+export default Array.from({ length: 50 }).map((item, i) => ({
+  id: `instance-${i}`,
+  name: `web server ${i}`,
   type: getElement(['m5.large', 'm5.xlarge', 'm5.4xlarge'], i),
   publicDns: `231.50.3.${i}`,
   monitoring: 'Default',
