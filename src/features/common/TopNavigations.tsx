@@ -17,6 +17,7 @@ import {
   disableMotion,
 } from '@awsui/global-styles';
 import { SpaceBetween } from '@cloudscape-design/components';
+import { useNavigate } from 'react-router-dom';
 
 interface State {
   user: string;
@@ -27,6 +28,16 @@ export const AppHeader = (props: State): JSX.Element => {
   const [mode, setMode] = useState(false);
   const [density, setDensity] = useState(true);
   const [searchValue, setSearchValue] = useState('');
+  const [redirectURL, setRedirectURL] = useState('');
+  const navigate = useNavigate();
+
+  if (redirectURL == 'signout') {
+    navigate('/');
+    props.signOut();
+  }
+  if (redirectURL == 'profile') {
+    navigate('/profile');
+  }
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
       <Box float="right" padding={{ right: 'xl', top: 'm' }} textAlign="right">
@@ -148,12 +159,17 @@ export const AppHeader = (props: State): JSX.Element => {
           {
             type: 'menu-dropdown',
             text: `${props.user}`,
-            description: `${props.user}`,
+            // description: 'Account ID: 6137-4001-7922',
             iconName: 'user-profile',
-            onItemClick: () => {
-              props.signOut();
+            onItemClick: (evt) => {
+              setRedirectURL(evt.detail.id);
             },
             items: [
+              {
+                id: 'account',
+                text: 'Account ID: 6107-4191-7922',
+                disabled: true,
+              },
               { id: 'profile', text: 'Profile' },
               { id: 'preferences', text: 'Preferences' },
               { id: 'security', text: 'Security' },
