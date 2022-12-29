@@ -9,7 +9,13 @@ import {
 } from '@cloudscape-design/components';
 import '../../App.css';
 import classes from '../../app.module.scss';
-import { applyMode, Mode, Density, applyDensity } from '@awsui/global-styles';
+import {
+  applyMode,
+  Mode,
+  Density,
+  applyDensity,
+  disableMotion,
+} from '@awsui/global-styles';
 import { SpaceBetween } from '@cloudscape-design/components';
 
 interface State {
@@ -41,6 +47,7 @@ export const AppHeader = (props: State): JSX.Element => {
               applyDensity(
                 detail.checked ? Density.Comfortable : Density.Compact
               );
+              disableMotion(density ? true : false);
             }}
             checked={density}
             className={classes.app_header_footer}
