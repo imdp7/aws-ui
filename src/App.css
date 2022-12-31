@@ -41,3 +41,8 @@
   display: flex;
   justify-content: space-between;
 }
+.spinner {
+  position: relative;
+  left: calc(50% - 50px);
+  top: 50%;
+}

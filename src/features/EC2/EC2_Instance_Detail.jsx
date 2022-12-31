@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import React, { createRef, useState, useRef } from 'react';
+import React, { createRef, useState, useRef, useEffect } from 'react';
 import { useNavigation, useParams } from 'react-router-dom';
 import {
   AppLayout,
@@ -19,6 +19,7 @@ import {
   Modal,
   Tabs,
   TextFilter,
+  Spinner,
 } from '@cloudscape-design/components';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useAsyncData } from './commons/use-async-data';
@@ -206,7 +207,14 @@ export function EC2_Instances_Detail(props) {
   const { notifications, notifyInProgress } = useNotifications({
     resourceName: 'instance',
   });
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
@@ -258,23 +266,29 @@ export function EC2_Instances_Detail(props) {
 
       <AppLayout
         content={
-          <ContentLayout
-            header={
-              <PageHeader
-                id={id}
-                buttons={[
-                  { text: 'Actions', items: INSTANCE_DROPDOWN_ITEMS },
-                  { text: 'Edit' },
-                  { text: 'Delete' },
-                ]}
-              />
-            }
-          >
-            <SpaceBetween size="l">
-              <GeneralConfig />
-              <Tabs tabs={tabs} ariaLabel="Resource details" />
-            </SpaceBetween>
-          </ContentLayout>
+          <>
+            {!loading ? (
+              <ContentLayout
+                header={
+                  <PageHeader
+                    id={id}
+                    buttons={[
+                      { text: 'Actions', items: INSTANCE_DROPDOWN_ITEMS },
+                      { text: 'Edit' },
+                      { text: 'Delete' },
+                    ]}
+                  />
+                }
+              >
+                <SpaceBetween size="l">
+                  <GeneralConfig />
+                  <Tabs tabs={tabs} ariaLabel="Resource details" />
+                </SpaceBetween>
+              </ContentLayout>
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
+          </>
         }
         headerSelector="#h"
         breadcrumbs={<Breadcrumbs id={id} />}

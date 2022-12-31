@@ -19,6 +19,7 @@ import {
   Link,
   Modal,
   SpaceBetween,
+  Spinner,
 } from '@cloudscape-design/components';
 import { Navigation } from './commons/common-components';
 import { appLayoutLabels } from '../common/labels';
@@ -95,6 +96,7 @@ function EC2_Instances_List(props) {
           signOut={props.signOut}
         />
       )}
+
       <DeleteModal
         visible={showDeleteModal}
         onDiscard={onDeleteDiscard}
@@ -114,6 +116,14 @@ function InstancesPage({
   user,
   signOut,
 }) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <>
       <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
@@ -121,14 +131,20 @@ function InstancesPage({
       </div>
       <AppLayout
         content={
-          <InstancesTable
-            instances={instances}
-            selectedItems={selectedItems}
-            onSelectionChange={(event) =>
-              setSelectedItems(event.detail.selectedItems)
-            }
-            onDelete={onDeleteInit}
-          />
+          <>
+            {!loading ? (
+              <InstancesTable
+                instances={instances}
+                selectedItems={selectedItems}
+                onSelectionChange={(event) =>
+                  setSelectedItems(event.detail.selectedItems)
+                }
+                onDelete={onDeleteInit}
+              />
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
+          </>
         }
         headerSelector="#h"
         footerSelector="#f"

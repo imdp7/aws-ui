@@ -9,6 +9,7 @@ import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
 import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
 import HomePage from '../common/HomePage';
+import Profile from './Auth/Profile';
 
 function Routes({ user, signOut }) {
   return (
@@ -21,6 +22,9 @@ function Routes({ user, signOut }) {
         />
         <Route path="s3" element={<S3 />} />
         <Route path="console/services" element={<AllServices />} />
+        <Route path="account">
+          <Route path="profile" element={<Profile />} />
+        </Route>
         <Route path="ec2_instance">
           <Route path="/*" element={<PageNotFound />} />
           <Route path="dashboard" index element={<EC2 />} />

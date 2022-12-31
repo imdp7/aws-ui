@@ -36,7 +36,7 @@ export const AppHeader = (props: State): JSX.Element => {
     props.signOut();
   }
   if (redirectURL == 'profile') {
-    navigate('/profile');
+    navigate('/account/profile');
   }
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>

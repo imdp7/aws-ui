@@ -35,7 +35,7 @@ import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
 import { AppFooter } from '../common/AppFooter';
-import { Flashbar } from '@cloudscape-design/components';
+import { Flashbar, Spinner } from '@cloudscape-design/components';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -91,7 +91,7 @@ function Content(props) {
 export default function EC2(props): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [activeHref, setActiveHref] = React.useState('dashboard');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { notifications, notifyInProgress } = useNotifications({
     resourceName: 'instance',
   });
@@ -114,7 +114,12 @@ export default function EC2(props): JSX.Element {
 
     document.title = 'EC2 Management Console';
   }, [location]);
-
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
   // https://reactrouter.com/docs/en/v6/apioutlet
   return (
     <>
@@ -124,25 +129,27 @@ export default function EC2(props): JSX.Element {
       <AppLayout
         content={
           <Provider store={store}>
-            <ContentLayout
-              header={
-                <DashboardHeader
-                  loadHelpPanelContent={loadHelpPanelContent}
-                  title="EC2 Dashboard"
-                  buttonText="Launch instance"
-                  link="'/ec2_instance/launchEC2"
-                  des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+            {!loading ? (
+              <>
+                <ContentLayout
+                  header={
+                    <DashboardHeader
+                      loadHelpPanelContent={loadHelpPanelContent}
+                      title="EC2 Dashboard"
+                      buttonText="Launch instance"
+                      link="'/ec2_instance/launchEC2"
+                      des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
                          resizeable computing capacity&mdash;literally, servers in Amazon's data
                          centers&mdash;that you use to build and host your software systems."
-                />
-              }
-            >
-              <Content loadHelpPanelContent={loadHelpPanelContent} />
-            </ContentLayout>
-
-            <SpaceBetween size={'xxs'}>
-              <Outlet context={loadHelpPanelContent} />
-            </SpaceBetween>
+                    />
+                  }
+                >
+                  <Content loadHelpPanelContent={loadHelpPanelContent} />
+                </ContentLayout>
+              </>
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
           </Provider>
         }
         headerSelector="#h"

@@ -213,98 +213,97 @@ function Panel1({
             </Box>
           }
         />*/}
-          <Tiles
-      onChange={({ detail }) => setTiles(detail.value)}
-      value={tiles}
-      columns={4}
-      items={[
-        {
-          label: "macOS",
-          image: (
-            <img
-              src="https://www.freepnglogos.com/uploads/apple-logo-png/file-apple-logo-black-svg-wikimedia-commons-1.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "macOS"
-        },
-        {
-          label: "Amazon",
-          image: (
-            <img
-              src="https://pngimg.com/uploads/amazon/amazon_PNG5.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "Amazon"
-        },
-        {
-          label: "Ubuntu",
-          image: (
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/888/888879.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "Ubuntu"
-        },
-        {
-          label: "Windows",
-          image: (
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "Windows"
-        },
-        {
-          label: "Red Hat",
-          image: (
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Red_Hat_logo.svg/2560px-Red_Hat_logo.svg.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "Red-Hat"
-        },
-        {
-          label: "SUSE-Linux",
-          image: (
-            <img
-              src="https://en.opensuse.org/images/c/cd/Button-colour.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "SUSE-Linux"
-        },
-        {
-          label: "Browse",
-          image: (
-            <img
-              src="https://www.freepnglogos.com/uploads/search-png/search-png-design-web-design-4.png"
-              height='50'
-              width="50"
-              alt="placeholder"
-            />
-          ),
-          value: "Browse"
-        },
-        
-      ]}
-    />
+        <Tiles
+          onChange={({ detail }) => setTiles(detail.value)}
+          value={tiles}
+          columns={4}
+          items={[
+            {
+              label: 'macOS',
+              image: (
+                <img
+                  src="https://www.freepnglogos.com/uploads/apple-logo-png/file-apple-logo-black-svg-wikimedia-commons-1.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'macOS',
+            },
+            {
+              label: 'Amazon',
+              image: (
+                <img
+                  src="https://pngimg.com/uploads/amazon/amazon_PNG5.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Amazon',
+            },
+            {
+              label: 'Ubuntu',
+              image: (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/888/888879.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Ubuntu',
+            },
+            {
+              label: 'Windows',
+              image: (
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Windows',
+            },
+            {
+              label: 'Red Hat',
+              image: (
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Red_Hat_logo.svg/2560px-Red_Hat_logo.svg.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Red-Hat',
+            },
+            {
+              label: 'SUSE-Linux',
+              image: (
+                <img
+                  src="https://en.opensuse.org/images/c/cd/Button-colour.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'SUSE-Linux',
+            },
+            {
+              label: 'Browse',
+              image: (
+                <img
+                  src="https://www.freepnglogos.com/uploads/search-png/search-png-design-web-design-4.png"
+                  height="50"
+                  width="50"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Browse',
+            },
+          ]}
+        />
         <Box display="block" variant="code">
           Amazon Machine Image (AMI)
         </Box>
@@ -459,9 +458,7 @@ function Panel1({
                 value={value}
                 ariaRequired={true}
                 placeholder="Eg.Web Server"
-                onChange={event =>
-                  setValue(event.detail.value)
-                  }
+                onChange={(event) => setValue(event.detail.value)}
               />
             </FormField>
           </SpaceBetween>
@@ -582,11 +579,13 @@ function Panel1({
               onChange={({ detail }) =>
                 setSelectedOption(detail.selectedOption)
               }
-              options={[{ label: "Option 1", value: "1" },
-                        { label: "Option 2", value: "2" },
-                        { label: "Option 3", value: "3" },
-                        { label: "Option 4", value: "4" },
-                        { label: "Option 5", value: "5" }]}
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+                { label: 'Option 3', value: '3' },
+                { label: 'Option 4', value: '4' },
+                { label: 'Option 5', value: '5' },
+              ]}
               loadingText="Loading instances"
               placeholder="Choose an option"
               selectedAriaLabel="Selected"
@@ -606,8 +605,9 @@ function Panel1({
           defaultExpanded
         >
           <SpaceBetween size="m" direction="vertical">
-            
-            <FormField label="Network" info={
+            <FormField
+              label="Network"
+              info={
                 <InfoLink
                   id="certificate-method-info-link"
                   onFollow={() =>
@@ -620,12 +620,13 @@ function Panel1({
                   }
                   ariaLabel={'Information about SSL/TLS certificate.'}
                 />
-              }>
-              <Box>
-              {NETWORK.network}
-            </Box>
+              }
+            >
+              <Box>{NETWORK.network}</Box>
             </FormField>
-            <FormField label="Subnet" info={
+            <FormField
+              label="Subnet"
+              info={
                 <InfoLink
                   id="certificate-method-info-link"
                   onFollow={() =>
@@ -638,13 +639,13 @@ function Panel1({
                   }
                   ariaLabel={'Information about SSL/TLS certificate.'}
                 />
-              }>
-            
-            <Box>
-              {NETWORK.subnet}
-            </Box>
+              }
+            >
+              <Box>{NETWORK.subnet}</Box>
             </FormField>
-            <FormField label="Auto-assign public IP" info={
+            <FormField
+              label="Auto-assign public IP"
+              info={
                 <InfoLink
                   id="certificate-method-info-link"
                   onFollow={() =>
@@ -657,11 +658,9 @@ function Panel1({
                   }
                   ariaLabel={'Information about SSL/TLS certificate.'}
                 />
-              }>
-            
-            <Box>
-              {NETWORK.PublicIP}
-            </Box>
+              }
+            >
+              <Box>{NETWORK.PublicIP}</Box>
             </FormField>
             <Box>
               <Header
@@ -681,100 +680,105 @@ function Panel1({
                 ]}
               />
             </Box>
-            {tile == "item1" &&(
+            {tile == 'item1' && (
               <div>
-              <SpaceBetween size="m">
-                <Box>
-                  We'll create a new security group called '<strong>launch-wizard-1</strong>
-                  ' with the following rules:
-                </Box>
-                <ColumnLayout columns={2}>
+                <SpaceBetween size="m">
                   <Box>
-                    <Checkbox
-                      checked={checked}
-                      onChange={(detail) => setChecked(!detail.checked)}
-                      key={1}
-                      description="Helps you connect to your instance"
-                    >
-                      Allow SSH traffic from
-                    </Checkbox>
-                    <Checkbox
-                      key={2}
-                      checked={checked}
-                      onChange={({ detail,key }) =>
-                        setChecked(!detail.checked)}
-                      description="To set up an endpoint, for example when creating a web server"
-                    >
-                      Allow HTTPS traffic from the internet
-                    </Checkbox>
-                    <Checkbox
-                      key={3}
-                      description="To set up an endpoint, for example when creating a web server"
-                      checked={checked}
-                      onChange={() => setChecked(!checked)}
-                    >
-                      Allow HTTP traffic from the internet
-                    </Checkbox>
+                    We'll create a new security group called '
+                    <strong>launch-wizard-1</strong>' with the following rules:
                   </Box>
-                  <Box>
-                    <Select
-                      selectedOption={ip}
-                      onChange={({ detail }) => setIP(detail.selectedOption)}
-                      options={[
-                        { label: '0.0.0.0', description: 'Anywhere' },
-                        { label: 'Custom', value: '' },
-                        { label: 'My IP', description: '52.201.134.131/32' },
-                      ]}
-                      selectedAriaLabel="Selected"
-                    />
-                  </Box>
-                </ColumnLayout>
-                <Alert
-                  onDismiss={() => setVisible(false)}
-                  visible={visible}
-                  dismissAriaLabel="Close alert"
-                  type="warning"
-                  dismissible
-                >
-                  Rules with source of 0.0.0.0/0 allow all IP addresses to
-                  access your instance. We recommend setting security group
-                  rules to allow access from known IP addresses only.
-                </Alert>
-              </SpaceBetween>
-            </div>
-              )}
-
-            {tile == "item2" && (
-              <FormField label="Security groups" stretch={true} info={
-                <InfoLink
-                  id="certificate-method-info-link"
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Security groups"
-                        des="A security group is a set of firewall rules that controls the traffic to and from your instance. Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. You can assign one or more security groups to your instance. If you assign multiple security groups, all the rules are evaluated to control inbound and outbound traffic. If no value is specified the value of the source template will still be used. If the template value is not specified then the default API value will be used."
+                  <ColumnLayout columns={2}>
+                    <Box>
+                      <Checkbox
+                        checked={checked}
+                        onChange={(detail) => setChecked(!detail.checked)}
+                        key={1}
+                        description="Helps you connect to your instance"
+                      >
+                        Allow SSH traffic from
+                      </Checkbox>
+                      <Checkbox
+                        key={2}
+                        checked={checked}
+                        onChange={({ detail, key }) =>
+                          setChecked(!detail.checked)
+                        }
+                        description="To set up an endpoint, for example when creating a web server"
+                      >
+                        Allow HTTPS traffic from the internet
+                      </Checkbox>
+                      <Checkbox
+                        key={3}
+                        description="To set up an endpoint, for example when creating a web server"
+                        checked={checked}
+                        onChange={() => setChecked(!checked)}
+                      >
+                        Allow HTTP traffic from the internet
+                      </Checkbox>
+                    </Box>
+                    <Box>
+                      <Select
+                        selectedOption={ip}
+                        onChange={({ detail }) => setIP(detail.selectedOption)}
+                        options={[
+                          { label: '0.0.0.0', description: 'Anywhere' },
+                          { label: 'Custom', value: '' },
+                          { label: 'My IP', description: '52.201.134.131/32' },
+                        ]}
+                        selectedAriaLabel="Selected"
                       />
-                    )
-                  }
-                  ariaLabel={'Information about SSL/TLS certificate.'}
-                />
-              } >
-              <Select 
-                    selectedOption={selectedOption}
-                    onChange={({ detail }) =>
+                    </Box>
+                  </ColumnLayout>
+                  <Alert
+                    onDismiss={() => setVisible(false)}
+                    visible={visible}
+                    dismissAriaLabel="Close alert"
+                    type="warning"
+                    dismissible
+                  >
+                    Rules with source of 0.0.0.0/0 allow all IP addresses to
+                    access your instance. We recommend setting security group
+                    rules to allow access from known IP addresses only.
+                  </Alert>
+                </SpaceBetween>
+              </div>
+            )}
+
+            {tile == 'item2' && (
+              <FormField
+                label="Security groups"
+                stretch={true}
+                info={
+                  <InfoLink
+                    id="certificate-method-info-link"
+                    onFollow={() =>
+                      loadHelpPanelContent(
+                        <HelpPanels
+                          title="Security groups"
+                          des="A security group is a set of firewall rules that controls the traffic to and from your instance. Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. You can assign one or more security groups to your instance. If you assign multiple security groups, all the rules are evaluated to control inbound and outbound traffic. If no value is specified the value of the source template will still be used. If the template value is not specified then the default API value will be used."
+                        />
+                      )
+                    }
+                    ariaLabel={'Information about SSL/TLS certificate.'}
+                  />
+                }
+              >
+                <Select
+                  selectedOption={selectedOption}
+                  onChange={({ detail }) =>
                     setSelectedOption(detail.selectedOption)
-                      }
-              options={[
-                { label: "Option 1", value: "1" },
-                { label: "Option 2", value: "2" },
-                { label: "Option 3", value: "3" },
-                { label: "Option 4", value: "4" },
-                { label: "Option 5", value: "5" }
-                ]}
-              selectedAriaLabel="Selected"
-            />
-            </FormField>
-              )}
+                  }
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                    { label: 'Option 3', value: '3' },
+                    { label: 'Option 4', value: '4' },
+                    { label: 'Option 5', value: '5' },
+                  ]}
+                  selectedAriaLabel="Selected"
+                />
+              </FormField>
+            )}
           </SpaceBetween>
         </ExpandableSection>
 
@@ -801,7 +805,7 @@ function Panel1({
                 <SpaceBetween size="xs" direction="horizontal">
                   <Box>1x</Box>
                   <Input
-                    style={{maxWidth:'20px'}}
+                    style={{ maxWidth: '20px' }}
                     inputMode="numeric"
                     type="number"
                     onChange={({ detail }) => setValue(detail.value)}

@@ -26,6 +26,7 @@ import {
   SpaceBetween,
   Grid,
   Button,
+  Spinner,
 } from '@cloudscape-design/components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
@@ -122,6 +123,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
     event.preventDefault();
   };
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
+
   return (
     <>
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
@@ -639,6 +641,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
 const HomePage = (props): JSX.Element => {
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = React.useState(true);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Console Home"
@@ -664,6 +667,13 @@ const HomePage = (props): JSX.Element => {
     setTools(element);
     setToolsOpen(true);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
   // https://reactrouter.com/docs/en/v6/api#outlet
   return (
     <>
@@ -672,9 +682,15 @@ const HomePage = (props): JSX.Element => {
       </div>
       <AppLayout
         content={
-          <SpaceBetween size="s">
-            <HomeFeatures loadHelpPanelContent={loadHelpPanelContent} />
-          </SpaceBetween>
+          <>
+            {!loading ? (
+              <SpaceBetween size="s">
+                <HomeFeatures loadHelpPanelContent={loadHelpPanelContent} />
+              </SpaceBetween>
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
+          </>
         }
         headerSelector="#h"
         contentType="wizard"
