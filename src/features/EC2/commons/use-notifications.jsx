@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useId } from './use-id';
 import { useDisclaimerFlashbarItem } from './disclaimer-flashbar-item';
-import { withSuccess } from 'antd/lib/modal/confirm';
 
 export default function useNotifications({
   deletedTotal,
@@ -24,16 +23,6 @@ export default function useNotifications({
 
   if (disclaimerItem && !disclaimerDismissed) {
     notifications.push(disclaimerItem);
-  }
-  if (success) {
-    notifications.push({
-      type: 'success',
-      dismissible: true,
-      statusIconAriaLabel: 'success',
-      dismissLabel: 'Dismiss message',
-      content: 'Successfully updated the information',
-      id: successFlashMessageId,
-    });
   }
   if (inProgressCount) {
     notifications.push({
