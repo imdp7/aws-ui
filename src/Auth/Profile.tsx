@@ -134,23 +134,13 @@ const Account = (props) => {
             <ColumnLayout borders="horizontal">
               <ColumnLayout columns={4}>
                 <Box variant="awsui-key-label">Account ID:</Box>
-                <Box textAlign="center">610741917922</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">610741917922</Box>
                 <Box variant="awsui-key-label">Seller:</Box>
-                <Box textAlign="center">Amazon Web Services, Inc.</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">Amazon Web Services, Inc.</Box>
                 <Box variant="awsui-key-label">Account Name:</Box>
-                <Box textAlign="center">{email || '-'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{email || props.user}</Box>
                 <Box variant="awsui-key-label">Password:</Box>
-                <Box textAlign="center">**********</Box>
-                <Box></Box>
+                <Box float="left">**********</Box>
               </ColumnLayout>
             </ColumnLayout>
           </SpaceBetween>
@@ -340,52 +330,27 @@ const Information = (props) => {
             <ColumnLayout borders="horizontal">
               <ColumnLayout columns={4}>
                 <Box variant="awsui-key-label">Full Name:</Box>
-                <Box textAlign="center">{name || '-'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{name || 'William Stuart'}</Box>
                 <Box variant="awsui-key-label">Address:</Box>
-                <Box textAlign="center">{address || '12abc W road'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{address || '12abc W road'}</Box>
                 <Box variant="awsui-key-label">City:</Box>
-                <Box textAlign="center">{city || 'Newark'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{city || 'Newark'}</Box>
                 <Box variant="awsui-key-label">State:</Box>
-                <Box textAlign="center">{state || 'NJ'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{state || 'NJ'}</Box>
                 <Box variant="awsui-key-label">Postal Code:</Box>
-                <Box textAlign="center">{postal || '010101'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{postal || '010101'}</Box>
                 <Box variant="awsui-key-label">Country:</Box>
-                <Box textAlign="center">{country || 'US'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{country || 'US'}</Box>
                 <Box variant="awsui-key-label">Phone Number:</Box>
-                <Box textAlign="center">{phone || '9998886628'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{phone || '9998886628'}</Box>
                 <Box variant="awsui-key-label">Company Name:</Box>
-                <Box textAlign="center">{company || 'Amazon'}</Box>
-                <Box></Box>
-              </ColumnLayout>
-              <ColumnLayout columns={4}>
+                <Box float="left">{company || 'Amazon'}</Box>
                 <Box variant="awsui-key-label">Website URL:</Box>
-                <Box textAlign="center">
+                <Box float="left">
                   <Link href={website} external>
                     {website || 'www.aws.com'}
                   </Link>
                 </Box>
-                <Box></Box>
               </ColumnLayout>
             </ColumnLayout>
           </SpaceBetween>
@@ -424,7 +389,7 @@ const Payment = (props) => {
         <ColumnLayout borders="horizontal">
           <ColumnLayout columns={4}>
             <Box variant="awsui-key-label">Selected Currency:</Box>
-            <Box textAlign="center">{'USD - US Dollar' || '-'}</Box>
+            <Box float="left">{'USD - US Dollar' || '-'}</Box>
             <Box></Box>
           </ColumnLayout>
         </ColumnLayout>
