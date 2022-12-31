@@ -103,13 +103,9 @@ const Account = (props) => {
                       <FormField label="Account ID:">
                         <Input value="610741917922" disabled />
                       </FormField>
-                    </ColumnLayout>
-                    <ColumnLayout columns={2}>
                       <FormField label="Seller:">
                         <Input value="Amazon Web Services" disabled />
                       </FormField>
-                    </ColumnLayout>
-                    <ColumnLayout columns={2}>
                       <FormField label="Account Name:">
                         <Input
                           value={email}
@@ -119,8 +115,6 @@ const Account = (props) => {
                           placeholder="Enter New Email"
                         />
                       </FormField>
-                    </ColumnLayout>
-                    <ColumnLayout columns={2}>
                       <FormField label="Account Name:">
                         <Input
                           value={password}
