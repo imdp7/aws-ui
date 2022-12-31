@@ -42,9 +42,7 @@ const App = ({ user, signOut }): JSX.Element => {
           <Route path="account">
             <Route
               path="profile"
-              element={<Profile />}
-              user={user.username}
-              signOut={signOut}
+              element={<Profile user={user.username} signOut={signOut} />}
             />
           </Route>
           <Route path="/ec2_instance">

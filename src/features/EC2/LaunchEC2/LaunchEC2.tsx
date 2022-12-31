@@ -22,6 +22,7 @@ import Panel1 from './Panel1';
 import Panel2 from './Panel2';
 import { Navigation } from '../commons/common-components';
 import useNotifications from '../commons/use-notifications';
+import { Spinner } from '@cloudscape-design/components';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -94,7 +95,14 @@ function LaunchEC2(props): JSX.Element {
   const { notifications, notifyInProgress } = useNotifications({
     resourceName: 'instance',
   });
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Launch an instance"
@@ -127,28 +135,34 @@ function LaunchEC2(props): JSX.Element {
       </div>
       <AppLayout
         content={
-          <SpaceBetween size="l">
-            <ContentLayout
-              header={
-                <DashboardHeader
-                  loadHelpPanelContent={loadHelpPanelContent}
-                  title="Launch an instance"
-                  info="Welcome to the new and improved launch experience - a quicker and easier way to launch an instance. We’d appreciate your feedback on this early release. We’ll use your feedback to continue improving the experience over the next few months."
-                  des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
-                  ul={[
-                    {
-                      text: 'Single page layout with summary side panel. Quickly get up and running with our new one-page design. See all your settings in one location. No need to navigate back and forth between steps to ensure your configuration is correct. Use the Summary panel for an overview and to easily navigate the page.',
-                    },
-                    {
-                      text: 'Improved AMI selector. New users: use the Quick Start AMI selector to select an operating system so that you can quickly launch an instance. Experienced users: the AMI selector displays your recently used AMIs and the AMIs that you own so that you can select the AMIs that you care about quickly and easily. You can still browse the full catalog to find new AMIs.',
-                    },
-                  ]}
-                  h5="Current improvements"
+          <>
+            {!loading ? (
+              <SpaceBetween size="l">
+                <ContentLayout
+                  header={
+                    <DashboardHeader
+                      loadHelpPanelContent={loadHelpPanelContent}
+                      title="Launch an instance"
+                      info="Welcome to the new and improved launch experience - a quicker and easier way to launch an instance. We’d appreciate your feedback on this early release. We’ll use your feedback to continue improving the experience over the next few months."
+                      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+                      ul={[
+                        {
+                          text: 'Single page layout with summary side panel. Quickly get up and running with our new one-page design. See all your settings in one location. No need to navigate back and forth between steps to ensure your configuration is correct. Use the Summary panel for an overview and to easily navigate the page.',
+                        },
+                        {
+                          text: 'Improved AMI selector. New users: use the Quick Start AMI selector to select an operating system so that you can quickly launch an instance. Experienced users: the AMI selector displays your recently used AMIs and the AMIs that you own so that you can select the AMIs that you care about quickly and easily. You can still browse the full catalog to find new AMIs.',
+                        },
+                      ]}
+                      h5="Current improvements"
+                    />
+                  }
                 />
-              }
-            />
-            <Content loadHelpPanelContent={loadHelpPanelContent} />
-          </SpaceBetween>
+                <Content loadHelpPanelContent={loadHelpPanelContent} />
+              </SpaceBetween>
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
+          </>
         }
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation activeHref="launchEC2" />}
