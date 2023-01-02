@@ -44,6 +44,8 @@ import {
   TableEmptyState,
   TableNoMatchState,
   TableHeader,
+  ec2navItems,
+  EC2Header,
 } from './commons/common-components';
 import {
   appLayoutLabels,
@@ -292,7 +294,13 @@ export function EC2_Instances_Detail(props) {
         }
         headerSelector="#h"
         breadcrumbs={<Breadcrumbs id={id} />}
-        navigation={<Navigation activeHref="instances" />}
+        navigation={
+          <Navigation
+            activeHref="instances"
+            header={EC2Header}
+            items={ec2navItems}
+          />
+        }
         tools={ToolsContent[toolsIndex]}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}

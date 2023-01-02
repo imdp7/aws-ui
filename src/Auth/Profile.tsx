@@ -27,6 +27,11 @@ import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import { appLayoutLabels } from '../features/common/labels';
 import { InfoLink } from '../features/common/common';
+import {
+  Navigation,
+  userNav,
+  ProfileHeader,
+} from '../features/EC2/commons/common-components';
 
 const Account = (props) => {
   const [edit, setEdit] = useState(false);
@@ -475,18 +480,19 @@ function Profile(props) {
         }
         headerSelector="#h"
         footerSelector="#f"
-        // navigation={
-        //   <Navigation
-        //     activeHref={activeHref}
-        //     onFollow={(event) => {
-        //       if (!event.detail.external) {
-        //         event.preventDefault();
-        //         setActiveHref(event.detail.href);
-        //       }
-        //     }}
-        //     items={ec2navItems}
-        //   />
-        // }
+        navigation={
+          <Navigation
+            activeHref={activeHref}
+            onFollow={(event) => {
+              if (!event.detail.external) {
+                event.preventDefault();
+                setActiveHref(event.detail.href);
+              }
+            }}
+            items={userNav}
+            header={ProfileHeader}
+          />
+        }
         tools={toolsContent}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}

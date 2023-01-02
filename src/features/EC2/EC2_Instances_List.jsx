@@ -21,7 +21,7 @@ import {
   SpaceBetween,
   Spinner,
 } from '@cloudscape-design/components';
-import { Navigation } from './commons/common-components';
+import { ec2navItems, Navigation } from './commons/common-components';
 import { appLayoutLabels } from '../common/labels';
 import INSTANCES from '../resources/ec2-instances';
 import './styles/base.scss';
@@ -30,6 +30,7 @@ import useNotifications from './commons/use-notifications';
 import InstancesTable from './components/instance-table';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
+import { EC2Header } from './commons/common-components';
 
 function EC2_Instances_List(props) {
   const [instances, setInstances] = useState(INSTANCES);
@@ -159,7 +160,13 @@ function InstancesPage({
           />
         }
         notifications={<Flashbar items={notifications} />}
-        navigation={<Navigation activeHref="instances" />}
+        navigation={
+          <Navigation
+            activeHref="instances"
+            header={EC2Header}
+            items={ec2navItems}
+          />
+        }
         ariaLabels={appLayoutLabels}
         contentType="wizard"
       />

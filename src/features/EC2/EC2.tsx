@@ -36,6 +36,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
 import { AppFooter } from '../common/AppFooter';
 import { Flashbar, Spinner } from '@cloudscape-design/components';
+import { EC2Header } from './commons/common-components';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -166,6 +167,7 @@ export default function EC2(props): JSX.Element {
               }
             }}
             items={ec2navItems}
+            header={EC2Header}
           />
         }
         tools={toolsContent}

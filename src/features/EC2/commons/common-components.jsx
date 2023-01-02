@@ -23,11 +23,88 @@ import {
 } from '../../common/tableCounterStrings';
 import useNotifications from './use-notifications';
 
-export const navHeader = {
+export const EC2Header = {
   text: 'EC2 Instance',
   href: 'dashboard',
 };
 
+export const ProfileHeader = {
+  text: 'Account',
+  href: 'dashboard',
+};
+
+export const userNav = [
+  { type: 'link', text: 'Profile', href: 'profile' },
+  {
+    text: 'Billing',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Bills', href: 'bills' },
+      { type: 'link', text: 'Payments', href: 'payments' },
+      { type: 'link', text: 'Credits', href: 'credits' },
+      { type: 'link', text: 'Purchase Orders', href: 'purchase_orders' },
+      {
+        type: 'link',
+        text: 'Cost & Usage Reports',
+        href: 'Cost_usage_reports',
+      },
+      { type: 'link', text: 'Cost Categories', href: 'cost_categories' },
+      {
+        type: 'link',
+        text: 'Cost Allocation Tags',
+        href: 'cost_allocation_tags',
+      },
+      { type: 'link', text: 'Free Tier', href: 'free_tier' },
+      {
+        type: 'link',
+        text: 'Billing Conductor',
+        href: 'billing_conductor',
+        info: <Link external variant="link" />,
+      },
+    ],
+  },
+  {
+    text: 'Cost Management',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Cost Explorer', href: 'cost_explorer' },
+      { type: 'link', text: 'Budgets', href: 'budgets' },
+      { type: 'link', text: 'Budget Reports', href: 'budget_reports' },
+      {
+        type: 'link',
+        text: 'Savings Plans',
+        href: 'savings_plans',
+        info: <Link external variant="link" />,
+      },
+    ],
+  },
+  {
+    text: 'Preferences',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      {
+        type: 'link',
+        text: 'Billing Preferences',
+        href: 'billing_preferences',
+      },
+      {
+        type: 'link',
+        text: 'Payment Preferences',
+        href: 'payment_preferences',
+      },
+      {
+        type: 'link',
+        text: 'Consolidated Billing',
+        href: 'consolidated_billing',
+        info: <Link external variant="link" />,
+      },
+      { type: 'link', text: 'tax Settings', href: 'tax_settings' },
+    ],
+  },
+];
 export const ec2navItems = [
   { type: 'link', text: 'Dashboard', href: 'dashboard' },
   {
@@ -305,8 +382,8 @@ const defaultOnFollowHandler = (e) => {
 
 export function Navigation({
   activeHref,
-  header = navHeader,
-  items = ec2navItems,
+  header,
+  items,
   onFollowHandler = defaultOnFollowHandler,
 }) {
   return (

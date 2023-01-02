@@ -17,7 +17,11 @@ import {
 } from '@cloudscape-design/components';
 import { DashboardHeader, HelpPanels } from '../components/header';
 import { appLayoutLabels } from '../../common/labels';
-import { navHeader, Notifications } from '../commons/common-components';
+import {
+  ec2navItems,
+  Notifications,
+  EC2Header,
+} from '../commons/common-components';
 import Panel1 from './Panel1';
 import Panel2 from './Panel2';
 import { Navigation } from '../commons/common-components';
@@ -165,7 +169,13 @@ function LaunchEC2(props): JSX.Element {
           </>
         }
         breadcrumbs={<Breadcrumbs />}
-        navigation={<Navigation activeHref="launchEC2" />}
+        navigation={
+          <Navigation
+            activeHref="launchEC2"
+            header={EC2Header}
+            items={ec2navItems}
+          />
+        }
         toolsOpen={toolsOpen}
         tools={toolsContent}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
