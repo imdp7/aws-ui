@@ -45,10 +45,11 @@ function Panel1({
   });
   const [storage, setStorage] = useState({
     label: 'General Purpose SSD (gp2)',
+    value: '2',
   });
   const [ip, setIP] = useState({ label: '0.0.0.0', description: 'Anywhere' });
   const [visible, setVisible] = React.useState(true);
-  const [items, setItems] = useState([{}]);
+  const [items, setItems] = useState([]);
   const [checked, setChecked] = useState(true);
 
   const NETWORK = {
@@ -104,7 +105,7 @@ function Panel1({
             <div>GiB</div>
             <Select
               selectedOption={storage}
-              //onChange={({ detail }) => setStorage(detail.selectedOption)}
+              onChange={({ detail }) => setStorage(detail.selectedOption)}
               options={[
                 { label: 'General Purpose SSD (gp3)', value: '1' },
                 { label: 'General Purpose SSD (gp2)', value: '2' },
@@ -129,85 +130,11 @@ function Panel1({
     ]);
     const [architecture, setArchitecture] = React.useState({
       label: '64-bit (x86)',
+      value: '1',
     });
 
     return (
       <SpaceBetween size="m">
-        {/*<Cards
-          onSelectionChange={({ detail }) =>
-            setSelectedItems(detail.selectedItems)
-          }
-          selectedItems={selectedItems}
-          ariaLabels={{
-            itemSelectionLabel: (e, t) => `select ${t.name}`,
-            selectionGroupLabel: 'Item selection',
-          }}
-          cardDefinition={{
-            header: (e) => <img src={e.src} width="50" height="50" alt={e.alt}/>,
-            sections: [
-              {
-                id: 'image',
-                content:e=> e.name
-              },
-                        {
-            id: "description",
-            content: e => e.name
-          },
-            ],
-          }}
-          cardsPerRow={[{ cards: 1 }, { minWidth: 500, cards: 4 }]}
-          items={[
-            
-            {
-              name: 'macOS',
-              src:  "https://www.freepnglogos.com/uploads/apple-logo-png/file-apple-logo-black-svg-wikimedia-commons-1.png",
-              alt: 'macOS_logo',
-            },
-            {
-              name: 'Amazon',
-              src: "https://pngimg.com/uploads/amazon/amazon_PNG5.png",
-              alt:'Amazon_logo'
-            },
-            {
-              name: 'Ubuntu',
-              src: "https://cdn-icons-png.flaticon.com/512/888/888879.png",
-              alt: 'Ubuntu_logo',
-            },
-            {
-              name: 'Windows',
-              src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png",
-              alt: 'Windows_logo',
-            },
-            {
-              name: 'Red Hat',
-              src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Red_Hat_logo.svg/2560px-Red_Hat_logo.svg.png",
-              alt: 'Red_Hat_logo',
-            },
-            {
-              name: 'SUSE-Linux',
-              src: "https://en.opensuse.org/images/c/cd/Button-colour.png",
-              alt: 'SUSE-Linux_logo',
-            },
-            {
-              name: 'Browse',
-              src:'https://www.freepnglogos.com/uploads/search-png/search-png-design-web-design-4.png',
-              alt: 'Browse_logo',
-            },
-          ]}
-          loadingText="Loading resources"
-          selectionType="single"
-          trackBy="name"
-          visibleSections={['name','src','alt','description']}
-          empty={
-            <Box textAlign="center" color="inherit">
-              <b>No AMI</b>
-              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-                No Ami's to display.
-              </Box>
-              <Button>Browse Ami's</Button>
-            </Box>
-          }
-        />*/}
         <Tiles
           onChange={({ detail }) => setTiles(detail.value)}
           value={tiles}
@@ -354,7 +281,10 @@ function Panel1({
                 }
                 selectedOption={architecture}
                 loadingText="loading"
-                options={[{ label: '64-bit (x86)' }, { label: '64-bit (ARM)' }]}
+                options={[
+                  { label: '64-bit (x86)', value: '1' },
+                  { label: '64-bit (ARM)', value: '2' },
+                ]}
               />
             </SpaceBetween>
           </Box>
@@ -695,9 +625,7 @@ function Panel1({
                       <Checkbox
                         key={2}
                         checked={checked}
-                        onChange={({ detail, key }) =>
-                          setChecked(!detail.checked)
-                        }
+                        onChange={({ detail }) => setChecked(!detail.checked)}
                         description="To set up an endpoint, for example when creating a web server"
                       >
                         Allow HTTPS traffic from the internet
@@ -783,67 +711,53 @@ function Panel1({
           defaultExpanded
           className="header-panel"
         >
-          <Container
-            footer={
-              <SpaceBetween
-                size="m"
-                direction="horizontal"
-                className="footer_panel"
-              >
-                <>0 X File Systems</>
-                <Link>Edit</Link>
-              </SpaceBetween>
-            }
-          >
-            <SpaceBetween size="m" direction="vertical">
-              <ColumnLayout>
-                <SpaceBetween size="xs" direction="horizontal">
-                  <Box>1x</Box>
-                  <Input
-                    style={{ maxWidth: '20px' }}
-                    inputMode="numeric"
-                    type="number"
-                    onChange={({ detail }) => setValue(detail.value)}
-                    value={value}
-                    placeholder="1"
-                  />
-                  <Box>GiB</Box>
-                  <Select
-                    selectedOption={storage}
-                    //onChange={({ detail }) => setStorage(detail.selectedOption)}
-                    options={[
-                      { label: 'General Purpose SSD (gp3)', value: '1' },
-                      { label: 'General Purpose SSD (gp2)', value: '2' },
-                      { label: 'Provisioned IOPS SSD (io1)', value: '3' },
-                      { label: 'Provisioned IOPS SSD (io2)', value: '4' },
-                      { label: 'Cold HDD (sc1)', value: '5' },
-                    ]}
-                    selectedAriaLabel="Selected"
-                  />
-                  <Box>Root volume</Box>
-                  <Box>(Not encrypted)</Box>
-                </SpaceBetween>
-                <AttributeEditor
-                  removeButtonText="Remove"
-                  addButtonText="Add new Volume"
-                  empty="Need new volumes"
-                  definition={definitions}
-                  onAddButtonClick={onAddHeaderButtonClickHandler}
-                  onRemoveButtonClick={onRemoveHeaderButtonClickHandler}
-                  items={items}
+          <SpaceBetween size="m" direction="vertical">
+            <ColumnLayout>
+              <SpaceBetween size="xs" direction="horizontal">
+                <Box>1x</Box>
+                <Input
+                  inputMode="numeric"
+                  type="number"
+                  onChange={({ detail }) => setValue(detail.value)}
+                  value={value}
+                  placeholder="1"
                 />
-              </ColumnLayout>
-              <Alert
-                onDismiss={() => setVisible(false)}
-                visible={visible}
-                dismissAriaLabel="Close alert"
-                dismissible
-              >
-                Free tier eligible customers can get up to 30 GB of EBS General
-                Purpose (SSD) or Magnetic storage
-              </Alert>
-            </SpaceBetween>
-          </Container>
+                <Box>GiB</Box>
+                <Select
+                  selectedOption={storage}
+                  onChange={({ detail }) => setStorage(detail.selectedOption)}
+                  options={[
+                    { label: 'General Purpose SSD (gp3)', value: '1' },
+                    { label: 'General Purpose SSD (gp2)', value: '2' },
+                    { label: 'Provisioned IOPS SSD (io1)', value: '3' },
+                    { label: 'Provisioned IOPS SSD (io2)', value: '4' },
+                    { label: 'Cold HDD (sc1)', value: '5' },
+                  ]}
+                  selectedAriaLabel="Selected"
+                />
+                <Box>Root volume</Box>
+                <Box>(Not encrypted)</Box>
+              </SpaceBetween>
+              <AttributeEditor
+                removeButtonText="Remove"
+                addButtonText="Add new Volume"
+                empty="Need new volumes"
+                definition={definitions}
+                onAddButtonClick={onAddHeaderButtonClickHandler}
+                onRemoveButtonClick={onRemoveHeaderButtonClickHandler}
+                items={items}
+              />
+            </ColumnLayout>
+            <Alert
+              onDismiss={() => setVisible(false)}
+              visible={visible}
+              dismissAriaLabel="Close alert"
+              dismissible
+            >
+              Free tier eligible customers can get up to 30 GB of EBS General
+              Purpose (SSD) or Magnetic storage
+            </Alert>
+          </SpaceBetween>
         </ExpandableSection>
 
         <ExpandableSection variant="container" headerText="Advanced Settings">

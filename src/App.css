@@ -46,3 +46,11 @@
   left: calc(50% - 50px);
   top: 50%;
 }
+.side-pane {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0%;
+  margin: 0%;
+}

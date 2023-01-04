@@ -58,7 +58,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const onDismissHandler = () => {
     setVisible(false);
   };
-  const onSubmit = (value) => {
+  const onSubmit = () => {
     setVisible(false);
   };
 
@@ -676,8 +676,7 @@ const HomePage = (props): JSX.Element => {
     <HelpPanels
       title="Console Home"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtimport Card from './components/Card';
-ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
