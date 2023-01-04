@@ -55,7 +55,7 @@ import {
 import { getFilterCounterText } from '../../features/common/tableCounterStrings';
 import ToolsContent from './components/tools-content';
 // import './styles/base.scss';
-import { DashboardHeader } from './components/header';
+import { DashboardHeader, HelpPanels } from './components/header';
 import useNotifications from './commons/use-notifications';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -211,7 +211,17 @@ export function EC2_Instances_Detail(props) {
   });
   const [loading, setLoading] = useState(true);
 
+  const [toolsContent, setToolsContent] = useState(
+    <HelpPanels
+      title={id}
+      des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+        resizeable computing capacity&mdash;literally, servers in Amazon's data
+        centers&mdash;that you use to build and host your software systems."
+    />
+  );
+
   useEffect(() => {
+    document.title = `${id}`;
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -301,7 +311,7 @@ export function EC2_Instances_Detail(props) {
             items={ec2navItems}
           />
         }
-        tools={ToolsContent[toolsIndex]}
+        tools={toolsContent}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
