@@ -21,7 +21,11 @@ import {
   SpaceBetween,
   Spinner,
 } from '@cloudscape-design/components';
-import { ec2navItems, Navigation } from './commons/common-components';
+import {
+  ec2navItems,
+  Navigation,
+  EC2Header,
+} from './commons/common-components';
 import { appLayoutLabels } from '../common/labels';
 import INSTANCES from '../resources/ec2-instances';
 import './styles/base.scss';
@@ -30,7 +34,6 @@ import useNotifications from './commons/use-notifications';
 import InstancesTable from './components/instance-table';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
-import { EC2Header } from './commons/common-components';
 
 function EC2_Instances_List(props) {
   const [instances, setInstances] = useState(INSTANCES);
@@ -169,79 +172,10 @@ function InstancesPage({
         }
         ariaLabels={appLayoutLabels}
         contentType="wizard"
+        toolsHide="true"
       />
       <AppFooter />
     </>
-  );
-}
-
-function InstanceDetailsPage({ instance, onDeleteInit, notifications }) {
-  return (
-    <AppLayout
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h1"
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button>Edit</Button>
-                  <Button onClick={onDeleteInit}>Delete</Button>
-                </SpaceBetween>
-              }
-            >
-              {instance.id}
-            </Header>
-          }
-        >
-          <Container header={<Header variant="h2">Instance details</Header>}>
-            <ColumnLayout columns={4} variant="text-grid">
-              <SpaceBetween size="l">
-                <div>
-                  <Box variant="awsui-key-label">Instance ID</Box>
-                  <div>{instance.id}</div>
-                </div>
-                <div>
-                  <Box variant="awsui-key-label">Instance type</Box>
-                  <div>{instance.type}</div>
-                </div>
-              </SpaceBetween>
-              <div>
-                <Box variant="awsui-key-label">Public DNS</Box>
-                <div>{instance.publicDns}</div>
-              </div>
-              <div>
-                <Box variant="awsui-key-label">Monitoring</Box>
-                <div>{instance.monitoring}</div>
-              </div>
-              <div>
-                <Box variant="awsui-key-label">Instance state</Box>
-                <div>
-                  <ItemState state={instance.state} />
-                </div>
-              </div>
-            </ColumnLayout>
-          </Container>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: 'Service', href: '#' },
-            { text: 'Instances', href: '#' },
-            { text: instance.id, href: '#' + instance.id },
-          ]}
-          expandAriaLabel="Show path"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      notifications={<Flashbar items={notifications} />}
-      navigation={<Navigation activeHref="#" />}
-      navigationOpen={false}
-      toolsHide={true}
-      ariaLabels={appLayoutLabels}
-    />
   );
 }
 

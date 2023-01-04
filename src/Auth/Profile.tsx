@@ -17,6 +17,7 @@ import {
   Form,
   Input,
   Link,
+  Select,
 } from '@cloudscape-design/components';
 import { DashboardHeader, HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
@@ -167,9 +168,8 @@ const Information = (props) => {
   };
 
   const handleSubmit = (e) => {
-    setEdit(false);
-    // alert('An essay was submitted: ' + email + password);
     e.preventDefault();
+    setEdit(false);
   };
   return (
     <>
@@ -361,40 +361,113 @@ const Information = (props) => {
 };
 
 const Payment = (props) => {
+  const [edit, setEdit] = useState(false);
+  const [currency, setCurrency] = useState({ label: 'US Dollar', value: '1' });
+
+  const editHandler = () => {
+    setEdit(true);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setEdit(false);
+  };
+
   return (
-    <Container
-      header={
-        <Header
-          variant="h3"
-          info={
-            <InfoLink
-              onFollow={() =>
-                props.loadHelpPanelContent(
-                  <HelpPanels
-                    title="Payment Currency Preference"
-                    des="Jump in where you left off and navigate to the AWS services you most recently worked with."
-                    h5="To view all AWS services choose View all AWS services at the bottom of the widget."
-                  />
-                )
-              }
-            />
-          }
-          actions={<Button>Edit</Button>}
-        >
-          Payment Currency Preference
-        </Header>
-      }
-    >
-      <SpaceBetween size="xs">
-        <ColumnLayout borders="horizontal">
-          <ColumnLayout columns={4}>
-            <Box variant="awsui-key-label">Selected Currency:</Box>
-            <Box float="left">{'USD - US Dollar' || '-'}</Box>
-            <Box></Box>
-          </ColumnLayout>
-        </ColumnLayout>
-      </SpaceBetween>
-    </Container>
+    <>
+      <Container
+        header={
+          <Header
+            variant="h3"
+            info={
+              <InfoLink
+                onFollow={() =>
+                  props.loadHelpPanelContent(
+                    <HelpPanels
+                      title="Payment Currency Preference"
+                      des="Jump in where you left off and navigate to the AWS services you most recently worked with."
+                      h5="To view all AWS services choose View all AWS services at the bottom of the widget."
+                    />
+                  )
+                }
+              />
+            }
+            actions={
+              <>
+                {!edit ? (
+                  <Button onClick={editHandler} variant="normal">
+                    Edit
+                  </Button>
+                ) : null}
+              </>
+            }
+          >
+            Payment Currency Preference
+          </Header>
+        }
+      >
+        {edit ? (
+          <>
+            <form onSubmit={handleSubmit}>
+              <Form
+                actions={
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <Button
+                      formAction="none"
+                      variant="link"
+                      onClick={() => {
+                        setEdit(false);
+                        setCurrency(currency);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="primary" formAction="submit">
+                      Submit
+                    </Button>
+                  </SpaceBetween>
+                }
+              >
+                <SpaceBetween size="xs">
+                  <ColumnLayout borders="horizontal">
+                    <ColumnLayout columns={4}>
+                      <FormField label="Currency:">
+                        <Select
+                          ariaRequired
+                          onChange={({ detail }) =>
+                            setCurrency(detail.selectedOption)
+                          }
+                          selectedOption={currency}
+                          options={[
+                            { label: 'US Dollar', value: '1' },
+                            { label: 'Europe Euro', value: '2' },
+                            { label: 'Canada CA', value: '3' },
+                            { label: 'China YEN', value: '4' },
+                            { label: 'India RS', value: '5' },
+                          ]}
+                          selectedAriaLabel="Selected"
+                        />
+                      </FormField>
+                    </ColumnLayout>
+                  </ColumnLayout>
+                </SpaceBetween>
+              </Form>
+            </form>
+          </>
+        ) : (
+          <>
+            <SpaceBetween size="xs">
+              <ColumnLayout borders="horizontal">
+                <ColumnLayout columns={4}>
+                  <Box variant="awsui-key-label">Selected Currency:</Box>
+                  <Box float="left">{currency.label}</Box>
+                  <Box></Box>
+                </ColumnLayout>
+              </ColumnLayout>
+            </SpaceBetween>
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 

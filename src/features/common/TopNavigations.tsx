@@ -120,10 +120,10 @@ export const AppHeader = (props: State): JSX.Element => {
           utilities={[
             {
               type: 'button',
-              text: 'Link',
               href: 'https://example.com/',
-              external: true,
-              externalIconAriaLabel: ' (opens in a new tab)',
+              iconName: 'keyboard',
+              iconAlt: 'Terminal',
+              disableUtilityCollapse: false,
             },
             {
               type: 'button',
@@ -163,7 +163,6 @@ export const AppHeader = (props: State): JSX.Element => {
               title: 'Zones',
               onItemClick: (evt) => {
                 evt.preventDefault();
-                console.log(evt.detail);
                 setSelection(evt.detail.id);
               },
               items: [

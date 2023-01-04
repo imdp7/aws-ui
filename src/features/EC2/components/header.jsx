@@ -57,14 +57,12 @@ export function HelpPanels(props) {
       {props?.ul ? (
         <div>
           {props?.ul.map((t) => {
-            return (
-              <>
-                <b key={t.h5}>{t?.h5}</b>
-                <ul>
-                  <li key={t.h5}>{t?.text}</li>
-                </ul>
-              </>
-            );
+            <>
+              <b key={t.h5}>{t?.h5}</b>
+              <ul>
+                <li key={t.h5}>{t?.text}</li>
+              </ul>
+            </>;
           })}
         </div>
       ) : null}
