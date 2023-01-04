@@ -1,15 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { AppHeader } from './features/common/TopNavigations';
 import './App.css';
-import { store } from './app/store';
 import classes from './app.module.scss';
-import { applyMode, Mode } from '@awsui/global-styles';
 import ec2 from '../assets/ec2/Res_Amazon-EC2_A1-Instance_48_Dark.png';
 import s3 from '../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_Dark.png';
 import rds from '../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
@@ -19,7 +16,6 @@ import {
   Container,
   Link,
   Header,
-  Icon,
   LinkProps,
   Alert,
   AppLayout,
@@ -27,12 +23,14 @@ import {
   Grid,
   Button,
   Spinner,
+  Modal,
 } from '@cloudscape-design/components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
 import { HelpPanels } from './features/EC2/components/header';
 import { appLayoutLabels } from './features/common/labels';
 import { AppFooter } from './features/common/AppFooter';
+import Card from './components/Card';
 
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/dashboard'],
@@ -55,6 +53,15 @@ const arrayData = [
 
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
+  const [visible, setVisible] = useState(false);
+
+  const onDismissHandler = () => {
+    setVisible(false);
+  };
+  const onSubmit = (value) => {
+    setVisible(false);
+  };
+
   return (
     <SpaceBetween size="s">
       <Box
@@ -62,6 +69,27 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
         padding={{ horizontal: 'xxl', vertical: 'm' }}
         className={classes.home_header}
       >
+        <Modal
+          onDismiss={onDismissHandler}
+          visible={visible}
+          closeAriaLabel="Close modal"
+          size="large"
+          footer={
+            <Box float="right">
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button variant="link" onClick={onDismissHandler}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={onSubmit}>
+                  Ok
+                </Button>
+              </SpaceBetween>
+            </Box>
+          }
+          header="Add Widgets"
+        >
+          <Card />
+        </Modal>
         <Header
           variant="h1"
           actions={
@@ -72,6 +100,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
                 variant="primary"
                 iconName="add-plus"
                 loadingText="loading"
+                onClick={() => setVisible(true)}
               >
                 Add Widgets
               </Button>
@@ -642,11 +671,13 @@ const HomePage = (props): JSX.Element => {
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
   const [loading, setLoading] = React.useState(true);
+  const [visible, setVisible] = useState(false);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Console Home"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtimport Card from './components/Card';
+ual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',

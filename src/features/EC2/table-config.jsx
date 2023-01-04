@@ -84,14 +84,12 @@ export const COLUMN_DEFINITIONS_MAIN = [
     header: 'Public DNS',
     cell: (item) => item.publicDns,
     minWidth: 160,
-    minWidth: 100,
   },
   {
     id: 'inboundRules',
     header: 'Inbound Rules',
-    cell: (item) => item.inboundRules.map(i => i.protocol),
+    cell: (item) => item.inboundRules.map((i) => i.protocol),
     minWidth: 160,
-    minWidth: 100,
   },
   {
     id: 'monitoring',

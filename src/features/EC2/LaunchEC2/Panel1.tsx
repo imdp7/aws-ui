@@ -10,7 +10,6 @@ import {
   SpaceBetween,
   FormField,
   Select,
-  Icon,
   Box,
   Button,
   Tiles,
@@ -19,15 +18,12 @@ import {
   AttributeEditor,
   Autosuggest,
   Tabs,
-  Cards,
   Badge,
   Container,
   ExpandableSection,
-  RadioGroup,
 } from '@cloudscape-design/components';
-import { ExternalLinkItem, InfoLink } from '../commons/common-components';
+import { InfoLink } from '../commons/common-components';
 import { HelpPanels } from '../components/header';
-import { applyMode, Mode } from '@awsui/global-styles';
 
 function Panel1({
   loadHelpPanelContent,
@@ -54,7 +50,6 @@ function Panel1({
   const [visible, setVisible] = React.useState(true);
   const [items, setItems] = useState([{}]);
   const [checked, setChecked] = useState(true);
-  const [mode, setMode] = useState(false);
 
   const NETWORK = {
     network: 'vpc-070015eaa47ab026e',
@@ -95,7 +90,7 @@ function Panel1({
           Info
         </InfoLink>
       ),
-      control: (item, index) => {
+      control: (item) => {
         return (
           <SpaceBetween size="xxs" direction="horizontal">
             <Box>1x</Box>
@@ -691,7 +686,7 @@ function Panel1({
                     <Box>
                       <Checkbox
                         checked={checked}
-                        onChange={(detail) => setChecked(!detail.checked)}
+                        onChange={(detail) => setChecked(detail.checked)}
                         key={1}
                         description="Helps you connect to your instance"
                       >
@@ -711,7 +706,7 @@ function Panel1({
                         key={3}
                         description="To set up an endpoint, for example when creating a web server"
                         checked={checked}
-                        onChange={() => setChecked(!checked)}
+                        onChange={() => setChecked(checked)}
                       >
                         Allow HTTP traffic from the internet
                       </Checkbox>

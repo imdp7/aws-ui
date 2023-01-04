@@ -8,6 +8,8 @@ import {
   Toggle,
   FormField,
   ColumnLayout,
+  SpaceBetween,
+  Modal,
 } from '@cloudscape-design/components';
 import '../../App.css';
 import classes from '../../app.module.scss';
@@ -18,10 +20,7 @@ import {
   applyDensity,
   disableMotion,
 } from '@awsui/global-styles';
-import { SpaceBetween, Modal, Button } from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
-import PageNotFound from '../../PageNotFound';
-import { Container } from '@cloudscape-design/components';
 
 interface State {
   user: string;
@@ -35,6 +34,12 @@ export const AppHeader = (props: State): JSX.Element => {
   const [searchValue, setSearchValue] = useState('');
   const [redirectURL, setRedirectURL] = useState('');
   const [visible, setVisible] = React.useState(false);
+  const [selection, setSelection] = React.useState([
+    {
+      id: 'US East (N. Virginia)',
+      text: 'US East (N. Virginia)',
+    },
+  ]);
 
   const navigate = useNavigate();
 
@@ -49,12 +54,7 @@ export const AppHeader = (props: State): JSX.Element => {
     e.preventDefault();
     e.detail.id === 'preferences' ? setVisible(true) : null;
   };
-  const onDismissHandler = () => {
-    setVisible(false);
-  };
-  const onSubmit = (value) => {
-    setVisible(false);
-  };
+
   return (
     <>
       <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
@@ -158,57 +158,113 @@ export const AppHeader = (props: State): JSX.Element => {
             },
             {
               type: 'menu-dropdown',
-              iconName: 'user-profile',
               ariaLabel: 'Available Zones',
-              text: 'N. Virginia',
+              text: `${selection[0].text || selection}`,
               title: 'Zones',
+              onItemClick: (evt) => {
+                evt.preventDefault();
+                console.log(evt.detail);
+                setSelection(evt.detail.id);
+              },
               items: [
                 {
-                  id: 'us-east-1',
-                  text: 'US East (N. Virginia)',
+                  id: 'north',
+                  items: [
+                    {
+                      id: 'US East (N. Virginia)',
+                      text: 'US East (N. Virginia)',
+                    },
+                    {
+                      id: 'US East Ohio)',
+                      text: 'US East Ohio)',
+                    },
+                    {
+                      id: 'US West (N. California)',
+                      text: 'US West (N. California)',
+                    },
+                    {
+                      id: 'US West (Oregon)',
+                      text: 'US West (Oregon)',
+                    },
+                  ],
                 },
                 {
-                  id: 'us-east-2',
-                  text: 'US East Ohio)',
+                  id: 'asia',
+                  items: [
+                    {
+                      id: 'Asia Pacific (Mumbai)',
+                      text: 'Asia Pacific (Mumbai)',
+                    },
+                    {
+                      id: 'Asia Pacific (Osaka)',
+                      text: 'Asia Pacific (Osaka)',
+                    },
+                    {
+                      id: 'Asia Pacific (Seoul)',
+                      text: 'Asia Pacific (Seoul)',
+                    },
+                    {
+                      id: 'Asia Pacific (Seoul)',
+                      text: 'Asia Pacific (Seoul)',
+                    },
+                    {
+                      id: 'Asia Pacific (Sydney)',
+                      text: 'Asia Pacific (Sydney)',
+                    },
+                    {
+                      id: 'Asia Pacific (Tokyo)',
+                      text: 'Asia Pacific (Tokyo)',
+                    },
+                  ],
                 },
                 {
-                  id: 'us-west-1',
-                  text: 'US West (N. California)',
+                  id: 'central',
+                  items: [
+                    {
+                      id: 'Canada (Central)',
+                      text: 'Canada (Central)',
+                    },
+                  ],
                 },
                 {
-                  id: 'us-west-2',
-                  text: 'US West (Oregon)',
+                  id: 'europe',
+                  items: [
+                    {
+                      id: 'Europe (Frankfurt)',
+                      text: 'Europe (Frankfurt)',
+                    },
+                    {
+                      id: 'Europe (Ireland)',
+                      text: 'Europe (Ireland)',
+                    },
+                    {
+                      id: 'Europe (London)',
+                      text: 'Europe (London)',
+                    },
+                    {
+                      id: 'Europe (Paris)',
+                      text: 'Europe (Paris)',
+                    },
+                    {
+                      id: 'Europe (Stockholm)',
+                      text: 'Europe (Stockholm)',
+                    },
+                  ],
                 },
                 {
-                  id: 'us-East-1',
-                  text: 'US East (N. Virginia)',
-                },
-                {
-                  id: 'us-East-1',
-                  text: 'US East (N. Virginia)',
-                },
-                {
-                  id: 'us-East-1',
-                  text: 'US East (N. Virginia)',
-                },
-                {
-                  id: 'us-East-1',
-                  text: 'US East (N. Virginia)',
-                },
-                {
-                  id: 'us-East-1',
-                  text: 'US East (N. Virginia)',
-                },
-                {
-                  id: 'settings-project',
-                  text: 'Project settings',
+                  id: 'south',
+                  items: [
+                    {
+                      id: 'South America (Sao Paulo)',
+                      text: 'South America (Sao Paulo)',
+                    },
+                  ],
                 },
               ],
             },
             {
               type: 'menu-dropdown',
               text: `${props.user}`,
-              // description: 'Account ID: 6137-4001-7922',
               iconName: 'user-profile',
               onItemClick: (evt) => {
                 setRedirectURL(evt.detail.id);
@@ -216,8 +272,13 @@ export const AppHeader = (props: State): JSX.Element => {
               items: [
                 {
                   id: 'account',
-                  text: 'Account ID: 6107-4191-7922',
                   disabled: true,
+                  items: [
+                    {
+                      id: 'accountID',
+                      text: 'Account ID: 6107-4191-7922',
+                    },
+                  ],
                 },
                 { id: 'profile', text: 'Profile' },
                 { id: 'preferences', text: 'Preferences' },

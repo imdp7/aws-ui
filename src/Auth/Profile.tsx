@@ -10,16 +10,12 @@ import {
   Header,
   BreadcrumbGroup,
   SpaceBetween,
-  ExpandableSection,
   Spinner,
-  Table,
   ColumnLayout,
   Box,
   FormField,
   Form,
   Input,
-  Alert,
-  Flashbar,
   Link,
 } from '@cloudscape-design/components';
 import { DashboardHeader, HelpPanels } from '../features/EC2/components/header';
@@ -42,9 +38,8 @@ const Account = (props) => {
     setEdit(true);
   };
   const handleSubmit = (e) => {
-    setEdit(false);
-    // alert('An essay was submitted: ' + email + password);
     e.preventDefault();
+    setEdit(false);
   };
   return (
     <>
