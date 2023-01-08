@@ -26,7 +26,7 @@ function Routes({ user, signOut }) {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="ec2_instance">
-          <Route path="/*" element={<PageNotFound />} />
+          {/* <Route path="*" element={<PageNotFound />} /> */}
           <Route path="dashboard" index element={<EC2 />} />
           <Route path="instances" element={<EC2_Instances_List />} />
           <Route path="launchEC2" element={<LaunchEC2 />} />

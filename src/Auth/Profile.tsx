@@ -472,7 +472,6 @@ const Payment = (props) => {
 };
 
 const Profiler = (props) => {
-  console.log(props);
   return (
     <>
       <SpaceBetween size="m">
@@ -486,7 +485,7 @@ const Profiler = (props) => {
 
 function Profile(props) {
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [activeHref, setActiveHref] = React.useState('dashboard');
+  const [activeHref, setActiveHref] = useState('profile');
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
@@ -570,7 +569,7 @@ function Profile(props) {
           <BreadcrumbGroup
             items={[
               { text: 'Account', href: '/account' },
-              { text: 'Profile', href: 'profile' },
+              { text: 'Profile', href: '/profile' },
             ]}
           />
         }

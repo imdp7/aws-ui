@@ -376,8 +376,11 @@ export const TableHeader = (props) => {
 };
 
 const defaultOnFollowHandler = (e) => {
-  // keep the locked href for our demo pages
   e.preventDefault();
+  if (!error.detail.external) {
+    e.preventDefault();
+    setActiveHref(e.detail.href);
+  }
 };
 
 export function Navigation({
