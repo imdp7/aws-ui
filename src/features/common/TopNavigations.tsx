@@ -120,9 +120,9 @@ export const AppHeader = (props: State): JSX.Element => {
           utilities={[
             {
               type: 'button',
-              href: 'https://example.com/',
               iconName: 'keyboard',
-              iconAlt: 'Terminal',
+              title: 'Terminal',
+              ariaLabel: 'Terminal',
               disableUtilityCollapse: false,
             },
             {
