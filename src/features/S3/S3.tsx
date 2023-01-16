@@ -1,89 +1,127 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
+import { Content } from '../EC2/commons/Home';
+import { AppHeader } from '../common/TopNavigations';
+import { AppFooter } from '../common/AppFooter';
 import {
-  Box,
-  Header,
-  HelpPanel,
-  Icon,
-  Link,
+  AppLayout,
+  Container,
+  ContentLayout,
   SpaceBetween,
-  Table,
-} from '@awsui/components-react';
-import { useOutletContext } from 'react-router';
-import { InfoLink } from '../common/common';
-import { getHeaderCounterText } from '../../app/util';
-import { Feature2Data, selectFeature2Data } from './feature2DataSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+  Spinner,
+  Header,
+  BreadcrumbGroup,
+  Button,
+} from '@cloudscape-design/components';
+import { Provider } from 'react-redux';
+import { appLayoutLabels } from '../common/labels';
+import { store } from '../../app/store';
+import {
+  Navigation,
+  ec2navItems,
+  EC2Header,
+} from '../EC2/commons/common-components';
 
-export const Feature2HelpPanel = (): JSX.Element => {
-  return (
-    <HelpPanel
-      footer={
-        <div>
-          <h3>
-            Learn more <Icon name="external" />
-          </h3>
-          <ul>
-            <li>
-              <Link external href="https://docs.example.com/Feature2">
-                S3 docs
-              </Link>
-            </li>
-          </ul>
-        </div>
-      }
-      header={<h2>S3</h2>}
-    >
-      <Box variant="p">Paragraph containing informative help info about S3</Box>
-    </HelpPanel>
-  );
-};
+export const S3 = (props): JSX.Element => {
+  const [loading, setLoading] = useState(false);
+  const [activeHref, setActiveHref] = useState('Homepage');
 
-const Feature2DetailsTable = (): JSX.Element => {
-  const updateTools = useOutletContext<(element: JSX.Element) => void>();
-  const feature2Data = useAppSelector(selectFeature2Data);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [items, setItems] = useState<Feature2Data[]>(feature2Data);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    document.title = 'S3 Management Console';
+  }, [location]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <Table
-      columnDefinitions={[
-        {
-          header: 'Name',
-          cell: (item) => item.name,
-        },
-        {
-          header: 'Description',
-          cell: (item) => item.description || '-',
-        },
-        {
-          header: 'Active',
-          cell: (item) => new Boolean(item.active).toString(),
-        },
-      ]}
-      items={items}
-      header={
-        <Header
-          counter={getHeaderCounterText(items as [])}
-          description="Short phrase about Feature 2 items"
-          info={
-            <InfoLink onFollow={() => updateTools(<Feature2HelpPanel />)} />
-          }
-        >
-          Items
-        </Header>
-      }
-    />
-  );
-};
-
-export const S3 = (): JSX.Element => {
-  return (
-    <SpaceBetween size="l">
-      <Header variant="h1">S3</Header>
-
-      <Feature2DetailsTable />
-    </SpaceBetween>
+    <>
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <AppHeader {...props} />
+      </div>
+      <AppLayout
+        headerSelector="#h"
+        footerSelector="#f"
+        ariaLabels={appLayoutLabels}
+        contentType="wizard"
+        toolsHide={true}
+        breadcrumbs={<BreadcrumbGroup items={[]} />}
+        navigation={
+          <Navigation
+            activeHref={activeHref}
+            onFollow={(event) => {
+              if (!event.detail.external) {
+                event.preventDefault();
+                setActiveHref(event.detail.href);
+              }
+            }}
+            items={ec2navItems}
+            header={EC2Header}
+          />
+        }
+        content={
+          <Provider store={store}>
+            {!loading ? (
+              <ContentLayout
+                header={
+                  <Header
+                    variant="h1"
+                    description="Amazon S3 is an object storage service that offers industry-leading scalability, data availability, security, and performance."
+                    actions={
+                      <SpaceBetween size="m">
+                        <Container
+                          variant="stacked"
+                          header={
+                            <Header
+                              variant="h3"
+                              description="Every object in S3 is stored in a bucket. To upload files and folders to S3."
+                            >
+                              {props.head}
+                            </Header>
+                          }
+                        >
+                          <SpaceBetween size="m" direction="horizontal">
+                            <Button
+                              variant="primary"
+                              onClick={() =>
+                                (window.location.href = `${props.link}`)
+                              }
+                            >
+                              Create Bucket
+                            </Button>
+                            <Button
+                              onClick={() =>
+                                (window.location.href = `${props.instances}`)
+                              }
+                            >
+                              View Bucket
+                            </Button>
+                          </SpaceBetween>
+                        </Container>
+                      </SpaceBetween>
+                    }
+                  >
+                    {props.title}
+                  </Header>
+                }
+              >
+                <SpaceBetween size={'m'}>
+                  <Content
+                    {...props}
+                    pricing="With S3, there are no minimum fees. You only pay for what you use. Prices are based on the location of your S3 bucket. Estimate your monthly bill using the AWS Simple Monthly Calculator "
+                    useCase={true}
+                  />
+                </SpaceBetween>
+              </ContentLayout>
+            ) : (
+              <Spinner size="large" className="spinner" />
+            )}
+          </Provider>
+        }
+      />
+      <AppFooter />
+    </>
   );
 };

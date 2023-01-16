@@ -34,7 +34,7 @@ import Card from './components/Card';
 
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
-  ['S3', `${s3}`, 's3'],
+  ['S3', `${s3}`, 's3/home'],
   ['Amazon RDS', `${rds}`, 'rds'],
   ['Cloudfront', `${ec2}`, 'cloudfront'],
   ['SQS', `${ec2}`, 'sqs'],

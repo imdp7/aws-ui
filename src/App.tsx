@@ -35,7 +35,21 @@ const App = ({ user, signOut }): JSX.Element => {
             path="/"
             element={<HomePage user={user.username} signOut={signOut} />}
           />
-          <Route path="s3" element={<S3 />} />
+          <Route path="s3">
+            <Route
+              path="home"
+              element={
+                <S3
+                  user={user.username}
+                  signOut={signOut}
+                  title="Amazon S3"
+                  head="Create Bucket"
+                  link="bucket/create"
+                  instances="bucket"
+                />
+              }
+            />
+          </Route>
           <Route
             path="console/services"
             element={<AllServices user={user.username} signOut={signOut} />}
@@ -50,7 +64,16 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="home"
               index
-              element={<EC2_HomePage user={user.username} signOut={signOut} />}
+              element={
+                <EC2_HomePage
+                  user={user.username}
+                  signOut={signOut}
+                  title="Elastic Cloud Server (EC2) "
+                  head="Launch an EC2 Server"
+                  link="launchEC2"
+                  instances="instances"
+                />
+              }
             />
             <Route
               path="dashboard"
