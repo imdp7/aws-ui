@@ -33,7 +33,7 @@ import { AppFooter } from './features/common/AppFooter';
 import Card from './components/Card';
 
 const arrayData = [
-  ['EC2 Instance', `${ec2}`, 'ec2_instance/dashboard'],
+  ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
   ['S3', `${s3}`, 's3'],
   ['Amazon RDS', `${rds}`, 'rds'],
   ['Cloudfront', `${ec2}`, 'cloudfront'],
@@ -723,7 +723,7 @@ const HomePage = (props): JSX.Element => {
           </>
         }
         headerSelector="#h"
-        contentType="wizard"
+        contentType="table"
         toolsOpen={toolsOpen}
         tools={toolsContent}
         navigationHide={true}

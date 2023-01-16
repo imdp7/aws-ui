@@ -25,7 +25,7 @@ import useNotifications from './use-notifications';
 
 export const EC2Header = {
   text: 'EC2 Instance',
-  href: 'dashboard',
+  href: 'home',
 };
 
 export const ProfileHeader = {

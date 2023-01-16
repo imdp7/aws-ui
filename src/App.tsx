@@ -16,6 +16,7 @@ import LaunchEC2 from './features/EC2/LaunchEC2/LaunchEC2';
 import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
 import Profile from './Auth/Profile';
+import EC2_HomePage from './features/EC2/EC2_HomePage';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -47,8 +48,12 @@ const App = ({ user, signOut }): JSX.Element => {
           </Route>
           <Route path="/ec2_instance">
             <Route
-              path="dashboard"
+              path="home"
               index
+              element={<EC2_HomePage user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="dashboard"
               element={<EC2 user={user.username} signOut={signOut} />}
             />
             <Route

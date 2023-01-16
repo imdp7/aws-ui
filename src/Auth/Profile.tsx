@@ -32,16 +32,33 @@ import {
 
 const Account = (props) => {
   const [edit, setEdit] = useState(false);
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [readOnlyWithErrors, setReadOnlyWithErrors] = useState(false);
+
+  const getErrorText = (errorMessage) => {
+    return readOnlyWithErrors ? errorMessage : undefined;
+  };
+
+  const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    await fakeDataFetch(2500);
+    setLoading(false);
+    setEdit(false);
+  };
 
   const editHandler = () => {
     setEdit(true);
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setEdit(false);
-  };
+
   return (
     <>
       <Container
@@ -77,7 +94,7 @@ const Account = (props) => {
       >
         {edit ? (
           <>
-            <form onSubmit={handleSubmit}>
+            <form>
               <Form
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
@@ -92,7 +109,12 @@ const Account = (props) => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" formAction="submit">
+                    <Button
+                      variant="primary"
+                      formAction="submit"
+                      loading={loading}
+                      onClick={handleSubmit}
+                    >
                       Submit
                     </Button>
                   </SpaceBetween>
@@ -107,7 +129,12 @@ const Account = (props) => {
                       <FormField label="Seller:">
                         <Input value="Amazon Web Services" disabled />
                       </FormField>
-                      <FormField label="Account Name:">
+                      <FormField
+                        label="Enter new Email:"
+                        errorText={getErrorText(
+                          'You must specify a content origin.'
+                        )}
+                      >
                         <Input
                           value={email}
                           inputMode="email"
@@ -116,7 +143,23 @@ const Account = (props) => {
                           placeholder="Enter New Email"
                         />
                       </FormField>
-                      <FormField label="Account Name:">
+                      <FormField label="Enter Old Password:">
+                        <Input
+                          value={password}
+                          type="password"
+                          onChange={({ detail }) => setPassword(detail.value)}
+                          placeholder="Set Old Password"
+                        />
+                      </FormField>
+                      <FormField label="Enter New Password:">
+                        <Input
+                          value={password}
+                          type="password"
+                          onChange={({ detail }) => setPassword(detail.value)}
+                          placeholder="Set New Password"
+                        />
+                      </FormField>
+                      <FormField label="Re-Enter Password:">
                         <Input
                           value={password}
                           type="password"
@@ -162,15 +205,26 @@ const Information = (props) => {
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
   const [website, setWebsite] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const editHandler = () => {
     setEdit(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    await fakeDataFetch(2500);
+    setLoading(false);
     setEdit(false);
   };
+
   return (
     <>
       <Container
@@ -206,7 +260,7 @@ const Information = (props) => {
       >
         {edit ? (
           <>
-            <form onSubmit={handleSubmit}>
+            <form>
               <Form
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
@@ -228,7 +282,13 @@ const Information = (props) => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" formAction="submit">
+                    <Button
+                      variant="primary"
+                      formAction="submit"
+                      loading={loading}
+                      disabled={loading === true}
+                      onClick={handleSubmit}
+                    >
                       Submit
                     </Button>
                   </SpaceBetween>
@@ -330,9 +390,9 @@ const Information = (props) => {
             <ColumnLayout borders="horizontal">
               <ColumnLayout columns={4}>
                 <Box variant="awsui-key-label">Full Name:</Box>
-                <Box float="left">{name || 'William Stuart'}</Box>
+                <Box float="left">{name || 'Andy Jassy'}</Box>
                 <Box variant="awsui-key-label">Address:</Box>
-                <Box float="left">{address || '12abc W road'}</Box>
+                <Box float="left">{address || '-'}</Box>
                 <Box variant="awsui-key-label">City:</Box>
                 <Box float="left">{city || 'Newark'}</Box>
                 <Box variant="awsui-key-label">State:</Box>
@@ -363,12 +423,22 @@ const Information = (props) => {
 const Payment = (props) => {
   const [edit, setEdit] = useState(false);
   const [currency, setCurrency] = useState({ label: 'US Dollar', value: '1' });
+  const [loading, setLoading] = useState(false);
 
   const editHandler = () => {
     setEdit(true);
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    await fakeDataFetch(2500);
+    setLoading(false);
     setEdit(false);
   };
 
@@ -407,7 +477,7 @@ const Payment = (props) => {
       >
         {edit ? (
           <>
-            <form onSubmit={handleSubmit}>
+            <form>
               <Form
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
@@ -421,7 +491,12 @@ const Payment = (props) => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="primary" formAction="submit">
+                    <Button
+                      variant="primary"
+                      formAction="submit"
+                      loading={loading}
+                      onClick={handleSubmit}
+                    >
                       Submit
                     </Button>
                   </SpaceBetween>
@@ -489,12 +564,12 @@ function Profile(props) {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
@@ -521,28 +596,28 @@ function Profile(props) {
       <AppLayout
         content={
           <Provider store={store}>
-            {!loading ? (
-              <ContentLayout
-                header={
-                  <DashboardHeader
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    title="Profile"
-                    des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+            {/* {!loading ? ( */}
+            <ContentLayout
+              header={
+                <DashboardHeader
+                  loadHelpPanelContent={loadHelpPanelContent}
+                  title="Profile"
+                  des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
                          resizeable computing capacity&mdash;literally, servers in Amazon's data
                          centers&mdash;that you use to build and host your software systems."
-                  />
-                }
-              >
-                <SpaceBetween size={'m'}>
-                  <Profiler
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    {...props}
-                  />
-                </SpaceBetween>
-              </ContentLayout>
-            ) : (
+                />
+              }
+            >
+              <SpaceBetween size={'m'}>
+                <Profiler
+                  loadHelpPanelContent={loadHelpPanelContent}
+                  {...props}
+                />
+              </SpaceBetween>
+            </ContentLayout>
+            {/* ) : (
               <Spinner size="large" className="spinner" />
-            )}
+            )} */}
           </Provider>
         }
         headerSelector="#h"
