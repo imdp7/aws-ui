@@ -50,10 +50,10 @@ const App = ({ user, signOut }): JSX.Element => {
                 />
               }
             />
-          <Route 
-            path="buckets" 
-            element={<BucketList user={user.username} signOut={signOut} /> }
-          />
+            <Route
+              path="buckets"
+              element={<BucketList user={user.username} signOut={signOut} />}
+            />
           </Route>
 
           <Route

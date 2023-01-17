@@ -28,67 +28,26 @@ const Pane1 = (props) => {
   return (
     <>
       {!loading ? (
-        <HelpPanel
-          key={props.title}
-          header={<h2>{props.title}</h2>}
-          footer={
-            <>
-              <h3>
-                Learn more{' '}
-                <span role="img" aria-label="Icon external Link">
-                  <Icon name="external" />
-                </span>
-              </h3>
-              <ul>
-                <li>
-                  <ExternalLinkItem
-                    key={props.title}
-                    href="#"
-                    text="User Guide for Linux Instances"
-                  />
-                </li>
-                <li>
-                  <ExternalLinkItem
-                    href="#"
-                    text="User Guide for Windows Instances"
-                  />
-                </li>
-                <li>
-                  <ExternalLinkItem href="#" text="API Reference" />
-                </li>
-                <li>
-                  <ExternalLinkItem
-                    href="#"
-                    text="EC2 section of the AWS CLI Reference"
-                  />
-                </li>
-                <li>
-                  <ExternalLinkItem
-                    href="#"
-                    text="EC2 Instance Connect API Reference"
-                  />
-                </li>
-              </ul>
-            </>
-          }
-        >
-          <p>{props?.info}</p>
-          <p>{props?.des}</p>
-          <h5>{props?.h5}</h5>
-          {props?.ul ? (
-            <div>
-              {props?.ul.map((t) => {
-                return (
-                  <>
-                    <b key={t.h5}>{t?.h5}</b>
-                    <ul>
-                      <li key={t.h5}>{t?.text}</li>
-                    </ul>
-                  </>
-                );
-              })}
-            </div>
-          ) : null}
+        <HelpPanel header={<h2>{props.title}</h2>}>
+          <div>
+            <p>{props?.info}</p>
+            <p>{props?.des}</p>
+            <h5>{props?.h5}</h5>
+            {props?.ul ? (
+              <div>
+                {props?.ul.map((t) => {
+                  return (
+                    <div key={t.h5}>
+                      <b>{t?.h5}</b>
+                      <ul>
+                        <li>{t?.text}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </HelpPanel>
       ) : (
         <Spinner className="spinner" size="big" />

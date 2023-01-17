@@ -18,10 +18,10 @@ import s3 from '../../../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_D
 import rds from '../../../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
 import classes from '../../app.module.scss';
 import { appLayoutLabels } from '../common/labels';
-import { AppFooter } from '../common/AppFooter'
+import { AppFooter } from '../common/AppFooter';
 const arrayData = [
-  ['EC2 Instance', `${ec2}`, 'ec2_instance/dashboard'],
-  ['S3', `${s3}`, 's3'],
+  ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
+  ['S3', `${s3}`, 's3/home'],
   ['Amazon RDS', `${rds}`, 'rds'],
   ['Cloudfront', `${ec2}`, 'cloudfront'],
   ['SQS', `${ec2}`, 'sqs'],
@@ -177,7 +177,7 @@ ual machines, or instances, that run on the AWSimport props from '../../../node_
 
   return (
     <>
-   <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
         <AppHeader {...props} />
       </div>
       <AppLayout
@@ -193,7 +193,7 @@ ual machines, or instances, that run on the AWSimport props from '../../../node_
         ariaLabels={appLayoutLabels}
         footerSelector="#f"
       />
-    <AppFooter />
+      <AppFooter />
     </>
   );
 }

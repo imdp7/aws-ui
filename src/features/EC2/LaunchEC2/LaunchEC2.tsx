@@ -57,7 +57,6 @@ const Content = ({ loadHelpPanelContent }) => {
   return (
     <SpaceBetween size="xxs" direction="horizontal">
       <Grid
-        style={{ position: 'relative' }}
         gridDefinition={[
           { colspan: { l: 8, m: 8, default: 12 } },
           { colspan: { l: 4, m: 4, default: 12 } },
