@@ -18,13 +18,14 @@ import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';
 import {
   Navigation,
-  ec2navItems,
-  EC2Header,
+  S3navItems,
+  S3Header,
 } from '../EC2/commons/common-components';
 
 export const S3 = (props): JSX.Element => {
   const [loading, setLoading] = useState(false);
-  const [activeHref, setActiveHref] = useState('Homepage');
+  const [activeHref, setActiveHref] = useState('home');
+  
 
   useEffect(() => {
     document.title = 'S3 Management Console';
@@ -57,8 +58,8 @@ export const S3 = (props): JSX.Element => {
                 setActiveHref(event.detail.href);
               }
             }}
-            items={ec2navItems}
-            header={EC2Header}
+            items={S3navItems}
+            header={S3Header}
           />
         }
         content={

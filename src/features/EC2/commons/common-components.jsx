@@ -28,10 +28,54 @@ export const EC2Header = {
   href: 'home',
 };
 
+export const S3Header = {
+  text: 'Amazon S3',
+  href: 'home'
+};
+
 export const ProfileHeader = {
   text: 'Account',
   href: 'dashboard',
 };
+
+export const S3navItems = [
+  { type: 'link', text: 'Buckets', href: 'buckets' },
+  { type: 'link', text: 'Access points', href: 'access_point' },
+  { type: 'link', text: 'Object Lambda Access Points', href: 'profile' },
+  { type: 'link', text: 'Multi Region Access Apoints', href: 'profile' },
+  { type: 'link', text: 'Batch Operations', href: 'profile' },
+  { type: 'link', text: 'Access Analyzer for S3', href: 'profile' },
+  { type: 'divider' },
+  { type: 'link', text: 'Block Public Access settings for this account', href: 'profile' },
+  {
+    text: 'Storage Lens',
+    type: 'section',
+    defaultExpanded: true,
+    items: [
+      { type: 'link', text: 'Dashboard', href: 'bills' },
+      { type: 'link', text: 'AWS Organizations settings', href: 'payments' },
+      ],
+  },
+  { type: 'divider' },
+  { type: 'link', text:'Feature spotlight',link:'feature',
+    info: (
+      <Badge color="blue">3</Badge>
+    ),
+  },
+  {type:'divider'},
+  {
+    text: 'AWS Marketplace for S3',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'Storage, Back-up and Recovery', href: 'bills' },
+      { type: 'link', text: 'Data Integration and Analytics', href: 'payments' },
+      { type: 'link', text: 'Observability and Monitoring', href: 'payments' },
+      { type: 'link', text: 'Security and Threat Detection', href: 'payments' },
+      { type: 'link', text: 'Permission', href: 'payments' },
+      ],
+  },
+  ]
 
 export const userNav = [
   { type: 'link', text: 'Profile', href: 'profile' },

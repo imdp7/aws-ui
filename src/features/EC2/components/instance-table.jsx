@@ -28,7 +28,7 @@ const COLUMN_DEFINITIONS = [
     cell: (item) => <Link href={`${item.id}`}>{item.id}</Link>,
   },
   {
-    id: 'id',
+    id: 'name',
     header: 'Instance Name',
     cell: (item) => <Link href={`${item.id}`}>{item.name}</Link>,
   },
@@ -117,6 +117,14 @@ export default function InstancesTable({
       selectionType="multi"
       resizableColumns={true}
       stripedRows
+      visibleColumns={[
+        "name",
+        "state",
+        "type",
+        "availabilityZone",
+        "volume",
+        "loadBalancers"
+      ]}
       ariaLabels={{
         itemSelectionLabel: (_data, row) => `select ${row.id}`,
         allItemsSelectionLabel: () => 'select all',
@@ -124,6 +132,7 @@ export default function InstancesTable({
       }}
       variant="full-page"
       stickyHeader={true}
+
       header={
         <TableHeader
           variant="awsui-h1-sticky"
@@ -172,6 +181,7 @@ export default function InstancesTable({
       pagination={
         <Pagination {...paginationProps} ariaLabels={paginationLabels} />
       }
+     
     />
   );
 }

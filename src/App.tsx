@@ -17,6 +17,7 @@ import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
 import Profile from './Auth/Profile';
 import EC2_HomePage from './features/EC2/EC2_HomePage';
+import BucketList from './features/S3/bucketList';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -44,12 +45,17 @@ const App = ({ user, signOut }): JSX.Element => {
                   signOut={signOut}
                   title="Amazon S3"
                   head="Create Bucket"
-                  link="bucket/create"
-                  instances="bucket"
+                  link="buckets/create"
+                  instances="buckets"
                 />
               }
             />
+          <Route 
+            path="buckets" 
+            element={<BucketList user={user.username} signOut={signOut} /> }
+          />
           </Route>
+
           <Route
             path="console/services"
             element={<AllServices user={user.username} signOut={signOut} />}
