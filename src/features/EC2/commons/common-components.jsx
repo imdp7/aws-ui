@@ -30,7 +30,7 @@ export const EC2Header = {
 
 export const S3Header = {
   text: 'Amazon S3',
-  href: 'home'
+  href: 'home',
 };
 
 export const ProfileHeader = {
@@ -46,7 +46,11 @@ export const S3navItems = [
   { type: 'link', text: 'Batch Operations', href: 'profile' },
   { type: 'link', text: 'Access Analyzer for S3', href: 'profile' },
   { type: 'divider' },
-  { type: 'link', text: 'Block Public Access settings for this account', href: 'profile' },
+  {
+    type: 'link',
+    text: 'Block Public Access settings for this account',
+    href: 'profile',
+  },
   {
     text: 'Storage Lens',
     type: 'section',
@@ -54,28 +58,33 @@ export const S3navItems = [
     items: [
       { type: 'link', text: 'Dashboard', href: 'bills' },
       { type: 'link', text: 'AWS Organizations settings', href: 'payments' },
-      ],
+    ],
   },
   { type: 'divider' },
-  { type: 'link', text:'Feature spotlight',link:'feature',
-    info: (
-      <Badge color="blue">3</Badge>
-    ),
+  {
+    type: 'link',
+    text: 'Feature spotlight',
+    link: 'feature',
+    info: <Badge color="blue">3</Badge>,
   },
-  {type:'divider'},
+  { type: 'divider' },
   {
     text: 'AWS Marketplace for S3',
     type: 'section',
     defaultExpanded: false,
     items: [
       { type: 'link', text: 'Storage, Back-up and Recovery', href: 'bills' },
-      { type: 'link', text: 'Data Integration and Analytics', href: 'payments' },
+      {
+        type: 'link',
+        text: 'Data Integration and Analytics',
+        href: 'payments',
+      },
       { type: 'link', text: 'Observability and Monitoring', href: 'payments' },
       { type: 'link', text: 'Security and Threat Detection', href: 'payments' },
       { type: 'link', text: 'Permission', href: 'payments' },
-      ],
+    ],
   },
-  ]
+];
 
 export const userNav = [
   { type: 'link', text: 'Profile', href: 'profile' },

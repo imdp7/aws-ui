@@ -25,6 +25,8 @@ import {
   Table,
   BreadcrumbGroup,
   Button,
+  Popover,
+  StatusIndicator,
 } from '@cloudscape-design/components';
 import {
   CustomAppLayout,
@@ -52,12 +54,11 @@ const defaultClass = { value: '0', label: 'Any Class' };
 const selectEngineOptions = prepareSelectOptions('engine', defaultEngine);
 const selectClassOptions = prepareSelectOptions('class', defaultClass);
 
-
 function prepareSelectOptions(field, defaultOption) {
   const optionSet = [];
   // Building a non redundant list of the field passed as parameter.
 
-  DATA.forEach(item => {
+  DATA.forEach((item) => {
     if (optionSet.indexOf(item[field]) === -1) {
       optionSet.push(item[field]);
     }
@@ -68,18 +69,21 @@ function prepareSelectOptions(field, defaultOption) {
   const options = [defaultOption];
 
   // Adding the other element ot the list.
-  optionSet.forEach((item, index) => options.push({ label: item, value: (index + 1).toString() }));
+  optionSet.forEach((item, index) =>
+    options.push({ label: item, value: (index + 1).toString() })
+  );
   return options;
 }
 
 function matchesEngine(item, selectedEngine) {
-  return selectedEngine === defaultEngine || item.engine === selectedEngine.label;
+  return (
+    selectedEngine === defaultEngine || item.engine === selectedEngine.label
+  );
 }
 
 function matchesClass(item, selectedClass) {
   return selectedClass === defaultClass || item.class === selectedClass.label;
 }
-
 
 const TableContent = ({ loadHelpPanelContent }) => {
   const [loading, setLoading] = React.useState(false);
@@ -92,18 +96,30 @@ const TableContent = ({ loadHelpPanelContent }) => {
     }, 1000);
   };
 
-
-  const [columnDefinitions, saveWidths] = useColumnWidths('React-TableSelectFilter-Widths', COLUMN_DEFINITIONS);
+  const [columnDefinitions, saveWidths] = useColumnWidths(
+    'React-TableSelectFilter-Widths',
+    COLUMN_DEFINITIONS
+  );
   const [engine, setEngine] = useState(defaultEngine);
   const [instanceClass, setInstanceClass] = useState(defaultClass);
-  const [preferences, setPreferences] = useLocalStorage('React-DBInstancesTable-Preferences', {
-    pageSize: 10,
-    visibleContent: ['name', 'awsRegion', 'privateAccess', 'createdAt'],
-    wrapLines: false,
-    stripedRows: true,
-    custom: 'table',
-  });
-  const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(DATA, {
+  const [preferences, setPreferences] = useLocalStorage(
+    'React-DBInstancesTable-Preferences',
+    {
+      pageSize: 30,
+      visibleContent: ['name', 'awsRegion', 'privateAccess', 'createdAt'],
+      wrapLines: true,
+      stripedRows: true,
+      custom: 'table',
+    }
+  );
+  const {
+    items,
+    actions,
+    filteredItemsCount,
+    collectionProps,
+    filterProps,
+    paginationProps,
+  } = useCollection(DATA, {
     filtering: {
       empty: <TableEmptyState resourceName="Instance" />,
       noMatch: <TableNoMatchState onClearFilter={clearFilter} />,
@@ -116,8 +132,10 @@ const TableContent = ({ loadHelpPanelContent }) => {
         }
         const filteringTextLowerCase = filteringText.toLowerCase();
 
-        return SEARCHABLE_COLUMNS.map(key => item[key]).some(
-          value => typeof value === 'string' && value.toLowerCase().indexOf(filteringTextLowerCase) > -1
+        return SEARCHABLE_COLUMNS.map((key) => item[key]).some(
+          (value) =>
+            typeof value === 'string' &&
+            value.toLowerCase().indexOf(filteringTextLowerCase) > -1
         );
       },
     },
@@ -135,136 +153,108 @@ const TableContent = ({ loadHelpPanelContent }) => {
     setInstanceClass(defaultClass);
   }
 
+  const CopyARN = (props): JSX.Element => {
+    const [copy, setCopy] = useState(false);
+
+    const handleClick = async () => {
+      try {
+        await navigator.clipboard.writeText(props.selectedItems[0].arn);
+        setCopy(true);
+      } catch (err) {
+        console.error('Failed to Bucket ARN: ', err);
+      }
+    };
+
+    return (
+      <Box margin={{ right: 'xxs' }} display="inline-block">
+        <Popover
+          size="small"
+          position="top"
+          dismissButton={false}
+          triggerType="custom"
+          content={
+            <StatusIndicator type={'success'}>ARN Copied</StatusIndicator>
+          }
+        >
+          <Button
+            iconName="copy"
+            onClick={handleClick}
+            disabled={props.selectedItems.length === 0}
+          >
+            Copy ARN
+          </Button>
+        </Popover>
+      </Box>
+    );
+  };
 
   return (
     <SpaceBetween size="xxs">
-     {/* <Table
+      <Table
         {...collectionProps}
-        onSelectionChange={({ detail }) =>
-          setSelectedItems(detail.selectedItems)
-        }
+        columnDefinitions={columnDefinitions}
+        visibleColumns={preferences.visibleContent}
+        items={items}
+        variant="container"
+        resizableColumns={true}
+        onColumnWidthsChange={saveWidths}
         wrapLines={preferences.wrapLines}
         stripedRows={preferences.stripedRows}
-        variant="container"
-        selectedItems={selectedItems}
-        ariaLabels={{
-          selectionGroupLabel: 'Items selection',
-          allItemsSelectionLabel: ({ selectedItems }) =>
-            `${selectedItems.length} ${
-              selectedItems.length === 1 ? 'item' : 'items'
-            } selected`,
-          itemSelectionLabel: ({ selectedItems }, item) => {
-            const isItemSelected = selectedItems.filter(
-              (i) => i.name === item.name
-            ).length;
-            return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
-          },
-        }}
-        columnDefinitions={[
-          {
-            id: 'name',
-            header: 'Name',
-            cell: (e) => e.name,
-            sortingField: 'name',
-          },
-          {
-            id: 'awsRegion',
-            header: 'AWS Region',
-            cell: (e) => e.awsRegion,
-            sortingField: 'awsRegion',
-          },
-          {
-            id: 'access',
-            header: 'Access',
-            cell: (e) => e.privateAccess,
-            sortingField: 'PrivateAccess',
-          },
-          {
-            id: 'version',
-            header: 'Version Controlling',
-            cell: (e) => e.version,
-            sortingField: 'version',
-          },
-          {
-            id: 'createdAt',
-            header: 'Creation Date',
-            cell: (e) => e.createdAt,
-            sortingField: 'createdAt',
-          },
-        ]}
-        items={items}
-
-        loadingText="Loading resources"
         selectionType="single"
-        trackBy="name"
-        visibleColumns={preferences.visibleContentPreference}
-        empty={
-          <Box textAlign="center" color="inherit">
-            <b>No resources</b>
-            <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-              No resources to display.
-            </Box>
-            <Button>Create resource</Button>
-          </Box>
-        }
-        filter={
-          <TextFilter
-            filteringPlaceholder="Find buckets by name"
-            filteringText=""
-          />
-        }
+        ariaLabels={{
+          itemSelectionLabel: (data, row) => `Select DB instance ${row.id}`,
+          allItemsSelectionLabel: () => 'Select all DB instances',
+          selectionGroupLabel: 'Instances selection',
+        }}
         header={
-          // <Header
-          //   description="Buckets are containers for data stored in S3"
-          //   counter={
-          //     selectedItems.length
-          //       ? '(' + selectedItems.length + '/10)'
-          //       : '(10)'
-          //   }
-          //   actions={
-          //     <SpaceBetween size="m" direction="horizontal">
-          //       <Button
-          //         ariaExpanded
-          //         loading={loading}
-          //         iconName="refresh"
-          //         onClick={handleRefresh}
-          //       />
-          //       <Button iconName="copy" disabled>
-          //         Copy ARN
-          //       </Button>
-          //       <Button disabled>Empty</Button>
-          //       <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
-          //       <Button variant="primary">Create Bucket</Button>
-          //     </SpaceBetween>
-          //   }
-          // >
-          //   Buckets
-          // </Header>
           <TableHeader
-          title="Buckets"
-          variant="awsui-h1-sticky"
-          selectedItems={collectionProps.selectedItems}
-          totalItems={DATA}
-          loadHelpPanelContent={loadHelpPanelContent}
-          actionButtons={
-            <SpaceBetween size="xs" direction="horizontal">
-            <Button
+            title="Buckets"
+            variant="awsui-h1-sticky"
+            selectedItems={collectionProps.selectedItems}
+            totalItems={DATA}
+            loadHelpPanelContent={loadHelpPanelContent}
+            actionButtons={
+              <SpaceBetween size="m" direction="horizontal">
+                <Button
                   ariaExpanded
                   loading={loading}
                   iconName="refresh"
                   onClick={handleRefresh}
                 />
-              <Button iconName="copy" disabled>
-                Copy ARN
-              </Button>
-              <Button disabled>Empty</Button>
-              <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
-              <Button variant="primary">Create Bucket</Button>
-            </SpaceBetween>
-          }
-        />
+                {/* <Button
+                  iconName="copy"
+                  disabled={collectionProps.selectedItems.length === 0}
+                  onClick={copyARN}
+                >
+                  Copy ARN
+                </Button> */}
+                <CopyARN {...collectionProps} />
+                <Button disabled={collectionProps.selectedItems.length === 0}>
+                  Empty
+                </Button>
+                <Button disabled={collectionProps.selectedItems.length === 0}>
+                  Delete
+                </Button>
+                <Button variant="primary">Create Bucket</Button>
+              </SpaceBetween>
+            }
+          />
         }
-        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
+        filter={
+          <TextFilter
+            filteringPlaceholder="Find buckets by name"
+            value={filterProps.filteringText}
+            onChange={(event) => {
+              actions.setFiltering(event.detail.value);
+            }}
+            placeholder="Find Buckets"
+            label="Find Buckets"
+            ariaDescribedby={null}
+          />
+        }
+        pagination={
+          <Pagination {...paginationProps} ariaLabels={paginationLabels} />
+        }
         preferences={
           <CollectionPreferences
             title="Preferences"
@@ -273,171 +263,24 @@ const TableContent = ({ loadHelpPanelContent }) => {
             preferences={preferences}
             onConfirm={({ detail }) => setPreferences(detail)}
             pageSizePreference={{
-              title: 'Select page size',
-              options: [
-                { value: 100, label: '100 buckets' },
-              ],
+              title: 'Page size',
+              options: PAGE_SIZE_OPTIONS,
             }}
             wrapLinesPreference={{
-              label: "Wrap lines",
-              description: "Wrap lines description"
+              label: 'Wrap lines',
+              description: 'Check to see all the text and wrap the lines',
             }}
             stripedRowsPreference={{
-              label: "Strip Rows",
-              description: "Striped Rows description"
+              label: 'Striped rows',
+              description: 'Check to add alternating shaded rows',
             }}
             visibleContentPreference={{
-              title: 'Select visible content',
-              options: [
-                {
-                  label: 'Main distribution properties',
-                  options: [
-                    {
-                      id: 'name',
-                      label: 'Name',
-                      editable: false,
-                    },
-                    { id: 'awsRegion', label: 'AWS Region' },
-                    { id: 'privateAccess', label: 'Access' },
-                    { id: 'version', label: 'Version Controlling'},
-                    {
-                      id: 'createdAt',
-                      label: 'Created At',
-                    },
-
-                  ],
-                },
-              ],
+              title: 'Select visible columns',
+              options: VISIBLE_CONTENT_OPTIONS,
             }}
           />
         }
-      />*/}
-    <Table
-      {...collectionProps}
-      columnDefinitions={columnDefinitions}
-      visibleColumns={preferences.visibleContent}
-      items={items}
-      variant="container"
-      resizableColumns={true}
-      onColumnWidthsChange={saveWidths}
-      wrapLines={preferences.wrapLines}
-      stripedRows={preferences.stripedRows}
-      selectionType="single"
-      ariaLabels={{
-        itemSelectionLabel: (data, row) => `Select DB instance ${row.id}`,
-        allItemsSelectionLabel: () => 'Select all DB instances',
-        selectionGroupLabel: 'Instances selection',
-      }}
-      header={
-        <TableHeader
-          title="Buckets"
-          variant="awsui-h1-sticky"
-          selectedItems={collectionProps.selectedItems}
-          totalItems={DATA}
-          loadHelpPanelContent={loadHelpPanelContent}
-          actionButtons={
-            <SpaceBetween size="m" direction="horizontal">
-                <Button
-                  ariaExpanded
-                  loading={loading}
-                  iconName="refresh"
-                  onClick={handleRefresh}
-                />
-                <Button iconName="copy" disabled>
-                  Copy ARN
-                </Button>
-                <Button disabled>Empty</Button>
-                <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
-                <Button variant="primary">Create Bucket</Button>
-              </SpaceBetween>
-          }
-        />
-      }
-      filter={
-          <TextFilter
-            filteringPlaceholder="Find buckets by name"
-            value={filterProps.filteringText}
-              onChange={event => {
-                actions.setFiltering(event.detail.value);
-              }}
-              placeholder="Find Buckets"
-              label="Find Buckets"
-              ariaDescribedby={null}
-          />
-        }
-      // filter={
-      //   <div className="input-container">
-      //     <div className="input-filter">
-      //       <Input
-      //         data-testid="input-filter"
-      //         type="search"
-      //         value={filterProps.filteringText}
-      //         onChange={event => {
-      //           actions.setFiltering(event.detail.value);
-      //         }}
-      //         placeholder="Find instances"
-      //         label="Find instances"
-      //         ariaDescribedby={null}
-      //       />
-      //     </div>
-      //     <div className="select-filter">
-      //       <Select
-      //         data-testid="engine-filter"
-      //         options={selectEngineOptions}
-      //         selectedAriaLabel="Selected"
-      //         selectedOption={engine}
-      //         onChange={event => {
-      //           setEngine(event.detail.selectedOption);
-      //         }}
-      //         ariaDescribedby={null}
-      //         expandToViewport={true}
-      //       />
-      //     </div>
-      //     <div className="select-filter">
-      //       <Select
-      //         data-testid="class-filter"
-      //         options={selectClassOptions}
-      //         selectedAriaLabel="Selected"
-      //         selectedOption={instanceClass}
-      //         onChange={event => {
-      //           setInstanceClass(event.detail.selectedOption);
-      //         }}
-      //         ariaDescribedby={null}
-      //         expandToViewport={true}
-      //       />
-      //     </div>
-      //     {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass) && (
-      //       <span className="filtering-results">{getFilterCounterText(filteredItemsCount)}</span>
-      //     )}
-      //   </div>
-      // }
-      pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-      preferences={
-        <CollectionPreferences
-          title="Preferences"
-          confirmLabel="Confirm"
-          cancelLabel="Cancel"
-          preferences={preferences}
-          onConfirm={({ detail }) => setPreferences(detail)}
-          pageSizePreference={{
-            title: 'Page size',
-            options: PAGE_SIZE_OPTIONS,
-          }}
-          wrapLinesPreference={{
-            label: 'Wrap lines',
-            description: 'Check to see all the text and wrap the lines',
-          }}
-          stripedRowsPreference={{
-            label: 'Striped rows',
-            description: 'Check to add alternating shaded rows',
-          }}
-          visibleContentPreference={{
-            title: 'Select visible columns',
-            options: VISIBLE_CONTENT_OPTIONS,
-          }}
-        />
-      }
-    />
+      />
     </SpaceBetween>
   );
 };
