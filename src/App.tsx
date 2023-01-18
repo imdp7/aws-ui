@@ -17,7 +17,8 @@ import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
 import Profile from './Auth/Profile';
 import EC2_HomePage from './features/EC2/EC2_HomePage';
-import BucketList from './features/S3/bucketList';
+import BucketList from './features/S3/BucketList';
+import BucketDetail from './features/S3/BucketDetail';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -53,6 +54,10 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="buckets"
               element={<BucketList user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="buckets/:id"
+              element={<BucketDetail user={user.username} signOut={signOut} />}
             />
           </Route>
 
