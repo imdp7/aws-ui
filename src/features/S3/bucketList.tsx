@@ -1,8 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Content } from '../EC2/commons/Home';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
+import {
+  COLUMN_DEFINITIONS,
+  VISIBLE_CONTENT_OPTIONS,
+  PAGE_SIZE_OPTIONS,
+  SEARCHABLE_COLUMNS,
+} from './components/table-select-filter-config';
 import {
   AppLayout,
   Container,
@@ -11,6 +17,8 @@ import {
   Spinner,
   Header,
   Box,
+  Input,
+  Select,
   TextFilter,
   Pagination,
   CollectionPreferences,
@@ -18,8 +26,17 @@ import {
   BreadcrumbGroup,
   Button,
 } from '@cloudscape-design/components';
+import {
+  CustomAppLayout,
+  Notifications,
+  TableEmptyState,
+  TableHeader,
+  TableNoMatchState,
+} from '../EC2/commons/common-components';
+import DATA from '../resources/s3Bucket';
+import { useColumnWidths } from '../EC2/commons/use-column-widths';
 import { Provider } from 'react-redux';
-import { appLayoutLabels } from '../common/labels';
+import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { store } from '../../app/store';
 import {
   Navigation,
@@ -27,6 +44,42 @@ import {
   S3Header,
 } from '../EC2/commons/common-components';
 import { DashboardHeader, HelpPanels } from '../EC2/components/header';
+import { useCollection } from '@cloudscape-design/collection-hooks';
+import { useLocalStorage } from '../common/localStorage';
+
+const defaultEngine = { value: '0', label: 'Any Engine' };
+const defaultClass = { value: '0', label: 'Any Class' };
+const selectEngineOptions = prepareSelectOptions('engine', defaultEngine);
+const selectClassOptions = prepareSelectOptions('class', defaultClass);
+
+
+function prepareSelectOptions(field, defaultOption) {
+  const optionSet = [];
+  // Building a non redundant list of the field passed as parameter.
+
+  DATA.forEach(item => {
+    if (optionSet.indexOf(item[field]) === -1) {
+      optionSet.push(item[field]);
+    }
+  });
+  optionSet.sort();
+
+  // The first element is the default one.
+  const options = [defaultOption];
+
+  // Adding the other element ot the list.
+  optionSet.forEach((item, index) => options.push({ label: item, value: (index + 1).toString() }));
+  return options;
+}
+
+function matchesEngine(item, selectedEngine) {
+  return selectedEngine === defaultEngine || item.engine === selectedEngine.label;
+}
+
+function matchesClass(item, selectedClass) {
+  return selectedClass === defaultClass || item.class === selectedClass.label;
+}
+
 
 const TableContent = ({ loadHelpPanelContent }) => {
   const [loading, setLoading] = React.useState(false);
@@ -39,13 +92,59 @@ const TableContent = ({ loadHelpPanelContent }) => {
     }, 1000);
   };
 
+
+  const [columnDefinitions, saveWidths] = useColumnWidths('React-TableSelectFilter-Widths', COLUMN_DEFINITIONS);
+  const [engine, setEngine] = useState(defaultEngine);
+  const [instanceClass, setInstanceClass] = useState(defaultClass);
+  const [preferences, setPreferences] = useLocalStorage('React-DBInstancesTable-Preferences', {
+    pageSize: 10,
+    visibleContent: ['name', 'awsRegion', 'privateAccess', 'createdAt'],
+    wrapLines: false,
+    stripedRows: true,
+    custom: 'table',
+  });
+  const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(DATA, {
+    filtering: {
+      empty: <TableEmptyState resourceName="Instance" />,
+      noMatch: <TableNoMatchState onClearFilter={clearFilter} />,
+      filteringFunction: (item, filteringText) => {
+        if (!matchesEngine(item, engine)) {
+          return false;
+        }
+        if (!matchesClass(item, instanceClass)) {
+          return false;
+        }
+        const filteringTextLowerCase = filteringText.toLowerCase();
+
+        return SEARCHABLE_COLUMNS.map(key => item[key]).some(
+          value => typeof value === 'string' && value.toLowerCase().indexOf(filteringTextLowerCase) > -1
+        );
+      },
+    },
+    pagination: { pageSize: preferences.pageSize },
+    sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
+    selection: {},
+  });
+  useLayoutEffect(() => {
+    collectionProps.ref.current?.scrollToTop();
+  }, [instanceClass, engine, collectionProps.ref, filterProps.filteringText]);
+
+  function clearFilter() {
+    actions.setFiltering('');
+    setEngine(defaultEngine);
+    setInstanceClass(defaultClass);
+  }
+
+
   return (
     <SpaceBetween size="xxs">
-      <Table
+     {/* <Table
+        {...collectionProps}
         onSelectionChange={({ detail }) =>
           setSelectedItems(detail.selectedItems)
         }
-        stripedRows
+        wrapLines={preferences.wrapLines}
+        stripedRows={preferences.stripedRows}
         variant="container"
         selectedItems={selectedItems}
         ariaLabels={{
@@ -69,72 +168,36 @@ const TableContent = ({ loadHelpPanelContent }) => {
             sortingField: 'name',
           },
           {
-            id: 'aws-region',
+            id: 'awsRegion',
             header: 'AWS Region',
-            cell: (e) => e.alt,
-            sortingField: 'alt',
+            cell: (e) => e.awsRegion,
+            sortingField: 'awsRegion',
           },
           {
             id: 'access',
             header: 'Access',
-            cell: (e) => e.type,
-            sortingField: 'description',
+            cell: (e) => e.privateAccess,
+            sortingField: 'PrivateAccess',
+          },
+          {
+            id: 'version',
+            header: 'Version Controlling',
+            cell: (e) => e.version,
+            sortingField: 'version',
           },
           {
             id: 'createdAt',
             header: 'Creation Date',
-            cell: (e) => e.size,
-            sortingField: 'alt',
+            cell: (e) => e.createdAt,
+            sortingField: 'createdAt',
           },
         ]}
-        items={[
-          {
-            name: 'Item 1',
-            alt: 'First',
-            description: 'This is the first item',
-            type: '1A',
-            size: 'Small',
-          },
-          {
-            name: 'Item 2',
-            alt: 'Second',
-            description: 'This is the second item',
-            type: '1B',
-            size: 'Large',
-          },
-          {
-            name: 'Item 3',
-            alt: 'Third',
-            description: '-',
-            type: '1A',
-            size: 'Large',
-          },
-          {
-            name: 'Item 4',
-            alt: 'Fourth',
-            description: 'This is the fourth item',
-            type: '2A',
-            size: 'Small',
-          },
-          {
-            name: 'Item 5',
-            alt: '-',
-            description: 'This is the fifth item with a longer description',
-            type: '2A',
-            size: 'Large',
-          },
-          {
-            name: 'Item 6',
-            alt: 'Sixth',
-            description: 'This is the sixth item',
-            type: '1A',
-            size: 'Small',
-          },
-        ]}
+        items={items}
+
         loadingText="Loading resources"
-        selectionType="multi"
+        selectionType="single"
         trackBy="name"
-        visibleColumns={['name', 'aws-region', 'access', 'createdAt']}
+        visibleColumns={preferences.visibleContentPreference}
         empty={
           <Box textAlign="center" color="inherit">
             <b>No resources</b>
@@ -151,59 +214,77 @@ const TableContent = ({ loadHelpPanelContent }) => {
           />
         }
         header={
-          <Header
-            description="Buckets are containers for data stored in S3"
-            counter={
-              selectedItems.length
-                ? '(' + selectedItems.length + '/10)'
-                : '(10)'
-            }
-            actions={
-              <SpaceBetween size="m" direction="horizontal">
-                <Button
+          // <Header
+          //   description="Buckets are containers for data stored in S3"
+          //   counter={
+          //     selectedItems.length
+          //       ? '(' + selectedItems.length + '/10)'
+          //       : '(10)'
+          //   }
+          //   actions={
+          //     <SpaceBetween size="m" direction="horizontal">
+          //       <Button
+          //         ariaExpanded
+          //         loading={loading}
+          //         iconName="refresh"
+          //         onClick={handleRefresh}
+          //       />
+          //       <Button iconName="copy" disabled>
+          //         Copy ARN
+          //       </Button>
+          //       <Button disabled>Empty</Button>
+          //       <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
+          //       <Button variant="primary">Create Bucket</Button>
+          //     </SpaceBetween>
+          //   }
+          // >
+          //   Buckets
+          // </Header>
+          <TableHeader
+          title="Buckets"
+          variant="awsui-h1-sticky"
+          selectedItems={collectionProps.selectedItems}
+          totalItems={DATA}
+          loadHelpPanelContent={loadHelpPanelContent}
+          actionButtons={
+            <SpaceBetween size="xs" direction="horizontal">
+            <Button
                   ariaExpanded
                   loading={loading}
                   iconName="refresh"
                   onClick={handleRefresh}
                 />
-                <Button iconName="copy" disabled>
-                  Copy ARN
-                </Button>
-                <Button disabled>Empty</Button>
-                <Button>Delete</Button>
-                <Button variant="primary">Create Bucket</Button>
-              </SpaceBetween>
-            }
-          >
-            Buckets
-          </Header>
+              <Button iconName="copy" disabled>
+                Copy ARN
+              </Button>
+              <Button disabled>Empty</Button>
+              <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
+              <Button variant="primary">Create Bucket</Button>
+            </SpaceBetween>
+          }
+        />
         }
-        pagination={
-          <Pagination
-            currentPageIndex={1}
-            pagesCount={2}
-            ariaLabels={{
-              nextPageLabel: 'Next page',
-              previousPageLabel: 'Previous page',
-              pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
-            }}
-          />
-        }
+        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
         preferences={
           <CollectionPreferences
             title="Preferences"
             confirmLabel="Confirm"
             cancelLabel="Cancel"
-            preferences={{
-              pageSize: 10,
-              visibleContent: ['name', 'aws-region', 'access', 'createdAt'],
-            }}
+            preferences={preferences}
+            onConfirm={({ detail }) => setPreferences(detail)}
             pageSizePreference={{
               title: 'Select page size',
               options: [
-                { value: 10, label: '10 resources' },
-                { value: 20, label: '20 resources' },
+                { value: 100, label: '100 buckets' },
               ],
+            }}
+            wrapLinesPreference={{
+              label: "Wrap lines",
+              description: "Wrap lines description"
+            }}
+            stripedRowsPreference={{
+              label: "Strip Rows",
+              description: "Striped Rows description"
             }}
             visibleContentPreference={{
               title: 'Select visible content',
@@ -216,19 +297,147 @@ const TableContent = ({ loadHelpPanelContent }) => {
                       label: 'Name',
                       editable: false,
                     },
-                    { id: 'aws-region', label: 'AWS Region' },
-                    { id: 'access', label: 'Access' },
+                    { id: 'awsRegion', label: 'AWS Region' },
+                    { id: 'privateAccess', label: 'Access' },
+                    { id: 'version', label: 'Version Controlling'},
                     {
                       id: 'createdAt',
                       label: 'Created At',
                     },
+
                   ],
                 },
               ],
             }}
           />
         }
-      />
+      />*/}
+    <Table
+      {...collectionProps}
+      columnDefinitions={columnDefinitions}
+      visibleColumns={preferences.visibleContent}
+      items={items}
+      variant="container"
+      resizableColumns={true}
+      onColumnWidthsChange={saveWidths}
+      wrapLines={preferences.wrapLines}
+      stripedRows={preferences.stripedRows}
+      selectionType="single"
+      ariaLabels={{
+        itemSelectionLabel: (data, row) => `Select DB instance ${row.id}`,
+        allItemsSelectionLabel: () => 'Select all DB instances',
+        selectionGroupLabel: 'Instances selection',
+      }}
+      header={
+        <TableHeader
+          title="Buckets"
+          variant="awsui-h1-sticky"
+          selectedItems={collectionProps.selectedItems}
+          totalItems={DATA}
+          loadHelpPanelContent={loadHelpPanelContent}
+          actionButtons={
+            <SpaceBetween size="m" direction="horizontal">
+                <Button
+                  ariaExpanded
+                  loading={loading}
+                  iconName="refresh"
+                  onClick={handleRefresh}
+                />
+                <Button iconName="copy" disabled>
+                  Copy ARN
+                </Button>
+                <Button disabled>Empty</Button>
+                <Button disabled={collectionProps.selectedItems.length === 0}>Delete</Button>
+                <Button variant="primary">Create Bucket</Button>
+              </SpaceBetween>
+          }
+        />
+      }
+      filter={
+          <TextFilter
+            filteringPlaceholder="Find buckets by name"
+            value={filterProps.filteringText}
+              onChange={event => {
+                actions.setFiltering(event.detail.value);
+              }}
+              placeholder="Find Buckets"
+              label="Find Buckets"
+              ariaDescribedby={null}
+          />
+        }
+      // filter={
+      //   <div className="input-container">
+      //     <div className="input-filter">
+      //       <Input
+      //         data-testid="input-filter"
+      //         type="search"
+      //         value={filterProps.filteringText}
+      //         onChange={event => {
+      //           actions.setFiltering(event.detail.value);
+      //         }}
+      //         placeholder="Find instances"
+      //         label="Find instances"
+      //         ariaDescribedby={null}
+      //       />
+      //     </div>
+      //     <div className="select-filter">
+      //       <Select
+      //         data-testid="engine-filter"
+      //         options={selectEngineOptions}
+      //         selectedAriaLabel="Selected"
+      //         selectedOption={engine}
+      //         onChange={event => {
+      //           setEngine(event.detail.selectedOption);
+      //         }}
+      //         ariaDescribedby={null}
+      //         expandToViewport={true}
+      //       />
+      //     </div>
+      //     <div className="select-filter">
+      //       <Select
+      //         data-testid="class-filter"
+      //         options={selectClassOptions}
+      //         selectedAriaLabel="Selected"
+      //         selectedOption={instanceClass}
+      //         onChange={event => {
+      //           setInstanceClass(event.detail.selectedOption);
+      //         }}
+      //         ariaDescribedby={null}
+      //         expandToViewport={true}
+      //       />
+      //     </div>
+      //     {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass) && (
+      //       <span className="filtering-results">{getFilterCounterText(filteredItemsCount)}</span>
+      //     )}
+      //   </div>
+      // }
+      pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={preferences}
+          onConfirm={({ detail }) => setPreferences(detail)}
+          pageSizePreference={{
+            title: 'Page size',
+            options: PAGE_SIZE_OPTIONS,
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Check to see all the text and wrap the lines',
+          }}
+          stripedRowsPreference={{
+            label: 'Striped rows',
+            description: 'Check to add alternating shaded rows',
+          }}
+          visibleContentPreference={{
+            title: 'Select visible columns',
+            options: VISIBLE_CONTENT_OPTIONS,
+          }}
+        />
+      }
+    />
     </SpaceBetween>
   );
 };
