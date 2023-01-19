@@ -17,7 +17,7 @@ import PageNotFound from './PageNotFound';
 import AllServices from './features/home/AllServices';
 import Profile from './Auth/Profile';
 import EC2_HomePage from './features/EC2/EC2_HomePage';
-import BucketList from './features/S3/BucketList';
+import BucketList from './features/S3/bucketList';
 import BucketDetail from './features/S3/BucketDetail';
 
 I18n.putVocabularies(translations);
