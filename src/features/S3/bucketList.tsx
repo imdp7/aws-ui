@@ -339,7 +339,7 @@ export default function BucketList(props) {
       <AppLayout
         headerSelector="#h"
         footerSelector="#f"
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={[
@@ -366,6 +366,7 @@ export default function BucketList(props) {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         content={
+          <Provider store={store}>
           <SpaceBetween size="l">
             <ContentLayout
               header={
@@ -392,6 +393,7 @@ export default function BucketList(props) {
             />
             <TableContent loadHelpPanelContent={loadHelpPanelContent} />
           </SpaceBetween>
+          </Provider>
         }
       />
       <AppFooter />
