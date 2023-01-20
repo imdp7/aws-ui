@@ -19,6 +19,7 @@ import Profile from './Auth/Profile';
 import EC2_HomePage from './features/EC2/EC2_HomePage';
 import BucketList from './features/S3/bucketList';
 import BucketDetail from './features/S3/BucketDetail';
+import Upload from './features/S3/Upload'
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -40,6 +41,7 @@ const App = ({ user, signOut }): JSX.Element => {
           <Route path="s3">
             <Route
               path="home"
+              index
               element={
                 <S3
                   user={user.username}
@@ -59,8 +61,11 @@ const App = ({ user, signOut }): JSX.Element => {
               path="buckets/:id"
               element={<BucketDetail user={user.username} signOut={signOut} />}
             />
-          </Route>
-
+            <Route
+              path="buckets/:id/upload"
+              element={<Upload user={user.username} signOut={signOut} />}
+            />
+        </Route>
           <Route
             path="console/services"
             element={<AllServices user={user.username} signOut={signOut} />}

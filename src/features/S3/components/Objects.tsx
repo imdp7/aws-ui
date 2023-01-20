@@ -2,7 +2,12 @@ import React, {useState} from 'react';
 import {Container, SpaceBetween, Box, Button, TextFilter, Pagination, Table, Header, CollectionPreferences, Link} from '@cloudscape-design/components'
 import { useLocalStorage } from '../../common/localStorage';
 
-const ObjectsPane = () => {
+
+const visibleContent = ['name', 'awsRegion', 'privateAccess', 'createdAt']
+
+export const ObjectsPane = (props) => {
+	const data = [{"title" : "Objects"}];
+
 	  const [
     selectedItems,
     setSelectedItems
@@ -12,7 +17,7 @@ const ObjectsPane = () => {
     'React-DBInstancesTable-Preferences',
     {
       pageSize: 10,
-      visibleContent: ['name', 'awsRegion', 'privateAccess', 'createdAt'],
+      visibleContent: [{visibleContent}],
       wrapLines: true,
       stripedRows: true,
       custom: 'table',
@@ -138,8 +143,12 @@ const ObjectsPane = () => {
         <Header
         	description={
         		<>
+        		{props.desc ? props.desc : (
+        			<>
         	Objects are the fundamental entities stored in Amazon S3. You can use {""} 
-        	<Link external externalIconAriaLabel="Opens in a new tab" href="https://docs.aws.amazon.com/console/s3/inventory">Amazon S3 inventory </Link>{" "} to get a list of all objects in your bucket. For others to access your objects, you’ll need to explicitly grant them permissions. <Link external externalIconAriaLabel="Opens in a new tab" href="https://docs.aws.amazon.com/console/s3/inventory"> Learn more</Link>{" "}"
+        	<Link external externalIconAriaLabel="Opens in a new tab" href="https://docs.aws.amazon.com/console/s3/inventory">Amazon S3 inventory </Link>{" "} to get a list of all objects in your bucket. For others to access your objects, you’ll need to explicitly grant them permissions. <Link external externalIconAriaLabel="Opens in a new tab" href="https://docs.aws.amazon.com/console/s3/inventory"> Learn more</Link>{" "}
+        	</>
+        	)}
         	</>
         }
           counter={
@@ -149,6 +158,8 @@ const ObjectsPane = () => {
           }
           info={<Link variant="info">Info</Link>}
           actions={
+          	<>
+          	{ props.upload !== "true" ?  (
           	<SpaceBetween size="m" direction="horizontal">
           		<Button iconName="refresh"/>
           		<Button iconName="copy" disabled={selectedItems.length === 0}>
@@ -172,12 +183,27 @@ const ObjectsPane = () => {
                 <Button>
                   Create Folder
                 </Button>
-                <Button iconName="upload" variant="primary">Upload</Button>
+                <Button iconName="upload" variant="primary" onClick={() => window.location.href=`${props.id}/upload`}>Upload</Button>
           	</SpaceBetween>
+          	) : ( 
+          		<SpaceBetween size="m" direction="horizontal">
+          		<Button iconName="remove" disabled={selectedItems.length === 0}>
+                  Remove
+                </Button>
+                <Button iconName="file">
+                  Add Files
+                </Button>
+                <Button iconName="folder">
+                  Add Folder
+                </Button>
+          	</SpaceBetween>
+
+          	)}
+          	</>
       }
 
         >
-        Objects
+        {props.title ? props.title : data[0].title}
         </Header>
       }
       pagination={
