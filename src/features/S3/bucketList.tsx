@@ -343,8 +343,8 @@ export default function BucketList(props) {
         breadcrumbs={
           <BreadcrumbGroup
             items={[
-              { text: 'Amazon S3', href: 'home' },
-              { text: 'Buckets', href: 'bucket' },
+              { text: 'Amazon S3', href: '/S3/home' },
+              { text: 'Buckets', href: 'buckets' },
             ]}
           />
         }
@@ -367,32 +367,32 @@ export default function BucketList(props) {
         ariaLabels={appLayoutLabels}
         content={
           <Provider store={store}>
-          <SpaceBetween size="l">
-            <ContentLayout
-              header={
-                <DashboardHeader
-                  loadHelpPanelContent={loadHelpPanelContent}
-                  title="Buckets"
-                  info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
-                  ul={[
-                    {
-                      h5: 'Manage access',
-                      text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
-                    },
-                    {
-                      h5: 'Configure your bucket',
-                      text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
-                    },
-                    {
-                      h5: 'Understand storage usage and activity',
-                      text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
-                    },
-                  ]}
-                />
-              }
-            />
-            <TableContent loadHelpPanelContent={loadHelpPanelContent} />
-          </SpaceBetween>
+            <SpaceBetween size="l">
+              <ContentLayout
+                header={
+                  <DashboardHeader
+                    loadHelpPanelContent={loadHelpPanelContent}
+                    title="Buckets"
+                    info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
+                    ul={[
+                      {
+                        h5: 'Manage access',
+                        text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
+                      },
+                      {
+                        h5: 'Configure your bucket',
+                        text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
+                      },
+                      {
+                        h5: 'Understand storage usage and activity',
+                        text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
+                      },
+                    ]}
+                  />
+                }
+              />
+              <TableContent loadHelpPanelContent={loadHelpPanelContent} />
+            </SpaceBetween>
           </Provider>
         }
       />
