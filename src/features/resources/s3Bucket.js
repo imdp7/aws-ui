@@ -1,6 +1,6 @@
 const getElement = (array, loopedIndex) => array[loopedIndex % array.length];
 
-export default Array.from({ length: 50 }).map((item, i) => ({
+export default Array.from({ length: 15 }).map((item, i) => ({
   id: `Bucket-${i}`,
   name: `storage ${i}`,
   type: getElement(['m5.large', 'm5.xlarge', 'm5.4xlarge'], i),
@@ -18,5 +18,5 @@ export default Array.from({ length: 50 }).map((item, i) => ({
   createdAt: `2021-05-12 16:53:${i.toString().padStart(2, '0')} GMT+0200 CEST`,
   awsRegion: getElement(['AZ 1', 'AZ 2'], i),
   arn: `arn:aws:s3:::example-${i}`,
-  destination:`s3://s3.example-${i}`
+  destination: `s3://s3.example-${i}`,
 }));

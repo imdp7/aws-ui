@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Content } from '../EC2/commons/Home';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -23,10 +22,16 @@ import {
   Pagination,
   CollectionPreferences,
   Table,
+  FormField,
+  ColumnLayout,
   BreadcrumbGroup,
   Button,
   Popover,
   StatusIndicator,
+  Link,
+  Alert,
+  Modal,
+  Flashbar,
 } from '@cloudscape-design/components';
 import {
   CustomAppLayout,
@@ -34,20 +39,20 @@ import {
   TableEmptyState,
   TableHeader,
   TableNoMatchState,
-} from '../EC2/commons/common-components';
-import DATA from '../resources/s3Bucket';
-import { useColumnWidths } from '../EC2/commons/use-column-widths';
-import { Provider } from 'react-redux';
-import { appLayoutLabels, paginationLabels } from '../common/labels';
-import { store } from '../../app/store';
-import {
   Navigation,
   S3navItems,
   S3Header,
 } from '../EC2/commons/common-components';
+import BUCKETS from '../resources/s3Bucket';
+import { useColumnWidths } from '../EC2/commons/use-column-widths';
+import { Provider } from 'react-redux';
+import { appLayoutLabels, paginationLabels } from '../common/labels';
+import { store } from '../../app/store';
 import { DashboardHeader, HelpPanels } from '../EC2/components/header';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useLocalStorage } from '../common/localStorage';
+import useLocationHash from '../EC2/components/use-location-hash';
+import useNotifications from '../EC2/commons/use-notifications';
 
 const defaultEngine = { value: '0', label: 'Any Engine' };
 const defaultClass = { value: '0', label: 'Any Class' };
@@ -58,7 +63,7 @@ function prepareSelectOptions(field, defaultOption) {
   const optionSet = [];
   // Building a non redundant list of the field passed as parameter.
 
-  DATA.forEach((item) => {
+  BUCKETS.forEach((item) => {
     if (optionSet.indexOf(item[field]) === -1) {
       optionSet.push(item[field]);
     }
@@ -86,8 +91,54 @@ function matchesClass(item, selectedClass) {
 }
 
 const TableContent = ({ loadHelpPanelContent }) => {
-  const [loading, setLoading] = React.useState(false);
-  const [selectedItems, setSelectedItems] = React.useState([]);
+  const [buckets, setBuckets] = useState(BUCKETS);
+  const [loading, setLoading] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [deletedTotal, setDeletedTotal] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const locationHash = useLocationHash();
+  const locationInstance = buckets.find((it) => it.id === locationHash);
+  const { notifications, notifyInProgress } = useNotifications({
+    deletedTotal,
+    resourceName: 'instance',
+  });
+
+  const onDeleteInit = () => setShowDeleteModal(true);
+  const onDeleteDiscard = () => setShowDeleteModal(false);
+  const onDeleteConfirm = () => {
+    const deleted = locationInstance
+      ? [locationInstance]
+      : collectionProps.selectedItems;
+
+    const updated = buckets.map((it) =>
+      deleted.includes(it)
+        ? { ...it, state: 'deleting', timestamp: Date.now() }
+        : it
+    );
+    setBuckets(updated);
+    setSelectedItems([]);
+    setShowDeleteModal(false);
+  };
+
+  useEffect(() => {
+    setSelectedItems([]);
+  }, [locationHash]);
+
+  useEffect(() => {
+    setDeletedTotal(BUCKETS.length - buckets.length);
+    notifyInProgress(buckets.filter((it) => it.state === 'deleting').length);
+  }, [buckets, notifyInProgress]);
+
+  useEffect(() => {
+    setInterval(() => {
+      setBuckets((buckets) =>
+        buckets.filter(
+          (it) => it.state !== 'deleting' || Date.now() - it.timestamp < 5000
+        )
+      );
+    }, 5000);
+  }, []);
 
   const handleRefresh = () => {
     setLoading(true);
@@ -119,7 +170,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     collectionProps,
     filterProps,
     paginationProps,
-  } = useCollection(DATA, {
+  } = useCollection(BUCKETS, {
     filtering: {
       empty: <TableEmptyState resourceName="Instance" />,
       noMatch: <TableNoMatchState onClearFilter={clearFilter} />,
@@ -153,7 +204,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     setInstanceClass(defaultClass);
   }
 
-  const CopyARN = (props): JSX.Element => {
+  const CopyARN = (props) => {
     const [copy, setCopy] = useState(false);
 
     const handleClick = async () => {
@@ -189,101 +240,190 @@ const TableContent = ({ loadHelpPanelContent }) => {
   };
 
   return (
-    <SpaceBetween size="xxs">
-      <Table
-        {...collectionProps}
-        columnDefinitions={columnDefinitions}
-        visibleColumns={preferences.visibleContent}
-        items={items}
-        variant="container"
-        resizableColumns={true}
-        onColumnWidthsChange={saveWidths}
-        wrapLines={preferences.wrapLines}
-        stripedRows={preferences.stripedRows}
-        selectionType="single"
-        ariaLabels={{
-          itemSelectionLabel: (data, row) => `Select DB instance ${row.id}`,
-          allItemsSelectionLabel: () => 'Select all DB instances',
-          selectionGroupLabel: 'Instances selection',
-        }}
-        header={
-          <TableHeader
-            title="Buckets"
-            variant="awsui-h1-sticky"
-            selectedItems={collectionProps.selectedItems}
-            totalItems={DATA}
-            loadHelpPanelContent={loadHelpPanelContent}
-            actionButtons={
-              <SpaceBetween size="m" direction="horizontal">
-                <Button
-                  ariaExpanded
-                  loading={loading}
-                  iconName="refresh"
-                  onClick={handleRefresh}
-                />
-                {/* <Button
-                  iconName="copy"
-                  disabled={collectionProps.selectedItems.length === 0}
-                  onClick={copyARN}
-                >
-                  Copy ARN
-                </Button> */}
-                <CopyARN {...collectionProps} />
-                <Button disabled={collectionProps.selectedItems.length === 0}>
-                  Empty
-                </Button>
-                <Button disabled={collectionProps.selectedItems.length === 0}>
-                  Delete
-                </Button>
-                <Button variant="primary">Create Bucket</Button>
-              </SpaceBetween>
-            }
-          />
-        }
-        filter={
-          <TextFilter
-            filteringPlaceholder="Find buckets by name"
-            value={filterProps.filteringText}
-            onChange={(event) => {
-              actions.setFiltering(event.detail.value);
-            }}
-            placeholder="Find Buckets"
-            label="Find Buckets"
-            ariaDescribedby={null}
-          />
-        }
-        pagination={
-          <Pagination {...paginationProps} ariaLabels={paginationLabels} />
-        }
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            preferences={preferences}
-            onConfirm={({ detail }) => setPreferences(detail)}
-            pageSizePreference={{
-              title: 'Page size',
-              options: PAGE_SIZE_OPTIONS,
-            }}
-            wrapLinesPreference={{
-              label: 'Wrap lines',
-              description: 'Check to see all the text and wrap the lines',
-            }}
-            stripedRowsPreference={{
-              label: 'Striped rows',
-              description: 'Check to add alternating shaded rows',
-            }}
-            visibleContentPreference={{
-              title: 'Select visible columns',
-              options: VISIBLE_CONTENT_OPTIONS,
-            }}
-          />
+    <>
+      <SpaceBetween size="xxs">
+        <Table
+          {...collectionProps}
+          columnDefinitions={columnDefinitions}
+          visibleColumns={preferences.visibleContent}
+          items={items}
+          variant="container"
+          resizableColumns={true}
+          onColumnWidthsChange={saveWidths}
+          wrapLines={preferences.wrapLines}
+          stripedRows={preferences.stripedRows}
+          selectionType="single"
+          ariaLabels={{
+            itemSelectionLabel: (data, row) => `Select DB instance ${row.id}`,
+            allItemsSelectionLabel: () => 'Select all DB instances',
+            selectionGroupLabel: 'Instances selection',
+          }}
+          header={
+            <TableHeader
+              title="Buckets"
+              variant="awsui-h1-sticky"
+              selectedItems={collectionProps.selectedItems}
+              totalItems={BUCKETS}
+              loadHelpPanelContent={loadHelpPanelContent}
+              actionButtons={
+                <SpaceBetween size="m" direction="horizontal">
+                  <Button
+                    ariaExpanded
+                    loading={loading}
+                    iconName="refresh"
+                    onClick={handleRefresh}
+                  />
+                  <CopyARN {...collectionProps} />
+                  <Button disabled={collectionProps.selectedItems.length === 0}>
+                    Empty
+                  </Button>
+                  <Button
+                    disabled={collectionProps.selectedItems.length === 0}
+                    onClick={onDeleteInit}
+                  >
+                    Delete
+                  </Button>
+                  <Button variant="primary">Create Bucket</Button>
+                </SpaceBetween>
+              }
+            />
+          }
+          filter={
+            <TextFilter
+              filteringPlaceholder="Find buckets by name"
+              value={filterProps.filteringText}
+              onChange={(event) => {
+                actions.setFiltering(event.detail.value);
+              }}
+              placeholder="Find Buckets"
+              label="Find Buckets"
+              ariaDescribedby={null}
+            />
+          }
+          pagination={
+            <Pagination {...paginationProps} ariaLabels={paginationLabels} />
+          }
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              preferences={preferences}
+              onConfirm={({ detail }) => setPreferences(detail)}
+              pageSizePreference={{
+                title: 'Page size',
+                options: PAGE_SIZE_OPTIONS,
+              }}
+              wrapLinesPreference={{
+                label: 'Wrap lines',
+                description: 'Check to see all the text and wrap the lines',
+              }}
+              stripedRowsPreference={{
+                label: 'Striped rows',
+                description: 'Check to add alternating shaded rows',
+              }}
+              visibleContentPreference={{
+                title: 'Select visible columns',
+                options: VISIBLE_CONTENT_OPTIONS,
+              }}
+            />
+          }
+        />
+      </SpaceBetween>
+
+      <DeleteModal
+        visible={showDeleteModal}
+        onDiscard={onDeleteDiscard}
+        onDelete={onDeleteConfirm}
+        buckets={
+          locationInstance ? [locationInstance] : collectionProps.selectedItems
         }
       />
-    </SpaceBetween>
+    </>
   );
 };
+
+function DeleteModal({ buckets, visible, onDiscard, onDelete }) {
+  const deleteConsentText = 'delete';
+
+  const [deleteInputText, setDeleteInputText] = useState('');
+  useEffect(() => {
+    setDeleteInputText('');
+  }, [visible]);
+
+  const handleDeleteSubmit = (event) => {
+    event.preventDefault();
+    if (inputMatchesConsentText) {
+      onDelete();
+    }
+  };
+
+  const inputMatchesConsentText =
+    deleteInputText.toLowerCase() === deleteConsentText;
+
+  return (
+    <Modal
+      visible={visible}
+      onDismiss={onDiscard}
+      header={'Delete Bucket'}
+      closeAriaLabel="Close dialog"
+      footer={
+        <Box float="right">
+          <SpaceBetween direction="horizontal" size="xs">
+            <Button variant="link" onClick={onDiscard}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={onDelete}
+              disabled={!inputMatchesConsentText}
+            >
+              Delete
+            </Button>
+          </SpaceBetween>
+        </Box>
+      }
+    >
+      {buckets.length > 0 && (
+        <SpaceBetween size="m">
+          <Box variant="span">
+            Delete instance{' '}
+            <Box variant="span" fontWeight="bold">
+              {buckets[0].id}
+            </Box>{' '}
+            permanently? This action cannot be undone.
+          </Box>
+
+          <Alert type="warning" statusIconAriaLabel="Warning">
+            Proceeding with this action will delete bucket with all content and
+            can impact related resources.{' '}
+            <Link external={true} href="#">
+              Learn more
+            </Link>
+          </Alert>
+
+          <Box>
+            To avoid accidental deletions we ask you to provide additional
+            written consent.
+          </Box>
+
+          <ColumnLayout columns={2}>
+            <form onSubmit={handleDeleteSubmit}>
+              <FormField label={`Type "${deleteConsentText}" to agree.`}>
+                <Input
+                  placeholder={deleteConsentText}
+                  onChange={(event) => setDeleteInputText(event.detail.value)}
+                  value={deleteInputText}
+                  ariaRequired={true}
+                />
+              </FormField>
+            </form>
+          </ColumnLayout>
+        </SpaceBetween>
+      )}
+    </Modal>
+  );
+}
 
 export default function BucketList(props) {
   const [loading, setLoading] = useState(false);
@@ -309,6 +449,10 @@ export default function BucketList(props) {
       ]}
     />
   );
+  const { notifications, notifyInProgress } = useNotifications({
+    resourceName: 'bucket',
+  });
+
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
@@ -365,6 +509,7 @@ export default function BucketList(props) {
         tools={toolsContent}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
+        notifications={<Flashbar items={notifications} />}
         content={
           <Provider store={store}>
             <SpaceBetween size="l">

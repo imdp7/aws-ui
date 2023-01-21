@@ -14,10 +14,10 @@ import {
 import {
   TableEmptyState,
   TableNoMatchState,
+  TableHeader,
 } from '../commons/common-components';
 import { paginationLabels } from '../../common/labels';
 import { getFilterCounterText } from '../../common/tableCounterStrings';
-import { TableHeader } from '../commons/common-components';
 import ItemState from './item-state';
 import { useNavigate } from 'react-router-dom';
 
@@ -118,12 +118,12 @@ export default function InstancesTable({
       resizableColumns={true}
       stripedRows
       visibleColumns={[
-        "name",
-        "state",
-        "type",
-        "availabilityZone",
-        "volume",
-        "loadBalancers"
+        'name',
+        'state',
+        'type',
+        'availabilityZone',
+        'volume',
+        'loadBalancers',
       ]}
       ariaLabels={{
         itemSelectionLabel: (_data, row) => `select ${row.id}`,
@@ -132,7 +132,6 @@ export default function InstancesTable({
       }}
       variant="full-page"
       stickyHeader={true}
-
       header={
         <TableHeader
           variant="awsui-h1-sticky"
@@ -181,7 +180,6 @@ export default function InstancesTable({
       pagination={
         <Pagination {...paginationProps} ariaLabels={paginationLabels} />
       }
-     
     />
   );
 }
