@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   AppLayout,
   BreadcrumbGroup,
@@ -17,6 +17,7 @@ import {
   Link,
   Alert,
   Container,
+  Checkbox,
 } from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -33,6 +34,7 @@ import ObjectsPane from './components/Objects';
 
 function Upload(props) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
@@ -65,7 +67,9 @@ function Upload(props) {
 
   const Content = () => {
     const [status, setStatus] = useState('Disabled');
-    const [value, setValue] = useState('first');
+    const [accessList, setAccessList] = useState('first');
+    const [predefined, setPredefined] = useState('first');
+    const [checked, setChecked] = useState(false);
 
     const fakeDataFetch = (delay) =>
       new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
@@ -92,7 +96,9 @@ function Upload(props) {
             <SpaceBetween size="s">
               <Box variant="awsui-key-label">Destination</Box>
               <Box>
-                <Link>s3://amplify-awsui-dev-65008-deployment</Link>
+                <Link fontSize="inherit">
+                  s3://amplify-awsui-dev-65008-deployment
+                </Link>
               </Box>
 
               <ExpandableSection
@@ -112,7 +118,9 @@ function Upload(props) {
                             When enabled, multiple variants of an object can be
                             stored in the bucket to easily recover from
                             unintended user actions and application failures.{' '}
-                            <Link external>Learn More</Link>
+                            <Link fontSize="inherit" external>
+                              Learn More
+                            </Link>
                           </Box>
                         </Box>
                         <Box>
@@ -134,7 +142,9 @@ function Upload(props) {
                             If an encryption key isn't specified, bucket
                             settings for default encryption are used to encrypt
                             objects when storing them in Amazon S3.{' '}
-                            <Link external>Learn More</Link>
+                            <Link fontSize="inherit" external>
+                              Learn More
+                            </Link>
                           </Box>
                         </Box>
                         <Box display="block" variant="strong">
@@ -150,7 +160,9 @@ function Upload(props) {
                             When enabled, objects in this bucket might be
                             prevented from being deleted or overwritten for a
                             fixed amount of time or indefinitely.{' '}
-                            <Link external>Learn More</Link>
+                            <Link fontSize="inherit" external>
+                              Learn More
+                            </Link>
                           </Box>
                         </Box>
                         <Box display="block" variant="strong">
@@ -162,6 +174,7 @@ function Upload(props) {
                   {status == 'Disabled' && (
                     <>
                       <Alert
+                        type="warning"
                         statusIconAriaLabel="warning"
                         action={
                           <Button onClick={handleSubmit} loading={loading}>
@@ -172,7 +185,10 @@ function Upload(props) {
                         <Box>
                           We recommend that you enable Bucket Versioning to help
                           protect against unintentionally overwriting or
-                          deleting objects. <Link external>Learn More</Link>
+                          deleting objects.{' '}
+                          <Link fontSize="inherit" external>
+                            Learn More
+                          </Link>
                         </Box>
                       </Alert>
                     </>
@@ -184,13 +200,14 @@ function Upload(props) {
           <ExpandableSection
             variant="container"
             headingTagOverride="h5"
-            defaultExpanded
             headerText="Permissions"
             headerAriaLabel="permissions"
             headerDescription={
               <>
                 Grant basic read/write permissions to other AWS accounts.{' '}
-                <Link external>Learn more</Link>
+                <Link fontSize="inherit" external>
+                  Learn more
+                </Link>
               </>
             }
             key={2}
@@ -202,8 +219,8 @@ function Upload(props) {
               </Alert>
               <Box variant="strong">Access control list (ACL)</Box>
               <RadioGroup
-                onChange={({ detail }) => setValue(detail.value)}
-                value={value}
+                onChange={({ detail }) => setAccessList(detail.value)}
+                value={accessList}
                 items={[
                   { value: 'first', label: 'Choose from predefined ACLs' },
                   {
@@ -212,7 +229,7 @@ function Upload(props) {
                   },
                 ]}
               />
-              {value == 'second' ? (
+              {accessList == 'second' ? (
                 <SpaceBetween size="m">
                   <ColumnLayout columns={3}>
                     <Box>Grantee</Box>
@@ -221,8 +238,105 @@ function Upload(props) {
                   </ColumnLayout>
                 </SpaceBetween>
               ) : null}
+              <Box variant="strong">Predefined ACLs</Box>
+              <RadioGroup
+                onChange={({ detail }) => setPredefined(detail.value)}
+                value={predefined}
+                items={[
+                  {
+                    value: 'first',
+                    label: 'Private (recommended)',
+                    description:
+                      'Only the object owner will have read and write access.',
+                  },
+                  {
+                    value: 'second',
+                    label: 'Grant public-read access',
+                    description: (
+                      <>
+                        Anyone in the world will be able to access the specified
+                        objects.The object owner will have read and write
+                        access.{' '}
+                        <Link fontSize="inherit" external>
+                          Learn More
+                        </Link>
+                      </>
+                    ),
+                  },
+                ]}
+              />
+              {predefined == 'second' ? (
+                <SpaceBetween size="xl">
+                  <Alert
+                    header={
+                      <>
+                        <Box variant="strong">
+                          Granting public-read access is not recommended.
+                        </Box>
+                        <Box variant="p">
+                          {' '}
+                          Anyone in the world will be able to access the
+                          specified objects.
+                          <Link external fontSize="inherit">
+                            Learn More
+                          </Link>
+                        </Box>
+                      </>
+                    }
+                    statusIconAriaLabel="Warning"
+                    type="warning"
+                  >
+                    <SpaceBetween size="xs">
+                      <Box></Box>
+                      <Checkbox
+                        onChange={({ detail }) => setChecked(detail.checked)}
+                        checked={checked}
+                      >
+                        <>
+                          I understand the risk of granting public-read access
+                          to the specified objects.
+                        </>
+                      </Checkbox>
+                    </SpaceBetween>
+                  </Alert>
+                </SpaceBetween>
+              ) : null}
             </SpaceBetween>
           </ExpandableSection>
+          <ExpandableSection
+            headerText="Properties"
+            variant="container"
+            headerDescription="Specify storage class, encryption settings, tags, and more."
+          >
+            <SpaceBetween size="m">
+              <Container
+                header={
+                  <Header
+                    variant="h3"
+                    description={
+                      <>
+                        Amazon S3 offers a range of storage classes designed for
+                        different use cases.
+                        <Link external fontSize="inherit">
+                          Learn More
+                        </Link>{' '}
+                        or see{' '}
+                        <Link external fontSize="inherit">
+                          Amazon S3 pricing
+                        </Link>
+                      </>
+                    }
+                  >
+                    Storage Class
+                  </Header>
+                }
+              ></Container>
+            </SpaceBetween>
+          </ExpandableSection>
+          <SpaceBetween size="l" direction="horizontal" className="btn-right">
+            <Button onClick={() => navigate(-1)}>Cancel</Button>
+            <Button variant="primary">Upload</Button>
+          </SpaceBetween>
         </SpaceBetween>
       </>
     );
@@ -298,7 +412,10 @@ function Upload(props) {
                         Add the files and folders you want to upload to S3. To
                         upload a file larger than 160GB, use the AWS CLI, AWS
                         SDK or Amazon S3 REST API.
-                        <Link> Learn more</Link>
+                        <Link external fontSize="inherit">
+                          {' '}
+                          Learn more
+                        </Link>
                       </>
                     }
                     info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."

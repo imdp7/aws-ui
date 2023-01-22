@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-unescaped-entities */
+import React, { useState, useRef } from 'react';
 import {
   Container,
   SpaceBetween,
@@ -12,29 +15,56 @@ import {
   Link,
 } from '@cloudscape-design/components';
 import { useLocalStorage } from '../../common/localStorage';
-
-const visibleContent = ['name', 'awsRegion', 'privateAccess', 'createdAt'];
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const ObjectsPane = (props) => {
   const data = [{ title: 'Objects' }];
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedItems, setSelectedItems] = React.useState([]);
+  const [error, setError] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [preferences, setPreferences] = useLocalStorage(
     'React-DBInstancesTable-Preferences',
     {
       pageSize: 10,
-      visibleContent: [{ visibleContent }],
+      visibleContent: ['name', 'type', 'version', 'lastModified', 'size'],
       wrapLines: true,
       stripedRows: true,
       custom: 'table',
     }
   );
+  const fileInputRef = useRef(null);
+  const folderInputRef = useRef(null);
+
+  const handleClickFiles = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleChange = (event) => {
+    const files = event.target.files;
+    // Iterate over the files and do something with them, such as uploading them to a server
+    if (!files || files.length === 0) {
+      setError('No folders were selected');
+      return;
+    }
+
+    setError(null);
+    const newFolders: string[] = Array.from(files);
+    setSelectedFiles([...selectedFiles, ...newFolders]);
+
+    const folders = [];
+    for (let i = 0; i < selectedFiles.length; i++) {
+      folders.push(selectedFiles[i]);
+    }
+  };
 
   return (
     <Table
-      onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       variant="stacked"
+      trackBy="name"
+      onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       selectedItems={selectedItems}
       ariaLabels={{
         selectionGroupLabel: 'Items selection',
@@ -51,37 +81,88 @@ export const ObjectsPane = (props) => {
       }}
       columnDefinitions={[
         {
-          id: 'variable',
-          header: 'Variable name',
+          id: 'name',
+          header: 'Name',
           cell: (e) => e.name,
-          sortingField: 'name',
         },
         {
-          id: 'value',
-          header: 'Text value',
-          cell: (e) => e.alt,
-          sortingField: 'alt',
+          id: 'type',
+          header: 'Type',
+          cell: (e) => e.type,
         },
-        { id: 'type', header: 'Type', cell: (e) => e.type },
         {
-          id: 'description',
-          header: 'Description',
-          cell: (e) => e.description,
+          id: 'version',
+          header: 'Version ID',
+          cell: (e) => e.version,
+        },
+        {
+          id: 'lastModified',
+          header: 'Last modified',
+          cell: (e) => e.lastModified,
+        },
+        { id: 'size', header: 'Size', cell: (e) => e.size },
+        {
+          id: 'storageClass',
+          header: 'Storage Class',
+          cell: (e) => e.storageClass,
         },
       ]}
-      items={[]}
+      // items={[
+      //   {
+      //     name: 'Item 1',
+      //     alt: 'First',
+      //     version: 'This is the first item',
+      //     type: '1A',
+      //     lastModified: 'Small',
+      //     storageClass: 'Glacier',
+      //     size: '2C',
+      //   },
+      //   {
+      //     name: 'Item 2',
+      //     alt: 'Second',
+      //     version: 'This is the Seoncd item',
+      //     type: '1V',
+      //     lastModified: 'Small',
+      //     storageClass: 'Glacier',
+      //     size: 'B',
+      //   },
+      //   {
+      //     name: 'Item 3',
+      //     alt: 'Third',
+      //     version: 'This is the third item',
+      //     type: '1R',
+      //     lastModified: 'Small',
+      //     storageClass: 'Glacier',
+      //     size: '23',
+      //   },
+      // ]}
+      items={selectedFiles}
       loadingText="Loading resources"
       selectionType="multi"
-      trackBy="name"
-      visibleColumns={['variable', 'value', 'type', 'description']}
+      resizableColumns
+      visibleColumns={preferences.visibleContent}
+      wrapLines={preferences.wrapLines}
+      stripedRows={preferences.stripedRows}
       empty={
-        <Box textAlign="center" color="inherit">
-          <b>No resources</b>
-          <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-            No resources to display.
+        <>
+          <Box textAlign="center" color="inherit">
+            <b>No files or folders</b>
+            {location.pathname.includes('upload') ? (
+              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                You have not chosen any files or folders to upload.
+              </Box>
+            ) : (
+              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                You don't have any objects in this bucket.
+              </Box>
+            )}
+            {!location.pathname.includes('upload') ? (
+              <Button iconName="upload" onClick={() => navigate('upload')}>
+                Upload
+              </Button>
+            ) : null}
           </Box>
-          <Button>Create resource</Button>
-        </Box>
+        </>
       }
       filter={
         <TextFilter
@@ -129,7 +210,7 @@ export const ObjectsPane = (props) => {
             <>
               {props.upload !== 'true' ? (
                 <SpaceBetween size="xs" direction="horizontal">
-                  <Button iconName="refresh" />
+                  <Button iconName="refresh" ariaLabel="Refresh" />
                   <Button iconName="copy" disabled={selectedItems.length === 0}>
                     Copy S3 URI
                   </Button>
@@ -157,9 +238,7 @@ export const ObjectsPane = (props) => {
                   <Button
                     iconName="upload"
                     variant="primary"
-                    onClick={() =>
-                      (window.location.href = `${props.id}/upload`)
-                    }
+                    onClick={() => navigate('upload')}
                   >
                     Upload
                   </Button>
@@ -169,11 +248,39 @@ export const ObjectsPane = (props) => {
                   <Button
                     iconName="remove"
                     disabled={selectedItems.length === 0}
+                    // onClick={handleRemove}
                   >
                     Remove
                   </Button>
-                  <Button iconName="file">Add Files</Button>
-                  <Button iconName="folder">Add Folder</Button>
+                  <Button iconName="file" onClick={handleClickFiles}>
+                    Add Files
+                  </Button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                    multiple
+                  />
+                  <Button iconName="folder" onClick={handleClickFiles}>
+                    Add Folder
+                  </Button>
+                  <input
+                    type="file"
+                    ref={folderInputRef}
+                    webkitdirectory={true}
+                    directory="true"
+                    multiple
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                  />
+                  {/* {selectedFolders.length > 0 && (
+                    <ul>
+                      {selectedFolders.map((folder) => (
+                        <li key={folder.name}>{folder.name}</li>
+                      ))}
+                    </ul>
+                  )} */}
                 </SpaceBetween>
               )}
             </>
@@ -199,6 +306,15 @@ export const ObjectsPane = (props) => {
           confirmLabel="Confirm"
           cancelLabel="Cancel"
           preferences={preferences}
+          onConfirm={({ detail }) => setPreferences(detail)}
+          stripedRowsPreference={{
+            label: 'Striped rows',
+            description: 'Check to add alternating shaded rows',
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Check to see all the text and wrap the lines',
+          }}
           pageSizePreference={{
             title: 'Select page size',
             options: [
@@ -213,16 +329,18 @@ export const ObjectsPane = (props) => {
                 label: 'Main distribution properties',
                 options: [
                   {
-                    id: 'variable',
-                    label: 'Variable name',
+                    id: 'name',
+                    label: 'Name',
                     editable: false,
                   },
-                  { id: 'value', label: 'Text value' },
                   { id: 'type', label: 'Type' },
+                  { id: 'version', label: 'Version ID' },
                   {
-                    id: 'description',
-                    label: 'Description',
+                    id: 'lastModified',
+                    label: 'Last Modified',
                   },
+                  { id: 'size', label: 'Size' },
+                  { id: 'storageClass', label: 'Storage Class' },
                 ],
               },
             ],
