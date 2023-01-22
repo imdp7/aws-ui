@@ -98,7 +98,7 @@ export const ObjectsPane = (props) => {
         {
           id: 'lastModified',
           header: 'Last modified',
-          cell: (e) => e.lastModified,
+          cell: (e) => e.lastModified.toString(),
         },
         { id: 'size', header: 'Size', cell: (e) => e.size },
         {
