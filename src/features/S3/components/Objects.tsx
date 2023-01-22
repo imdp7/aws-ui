@@ -29,7 +29,7 @@ export const ObjectsPane = (props) => {
     'React-DBInstancesTable-Preferences',
     {
       pageSize: 10,
-      visibleContent: ['name', 'type', 'version', 'lastModified', 'size'],
+      visibleContent: ['name', 'type', 'lastModified', 'size'],
       wrapLines: true,
       stripedRows: true,
       custom: 'table',
