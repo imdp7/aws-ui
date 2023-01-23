@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+import React, { useState, createContext, useMemo } from 'react';
 import {
   TopNavigation,
   Input,
@@ -26,6 +26,7 @@ interface State {
   user: string;
   signOut: () => void;
 }
+export const ThemeContext = createContext();
 
 export const AppHeader = (props: State): JSX.Element => {
   const [mode, setMode] = useState(false);
@@ -40,6 +41,12 @@ export const AppHeader = (props: State): JSX.Element => {
       text: 'US East (N. Virginia)',
     },
   ]);
+
+  const value = useMemo(() => ({
+    mode, setMode,
+    density, setDensity,
+    motion, setMotion,
+  }))
 
   const navigate = useNavigate();
 
@@ -56,7 +63,7 @@ export const AppHeader = (props: State): JSX.Element => {
   };
 
   return (
-    <>
+    <ThemeContext.Provider value={value}>
       <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
         <Modal
           onDismiss={() => setVisible(false)}
@@ -329,6 +336,6 @@ export const AppHeader = (props: State): JSX.Element => {
           }
         />
       </div>
-    </>
+    </ThemeContext.Provider>
   );
 };

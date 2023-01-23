@@ -61,7 +61,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const onSubmit = () => {
     setVisible(false);
   };
-
+  
   return (
     <SpaceBetween size="s">
       <Box

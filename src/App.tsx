@@ -20,6 +20,7 @@ import EC2_HomePage from './features/EC2/EC2_HomePage';
 import BucketList from './features/S3/bucketList';
 import BucketDetail from './features/S3/BucketDetail';
 import Upload from './features/S3/Upload';
+import {ThemeContext} from './features/common/TopNavigations'
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');

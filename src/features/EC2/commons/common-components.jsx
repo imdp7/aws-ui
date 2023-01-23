@@ -30,7 +30,7 @@ export const EC2Header = {
 
 export const S3Header = {
   text: 'Amazon S3',
-  href: 'home',
+  href: '/S3/home',
 };
 
 export const ProfileHeader = {

@@ -20,3 +20,5 @@ export default Array.from({ length: 15 }).map((item, i) => ({
   arn: `arn:aws:s3:::example-${i}`,
   destination: `s3://s3.example-${i}`,
 }));
+
+export const dataBucketFiles = []

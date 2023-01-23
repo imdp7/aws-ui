@@ -19,8 +19,10 @@ import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import ObjectsPane from './components/Objects';
+import {dataBucketFiles} from '../resources/s3Bucket'
 
 function BucketDetail(props) {
+  console.log(dataBucketFiles)
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);

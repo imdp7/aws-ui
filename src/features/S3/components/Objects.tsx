@@ -16,11 +16,15 @@ import {
 } from '@cloudscape-design/components';
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {dataBucketFiles} from '../../resources/s3Bucket'
+import fs from 'fs';
 
 export const ObjectsPane = (props) => {
   const data = [{ title: 'Objects' }];
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -53,11 +57,24 @@ export const ObjectsPane = (props) => {
     setError(null);
     const newFolders: string[] = Array.from(files);
     setSelectedFiles([...selectedFiles, ...newFolders]);
+    //addData(selectedFiles);
 
     const folders = [];
     for (let i = 0; i < selectedFiles.length; i++) {
       folders.push(selectedFiles[i]);
     }
+  };
+
+  // function addData(newData){
+  //   fs.writeFileSync('NewData.js',`const myArray = ${ Json.stringify(newData)}; export default myArray;`)
+  //   dataBucketFiles.push(newData);
+  //   console.log("data uploaded", dataBucketFiles)
+  // }
+const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -83,28 +100,28 @@ export const ObjectsPane = (props) => {
         {
           id: 'name',
           header: 'Name',
-          cell: (e) => e.name,
+          cell: (e) => e.name || "-",
         },
         {
           id: 'type',
           header: 'Type',
-          cell: (e) => e.type,
+          cell: (e) => e.type  || "-",
         },
         {
           id: 'version',
           header: 'Version ID',
-          cell: (e) => e.version,
+          cell: (e) => e.version || "null",
         },
         {
           id: 'lastModified',
           header: 'Last modified',
-          cell: (e) => e.lastModified.toString(),
+          cell: (e) => e.lastModified  || "-",
         },
-        { id: 'size', header: 'Size', cell: (e) => e.size },
+        { id: 'size', header: 'Size', cell: (e) => e.size  || "-" },
         {
           id: 'storageClass',
           header: 'Storage Class',
-          cell: (e) => e.storageClass,
+          cell: (e) => e.storageClass  || "-",
         },
       ]}
       // items={[
@@ -210,7 +227,7 @@ export const ObjectsPane = (props) => {
             <>
               {props.upload !== 'true' ? (
                 <SpaceBetween size="xs" direction="horizontal">
-                  <Button iconName="refresh" ariaLabel="Refresh" />
+                  <Button iconName="refresh" ariaLabel="Refresh" loading={loading} onClick={handleRefresh}/>
                   <Button iconName="copy" disabled={selectedItems.length === 0}>
                     Copy S3 URI
                   </Button>
@@ -268,7 +285,7 @@ export const ObjectsPane = (props) => {
                   <input
                     type="file"
                     ref={folderInputRef}
-                    webkitdirectory={true}
+                    webkitdirectory
                     directory="true"
                     multiple
                     onChange={handleChange}
