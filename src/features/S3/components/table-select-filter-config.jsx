@@ -84,6 +84,12 @@ export const COLUMN_DEFINITIONS = addColumnSortLabels([
     sortingField: 'version',
   },
   {
+    id: 'platformDetails',
+    header: 'Platform',
+    cell: (item) => <Box textAlign="right">{item.platformDetails}</Box>,
+    sortingField: 'platformDetails',
+  },
+  {
     id: 'bucketKey',
     header: 'Bucket Key',
     cell: (item) => <Box textAlign="right">{item.bucketKey}</Box>,
@@ -97,7 +103,7 @@ export const COLUMN_DEFINITIONS = addColumnSortLabels([
   },
 ]);
 
-export const SEARCHABLE_COLUMNS = ['name', 'awsRegion', 'version', 'status'];
+export const SEARCHABLE_COLUMNS = ['name', 'awsRegion', 'version', 'platformDetails'];
 
 export const VISIBLE_CONTENT_OPTIONS = [
   {
@@ -106,13 +112,13 @@ export const VISIBLE_CONTENT_OPTIONS = [
       { id: 'name', label: 'Bucket Name', editable: false },
       { id: 'awsRegion', label: 'AWS Region' },
       { id: 'version', label: 'Version Control' },
-      { id: 'status', label: 'Status' },
+      { id: 'platformDetails', label: 'Platform' },
       { id: 'createdAt', label: 'Created At' },
     ],
   },
 ];
 
 export const PAGE_SIZE_OPTIONS = [
-  { value: 30, label: '30 Buckets' },
-  { value: 50, label: '50 Buckets' },
+  { value: 10, label: '10 Buckets' },
+  { value: 100, label: '100 Buckets' },
 ];

@@ -57,8 +57,11 @@ import useNotifications from '../EC2/commons/use-notifications';
 
 const defaultEngine = { value: '0', label: 'Any Region' };
 const defaultClass = { value: '0', label: 'Any Version Control' };
+const defaultPlatform = { value: '0', label: 'Any Platform' };
+
 const selectEngineOptions = prepareSelectOptions('awsRegion', defaultEngine);
 const selectClassOptions = prepareSelectOptions('version', defaultClass);
+const selectPlatformOptions = prepareSelectOptions('platformDetails', defaultPlatform);
 
 function prepareSelectOptions(field, defaultOption) {
   const optionSet = [];
@@ -91,9 +94,15 @@ function matchesClass(item, selectedClass) {
   return selectedClass === defaultClass || item.version === selectedClass.label;
 }
 
+function matchesPlatform(item, selectedPlatform) {
+  return (
+    selectedPlatform === defaultPlatform || item.platformDetails === selectedPlatform.label
+  );
+}
+
 const TableContent = ({ loadHelpPanelContent }) => {
   const [buckets, setBuckets] = useState(BUCKETS);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedItems, setSelectedItems] = useState([]);
   const [deletedTotal, setDeletedTotal] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -102,8 +111,15 @@ const TableContent = ({ loadHelpPanelContent }) => {
   const locationInstance = buckets.find((it) => it.id === locationHash);
   const { notifications, notifyInProgress } = useNotifications({
     deletedTotal,
-    resourceName: 'instance',
+    resourceName: 'buckets',
   });
+
+    useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const onDeleteInit = () => setShowDeleteModal(true);
   const onDeleteDiscard = () => setShowDeleteModal(false);
@@ -114,7 +130,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
 
     const updated = buckets.map((it) =>
       deleted.includes(it)
-        ? { ...it, state: 'deleting', timestamp: Date.now() }
+        ? { ...it, timestamp: Date.now() }
         : it
     );
     setBuckets(updated);
@@ -128,24 +144,24 @@ const TableContent = ({ loadHelpPanelContent }) => {
 
   useEffect(() => {
     setDeletedTotal(BUCKETS.length - buckets.length);
-    notifyInProgress(buckets.filter((it) => it.state === 'deleting').length);
+     notifyInProgress(buckets.filter((it) => it).length);
   }, [buckets, notifyInProgress]);
 
   useEffect(() => {
     setInterval(() => {
       setBuckets((buckets) =>
         buckets.filter(
-          (it) => it.state !== 'deleting' || Date.now() - it.timestamp < 5000
+          (it) => Date.now() - it.timestamp < 5000
         )
       );
     }, 5000);
   }, []);
 
   const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
+     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 3000);
+    return () => clearTimeout(timer);
   };
 
   const [columnDefinitions, saveWidths] = useColumnWidths(
@@ -154,11 +170,12 @@ const TableContent = ({ loadHelpPanelContent }) => {
   );
   const [engine, setEngine] = useState(defaultEngine);
   const [instanceClass, setInstanceClass] = useState(defaultClass);
+  const [platform, setPlatform] = useState(defaultPlatform);
   const [preferences, setPreferences] = useLocalStorage(
     'React-DBInstancesTable-Preferences',
     {
-      pageSize: 30,
-      visibleContent: ['name', 'awsRegion', 'privateAccess', 'status', 'createdAt'],
+      pageSize: 10,
+      visibleContent: ['name', 'awsRegion', 'privateAccess', 'platformDetails', 'createdAt'],
       wrapLines: true,
       stripedRows: true,
       custom: 'table',
@@ -180,6 +197,9 @@ const TableContent = ({ loadHelpPanelContent }) => {
           return false;
         }
         if (!matchesClass(item, instanceClass)) {
+          return false;
+        }
+        if (!matchesPlatform(item, platform)) {
           return false;
         }
         const filteringTextLowerCase = filteringText.toLowerCase();
@@ -204,7 +224,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
     setEngine(defaultEngine);
     setInstanceClass(defaultClass);
   }
-
   const CopyARN = (props) => {
     const [copy, setCopy] = useState(false);
 
@@ -290,32 +309,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
             />
           }
           filter={
-          //   <>
-          //   <TextFilter
-          //    {...filterProps}
-          //     filteringPlaceholder="Find buckets by name"
-          //     //value={filterProps.filteringText}
-          //     // onChange={(event) => {
-          //     //   actions.setFiltering(event.detail.value);
-          //     // }}
-          //     placeholder="Find Buckets"
-          //     label="Find Buckets"
-          //     ariaDescribedby={null}
-          //   />
-          //    <div className="select-filter">
-          //   <Select
-          //     data-testid="engine-filter"
-          //     options={selectEngineOptions}
-          //     selectedAriaLabel="Selected"
-          //     selectedOption={engine}
-          //     onChange={event => {
-          //       setEngine(event.detail.selectedOption);
-          //     }}
-          //     ariaDescribedby={null}
-          //     expandToViewport={true}
-          //   />
-          // </div>
-          // </>
              <div className="input-container">
             <div className="input-filter">
             <Input
@@ -330,6 +323,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
               ariaDescribedby={null}
             />
           </div>
+          {preferences.visibleContent.includes("awsRegion") && (
           <div className="select-filter">
             <Select
               data-testid="engine-filter"
@@ -343,6 +337,8 @@ const TableContent = ({ loadHelpPanelContent }) => {
               expandToViewport={true}
             />
           </div>
+          )}
+          {preferences.visibleContent.includes("version") && (
           <div className="select-filter">
             <Select
               data-testid="class-filter"
@@ -356,7 +352,23 @@ const TableContent = ({ loadHelpPanelContent }) => {
               expandToViewport={true}
             />
           </div>
-          {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass) && (
+          )}
+          {preferences.visibleContent.includes("platformDetails") && (
+          <div className="select-filter">
+            <Select
+              data-testid="class-filter"
+              options={selectPlatformOptions}
+              selectedAriaLabel="Selected"
+              selectedOption={platform}
+              onChange={event => {
+                setPlatform(event.detail.selectedOption);
+              }}
+              ariaDescribedby={null}
+              expandToViewport={true}
+            />
+          </div>
+          )}
+          {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass || platform != defaultPlatform) && (
             <span className="filtering-results">{getFilterCounterText(filteredItemsCount)}</span>
           )}
         </div>
