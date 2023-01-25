@@ -103,7 +103,12 @@ export const COLUMN_DEFINITIONS = addColumnSortLabels([
   },
 ]);
 
-export const SEARCHABLE_COLUMNS = ['name', 'awsRegion', 'version', 'platformDetails'];
+export const SEARCHABLE_COLUMNS = [
+  'name',
+  'awsRegion',
+  'version',
+  'platformDetails',
+];
 
 export const VISIBLE_CONTENT_OPTIONS = [
   {

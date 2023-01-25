@@ -16,7 +16,7 @@ import {
 } from '@cloudscape-design/components';
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {dataBucketFiles} from '../../resources/s3Bucket'
+import { dataBucketFiles } from '../../resources/s3Bucket';
 import fs from 'fs';
 
 export const ObjectsPane = (props) => {
@@ -70,7 +70,7 @@ export const ObjectsPane = (props) => {
   //   dataBucketFiles.push(newData);
   //   console.log("data uploaded", dataBucketFiles)
   // }
-const handleRefresh = () => {
+  const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -100,28 +100,28 @@ const handleRefresh = () => {
         {
           id: 'name',
           header: 'Name',
-          cell: (e) => e.name || "-",
+          cell: (e) => e.name || '-',
         },
         {
           id: 'type',
           header: 'Type',
-          cell: (e) => e.type  || "-",
+          cell: (e) => e.type || '-',
         },
         {
           id: 'version',
           header: 'Version ID',
-          cell: (e) => e.version || "null",
+          cell: (e) => e.version || 'null',
         },
         {
           id: 'lastModified',
           header: 'Last modified',
-          cell: (e) => e.lastModified  || "-",
+          cell: (e) => e.lastModified || '-',
         },
-        { id: 'size', header: 'Size', cell: (e) => e.size  || "-" },
+        { id: 'size', header: 'Size', cell: (e) => e.size || '-' },
         {
           id: 'storageClass',
           header: 'Storage Class',
-          cell: (e) => e.storageClass  || "-",
+          cell: (e) => e.storageClass || '-',
         },
       ]}
       // items={[
@@ -227,7 +227,12 @@ const handleRefresh = () => {
             <>
               {props.upload !== 'true' ? (
                 <SpaceBetween size="xs" direction="horizontal">
-                  <Button iconName="refresh" ariaLabel="Refresh" loading={loading} onClick={handleRefresh}/>
+                  <Button
+                    iconName="refresh"
+                    ariaLabel="Refresh"
+                    loading={loading}
+                    onClick={handleRefresh}
+                  />
                   <Button iconName="copy" disabled={selectedItems.length === 0}>
                     Copy S3 URI
                   </Button>

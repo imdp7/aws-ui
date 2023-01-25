@@ -25,7 +25,6 @@ import {
 export const S3 = (props): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('home');
-  
 
   useEffect(() => {
     document.title = 'S3 Management Console';
