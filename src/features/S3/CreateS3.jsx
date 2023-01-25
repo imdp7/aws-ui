@@ -159,7 +159,11 @@ const Content = (props) => {
               <>
                 Bucket name must be globally unique and must not contain spaces
                 or uppercase letters.{' '}
-                <Link external fontSize="inherit">
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   {' '}
                   See rules for bucket naming{' '}
                 </Link>
@@ -232,7 +236,11 @@ const Content = (props) => {
                   Starting in April 2023, to disable ACLs when creating buckets
                   by using the S3 console, you will no longer need the
                   s3:PutBucketOwnershipControls permission.{' '}
-                  <Link external fontSize="inherit">
+                  <Link
+                    external
+                    href="https://aws.amazon.com/"
+                    fontSize="inherit"
+                  >
                     Learn More
                   </Link>
                 </>
@@ -274,7 +282,11 @@ const Content = (props) => {
                       Starting in April 2023, to enable ACLs when creating
                       buckets by using the S3 console, you must have the
                       s3:PutBucketOwnershipControls permission.{' '}
-                      <Link external fontSize="inherit">
+                      <Link
+                        external
+                        href="https://aws.amazon.com/"
+                        fontSize="inherit"
+                      >
                         Learn More
                       </Link>
                     </>
@@ -294,7 +306,11 @@ const Content = (props) => {
                   Starting in April 2023, to enable ACLs when creating buckets
                   by using the S3 console, you must have the
                   s3:PutBucketOwnershipControls permission.{' '}
-                  <Link external fontSize="inherit">
+                  <Link
+                    external
+                    href="https://aws.amazon.com/"
+                    fontSize="inherit"
+                  >
                     Learn More
                   </Link>
                 </>
@@ -320,7 +336,11 @@ const Content = (props) => {
                 level of public access to this bucket or objects within, you can
                 customize the individual settings below to suit your specific
                 storage use cases.{' '}
-                <Link external fontSize="inherit">
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   Learn more
                 </Link>
               </>
@@ -367,7 +387,7 @@ const Content = (props) => {
               Starting in April 2023, to enable ACLs when creating buckets by
               using the S3 console, you must have the
               s3:PutBucketOwnershipControls permission.{' '}
-              <Link external fontSize="inherit">
+              <Link external href="https://aws.amazon.com/" fontSize="inherit">
                 Learn More
               </Link>
             </>
@@ -386,7 +406,11 @@ const Content = (props) => {
                 retrieve, and restore every version of every object stored in
                 your Amazon S3 bucket. With versioning, you can easily recover
                 from both unintended user actions and application failures.{' '}
-                <Link external fontSize="inherit">
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   {' '}
                   Learn more
                 </Link>
@@ -418,8 +442,7 @@ const Content = (props) => {
               <>
                 You can use bucket tags to track storage costs and organize
                 buckets.{' '}
-                <Link external fontSize="inherit">
-                  {' '}
+                <Link href="https://aws.amazon.com/" fontSize="inherit">
                   Learn more
                 </Link>
               </>
@@ -441,8 +464,11 @@ const Content = (props) => {
               <>
                 Server-side encryption is automatically applied to new objects
                 stored in this bucket.{' '}
-                <Link external fontSize="inherit">
-                  {' '}
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   Learn more
                 </Link>
               </>
@@ -475,7 +501,11 @@ const Content = (props) => {
                 When KMS encryption is used to encrypt new objects in this
                 bucket, the bucket key reduces encryption costs by lowering
                 calls to AWS KMS.
-                <Link external fontSize="inherit">
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   {' '}
                   Learn more
                 </Link>
@@ -505,7 +535,11 @@ const Content = (props) => {
                 Store objects using a write-once-read-many (WORM) model to help
                 you prevent objects from being deleted or overwritten for a
                 fixed amount of time or indefinitely.{' '}
-                <Link external fontSize="inherit">
+                <Link
+                  external
+                  href="https://aws.amazon.com/"
+                  fontSize="inherit"
+                >
                   Learn more
                 </Link>
               </>
@@ -668,7 +702,11 @@ const CreateS3 = (props) => {
                     description={
                       <>
                         Buckets are containers for data stored in S3.{' '}
-                        <Link external fontSize="inherit">
+                        <Link
+                          external
+                          href="https://aws.amazon.com/"
+                          fontSize="inherit"
+                        >
                           Learn more
                         </Link>
                       </>
