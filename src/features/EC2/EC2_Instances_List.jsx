@@ -41,6 +41,16 @@ function EC2_Instances_List(props) {
   const [deletedTotal, setDeletedTotal] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+
   const locationHash = useLocationHash();
   const locationInstance = instances.find((it) => it.id === locationHash);
   const { notifications, notifyInProgress } = useNotifications({
@@ -98,6 +108,7 @@ function EC2_Instances_List(props) {
           notifications={notifications}
           user={props.user}
           signOut={props.signOut}
+          loading={loading}
         />
       )}
 
@@ -144,6 +155,7 @@ function InstancesPage({
                   setSelectedItems(event.detail.selectedItems)
                 }
                 onDelete={onDeleteInit}
+                loading={loading}
               />
             ) : (
               <Spinner size="large" className="spinner" />

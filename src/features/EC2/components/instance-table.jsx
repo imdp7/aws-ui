@@ -84,6 +84,7 @@ export default function InstancesTable({
   selectedItems,
   onSelectionChange,
   onDelete,
+  loading
 }) {
   const {
     items,
@@ -117,6 +118,7 @@ export default function InstancesTable({
       selectionType="multi"
       resizableColumns={true}
       stripedRows
+      loading={loading}
       visibleColumns={[
         'name',
         'state',

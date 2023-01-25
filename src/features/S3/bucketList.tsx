@@ -43,6 +43,7 @@ import {
   S3navItems,
   S3Header,
 } from '../EC2/commons/common-components';
+import { getFilterCounterText } from '../common/tableCounterStrings';
 import BUCKETS from '../resources/s3Bucket';
 import { useColumnWidths } from '../EC2/commons/use-column-widths';
 import { Provider } from 'react-redux';
@@ -54,10 +55,10 @@ import { useLocalStorage } from '../common/localStorage';
 import useLocationHash from '../EC2/components/use-location-hash';
 import useNotifications from '../EC2/commons/use-notifications';
 
-const defaultEngine = { value: '0', label: 'Any Engine' };
-const defaultClass = { value: '0', label: 'Any Class' };
-const selectEngineOptions = prepareSelectOptions('engine', defaultEngine);
-const selectClassOptions = prepareSelectOptions('class', defaultClass);
+const defaultEngine = { value: '0', label: 'Any Region' };
+const defaultClass = { value: '0', label: 'Any Version Control' };
+const selectEngineOptions = prepareSelectOptions('awsRegion', defaultEngine);
+const selectClassOptions = prepareSelectOptions('version', defaultClass);
 
 function prepareSelectOptions(field, defaultOption) {
   const optionSet = [];
@@ -82,12 +83,12 @@ function prepareSelectOptions(field, defaultOption) {
 
 function matchesEngine(item, selectedEngine) {
   return (
-    selectedEngine === defaultEngine || item.engine === selectedEngine.label
+    selectedEngine === defaultEngine || item.awsRegion === selectedEngine.label
   );
 }
 
 function matchesClass(item, selectedClass) {
-  return selectedClass === defaultClass || item.class === selectedClass.label;
+  return selectedClass === defaultClass || item.version === selectedClass.label;
 }
 
 const TableContent = ({ loadHelpPanelContent }) => {
@@ -157,7 +158,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     'React-DBInstancesTable-Preferences',
     {
       pageSize: 30,
-      visibleContent: ['name', 'awsRegion', 'privateAccess', 'createdAt'],
+      visibleContent: ['name', 'awsRegion', 'privateAccess', 'status', 'createdAt'],
       wrapLines: true,
       stripedRows: true,
       custom: 'table',
@@ -289,16 +290,76 @@ const TableContent = ({ loadHelpPanelContent }) => {
             />
           }
           filter={
-            <TextFilter
-              filteringPlaceholder="Find buckets by name"
+          //   <>
+          //   <TextFilter
+          //    {...filterProps}
+          //     filteringPlaceholder="Find buckets by name"
+          //     //value={filterProps.filteringText}
+          //     // onChange={(event) => {
+          //     //   actions.setFiltering(event.detail.value);
+          //     // }}
+          //     placeholder="Find Buckets"
+          //     label="Find Buckets"
+          //     ariaDescribedby={null}
+          //   />
+          //    <div className="select-filter">
+          //   <Select
+          //     data-testid="engine-filter"
+          //     options={selectEngineOptions}
+          //     selectedAriaLabel="Selected"
+          //     selectedOption={engine}
+          //     onChange={event => {
+          //       setEngine(event.detail.selectedOption);
+          //     }}
+          //     ariaDescribedby={null}
+          //     expandToViewport={true}
+          //   />
+          // </div>
+          // </>
+             <div className="input-container">
+            <div className="input-filter">
+            <Input
+              data-testid="input-filter"
+              type="search"
               value={filterProps.filteringText}
-              onChange={(event) => {
+              onChange={event => {
                 actions.setFiltering(event.detail.value);
               }}
-              placeholder="Find Buckets"
-              label="Find Buckets"
+              placeholder="Find instances"
+              label="Find instances"
               ariaDescribedby={null}
             />
+          </div>
+          <div className="select-filter">
+            <Select
+              data-testid="engine-filter"
+              options={selectEngineOptions}
+              selectedAriaLabel="Selected"
+              selectedOption={engine}
+              onChange={event => {
+                setEngine(event.detail.selectedOption);
+              }}
+              ariaDescribedby={null}
+              expandToViewport={true}
+            />
+          </div>
+          <div className="select-filter">
+            <Select
+              data-testid="class-filter"
+              options={selectClassOptions}
+              selectedAriaLabel="Selected"
+              selectedOption={instanceClass}
+              onChange={event => {
+                setInstanceClass(event.detail.selectedOption);
+              }}
+              ariaDescribedby={null}
+              expandToViewport={true}
+            />
+          </div>
+          {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass) && (
+            <span className="filtering-results">{getFilterCounterText(filteredItemsCount)}</span>
+          )}
+        </div>
           }
           pagination={
             <Pagination {...paginationProps} ariaLabels={paginationLabels} />
