@@ -176,7 +176,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     {
       pageSize: 10,
       visibleContent: ['name', 'awsRegion', 'privateAccess', 'platformDetails', 'createdAt'],
-      wrapLines: true,
+      wrapLines: false,
       stripedRows: true,
       custom: 'table',
     }
@@ -303,7 +303,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
                   >
                     Delete
                   </Button>
-                  <Button variant="primary">Create Bucket</Button>
+                  <Button variant="primary" onClick={() => window.location.href="/S3/buckets/create"}>Create Bucket</Button>
                 </SpaceBetween>
               }
             />

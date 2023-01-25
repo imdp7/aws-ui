@@ -21,6 +21,7 @@ import BucketList from './features/S3/bucketList';
 import BucketDetail from './features/S3/BucketDetail';
 import Upload from './features/S3/Upload';
 import {ThemeContext} from './features/common/TopNavigations'
+import CreateS3 from './features/S3/CreateS3';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -65,6 +66,10 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="buckets/:id/upload"
               element={<Upload user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="buckets/create"
+              element={<CreateS3 user={user.username} signOut={signOut} />}
             />
           </Route>
           <Route

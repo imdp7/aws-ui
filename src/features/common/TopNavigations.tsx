@@ -196,6 +196,8 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'asia',
+                  title: 'Asia Pacific',
+                  ariaLabel: 'Asia Pacific',
                   items: [
                     {
                       id: 'Asia Pacific (Mumbai)',
@@ -225,6 +227,8 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'central',
+                  title: 'Canada',
+                  ariaLabel: 'Canada',
                   items: [
                     {
                       id: 'Canada (Central)',
@@ -234,6 +238,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'europe',
+                  title: 'Europe',
                   items: [
                     {
                       id: 'Europe (Frankfurt)',
@@ -259,6 +264,8 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'south',
+                  title: 'South America',
+                  ariaLabel: 'South America',
                   items: [
                     {
                       id: 'South America (Sao Paulo)',

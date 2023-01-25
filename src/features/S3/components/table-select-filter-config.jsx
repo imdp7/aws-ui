@@ -86,13 +86,13 @@ export const COLUMN_DEFINITIONS = addColumnSortLabels([
   {
     id: 'platformDetails',
     header: 'Platform',
-    cell: (item) => <Box textAlign="right">{item.platformDetails}</Box>,
+    cell: (item) => <Box>{item.platformDetails}</Box>,
     sortingField: 'platformDetails',
   },
   {
     id: 'bucketKey',
     header: 'Bucket Key',
-    cell: (item) => <Box textAlign="right">{item.bucketKey}</Box>,
+    cell: (item) => <Box>{item.bucketKey}</Box>,
     sortingField: 'bucketKey',
   },
   {
