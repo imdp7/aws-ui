@@ -408,7 +408,7 @@ const Content = ({loadHelpPanelContent},props) => {
           </div>
           <div className="dash">
            <Checkbox
-            onChange={({ detail }) => {blocked  ?? setBlockedSecond(detail.checked)}}
+            onChange={({ detail }) => {setBlockedSecond(detail.checked)}}
             checked={blockedSecond || blockedAll}
             disabled={blockedAll}
             description="TS3 will ignore all ACLs that grant public access to buckets and objects."
