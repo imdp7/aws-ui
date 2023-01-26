@@ -138,12 +138,16 @@ const Tags = (props) => {
 const Content = ({loadHelpPanelContent},props) => {
 
   const navigate = useNavigate();
-  
+
   const [name, setName] = useState('');
   const [region, setRegion] = useState('');
   const [control, setControl] = useState('first');
   const [ACLEnabled, setACLEnabled] = useState('first');
-  const [blocked, setBlocked] = React.useState(true);
+  const [blockedAll, setBlockedAll] = React.useState(true);
+  const [blockedFirst, setBlockedFirst] = React.useState(false);
+  const [blockedSecond, setBlockedSecond] = React.useState(false);
+  const [blockedThird, setBlockedThird] = React.useState(false);
+  const [blockedFourth, setBlockedFourth] = React.useState(false);
   const [confirmBlocked, setConfirmBlocked] = React.useState(false);
   const [bucketVersion, setBucketVersion] = useState('first');
   const [tags, setTags] = React.useState([]);
@@ -384,16 +388,63 @@ const Content = ({loadHelpPanelContent},props) => {
       >
         <SpaceBetween size="m">
           <Checkbox
-            onChange={({ detail }) => setBlocked(detail.checked)}
-            checked={blocked}
+            onChange={({ detail }) => setBlockedAll(detail.checked)}
+            checked={blockedAll}
             description="Turning this setting on is the same as turning on all four settings below. Each of the following settings are independent of one another."
           >
             Block all public access
           </Checkbox>
-          {blocked == true && (
+          <div className="divider">
+            <>
+            <div className="dash">
+             <Checkbox
+            onChange={({ detail }) => setBlockedFirst(detail.checked)}
+            checked={blockedFirst || blockedAll}
+            disabled={blockedAll}
+            description="S3 will block public access permissions applied to newly added buckets or objects, and prevent the creation of new public access ACLs for existing buckets and objects. This setting doesn’t change any existing permissions that allow public access to S3 resources using ACLs."
+          >
+            Block public access to buckets and objects granted through new access control lists (ACLs)
+          </Checkbox>
+          </div>
+          <div className="dash">
+           <Checkbox
+            onChange={({ detail }) => {blocked  ?? setBlockedSecond(detail.checked)}}
+            checked={blockedSecond || blockedAll}
+            disabled={blockedAll}
+            description="TS3 will ignore all ACLs that grant public access to buckets and objects."
+          >
+            Block public access to buckets and objects granted through any access control lists (ACLs)
+          </Checkbox>
+          </div>
+          <div className="dash">
+          <Checkbox
+            onChange={({ detail }) => setBlockedThird(detail.checked)}
+            checked={blockedThird || blockedAll}
+            disabled={blockedAll}
+            description="S3 will block new bucket and access point policies that grant public access to buckets and objects. This setting doesn't change any existing policies that allow public access to S3 resources."
+          >
+            Block public access to buckets and objects granted through new public bucket or access point policies
+          </Checkbox>
+          </div>
+          <div className="dash">
+          <Checkbox
+            onChange={({ detail }) => setBlockedFourth(detail.checked)}
+            checked={blockedFourth || blockedAll}
+            disabled={blockedAll}
+            description="S3 will ignore public and cross-account access for buckets or access points with policies that grant public access to buckets and objects."
+          >
+            Block public and cross-account access to buckets and objects through any public bucket or access point policies
+          </Checkbox>
+          </div>
+          </>
+          
+          </div>
+          {blockedAll == false && (
+            
             <Alert
               header="Turning off block all public access might result in this bucket and the objects within becoming public"
               statusIconAriaLabel="warning"
+              type="warning"
             >
               <SpaceBetween size="m">
                 <>
@@ -411,6 +462,7 @@ const Content = ({loadHelpPanelContent},props) => {
               </SpaceBetween>
             </Alert>
           )}
+
           <Alert
             header="Upcoming permission changes to enable ACLs"
             statusIconAriaLabel="Info"

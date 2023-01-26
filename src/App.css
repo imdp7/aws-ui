@@ -106,3 +106,21 @@
     max-width: none;
   }
 }
+
+.divider {
+  position: relative;
+  left: 2%;
+  top: 2%;
+  bottom: 2%;
+  border-left: 1px solid black;
+  padding-left: 10px;
+}
+
+.dash {
+  content: "-";
+  hyphens: manual;
+  display: flex;
+  font-size: 2rem;
+  margin: 10px auto;
+  color: black;
+}
