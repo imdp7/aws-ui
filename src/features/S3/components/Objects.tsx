@@ -100,12 +100,12 @@ export const ObjectsPane = (props) => {
         {
           id: 'name',
           header: 'Name',
-          cell: (e) => e.name || '-',
+          cell: (e) => e.name || <Box textAlign="center">-</Box>,
         },
         {
           id: 'type',
           header: 'Type',
-          cell: (e) => e.type || '-',
+          cell: (e) => e.type || <Box textAlign="center">-</Box>,
         },
         {
           id: 'version',
@@ -115,13 +115,13 @@ export const ObjectsPane = (props) => {
         {
           id: 'lastModified',
           header: 'Last modified',
-          cell: (e) => e.lastModified || '-',
+          cell: (e) => e.lastModified || <Box textAlign="center">-</Box>,
         },
         { id: 'size', header: 'Size', cell: (e) => e.size || '-' },
         {
           id: 'storageClass',
           header: 'Storage Class',
-          cell: (e) => e.storageClass || '-',
+          cell: (e) => e.storageClass || <Box textAlign="center">-</Box>,
         },
       ]}
       // items={[
