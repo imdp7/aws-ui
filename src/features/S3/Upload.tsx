@@ -18,6 +18,7 @@ import {
   Alert,
   Container,
   Checkbox,
+  FormField,
 } from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -31,6 +32,90 @@ import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import ObjectsPane from './components/Objects';
+import { InfoLink } from '../common/common';
+import { BaseNavigationDetail } from '@awsui/components-react/internal/events';
+
+const StorageItems = [
+  {
+    storageClass: 'Standard',
+    designed:
+      'Frequently accessed data (more than once a month) with milliseconds access',
+    availabilityZones: '≥ 3',
+    duration: '-',
+    billableSize: '-',
+    monitoringFees: '-',
+    retrievalFees: '-',
+  },
+  {
+    storageClass: 'Intelligent-Tiering',
+    designed: 'Data with changing or unknown access patterns',
+    availabilityZones: '≥ 3',
+    duration: '-',
+    billableSize: '-',
+    monitoringFees: 'Per-object fees apply for objects >= 128 KB',
+    retrievalFees: '-',
+  },
+  {
+    storageClass: 'Standard-IA',
+    designed:
+      'Infrequently accessed data (once a month) with milliseconds access',
+    availabilityZones: '≥ 3',
+    duration: '30 days',
+    billableSize: '128 KB',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+  {
+    storageClass: 'One Zone-IA',
+    designed:
+      'Recreatable, infrequently accessed data (once a month) stored in a single Availability Zone with milliseconds access',
+    availabilityZones: '1',
+    duration: '30 days',
+    billableSize: '128 KB',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+  {
+    storageClass: 'Glacier Instant Retrieval',
+    designed:
+      'Long-lived archive data accessed once a quarter with instant retrieval in milliseconds',
+    availabilityZones: '≥ 3',
+    duration: '90 days',
+    billableSize: '128 KB',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+  {
+    storageClass: 'Glacier Flexible Retrieval (formerly Glacier)',
+    designed:
+      'Long-lived archive data accessed once a year with retrieval of minutes to hours',
+    availabilityZones: '≥ 3',
+    duration: '90 days',
+    billableSize: '-',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+  {
+    storageClass: 'Glacier Deep Archive',
+    designed:
+      'Long-lived archive data accessed less than once a year with retrieval of hours',
+    availabilityZones: '≥ 3',
+    duration: '180 days',
+    billableSize: '-',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+  {
+    storageClass: 'Reduced redundancy',
+    designed:
+      'Noncritical, frequently accessed data with milliseconds access (not recommended as S3 Standard is more cost effective)',
+    availabilityZones: '≥ 3',
+    duration: '-',
+    billableSize: '-',
+    monitoringFees: '-',
+    retrievalFees: 'Per-GB fees apply',
+  },
+];
 
 function Upload(props) {
   const { id } = useParams();
@@ -39,6 +124,7 @@ function Upload(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
   const [toolsOpen, setToolsOpen] = useState(false);
+
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Upload"
@@ -70,6 +156,12 @@ function Upload(props) {
     const [accessList, setAccessList] = useState('first');
     const [predefined, setPredefined] = useState('first');
     const [checked, setChecked] = useState(false);
+    const [selectedItems, setSelectedItems] = useState([
+      { storageClass: 'Standard' },
+    ]);
+    const [SSencryption, setSSEncryption] = useState('first');
+    const [EncryptionSettings, setEncryptionSettings] = useState('first');
+    const [EncryptionKeyType, setEncryptionKeyType] = useState('first');
 
     const fakeDataFetch = (delay) =>
       new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
@@ -306,10 +398,15 @@ function Upload(props) {
           <ExpandableSection
             headerText="Properties"
             variant="container"
+            defaultExpanded
+            key={'storage-table-section'}
+            headerAriaLabel="storage-table"
             headerDescription="Specify storage class, encryption settings, tags, and more."
           >
             <SpaceBetween size="m">
               <Container
+                key="storage-table"
+                fitHeight
                 header={
                   <Header
                     variant="h3"
@@ -330,7 +427,188 @@ function Upload(props) {
                     Storage Class
                   </Header>
                 }
-              ></Container>
+              >
+                <Table
+                  onSelectionChange={({ detail }) =>
+                    setSelectedItems(detail.selectedItems)
+                  }
+                  selectedItems={selectedItems}
+                  ariaLabels={{
+                    selectionGroupLabel: 'Items selection',
+                    allItemsSelectionLabel: ({ selectedItems }) =>
+                      `${selectedItems.length} ${
+                        selectedItems.length === 1 ? 'item' : 'items'
+                      } selected`,
+                    itemSelectionLabel: ({ selectedItems }, item) => {
+                      const isItemSelected = selectedItems.filter(
+                        (i) => i.storageClass === item.storageClass
+                      ).length;
+                      return `${item.storageClass} is ${
+                        isItemSelected ? '' : 'not'
+                      } selected`;
+                    },
+                  }}
+                  columnDefinitions={[
+                    {
+                      id: 'storageClass',
+                      header: 'Storage class',
+                      cell: (e) => e.storageClass,
+                    },
+                    {
+                      id: 'designed',
+                      header: 'Designed for',
+                      cell: (e) => e.designed,
+                    },
+                    {
+                      id: 'availabilityZones',
+                      header: 'Availability Zones',
+                      cell: (e) => e.availabilityZones,
+                    },
+                    {
+                      id: 'duration',
+                      header: 'Min storage duration',
+                      cell: (e) => e.duration,
+                    },
+                    {
+                      id: 'billableSize',
+                      header: 'Min billable object size',
+                      cell: (e) => e.billableSize,
+                    },
+                    {
+                      id: 'monitoringFees',
+                      header: 'Monitoring and auto-tiering fees',
+                      cell: (e) => e.monitoringFees,
+                    },
+                    {
+                      id: 'retrievalFees',
+                      header: 'Retrieval fees',
+                      cell: (e) => e.retrievalFees,
+                    },
+                  ]}
+                  items={StorageItems}
+                  loadingText="Loading resources"
+                  selectionType="single"
+                  trackBy="storageClass"
+                  variant="embedded"
+                  stripedRows
+                  wrapLines
+                  visibleColumns={[
+                    'storageClass',
+                    'designed',
+                    'availabilityZones',
+                    'duration',
+                    'billableSize',
+                    'monitoringFees',
+                    'retrievalFees',
+                  ]}
+                  empty={
+                    <Box textAlign="center" color="inherit">
+                      <b>No resources</b>
+                      <Box
+                        padding={{ bottom: 's' }}
+                        variant="p"
+                        color="inherit"
+                      >
+                        No resources to display.
+                      </Box>
+                      <Button>Create resource</Button>
+                    </Box>
+                  }
+                />
+              </Container>
+              <Container
+                header={
+                  <Header
+                    variant="h2"
+                    description="Server-side encryption protects data at rest."
+                    info={
+                      <InfoLink
+                        onFollow={function (
+                          event: CustomEvent<BaseNavigationDetail>
+                        ): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                      />
+                    }
+                  >
+                    Server-side encryption
+                  </Header>
+                }
+              >
+                <SpaceBetween size="m">
+                  <FormField label="Server-side encryption">
+                    <RadioGroup
+                      onChange={({ detail }) => setSSEncryption(detail.value)}
+                      value={SSencryption}
+                      items={[
+                        {
+                          value: 'first',
+                          label: 'Do not specify an encryption key',
+                          description:
+                            'The bucket settings for default encryption are used to encrypt objects when storing them in Amazon S3.',
+                        },
+                        {
+                          value: 'second',
+                          label: 'Specify an encryption key',
+                          description:
+                            'The specified encryption key is used to encrypt objects before storing them in Amazon S3.',
+                        },
+                      ]}
+                    />
+                  </FormField>
+                  {SSencryption == 'first' && (
+                    <Alert statusIconAriaLabel="warning" type="warning">
+                      If your bucket policy requires encrypted uploads, you must
+                      specify an encryption key or your upload will fail.
+                    </Alert>
+                  )}
+                  {SSencryption == 'second' && (
+                    <SpaceBetween size="m">
+                      <FormField label="Encryption Settings">
+                        <RadioGroup
+                          onChange={({ detail }) =>
+                            setEncryptionSettings(detail.value)
+                          }
+                          value={EncryptionSettings}
+                          items={[
+                            {
+                              value: 'first',
+                              label:
+                                'Use bucket settings for default encryption',
+                            },
+                            {
+                              value: 'second',
+                              label:
+                                'Override bucket settings for default encryption',
+                            },
+                          ]}
+                        />
+                      </FormField>
+                      {EncryptionSettings == 'second' && (
+                        <FormField label="Encryption key type">
+                          <RadioGroup
+                            onChange={({ detail }) =>
+                              setEncryptionKeyType(detail.value)
+                            }
+                            value={EncryptionKeyType}
+                            items={[
+                              {
+                                value: 'first',
+                                label: 'Amazon S3-managed keys (SSE-S3)',
+                              },
+                              {
+                                value: 'second',
+                                label:
+                                  'AWS Key Management Service key (SSE-KMS)',
+                              },
+                            ]}
+                          />
+                        </FormField>
+                      )}
+                    </SpaceBetween>
+                  )}
+                </SpaceBetween>
+              </Container>
             </SpaceBetween>
           </ExpandableSection>
           <SpaceBetween size="l" direction="horizontal" className="btn-right">

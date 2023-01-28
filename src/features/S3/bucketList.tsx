@@ -61,7 +61,10 @@ const defaultPlatform = { value: '0', label: 'Any Platform' };
 
 const selectEngineOptions = prepareSelectOptions('awsRegion', defaultEngine);
 const selectClassOptions = prepareSelectOptions('version', defaultClass);
-const selectPlatformOptions = prepareSelectOptions('platformDetails', defaultPlatform);
+const selectPlatformOptions = prepareSelectOptions(
+  'platformDetails',
+  defaultPlatform
+);
 
 function prepareSelectOptions(field, defaultOption) {
   const optionSet = [];
@@ -96,7 +99,8 @@ function matchesClass(item, selectedClass) {
 
 function matchesPlatform(item, selectedPlatform) {
   return (
-    selectedPlatform === defaultPlatform || item.platformDetails === selectedPlatform.label
+    selectedPlatform === defaultPlatform ||
+    item.platformDetails === selectedPlatform.label
   );
 }
 
@@ -114,7 +118,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     resourceName: 'buckets',
   });
 
-    useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -129,9 +133,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
       : collectionProps.selectedItems;
 
     const updated = buckets.map((it) =>
-      deleted.includes(it)
-        ? { ...it, timestamp: Date.now() }
-        : it
+      deleted.includes(it) ? { ...it, timestamp: Date.now() } : it
     );
     setBuckets(updated);
     setSelectedItems([]);
@@ -144,21 +146,19 @@ const TableContent = ({ loadHelpPanelContent }) => {
 
   useEffect(() => {
     setDeletedTotal(BUCKETS.length - buckets.length);
-     notifyInProgress(buckets.filter((it) => it).length);
+    notifyInProgress(buckets.filter((it) => it).length);
   }, [buckets, notifyInProgress]);
 
   useEffect(() => {
     setInterval(() => {
       setBuckets((buckets) =>
-        buckets.filter(
-          (it) => Date.now() - it.timestamp < 5000
-        )
+        buckets.filter((it) => Date.now() - it.timestamp < 5000)
       );
     }, 5000);
   }, []);
 
   const handleRefresh = () => {
-     const timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
     return () => clearTimeout(timer);
@@ -175,7 +175,13 @@ const TableContent = ({ loadHelpPanelContent }) => {
     'React-DBInstancesTable-Preferences',
     {
       pageSize: 10,
-      visibleContent: ['name', 'awsRegion', 'privateAccess', 'platformDetails', 'createdAt'],
+      visibleContent: [
+        'name',
+        'awsRegion',
+        'privateAccess',
+        'platformDetails',
+        'createdAt',
+      ],
       wrapLines: false,
       stripedRows: true,
       custom: 'table',
@@ -303,75 +309,87 @@ const TableContent = ({ loadHelpPanelContent }) => {
                   >
                     Delete
                   </Button>
-                  <Button variant="primary" onClick={() => window.location.href="/S3/buckets/create"}>Create Bucket</Button>
+                  <Button
+                    variant="primary"
+                    onClick={() =>
+                      (window.location.href = '/S3/buckets/create')
+                    }
+                  >
+                    Create Bucket
+                  </Button>
                 </SpaceBetween>
               }
             />
           }
           filter={
-             <div className="input-container">
-            <div className="input-filter">
-            <Input
-              data-testid="input-filter"
-              type="search"
-              value={filterProps.filteringText}
-              onChange={event => {
-                actions.setFiltering(event.detail.value);
-              }}
-              placeholder="Find instances"
-              label="Find instances"
-              ariaDescribedby={null}
-            />
-          </div>
-          {preferences.visibleContent.includes("awsRegion") && (
-          <div className="select-filter">
-            <Select
-              data-testid="engine-filter"
-              options={selectEngineOptions}
-              selectedAriaLabel="Selected"
-              selectedOption={engine}
-              onChange={event => {
-                setEngine(event.detail.selectedOption);
-              }}
-              ariaDescribedby={null}
-              expandToViewport={true}
-            />
-          </div>
-          )}
-          {preferences.visibleContent.includes("version") && (
-          <div className="select-filter">
-            <Select
-              data-testid="class-filter"
-              options={selectClassOptions}
-              selectedAriaLabel="Selected"
-              selectedOption={instanceClass}
-              onChange={event => {
-                setInstanceClass(event.detail.selectedOption);
-              }}
-              ariaDescribedby={null}
-              expandToViewport={true}
-            />
-          </div>
-          )}
-          {preferences.visibleContent.includes("platformDetails") && (
-          <div className="select-filter">
-            <Select
-              data-testid="class-filter"
-              options={selectPlatformOptions}
-              selectedAriaLabel="Selected"
-              selectedOption={platform}
-              onChange={event => {
-                setPlatform(event.detail.selectedOption);
-              }}
-              ariaDescribedby={null}
-              expandToViewport={true}
-            />
-          </div>
-          )}
-          {(filterProps.filteringText || engine !== defaultEngine || instanceClass !== defaultClass || platform != defaultPlatform) && (
-            <span className="filtering-results">{getFilterCounterText(filteredItemsCount)}</span>
-          )}
-        </div>
+            <div className="input-container">
+              <div className="input-filter">
+                <Input
+                  data-testid="input-filter"
+                  type="search"
+                  value={filterProps.filteringText}
+                  onChange={(event) => {
+                    actions.setFiltering(event.detail.value);
+                  }}
+                  placeholder="Find instances"
+                  label="Find instances"
+                  ariaDescribedby={null}
+                />
+              </div>
+              {preferences.visibleContent.includes('awsRegion') && (
+                <div className="select-filter">
+                  <Select
+                    data-testid="engine-filter"
+                    options={selectEngineOptions}
+                    selectedAriaLabel="Selected"
+                    selectedOption={engine}
+                    onChange={(event) => {
+                      setEngine(event.detail.selectedOption);
+                    }}
+                    ariaDescribedby={null}
+                    expandToViewport={true}
+                  />
+                </div>
+              )}
+              {preferences.visibleContent.includes('version') && (
+                <div className="select-filter">
+                  <Select
+                    data-testid="class-filter"
+                    options={selectClassOptions}
+                    selectedAriaLabel="Selected"
+                    selectedOption={instanceClass}
+                    onChange={(event) => {
+                      setInstanceClass(event.detail.selectedOption);
+                    }}
+                    ariaDescribedby={null}
+                    expandToViewport={true}
+                  />
+                </div>
+              )}
+              {preferences.visibleContent.includes('platformDetails') && (
+                <div className="select-filter">
+                  <Select
+                    data-testid="class-filter"
+                    options={selectPlatformOptions}
+                    selectedAriaLabel="Selected"
+                    selectedOption={platform}
+                    onChange={(event) => {
+                      setPlatform(event.detail.selectedOption);
+                    }}
+                    ariaDescribedby={null}
+                    expandToViewport={true}
+                  />
+                </div>
+              )}
+              {(filterProps.filteringText ||
+                engine !== defaultEngine ||
+                instanceClass !== defaultClass ||
+                platform != defaultPlatform) && (
+                <span className="filtering-results">
+                  {getFilterCounterText(filteredItemsCount)}
+                </span>
+              )}
+            </div>
           }
           pagination={
             <Pagination {...paginationProps} ariaLabels={paginationLabels} />
