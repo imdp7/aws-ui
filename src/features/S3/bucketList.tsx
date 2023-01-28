@@ -14,6 +14,7 @@ import {
   ContentLayout,
   SpaceBetween,
   Spinner,
+  ExpandableSection,
   Header,
   Box,
   Input,
@@ -516,6 +517,60 @@ function DeleteModal({ buckets, visible, onDiscard, onDelete }) {
   );
 }
 
+const AccountSnapshot = () => {
+  const [loading, setLoading] = useState(false);
+
+const handleRefresh = () => {
+    const timer = setTimeout(() => (
+      setLoading(true)
+      ),2000)
+    return clearTimeout(timer);
+}
+  
+
+  return (
+    
+      <ExpandableSection variant="container" headerText="Account snapshot"
+        description= {
+          <>
+            Storage lens provides visibility into storage usage and activity trends.{' '}
+            <Link external fontSize="inherit">Learn more</Link> 
+          </>
+        }
+      >
+      <SpaceBetween size="m">
+        <Alert header="Use an IAM User or IAM Role to access Storage Lens dashboards" statusAriaLabel="info" type="error"
+        action={
+          <Button onClick={handleRefresh} loading={loading}>
+          Refresh
+          </Button>
+      }
+        >
+        <div>
+          You can’t use your account’s root user credentials to view Amazon S3 Storage Lens dashboards. To access S3 Storage Lens dashboards, you must grant the requisite IAM permissions to a new or existing IAM user. Then, sign in with those user credentials to access S3 Storage Lens dashboards. {' '}
+          </div>
+          <Link external fontSize="inherit">Learn more </Link>
+          <Box>
+          <div>Permissions required: </div>
+          <ul>
+          <li >s3:ListStorageLensConfigurations</li>
+          <li>s3:GetStorageLensConfiguration</li>
+          <li>s3:GetStorageLensDashboard</li>
+          </ul>
+          </Box>
+          <Box variant="strong">
+             After you obtain the necessary permissions, sign in with those user credentials to access Storage Lens dashboards. 
+          </Box>
+          <ExpandableSection headerText="API Response" variant="footer">
+          User: arn:aws:iam::610741917922:root is not authorized to perform: s3:GetStorageLensDashboard on resource: arn:aws:s3:us-east-1:610741917922:storage-lens/default-account-dashboard
+          </ExpandableSection>
+        </Alert>
+      </SpaceBetween>
+      </ExpandableSection>
+    
+    );
+}
+
 export default function BucketList(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
@@ -627,6 +682,7 @@ export default function BucketList(props) {
                   />
                 }
               />
+              <AccountSnapshot/>
               <TableContent loadHelpPanelContent={loadHelpPanelContent} />
             </SpaceBetween>
           </Provider>

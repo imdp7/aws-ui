@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -134,12 +135,19 @@ const Tags = (props) => {
     />
   );
 };
-const Content = (props) => {
+const Content = ({loadHelpPanelContent},props) => {
+
+  const navigate = useNavigate();
+
   const [name, setName] = useState('');
   const [region, setRegion] = useState('');
   const [control, setControl] = useState('first');
   const [ACLEnabled, setACLEnabled] = useState('first');
-  const [blocked, setBlocked] = React.useState(true);
+  const [blockedAll, setBlockedAll] = React.useState(true);
+  const [blockedFirst, setBlockedFirst] = React.useState(false);
+  const [blockedSecond, setBlockedSecond] = React.useState(false);
+  const [blockedThird, setBlockedThird] = React.useState(false);
+  const [blockedFourth, setBlockedFourth] = React.useState(false);
   const [confirmBlocked, setConfirmBlocked] = React.useState(false);
   const [bucketVersion, setBucketVersion] = useState('first');
   const [tags, setTags] = React.useState([]);
@@ -201,7 +209,35 @@ const Content = (props) => {
           </FormField>
         </SpaceBetween>
       </Container>
-      <Container header={<Header variant="h2">Object Ownership</Header>}>
+      <Container header={<Header variant="h2" 
+      info={
+                <InfoLink
+                  id="certificate-method-info-link"
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Object Ownership"
+                        des="You use Object Ownership to disable access control lists (ACLs) and take ownership of every object in your bucket, simplifying access management for data stored in Amazon S3. A majority of modern use cases in Amazon S3 no longer require the use of ACLs, and we recommend that you disable ACLs except in unusual circumstances where you need to control access for each object individually."
+                         ul={[
+        {
+          h5: 'ACLs disabled (Recommended)',
+          text: `Bucket owner enforced – Bucket and object ACLs are disabled, and you, as the bucket owner, automatically own and have full control over every object in the bucket. Access control for your bucket and the objects in it is based on policies, such as IAM policies and S3 bucket policies. Objects can be uploaded to your bucket only if they don't specify an ACL or if they use bucket owner full control ACLs.`,
+        },
+        {
+          h5: 'ACLs enabled',
+          text: 'Bucket owner preferred – Bucket and object ACLs are accepted and honored. New objects that are uploaded with the bucket-owner-full-control canned ACL are automatically owned by the bucket owner rather than the object writer. Objects uploaded without this canned ACL are owned by the object writer. All other ACL behaviors remain in place. This setting does not affect ownership of existing objects. To require all Amazon S3 PUT operations to include the bucket-owner-full-control canned ACL, add a bucket policy that only allows object uploads using this ACL.',
+        },
+        {
+          text: `Object writer – Objects are owned by the AWS account that uploads them, even if the object writer is in a different account than the bucket owner. You, as the bucket owner, can't use bucket policies to grant access to objects owned by other AWS accounts. The object writer or you, when you receive appropriate permission from the object writer via object ACL, manage access permissions for these objects in object ACLs.`,
+        }
+      ]}
+                      />
+                    )
+                  }
+                  ariaLabel={'Information about SSL/TLS certificate.'}
+                />
+              }
+              > Object Ownership</Header>}>
         <SpaceBetween size="s">
           <Tiles
             onChange={({ detail }) => setControl(detail.value)}
@@ -352,16 +388,63 @@ const Content = (props) => {
       >
         <SpaceBetween size="m">
           <Checkbox
-            onChange={({ detail }) => setBlocked(detail.checked)}
-            checked={blocked}
+            onChange={({ detail }) => setBlockedAll(detail.checked)}
+            checked={blockedAll}
             description="Turning this setting on is the same as turning on all four settings below. Each of the following settings are independent of one another."
           >
             Block all public access
           </Checkbox>
-          {blocked == true && (
+          <div className="divider">
+            <>
+            <div className="dash">
+             <Checkbox
+            onChange={({ detail }) => setBlockedFirst(detail.checked)}
+            checked={blockedFirst || blockedAll}
+            disabled={blockedAll}
+            description="S3 will block public access permissions applied to newly added buckets or objects, and prevent the creation of new public access ACLs for existing buckets and objects. This setting doesn’t change any existing permissions that allow public access to S3 resources using ACLs."
+          >
+            Block public access to buckets and objects granted through new access control lists (ACLs)
+          </Checkbox>
+          </div>
+          <div className="dash">
+           <Checkbox
+            onChange={({ detail }) => {setBlockedSecond(detail.checked)}}
+            checked={blockedSecond || blockedAll}
+            disabled={blockedAll}
+            description="TS3 will ignore all ACLs that grant public access to buckets and objects."
+          >
+            Block public access to buckets and objects granted through any access control lists (ACLs)
+          </Checkbox>
+          </div>
+          <div className="dash">
+          <Checkbox
+            onChange={({ detail }) => setBlockedThird(detail.checked)}
+            checked={blockedThird || blockedAll}
+            disabled={blockedAll}
+            description="S3 will block new bucket and access point policies that grant public access to buckets and objects. This setting doesn't change any existing policies that allow public access to S3 resources."
+          >
+            Block public access to buckets and objects granted through new public bucket or access point policies
+          </Checkbox>
+          </div>
+          <div className="dash">
+          <Checkbox
+            onChange={({ detail }) => setBlockedFourth(detail.checked)}
+            checked={blockedFourth || blockedAll}
+            disabled={blockedAll}
+            description="S3 will ignore public and cross-account access for buckets or access points with policies that grant public access to buckets and objects."
+          >
+            Block public and cross-account access to buckets and objects through any public bucket or access point policies
+          </Checkbox>
+          </div>
+          </>
+          
+          </div>
+          {blockedAll == false && (
+            
             <Alert
               header="Turning off block all public access might result in this bucket and the objects within becoming public"
               statusIconAriaLabel="warning"
+              type="warning"
             >
               <SpaceBetween size="m">
                 <>
@@ -379,6 +462,7 @@ const Content = (props) => {
               </SpaceBetween>
             </Alert>
           )}
+
           <Alert
             header="Upcoming permission changes to enable ACLs"
             statusIconAriaLabel="Info"
@@ -473,14 +557,45 @@ const Content = (props) => {
                 </Link>
               </>
             }
-            info={<InfoLink />}
+            info={
+                <InfoLink
+                  id="certificate-method-info-link"
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Default encryption"
+                        des="The default encryption configuration of an S3 bucket is always enabled and is at a minimum set to server-side encryption with Amazon S3 managed keys (SSE-S3). With server-side encryption, Amazon S3 encrypts an object before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data."
+                        info="You can configure default encryption for a bucket. You can use either server-side encryption with Amazon S3 managed keys (SSE-S3) (the default) or server-side encryption with AWS Key Management Service (AWS KMS) keys (SSE-KMS)."
+                      />
+                    )
+                  }
+                  ariaLabel={'Information about SSL/TLS certificate.'}
+                />
+              }
           >
             Default encryption
           </Header>
         }
       >
         <SpaceBetween size="m">
-          <FormField label="Encryption key type" info={<InfoLink />}>
+          <FormField 
+              label="Encryption key type" 
+              info={
+                <InfoLink
+                  id="certificate-method-info-link"
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Encryption key type"
+                        des="You can configure default encryption for an Amazon S3 bucket. You can use either server-side encryption with Amazon S3 managed keys (SSE-S3) (the default) or server-side encryption with AWS Key Management Service (AWS KMS) keys (SSE-KMS)."
+                        info="With the default option (SSE-S3), Amazon S3 uses one of the strongest block ciphers—256-bit Advanced Encryption Standard (AES-256) to encrypt each object uploaded to the bucket. With SSE-KMS, you have more control over your key. If you use SSE-KMS, you can choose an AWS KMS customer managed key or use the default AWS managed key (aws/s3). SSE-KMS also provides you with an audit trail that shows when your KMS key was used and by whom. "
+                      />
+                    )
+                  }
+                  ariaLabel={'Information about SSL/TLS certificate.'}
+                />
+              }
+              >
             <RadioGroup
               onChange={({ detail }) => setEncryptionKey(detail.value)}
               value={encryptionKey}
@@ -495,7 +610,20 @@ const Content = (props) => {
           </FormField>
           <FormField
             label="Bucket Key"
-            info={<InfoLink />}
+            info={
+                <InfoLink
+                  id="certificate-method-info-link"
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Bucket Key"
+                        des="When KMS encryption is used to encrypt new objects in this bucket, the bucket key reduces encryption costs by lowering calls to AWS KMS."
+                      />
+                    )
+                  }
+                  ariaLabel={'Information about SSL/TLS certificate.'}
+                />
+              }
             description={
               <>
                 When KMS encryption is used to encrypt new objects in this
@@ -734,7 +862,7 @@ const CreateS3 = (props) => {
                   />
                 }
               />
-              <Content {...props} />
+              <Content {...props} loadHelpPanelContent={loadHelpPanelContent} />
             </SpaceBetween>
           </Provider>
         }
