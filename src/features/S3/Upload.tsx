@@ -18,7 +18,11 @@ import {
   Alert,
   Container,
   Checkbox,
+  AttributeEditor,
   FormField,
+  Input,
+  Autosuggest,
+  Select,
 } from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -152,6 +156,7 @@ function Upload(props) {
   );
 
   const Content = () => {
+    const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('Disabled');
     const [accessList, setAccessList] = useState('first');
     const [predefined, setPredefined] = useState('first');
@@ -162,12 +167,18 @@ function Upload(props) {
     const [SSencryption, setSSEncryption] = useState('first');
     const [EncryptionSettings, setEncryptionSettings] = useState('first');
     const [EncryptionKeyType, setEncryptionKeyType] = useState('first');
+    const [KMSKey, setKMSKey] = useState('second');
+    const [KMS_ARN, setKMS_ARN] = useState('');
+    const [bucketKey, setBucketKey] = useState('second');
+    const [checkSum, setCheckSum] = useState('first');
+    const [tags, setTags] = useState([]);
+    const [metadata, setMetadata] = useState([]);
 
     const fakeDataFetch = (delay) =>
       new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
 
     const handleSubmit = async () => {
-      setLoading(false);
+      setLoading(true);
       await fakeDataFetch(2000);
       setStatus('Enabled');
     };
@@ -398,12 +409,11 @@ function Upload(props) {
           <ExpandableSection
             headerText="Properties"
             variant="container"
-            defaultExpanded
             key={'storage-table-section'}
             headerAriaLabel="storage-table"
             headerDescription="Specify storage class, encryption settings, tags, and more."
           >
-            <SpaceBetween size="m">
+            <SpaceBetween size="xl">
               <Container
                 key="storage-table"
                 fitHeight
@@ -584,6 +594,11 @@ function Upload(props) {
                           ]}
                         />
                       </FormField>
+                      {EncryptionSettings == 'first' && (
+                        <FormField label="Encryption key type">
+                          <Box>Amazon S3-managed keys (SSE-S3)</Box>
+                        </FormField>
+                      )}
                       {EncryptionSettings == 'second' && (
                         <FormField label="Encryption key type">
                           <RadioGroup
@@ -605,8 +620,354 @@ function Upload(props) {
                           />
                         </FormField>
                       )}
+                      {EncryptionKeyType == 'second' && (
+                        <>
+                          <FormField label="AWS KMS key">
+                            <RadioGroup
+                              onChange={({ detail }) => setKMSKey(detail.value)}
+                              value={KMSKey}
+                              items={[
+                                {
+                                  value: 'first',
+                                  label: 'Choose from your AWS KMS keys',
+                                },
+                                {
+                                  value: 'second',
+                                  label: 'Enter AWS KMS key ARN',
+                                },
+                              ]}
+                            />
+                          </FormField>
+
+                          <SpaceBetween size="m">
+                            {KMSKey == 'second' ? (
+                              <FormField
+                                secondaryControl={
+                                  <Button
+                                    ariaLabel="Create KMS Key (opens new tab)"
+                                    href="https://example.com"
+                                    iconAlign="right"
+                                    iconName="external"
+                                    target="_blank"
+                                  >
+                                    Create KMS Key
+                                  </Button>
+                                }
+                                constraintText={
+                                  <>
+                                    <div>{`Format (using key id): arn:aws:kms:<region>:<account-ID>:key/<key-id>`}</div>
+                                    <div>{`(using alias): arn:aws:kms:<region>:<account-ID>:alias/<alias-name>`}</div>
+                                  </>
+                                }
+                              >
+                                <Input
+                                  onChange={({ detail }) =>
+                                    setKMS_ARN(detail.value)
+                                  }
+                                  value={KMS_ARN}
+                                  placeholder="arn:aws:kms:<region>:<account-ID>:key/<key-id>"
+                                  type="search"
+                                />
+                              </FormField>
+                            ) : (
+                              <>
+                                <FormField
+                                  secondaryControl={
+                                    <SpaceBetween
+                                      size="m"
+                                      direction="horizontal"
+                                    >
+                                      <Button iconName="refresh" />
+                                      <Button
+                                        ariaLabel="Create KMS Key (opens new tab)"
+                                        href="https://example.com"
+                                        iconAlign="right"
+                                        iconName="external"
+                                        target="_blank"
+                                      >
+                                        Create KMS Key
+                                      </Button>
+                                    </SpaceBetween>
+                                  }
+                                >
+                                  <Autosuggest
+                                    onChange={({ detail }) =>
+                                      setKMSKey(detail.value)
+                                    }
+                                    value={KMSKey}
+                                    options={[
+                                      { value: 'Suggestion 1' },
+                                      { value: 'Suggestion 2' },
+                                      { value: 'Suggestion 3' },
+                                      { value: 'Suggestion 4' },
+                                    ]}
+                                    enteredTextLabel={(value) =>
+                                      `Use: "${value}"`
+                                    }
+                                    ariaLabel="Autosuggest example with suggestions"
+                                    placeholder="Enter value"
+                                    empty="No matches found"
+                                  />
+                                </FormField>
+                              </>
+                            )}
+                            <Alert
+                              statusIconAriaLabel="info"
+                              header="Bucket Key is enabled for objects uploaded, modified, or copied in this bucket"
+                            >
+                              <div>
+                                Uploaded, modified, or copied objects inherit
+                                their Bucket Key settings from the bucket
+                                default encryption configuration unless they
+                                already have Bucket Key configured.{' '}
+                                <Link
+                                  external
+                                  fontSize="inherit"
+                                  href="https://www/aws.com"
+                                >
+                                  {' '}
+                                  Learn more
+                                </Link>
+                              </div>
+                            </Alert>
+                            <FormField
+                              label="Bucket Key"
+                              description={
+                                <div>
+                                  When KMS encryption is used to encrypt new
+                                  objects in this bucket, the bucket key reduces
+                                  encryption costs by lowering calls to AWS KMS.{' '}
+                                  <Link
+                                    external
+                                    fontSize="inherit"
+                                    href="https://www/aws.com"
+                                  >
+                                    {' '}
+                                    Learn more
+                                  </Link>
+                                </div>
+                              }
+                            >
+                              <RadioGroup
+                                onChange={({ detail }) =>
+                                  setBucketKey(detail.value)
+                                }
+                                value={bucketKey}
+                                items={[
+                                  {
+                                    value: 'first',
+                                    label: 'Disable',
+                                    disabled: true,
+                                  },
+                                  {
+                                    value: 'second',
+                                    label: 'Enable',
+                                    disabled: true,
+                                  },
+                                ]}
+                              />
+                            </FormField>
+                          </SpaceBetween>
+                        </>
+                      )}
                     </SpaceBetween>
                   )}
+                </SpaceBetween>
+              </Container>
+
+              {/* Additional checksums */}
+
+              <Container
+                header={
+                  <Header
+                    variant="h2"
+                    description={
+                      <>
+                        Checksum functions are used for additional data
+                        integrity verification of new objects.
+                        <Link external fontSize="inherit">
+                          Learn more
+                        </Link>
+                      </>
+                    }
+                    info={
+                      <InfoLink
+                        onFollow={function (
+                          event: CustomEvent<BaseNavigationDetail>
+                        ): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                      />
+                    }
+                  >
+                    Additional checksums
+                  </Header>
+                }
+              >
+                <SpaceBetween size="m">
+                  <FormField label="Additional checksums">
+                    <RadioGroup
+                      onChange={({ detail }) => setCheckSum(detail.value)}
+                      value={checkSum}
+                      items={[
+                        {
+                          value: 'first',
+                          label: 'Off',
+                          description:
+                            'Amazon S3 will use a combination of MD5 checksums and Etags to verify data integrity.',
+                        },
+                        {
+                          value: 'second',
+                          label: 'On',
+                          description:
+                            'Specify a checksum function for additional data integrity validation.',
+                        },
+                      ]}
+                    />
+                  </FormField>
+                </SpaceBetween>
+              </Container>
+
+              {/* Tags - optional */}
+
+              <Container
+                header={
+                  <Header
+                    variant="h2"
+                    description={
+                      <>
+                        You can use object tags to analyze, manage, and specify
+                        permissions for objects.
+                        <Link external fontSize="inherit">
+                          Learn more
+                        </Link>
+                      </>
+                    }
+                    info={
+                      <InfoLink
+                        onFollow={function (
+                          event: CustomEvent<BaseNavigationDetail>
+                        ): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                      />
+                    }
+                  >
+                    Tags - optional
+                  </Header>
+                }
+              >
+                <SpaceBetween size="m">
+                  <AttributeEditor
+                    onAddButtonClick={() => setTags([...tags, {}])}
+                    onRemoveButtonClick={({ detail: { itemIndex } }) => {
+                      const tmpItems = [...tags];
+                      tmpItems.splice(itemIndex, 1);
+                      setTags(tmpItems);
+                    }}
+                    items={tags}
+                    addButtonText="Add Tag"
+                    definition={[
+                      {
+                        label: 'Key',
+                        control: (item) => (
+                          <Input value={item.key} placeholder="Enter key" />
+                        ),
+                      },
+                      {
+                        label: 'Value',
+                        control: (item) => (
+                          <Input value={item.value} placeholder="Enter value" />
+                        ),
+                      },
+                    ]}
+                    removeButtonText="Remove"
+                    empty="No items associated with the resource."
+                  />
+                </SpaceBetween>
+              </Container>
+              {/* Metadata - optional */}
+
+              <Container
+                header={
+                  <Header
+                    variant="h2"
+                    description={
+                      <>
+                        Metadata is optional information provided as a
+                        name-value (key-value) pair.
+                        <Link external fontSize="inherit">
+                          Learn more
+                        </Link>
+                      </>
+                    }
+                    info={
+                      <InfoLink
+                        onFollow={function (
+                          event: CustomEvent<BaseNavigationDetail>
+                        ): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                      />
+                    }
+                  >
+                    Metadata - optional
+                  </Header>
+                }
+              >
+                <SpaceBetween size="m">
+                  <AttributeEditor
+                    onAddButtonClick={() => setMetadata([...metadata, {}])}
+                    onRemoveButtonClick={({ detail: { itemIndex } }) => {
+                      const tmpItems = [...metadata];
+                      tmpItems.splice(itemIndex, 1);
+                      setMetadata(tmpItems);
+                    }}
+                    items={metadata}
+                    addButtonText="Add Metadata"
+                    definition={[
+                      {
+                        label: 'Type',
+                        control: (item) => (
+                          <Select
+                            selectedOption={item.key}
+                            onChange={() => null}
+                            placeholder="Enter key"
+                            options={[
+                              { label: 'System defined', value: '1' },
+                              { label: 'User defined', value: '2' },
+                            ]}
+                            selectedAriaLabel="type"
+                          />
+                        ),
+                      },
+                      {
+                        label: 'Key',
+                        control: (item) => (
+                          <Select
+                            selectedOption={item.key}
+                            placeholder="Enter key"
+                            options={[
+                              { label: 'Option 1', value: '1' },
+                              { label: 'Option 2', value: '2' },
+                              { label: 'Option 3', value: '3' },
+                              { label: 'Option 4', value: '4' },
+                              { label: 'Option 5', value: '5' },
+                            ]}
+                            selectedAriaLabel="key"
+                          />
+                        ),
+                      },
+                      {
+                        label: 'Value',
+                        control: (item) => (
+                          <Input value={item.value} placeholder="Enter value" />
+                        ),
+                      },
+                    ]}
+                    removeButtonText="Remove"
+                    empty="No items associated with the resource."
+                  />
                 </SpaceBetween>
               </Container>
             </SpaceBetween>
