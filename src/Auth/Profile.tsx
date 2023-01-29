@@ -44,13 +44,9 @@ const Account = (props) => {
   const fakeDataFetch = (delay) =>
     new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
 
-  useEffect(() => {
-    handleSubmit();
-  }, []);
-
   const handleSubmit = async () => {
     setLoading(true);
-    await fakeDataFetch(2500);
+    await fakeDataFetch(1500);
     setLoading(false);
     setEdit(false);
   };
@@ -94,84 +90,82 @@ const Account = (props) => {
       >
         {edit ? (
           <>
-            <form>
-              <Form
-                actions={
-                  <SpaceBetween direction="horizontal" size="xs">
-                    <Button
-                      formAction="none"
-                      variant="link"
-                      onClick={() => {
-                        setEdit(false);
-                        setEmail('');
-                        setPassword('');
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="primary"
-                      formAction="submit"
-                      loading={loading}
-                      onClick={handleSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </SpaceBetween>
-                }
-              >
-                <SpaceBetween size="xs">
-                  <ColumnLayout borders="horizontal">
-                    <ColumnLayout columns={2}>
-                      <FormField label="Account ID:">
-                        <Input value="610741917922" disabled />
-                      </FormField>
-                      <FormField label="Seller:">
-                        <Input value="Amazon Web Services" disabled />
-                      </FormField>
-                      <FormField
-                        label="Enter new Email:"
-                        errorText={getErrorText(
-                          'You must specify a content origin.'
-                        )}
-                      >
-                        <Input
-                          value={email}
-                          inputMode="email"
-                          ariaRequired
-                          onChange={({ detail }) => setEmail(detail.value)}
-                          placeholder="Enter New Email"
-                        />
-                      </FormField>
-                      <FormField label="Enter Old Password:">
-                        <Input
-                          value={password}
-                          type="password"
-                          onChange={({ detail }) => setPassword(detail.value)}
-                          placeholder="Set Old Password"
-                        />
-                      </FormField>
-                      <FormField label="Enter New Password:">
-                        <Input
-                          value={password}
-                          type="password"
-                          onChange={({ detail }) => setPassword(detail.value)}
-                          placeholder="Set New Password"
-                        />
-                      </FormField>
-                      <FormField label="Re-Enter Password:">
-                        <Input
-                          value={password}
-                          type="password"
-                          onChange={({ detail }) => setPassword(detail.value)}
-                          placeholder="Set New Password"
-                        />
-                      </FormField>
-                    </ColumnLayout>
-                  </ColumnLayout>
+            <Form
+              actions={
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Button
+                    formAction="none"
+                    variant="link"
+                    onClick={() => {
+                      setEdit(false);
+                      setEmail('');
+                      setPassword('');
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    formAction="submit"
+                    loading={loading}
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
                 </SpaceBetween>
-              </Form>
-            </form>
+              }
+            >
+              <SpaceBetween size="xs">
+                <ColumnLayout borders="horizontal">
+                  <ColumnLayout columns={2}>
+                    <FormField label="Account ID:">
+                      <Input value="610741917922" disabled />
+                    </FormField>
+                    <FormField label="Seller:">
+                      <Input value="Amazon Web Services" disabled />
+                    </FormField>
+                    <FormField
+                      label="Enter new Email:"
+                      errorText={getErrorText(
+                        'You must specify a content origin.'
+                      )}
+                    >
+                      <Input
+                        value={email}
+                        inputMode="email"
+                        ariaRequired
+                        onChange={({ detail }) => setEmail(detail.value)}
+                        placeholder="Enter New Email"
+                      />
+                    </FormField>
+                    <FormField label="Enter Old Password:">
+                      <Input
+                        value={password}
+                        type="password"
+                        onChange={({ detail }) => setPassword(detail.value)}
+                        placeholder="Set Old Password"
+                      />
+                    </FormField>
+                    <FormField label="Enter New Password:">
+                      <Input
+                        value={password}
+                        type="password"
+                        onChange={({ detail }) => setPassword(detail.value)}
+                        placeholder="Set New Password"
+                      />
+                    </FormField>
+                    <FormField label="Re-Enter Password:">
+                      <Input
+                        value={password}
+                        type="password"
+                        onChange={({ detail }) => setPassword(detail.value)}
+                        placeholder="Set New Password"
+                      />
+                    </FormField>
+                  </ColumnLayout>
+                </ColumnLayout>
+              </SpaceBetween>
+            </Form>
           </>
         ) : (
           <SpaceBetween size="xs">
@@ -213,10 +207,6 @@ const Information = (props) => {
 
   const fakeDataFetch = (delay) =>
     new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
-
-  useEffect(() => {
-    handleSubmit();
-  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -286,7 +276,6 @@ const Information = (props) => {
                       variant="primary"
                       formAction="submit"
                       loading={loading}
-                      disabled={loading === true}
                       onClick={handleSubmit}
                     >
                       Submit
@@ -430,10 +419,6 @@ const Payment = (props) => {
   };
   const fakeDataFetch = (delay) =>
     new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
-
-  useEffect(() => {
-    handleSubmit();
-  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
