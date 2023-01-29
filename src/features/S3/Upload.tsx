@@ -501,7 +501,6 @@ function Upload(props) {
                   trackBy="storageClass"
                   variant="embedded"
                   stripedRows
-                  wrapLines
                   visibleColumns={[
                     'storageClass',
                     'designed',
