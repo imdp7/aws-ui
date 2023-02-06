@@ -145,9 +145,9 @@ export const AppHeader = (props: State): JSX.Element => {
               iconName: 'settings',
               ariaLabel: 'Settings',
               title: 'Settings',
-              onItemClick: (evt) => {
-                onFollowHandler(evt);
-              },
+              // onItemClick: (evt) => {
+              //   onFollowHandler(evt);
+              // },
               items: [
                 {
                   id: 'settings-org',
@@ -281,6 +281,7 @@ export const AppHeader = (props: State): JSX.Element => {
               iconName: 'user-profile',
               onItemClick: (evt) => {
                 setRedirectURL(evt.detail.id);
+                onFollowHandler(evt);
               },
               items: [
                 {
