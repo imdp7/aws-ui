@@ -75,6 +75,10 @@ export const ObjectsPane = (props) => {
   //   dataBucketFiles.push(newData);
   //   console.log("data uploaded", dataBucketFiles)
   // }
+
+  const removeAsset = () => {
+    
+  }
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {

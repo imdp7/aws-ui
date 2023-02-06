@@ -1,8 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import feature2DataReducer from '../features/S3/feature2DataSlice';
+// import themes from './theme'
+// import regions './region'
 
 export const store = configureStore({
   reducer: {
+    // preferences: preferences,
     feature2Data: feature2DataReducer,
   },
 });

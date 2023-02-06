@@ -46,6 +46,7 @@ export const AppHeader = (props: State): JSX.Element => {
     mode, setMode,
     density, setDensity,
     motion, setMotion,
+    selection, setSelection
   }))
 
   const navigate = useNavigate();

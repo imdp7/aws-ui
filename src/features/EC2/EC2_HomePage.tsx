@@ -21,6 +21,7 @@ import {
   EC2Header,
 } from './commons/common-components';
 import { Content } from './commons/Home';
+import {useNavigate} from 'react-router-dom';
 function EC2_HomePage(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('Homepage');
@@ -34,6 +35,8 @@ function EC2_HomePage(props) {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -85,14 +88,14 @@ function EC2_HomePage(props) {
                             <Button
                               variant="primary"
                               onClick={() =>
-                                (window.location.href = `${props.link}`)
+                                navigate(`/ec2_instance/${props.link}`)
                               }
                             >
                               Create Instance
                             </Button>
                             <Button
                               onClick={() =>
-                                (window.location.href = `${props.instances}`)
+                                navigate(`/ec2_instance/${props.instances}`)
                               }
                             >
                               View Instances

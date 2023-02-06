@@ -21,6 +21,7 @@ import {
   S3navItems,
   S3Header,
 } from '../EC2/commons/common-components';
+import {useNavigate} from 'react-router-dom';
 
 export const S3 = (props): JSX.Element => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,8 @@ export const S3 = (props): JSX.Element => {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -86,14 +89,14 @@ export const S3 = (props): JSX.Element => {
                             <Button
                               variant="primary"
                               onClick={() =>
-                                (window.location.href = `${props.link}`)
+                                navigate(`/ec2_instance/${props.link}`)
                               }
                             >
                               Create Bucket
                             </Button>
                             <Button
                               onClick={() =>
-                                (window.location.href = `${props.instances}`)
+                                navigate(`/ec2_instance/${props.instances}`)
                               }
                             >
                               View Bucket
