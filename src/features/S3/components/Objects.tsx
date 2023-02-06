@@ -46,6 +46,11 @@ export const ObjectsPane = (props) => {
     fileInputRef.current.click();
   };
 
+  const handleClickFolder = () => {
+    folderInputRef.current.click();
+  };
+
+
   const handleChange = (event) => {
     const files = event.target.files;
     // Iterate over the files and do something with them, such as uploading them to a server
@@ -124,35 +129,6 @@ export const ObjectsPane = (props) => {
           cell: (e) => e.storageClass || <Box textAlign="center">-</Box>,
         },
       ]}
-      // items={[
-      //   {
-      //     name: 'Item 1',
-      //     alt: 'First',
-      //     version: 'This is the first item',
-      //     type: '1A',
-      //     lastModified: 'Small',
-      //     storageClass: 'Glacier',
-      //     size: '2C',
-      //   },
-      //   {
-      //     name: 'Item 2',
-      //     alt: 'Second',
-      //     version: 'This is the Seoncd item',
-      //     type: '1V',
-      //     lastModified: 'Small',
-      //     storageClass: 'Glacier',
-      //     size: 'B',
-      //   },
-      //   {
-      //     name: 'Item 3',
-      //     alt: 'Third',
-      //     version: 'This is the third item',
-      //     type: '1R',
-      //     lastModified: 'Small',
-      //     storageClass: 'Glacier',
-      //     size: '23',
-      //   },
-      // ]}
       items={selectedFiles}
       loadingText="Loading resources"
       selectionType="multi"

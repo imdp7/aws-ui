@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect,useRef } from 'react';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -107,7 +107,7 @@ function matchesPlatform(item, selectedPlatform) {
 
 const TableContent = ({ loadHelpPanelContent }) => {
   const [buckets, setBuckets] = useState(BUCKETS);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [deletedTotal, setDeletedTotal] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -119,12 +119,15 @@ const TableContent = ({ loadHelpPanelContent }) => {
     resourceName: 'buckets',
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    await fakeDataFetch(1500);
+    setLoading(false);
+  };
 
   const onDeleteInit = () => setShowDeleteModal(true);
   const onDeleteDiscard = () => setShowDeleteModal(false);
@@ -158,12 +161,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
     }, 5000);
   }, []);
 
-  const handleRefresh = () => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  };
 
   const [columnDefinitions, saveWidths] = useColumnWidths(
     'React-TableSelectFilter-Widths',
@@ -242,7 +239,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
         console.error('Failed to Bucket ARN: ', err);
       }
     };
-
     return (
       <Box margin={{ right: 'xxs' }} display="inline-block">
         <Popover
@@ -266,10 +262,13 @@ const TableContent = ({ loadHelpPanelContent }) => {
     );
   };
 
+   const tabelRef = useRef();
+
   return (
     <>
       <SpaceBetween size="xxs">
         <Table
+          ref={tabelRef}
           {...collectionProps}
           columnDefinitions={columnDefinitions}
           visibleColumns={preferences.visibleContent}
@@ -520,12 +519,14 @@ function DeleteModal({ buckets, visible, onDiscard, onDelete }) {
 const AccountSnapshot = () => {
   const [loading, setLoading] = useState(false);
 
-const handleRefresh = () => {
-    const timer = setTimeout(() => (
-      setLoading(true)
-      ),2000)
-    return clearTimeout(timer);
-}
+  const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    await fakeDataFetch(1500);
+    setLoading(false);
+  };
   
 
   return (
@@ -572,6 +573,7 @@ const handleRefresh = () => {
 }
 
 export default function BucketList(props) {
+  const appLayout = useRef();
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -606,20 +608,11 @@ export default function BucketList(props) {
 
   useEffect(() => {
     document.title = 'S3 Management Console';
+     const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, [location]);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <>
@@ -627,9 +620,45 @@ export default function BucketList(props) {
         <AppHeader {...props} />
       </div>
       <AppLayout
+      ref={appLayout}
         headerSelector="#h"
         footerSelector="#f"
         contentType="table"
+        content={
+          <Provider store={store}>
+            <SpaceBetween size="l">
+            {!loading ? (
+              <>
+              <ContentLayout
+                header={
+                  <DashboardHeader
+                    loadHelpPanelContent={loadHelpPanelContent}
+                    title="Buckets"
+                    info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
+                    ul={[
+                      {
+                        h5: 'Manage access',
+                        text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
+                      },
+                      {
+                        h5: 'Configure your bucket',
+                        text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
+                      },
+                      {
+                        h5: 'Understand storage usage and activity',
+                        text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
+                      },
+                    ]}
+                  />
+                }
+              />
+              <AccountSnapshot/>
+              <TableContent loadHelpPanelContent={loadHelpPanelContent} />
+              </>
+              ) : (<Spinner size="large" className="spinner" />)}
+            </SpaceBetween>
+          </Provider>
+        }
         breadcrumbs={
           <BreadcrumbGroup
             items={[
@@ -656,37 +685,6 @@ export default function BucketList(props) {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         notifications={<Flashbar items={notifications} />}
-        content={
-          <Provider store={store}>
-            <SpaceBetween size="l">
-              <ContentLayout
-                header={
-                  <DashboardHeader
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    title="Buckets"
-                    info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
-                    ul={[
-                      {
-                        h5: 'Manage access',
-                        text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
-                      },
-                      {
-                        h5: 'Configure your bucket',
-                        text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
-                      },
-                      {
-                        h5: 'Understand storage usage and activity',
-                        text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
-                      },
-                    ]}
-                  />
-                }
-              />
-              <AccountSnapshot/>
-              <TableContent loadHelpPanelContent={loadHelpPanelContent} />
-            </SpaceBetween>
-          </Provider>
-        }
       />
       <AppFooter />
     </>

@@ -250,7 +250,6 @@ const Information = (props) => {
       >
         {edit ? (
           <>
-            <form>
               <Form
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
@@ -372,7 +371,6 @@ const Information = (props) => {
                   </ColumnLayout>
                 </SpaceBetween>
               </Form>
-            </form>
           </>
         ) : (
           <SpaceBetween size="xs">
@@ -462,7 +460,6 @@ const Payment = (props) => {
       >
         {edit ? (
           <>
-            <form>
               <Form
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
@@ -511,7 +508,6 @@ const Payment = (props) => {
                   </ColumnLayout>
                 </SpaceBetween>
               </Form>
-            </form>
           </>
         ) : (
           <>
@@ -549,12 +545,12 @@ function Profile(props) {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 3000);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
@@ -581,7 +577,7 @@ function Profile(props) {
       <AppLayout
         content={
           <Provider store={store}>
-            {/* {!loading ? ( */}
+            {!loading ? ( 
             <ContentLayout
               header={
                 <DashboardHeader
@@ -600,9 +596,9 @@ function Profile(props) {
                 />
               </SpaceBetween>
             </ContentLayout>
-            {/* ) : (
+             ) : (
               <Spinner size="large" className="spinner" />
-            )} */}
+            )}
           </Provider>
         }
         headerSelector="#h"
