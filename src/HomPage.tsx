@@ -136,6 +136,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
     </SpaceBetween>
   );
 };
+
 function strReduce(string = '') {
   return string.substring(0, length);
 }
@@ -153,21 +154,10 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   };
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
 
+const RecenltyVisited = () => {
   return (
-    <>
-      <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
-      <SpaceBetween size="m">
-        <Alert
-          onDismiss={() => setVisible(false)}
-          visible={visible}
-          dismissAriaLabel="Close alert"
-          dismissible
-          header="Introducing the new widgets Applications."
-        >
-          {' '}
-        </Alert>
-
-        <Container
+      <>
+      <Container
           header={
             <Header
               variant="h2"
@@ -199,23 +189,20 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
             </Box>
           }
         >
-          <ColumnLayout columns={4} borders="vertical">
+          <ColumnLayout columns={4} borders="horizontal">
             {arrayData.map((d) => (
               <div
                 key={d[0]}
                 style={{
-                  display: 'block',
+                  display: 'flex',
                   justifyItems: 'center',
                   textAlign: 'center',
+                  fontSize: '10px'
                 }}
               >
-                <img src={`${d[1]}`} alt="logo" />
-                <Box variant="h3" padding={{ top: 'n', left: 'n' }}>
-                  {d[0]}
-                </Box>
-                <Box variant="p">
-                  Call to action sentence about benefits of{' '}
-                  <Link
+                <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                <Link
                     variant="secondary"
                     href={`${d[2]}`}
                     onFollow={defaultOnFollowHandler}
@@ -227,13 +214,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
             ))}
           </ColumnLayout>
         </Container>
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 12, xxs: 4 } },
-            { colspan: { default: 12, xxs: 8 } },
-          ]}
-        >
-          <Container
+        </>
+    );
+}
+
+const Health = () => {
+  return (
+    <>
+    <Container
             header={
               <Header
                 variant="h2"
@@ -298,7 +286,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             </Grid>
           </Container>
-          <Container
+          </>
+    );
+}
+
+const CostUsage = () => {
+  return (
+    <>
+    <Container
             header={
               <Header
                 variant="h2"
@@ -343,8 +338,8 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                       textAlign: 'center',
                     }}
                   >
-                    <img src={`${d[1]}`} alt="logo" />
-                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
+                    <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                    <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
                       <Link
                         variant="secondary"
                         href={`${d[2]}`}
@@ -358,15 +353,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </ColumnLayout>
             </SpaceBetween>
           </Container>
-        </Grid>
+    </>
+    );
+}
 
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 12, xxs: 8 } },
-            { colspan: { default: 12, xxs: 4 } },
-          ]}
-        >
-          <Container
+const BuildSolution = () => {
+  return (
+    <>
+     <Container
             header={
               <Header
                 variant="h2"
@@ -402,8 +396,8 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                       textAlign: 'center',
                     }}
                   >
-                    <img src={`${d[1]}`} alt="logo" />
-                    <Box variant="p" padding={{ top: 'n', left: 'l' }}>
+                    <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                    <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
                       <Link
                         variant="secondary"
                         href={`${d[2]}`}
@@ -417,7 +411,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </ColumnLayout>
             </SpaceBetween>
           </Container>
-          <Container
+          </>
+    );
+}
+
+const TrustedAdviser = () => {
+  return (
+    <>
+    <Container
             header={
               <Header
                 variant="h2"
@@ -488,15 +489,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             </Grid>
           </Container>
-        </Grid>
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 12, xxs: 4 } },
-            { colspan: { default: 12, xxs: 4 } },
-            { colspan: { default: 12, xxs: 4 } },
-          ]}
-        >
-          <Container
+    </>
+    );
+}
+
+const ExlporeAWS = () => {
+  return (
+    <>
+       <Container
             header={
               <Header
                 variant="h2"
@@ -552,7 +552,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             </SpaceBetween>
           </Container>
-          <Container
+    </>
+    );
+}
+
+const LatestAnnouncement = () => {
+  return (
+    <>
+    <Container
             header={
               <Header
                 variant="h2"
@@ -596,7 +603,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Link>
             </Box>
           </Container>
-          <Container
+          </>
+    );
+}
+
+const AWSBlogs = () => {
+  return (
+    <>
+      <Container
             header={
               <Header
                 variant="h2"
@@ -661,6 +675,45 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Box>
             </Grid>
           </Container>
+    </>
+    );
+}
+  return (
+    <>
+      <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
+      <SpaceBetween size="l">
+        <Alert
+          onDismiss={() => setVisible(false)}
+          visible={visible}
+          dismissAriaLabel="Close alert"
+          dismissible
+          header="Introducing the new widgets Applications."
+        >
+          {' '}
+        </Alert>
+        <Grid
+          gridDefinition={[
+            { colspan: { default: 12, m: 8 } },
+            { colspan: { default: 12, xs: 4 } },
+            { colspan: { default: 12, xs: 4 }},
+            { colspan: { default: 12, m: 8 } },
+            { colspan: { default: 12, m: 8 } },
+            { colspan: { default: 12, xs: 4 } },
+             { colspan: { default: 12, xs: 4 } },
+            { colspan: { default: 12, xs: 4 } },
+            { colspan: { default: 12, xs: 4 } },
+          ]}
+        >
+        <RecenltyVisited />
+        <AWSBlogs />
+          <Health />
+          <CostUsage />
+         <BuildSolution />
+          <TrustedAdviser />
+          <ExlporeAWS />
+          {/*<LatestAnnouncement />*/}
+          <ExlporeAWS />
+          <AWSBlogs />
         </Grid>
       </SpaceBetween>
     </>

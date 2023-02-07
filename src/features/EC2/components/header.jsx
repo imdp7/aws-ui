@@ -22,13 +22,11 @@ const Pane1 = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loading]);
   return (
-    <>
-      {!loading ? (
-        <HelpPanel header={<h2>{props.title}</h2>}>
+        <HelpPanel loadingText="Loading Content" loading={loading} header={<h2>{props.title}</h2>}>
           <div>
             <p>{props?.info}</p>
             <p>{props?.des}</p>
@@ -49,10 +47,6 @@ const Pane1 = (props) => {
             ) : null}
           </div>
         </HelpPanel>
-      ) : (
-        <Spinner className="spinner" size="big" />
-      )}
-    </>
   );
 };
 
@@ -62,18 +56,18 @@ const Tutorial = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <>
-      {!loading ? (
         <TutorialPanel
+         loadingText="loading content"
+          loading={loading}
           tutorials={[
             {
               title: 'Transcribe audio',
-              completed: false,
+              completed: true,
               description: (
                 <>
                   <Box
@@ -179,12 +173,9 @@ const Tutorial = (props) => {
               'Learn more about transcribe audio (opens new tab)',
           }}
         />
-      ) : (
-        <Spinner size="big" className="spinner" />
-      )}
-    </>
   );
 };
+
 export function HelpPanels(props) {
   const [activeTabId, setActiveTabId] = React.useState('first');
   return (

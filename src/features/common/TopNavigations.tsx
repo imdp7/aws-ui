@@ -7,6 +7,7 @@ import {
   Box,
   Toggle,
   FormField,
+  Spinner,
   ColumnLayout,
   SpaceBetween,
   Modal,
@@ -28,6 +29,16 @@ interface State {
 }
 export const ThemeContext = createContext();
 
+const ec2_region =  [{
+      id: 'US East (N. Virginia)',
+      text: 'US East (N. Virginia)',
+    }]
+
+const s3_region =  [{
+      id: 'Global',
+      text: 'Global',
+    }]
+
 export const AppHeader = (props: State): JSX.Element => {
   const [mode, setMode] = useState(false);
   const [density, setDensity] = useState(true);
@@ -35,12 +46,7 @@ export const AppHeader = (props: State): JSX.Element => {
   const [searchValue, setSearchValue] = useState('');
   const [redirectURL, setRedirectURL] = useState('');
   const [visible, setVisible] = React.useState(false);
-  const [selection, setSelection] = React.useState([
-    {
-      id: 'US East (N. Virginia)',
-      text: 'US East (N. Virginia)',
-    },
-  ]);
+  const [selection, setSelection] = React.useState(ec2_region || s3_region);
 
   const value = useMemo(() => ({
     mode, setMode,
@@ -134,12 +140,26 @@ export const AppHeader = (props: State): JSX.Element => {
               disableUtilityCollapse: false,
             },
             {
-              type: 'button',
+              type: 'menu-dropdown',
               iconName: 'notification',
               title: 'Notifications',
               ariaLabel: 'Notifications (unread)',
               badge: true,
               disableUtilityCollapse: false,
+              items: [
+                {
+                  id: 'open_issues',
+                  text: 'Open Issues',
+                },
+                {
+                  id: 'schedule_changes',
+                  text: 'Schedule Chages',
+                },
+                {
+                  id: 'other_notifications',
+                  text: 'Other Notifications',
+                }
+                ],
             },
             {
               type: 'menu-dropdown',
@@ -157,10 +177,6 @@ export const AppHeader = (props: State): JSX.Element => {
                 {
                   id: 'settings-project',
                   text: 'Project settings',
-                },
-                {
-                  id: 'preferences',
-                  text: 'Preferences',
                 },
               ],
             },
