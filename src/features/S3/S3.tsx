@@ -89,14 +89,14 @@ export const S3 = (props): JSX.Element => {
                             <Button
                               variant="primary"
                               onClick={() =>
-                                navigate(`/ec2_instance/${props.link}`)
+                                navigate(`/S3/${props.link}`)
                               }
                             >
                               Create Bucket
                             </Button>
                             <Button
                               onClick={() =>
-                                navigate(`/ec2_instance/${props.instances}`)
+                                navigate(`/S3/${props.instances}`)
                               }
                             >
                               View Bucket

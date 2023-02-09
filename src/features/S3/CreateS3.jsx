@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
+import axios from 'axios';
 import {
   AppLayout,
   Container,
@@ -142,18 +143,29 @@ const Content = ({ loadHelpPanelContent }, props) => {
   const [region, setRegion] = useState('');
   const [control, setControl] = useState('first');
   const [ACLEnabled, setACLEnabled] = useState('first');
-  const [blockedAll, setBlockedAll] = React.useState(true);
-  const [blockedFirst, setBlockedFirst] = React.useState(false);
-  const [blockedSecond, setBlockedSecond] = React.useState(false);
-  const [blockedThird, setBlockedThird] = React.useState(false);
-  const [blockedFourth, setBlockedFourth] = React.useState(false);
-  const [confirmBlocked, setConfirmBlocked] = React.useState(false);
+  const [blockedAll, setBlockedAll] = useState(true);
+  const [blockedFirst, setBlockedFirst] = useState(false);
+  const [blockedSecond, setBlockedSecond] = useState(false);
+  const [blockedThird, setBlockedThird] = useState(false);
+  const [blockedFourth, setBlockedFourth] = useState(false);
+  const [confirmBlocked, setConfirmBlocked] = useState(false);
   const [bucketVersion, setBucketVersion] = useState('first');
-  const [tags, setTags] = React.useState([]);
+  const [tags, setTags] = useState([]);
   const [encryptionKey, setEncryptionKey] = useState('first');
   const [bucketKey, setBucketKey] = useState('second');
   const [advance, setAdvance] = useState('first');
   const [advanceConfirm, setAdvanceConfirm] = useState(false);
+
+
+const handleSubmit = async(event) => {
+    event.preventDefault();
+    await axios.post(
+      'https://crink7xwud.execute-api.us-east-1.amazonaws.com/default/createS3Function',
+      {key1: `${name}`}, {key2: `${region}`}, {key3: `${control}`}, {key4: `${ACLEnabled}`}, {key5: `${blockedAll}`}, {key5: `${blockedFirst}`},
+      {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
+      {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}`}
+      );
+  }
 
   return (
     <SpaceBetween size="m">
@@ -738,7 +750,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
       </Alert>
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
         <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary">Create Bucket</Button>
+        <Button variant="primary" onClick={handleSubmit}>Create Bucket</Button>
       </SpaceBetween>
     </SpaceBetween>
   );
