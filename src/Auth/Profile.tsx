@@ -4,6 +4,7 @@ import { AppFooter } from '../features/common/AppFooter';
 import { AppHeader } from '../features/common/TopNavigations';
 import {
   AppLayout,
+  Alert,
   Button,
   Container,
   ContentLayout,
@@ -16,6 +17,7 @@ import {
   ExpandableSection,
   FormField,
   Checkbox,
+  Modal,
   Form,
   Input,
   Link,
@@ -63,6 +65,12 @@ const Account = (props) => {
         header={
           <Header
             variant="h2"
+            // description={<div>
+            // <>
+            // Please note that updating your contact informatin on this page will not update the informatino displayed on your pdf Invoices. If you
+            // wish to update the billing address information assocaited with your Invocie, please edit it thorugh the Payment Methoda page, loacted</> {" "}
+            // <Link>here</Link>
+            // </div>}
             info={
               <InfoLink
                 onFollow={() =>
@@ -534,7 +542,29 @@ const CloseAccount = () => {
   const [checked2, setChecked2] = useState(false);
   const [checked3, setChecked3] = useState(false);
   const [checked4, setChecked4] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+    const fakeDataFetch = (delay) =>
+    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+  const AlertPop = () => {
+    return(
+
+      <Alert statusIconAriaLabel="Info"
+        header="Account Closed">
+        Your account has been closed !!!
+        </Alert>
+      );
+  }
+
+  const closeAccount = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await fakeDataFetch(2500);
+    setLoading(false);
+    // AlertPop();
+
+  };
   return (
     <SpaceBetween size="l">
       <ExpandableSection variant="container" defaultExpanded headerText="Close Account">
@@ -574,7 +604,10 @@ const CloseAccount = () => {
           <Box>
           If you wish to update your e-mail address. {" "} <Link>follow the directions here. </Link>
           </Box>
-          <Button variant="primary">Close Account</Button>
+          <Button variant="primary" disabled={!checked1 || !checked2 || !checked3 || !checked4}
+            onClick={closeAccount} loading={loading}>
+          Close Account
+          </Button>
           </SpaceBetween>
           </ExpandableSection>
     </SpaceBetween>
