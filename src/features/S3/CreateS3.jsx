@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
-import axios from 'axios';
+// import axios from 'axios';
 import {
   AppLayout,
   Container,
@@ -157,16 +157,18 @@ const Content = ({ loadHelpPanelContent }, props) => {
   const [advanceConfirm, setAdvanceConfirm] = useState(false);
 
 
-const handleSubmit = async(event) => {
-    event.preventDefault();
-    await axios.post(
-      'https://crink7xwud.execute-api.us-east-1.amazonaws.com/default/createS3Function',
-      {key1: `${name}`}, {key2: `${region}`}, {key3: `${control}`}, {key4: `${ACLEnabled}`}, {key5: `${blockedAll}`}, {key5: `${blockedFirst}`},
-      {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
-      {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}`}
-      );
+const handleSubmit = (e) => {
+    e.preventDefault();
+    // await axios.post(
+    //   'https://crink7xwud.execute-api.us-east-1.amazonaws.com/default/createS3Function',
+    //   {key1: `${name}`}, {key2: `${region}`}, {key3: `${control}`}, {key4: `${ACLEnabled}`}, {key5: `${blockedAll}`}, {key5: `${blockedFirst}`},
+    //   {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
+    //   {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}`}
+    //   );
+    console.log("name", name, "region", region, "control", control, "ACLEnabled", ACLEnabled, "blockedAll", blockedAll, "blockedFirst", blockedFirst)
+       // {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
+       // {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}
   }
-
   return (
     <SpaceBetween size="m">
       <Container header={<Header variant="h2">General configuration</Header>}>

@@ -13,7 +13,9 @@ import {
   Spinner,
   ColumnLayout,
   Box,
+  ExpandableSection,
   FormField,
+  Checkbox,
   Form,
   Input,
   Link,
@@ -527,6 +529,58 @@ const Payment = (props) => {
   );
 };
 
+const CloseAccount = () => {
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+  const [checked3, setChecked3] = useState(false);
+  const [checked4, setChecked4] = useState(false);
+
+  return (
+    <SpaceBetween size="l">
+      <ExpandableSection variant="container" defaultExpanded headerText="Close Account">
+          <SpaceBetween size="xs">
+          <Checkbox onChange ={({detail}) => setChecked1(detail.checked)} checked={checked1}>
+          I understand that by clicking this checkbox, I am closing my AWS account. The closure of my AWS account serves as notice to AWS that I wish to terminate
+          the AWS Customer Agreement or any other agreement with AWS that governs my AWS account, solely with repect to that AWS account. 
+          </Checkbox>
+          <Box>
+            Monthly usage of certain AWS services is calculated and billed at the begninning of the following month. If I have used these types of services
+            this month, then at the beginning of next month I will recieve a bill for usage that occurred prior to termination of my account. In addition, if I
+            have any active subscriptions (such as a Reserved Instance for which bI have elected to pay in monthly installements), then even after my account is closed
+            I may continue to be billed for the subscription until the subscription expires or is sold in accordance with the terms governing the subscription.
+          </Box>
+          <Box>
+            I acknowledge that I may reopen my AWS account only within 90 days of my account closure (the "Post-Closure Period"). If I reopen my account 
+            during the Post-Closure Period, I may be charged for any AWS services thast werer not terminated beforen I closed my account. If I reopen my AWS account,
+            I agree that the same terms will govern my access to and use of AWS services through my reopened AWS account.
+          </Box>
+          <Box>
+            If I choose not to reopen my account the Post_Closure Period, any content remaining in my AWS account will be deleted. For more information, please see the beginning
+            {" "}<Link>Amazon Web Services Account Closure page.</Link>
+          </Box>
+          <Checkbox onChange ={({detail}) => setChecked2(detail.checked)} checked={checked2}>
+            I understand that after the Post-Closure Period I will no longer be able to reopen my closed account.
+          </Checkbox>
+          <Checkbox onChange ={({detail}) => setChecked3(detail.checked)} checked={checked3}>
+            I understand that after the Post-Closure Period I will no longer be able to access the Billing Console to download pasts bills and tax invoices.
+          </Checkbox>
+          <Box>
+            If you wish to {" "} <Link>download any statements you can do so here. </Link> Select the month and expand the summary section to download the 
+            payment invoices and/or tax documents.  
+          </Box>
+          <Checkbox onChange ={({detail}) => setChecked4(detail.checked)} checked={checked4}>
+            I understand that after the Post-Closure Period I will not be able to create a new AWS account with the email address currently associated with this account.
+          </Checkbox>
+          <Box>
+          If you wish to update your e-mail address. {" "} <Link>follow the directions here. </Link>
+          </Box>
+          <Button variant="primary">Close Account</Button>
+          </SpaceBetween>
+          </ExpandableSection>
+    </SpaceBetween>
+    );
+}
+
 const Profiler = (props) => {
   return (
     <>
@@ -534,6 +588,7 @@ const Profiler = (props) => {
         <Account {...props} />
         <Information {...props} />
         <Payment {...props} />
+        <CloseAccount {...props} />
       </SpaceBetween>
     </>
   );
