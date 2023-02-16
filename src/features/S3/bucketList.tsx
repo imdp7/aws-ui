@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useLayoutEffect,useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -10,16 +10,13 @@ import {
 } from './components/table-select-filter-config';
 import {
   AppLayout,
-  Container,
   ContentLayout,
   SpaceBetween,
   Spinner,
   ExpandableSection,
-  Header,
   Box,
   Input,
   Select,
-  TextFilter,
   Pagination,
   CollectionPreferences,
   Table,
@@ -35,7 +32,6 @@ import {
   Flashbar,
 } from '@cloudscape-design/components';
 import {
-  CustomAppLayout,
   Notifications,
   TableEmptyState,
   TableHeader,
@@ -122,7 +118,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
   const fakeDataFetch = (delay) =>
     new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
 
-
   const handleRefresh = async () => {
     setLoading(true);
     await fakeDataFetch(1500);
@@ -160,7 +155,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
       );
     }, 5000);
   }, []);
-
 
   const [columnDefinitions, saveWidths] = useColumnWidths(
     'React-TableSelectFilter-Widths',
@@ -262,7 +256,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     );
   };
 
-   const tabelRef = useRef();
+  const tabelRef = useRef();
 
   return (
     <>
@@ -527,50 +521,64 @@ const AccountSnapshot = () => {
     await fakeDataFetch(1500);
     setLoading(false);
   };
-  
 
   return (
-    
-      <ExpandableSection variant="container" headerText="Account snapshot"
-        description= {
-          <>
-            Storage lens provides visibility into storage usage and activity trends.{' '}
-            <Link external fontSize="inherit">Learn more</Link> 
-          </>
-        }
-      >
-      <SpaceBetween size="m">
-        <Alert header="Use an IAM User or IAM Role to access Storage Lens dashboards" statusAriaLabel="info" type="error"
-        action={
-          <Button onClick={handleRefresh} loading={loading}>
-          Refresh
-          </Button>
+    <ExpandableSection
+      variant="container"
+      headerText="Account snapshot"
+      description={
+        <>
+          Storage lens provides visibility into storage usage and activity
+          trends.{' '}
+          <Link external fontSize="inherit">
+            Learn more
+          </Link>
+        </>
       }
+    >
+      <SpaceBetween size="m">
+        <Alert
+          header="Use an IAM User or IAM Role to access Storage Lens dashboards"
+          statusAriaLabel="info"
+          type="error"
+          action={
+            <Button onClick={handleRefresh} loading={loading}>
+              Refresh
+            </Button>
+          }
         >
-        <div>
-          You can’t use your account’s root user credentials to view Amazon S3 Storage Lens dashboards. To access S3 Storage Lens dashboards, you must grant the requisite IAM permissions to a new or existing IAM user. Then, sign in with those user credentials to access S3 Storage Lens dashboards. {' '}
+          <div>
+            You can’t use your account’s root user credentials to view Amazon S3
+            Storage Lens dashboards. To access S3 Storage Lens dashboards, you
+            must grant the requisite IAM permissions to a new or existing IAM
+            user. Then, sign in with those user credentials to access S3 Storage
+            Lens dashboards.{' '}
           </div>
-          <Link external fontSize="inherit">Learn more </Link>
+          <Link external fontSize="inherit">
+            Learn more{' '}
+          </Link>
           <Box>
-          <div>Permissions required: </div>
-          <ul>
-          <li >s3:ListStorageLensConfigurations</li>
-          <li>s3:GetStorageLensConfiguration</li>
-          <li>s3:GetStorageLensDashboard</li>
-          </ul>
+            <div>Permissions required: </div>
+            <ul>
+              <li>s3:ListStorageLensConfigurations</li>
+              <li>s3:GetStorageLensConfiguration</li>
+              <li>s3:GetStorageLensDashboard</li>
+            </ul>
           </Box>
           <Box variant="strong">
-             After you obtain the necessary permissions, sign in with those user credentials to access Storage Lens dashboards. 
+            After you obtain the necessary permissions, sign in with those user
+            credentials to access Storage Lens dashboards.
           </Box>
           <ExpandableSection headerText="API Response" variant="footer">
-          User: arn:aws:iam::610741917922:root is not authorized to perform: s3:GetStorageLensDashboard on resource: arn:aws:s3:us-east-1:610741917922:storage-lens/default-account-dashboard
+            User: arn:aws:iam::610741917922:root is not authorized to perform:
+            s3:GetStorageLensDashboard on resource:
+            arn:aws:s3:us-east-1:610741917922:storage-lens/default-account-dashboard
           </ExpandableSection>
         </Alert>
       </SpaceBetween>
-      </ExpandableSection>
-    
-    );
-}
+    </ExpandableSection>
+  );
+};
 
 export default function BucketList(props) {
   const appLayout = useRef();
@@ -608,7 +616,7 @@ export default function BucketList(props) {
 
   useEffect(() => {
     document.title = 'S3 Management Console';
-     const timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
     return () => clearTimeout(timer);
@@ -620,42 +628,44 @@ export default function BucketList(props) {
         <AppHeader {...props} />
       </div>
       <AppLayout
-      ref={appLayout}
+        ref={appLayout}
         headerSelector="#h"
         footerSelector="#f"
         contentType="table"
         content={
           <Provider store={store}>
             <SpaceBetween size="l">
-            {!loading ? (
-              <>
-              <ContentLayout
-                header={
-                  <DashboardHeader
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    title="Buckets"
-                    info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
-                    ul={[
-                      {
-                        h5: 'Manage access',
-                        text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
-                      },
-                      {
-                        h5: 'Configure your bucket',
-                        text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
-                      },
-                      {
-                        h5: 'Understand storage usage and activity',
-                        text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
-                      },
-                    ]}
+              {!loading ? (
+                <>
+                  <ContentLayout
+                    header={
+                      <DashboardHeader
+                        loadHelpPanelContent={loadHelpPanelContent}
+                        title="Buckets"
+                        info="Buckets are containers for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account. To request an increase, visit the Service Quotas Console . You can create, configure, empty, and delete buckets. However, you can only delete an empty bucket."
+                        ul={[
+                          {
+                            h5: 'Manage access',
+                            text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
+                          },
+                          {
+                            h5: 'Configure your bucket',
+                            text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
+                          },
+                          {
+                            h5: 'Understand storage usage and activity',
+                            text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
+                          },
+                        ]}
+                      />
+                    }
                   />
-                }
-              />
-              <AccountSnapshot/>
-              <TableContent loadHelpPanelContent={loadHelpPanelContent} />
-              </>
-              ) : (<Spinner size="large" className="spinner" />)}
+                  <AccountSnapshot />
+                  <TableContent loadHelpPanelContent={loadHelpPanelContent} />
+                </>
+              ) : (
+                <Spinner size="large" className="spinner" />
+              )}
             </SpaceBetween>
           </Provider>
         }

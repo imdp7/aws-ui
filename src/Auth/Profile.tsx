@@ -260,127 +260,127 @@ const Information = (props) => {
       >
         {edit ? (
           <>
-              <Form
-                actions={
-                  <SpaceBetween direction="horizontal" size="xs">
-                    <Button
-                      formAction="none"
-                      variant="link"
-                      onClick={() => {
-                        setEdit(false);
-                        setName('');
-                        setAddress('');
-                        setCity('');
-                        setState('');
-                        setPostal('');
-                        setCountry('');
-                        setPhone('');
-                        setCompany('');
-                        setWebsite('');
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="primary"
-                      formAction="submit"
-                      loading={loading}
-                      onClick={handleSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </SpaceBetween>
-                }
-              >
-                <SpaceBetween size="xs">
-                  <ColumnLayout borders="horizontal">
-                    <ColumnLayout columns={4}>
-                      <FormField label="Account Name:">
-                        <Input
-                          value={name}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setName(detail.value)}
-                          placeholder="Enter Name"
-                        />
-                      </FormField>
-                      <FormField label="Address:">
-                        <Input
-                          value={address}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setAddress(detail.value)}
-                          placeholder="Enter Address"
-                        />
-                      </FormField>
-                      <FormField label="City:">
-                        <Input
-                          value={city}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setCity(detail.value)}
-                          placeholder="Enter City"
-                        />
-                      </FormField>
-                      <FormField label="State:">
-                        <Input
-                          value={state}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setState(detail.value)}
-                          placeholder="Enter State"
-                        />
-                      </FormField>
-
-                      <FormField label="Postal Code:">
-                        <Input
-                          value={postal}
-                          inputMode="numeric"
-                          ariaRequired
-                          onChange={({ detail }) => setPostal(detail.value)}
-                          placeholder="Enter Postal"
-                        />
-                      </FormField>
-                      <FormField label="Country:">
-                        <Input
-                          value={country}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setCountry(detail.value)}
-                          placeholder="Enter Country"
-                        />
-                      </FormField>
-                      <FormField label="Phone Number:">
-                        <Input
-                          value={phone}
-                          inputMode="tel"
-                          ariaRequired
-                          onChange={({ detail }) => setPhone(detail.value)}
-                          placeholder="Enter Phone"
-                        />
-                      </FormField>
-                      <FormField label="Company Name:">
-                        <Input
-                          value={company}
-                          inputMode="text"
-                          ariaRequired
-                          onChange={({ detail }) => setCompany(detail.value)}
-                          placeholder="Enter Company"
-                        />
-                      </FormField>
-                      <FormField label="Website URL:">
-                        <Input
-                          value={website}
-                          inputMode="url"
-                          ariaRequired
-                          onChange={({ detail }) => setWebsite(detail.value)}
-                          placeholder="Enter Website URL"
-                        />
-                      </FormField>
-                    </ColumnLayout>
-                  </ColumnLayout>
+            <Form
+              actions={
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Button
+                    formAction="none"
+                    variant="link"
+                    onClick={() => {
+                      setEdit(false);
+                      setName('');
+                      setAddress('');
+                      setCity('');
+                      setState('');
+                      setPostal('');
+                      setCountry('');
+                      setPhone('');
+                      setCompany('');
+                      setWebsite('');
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    formAction="submit"
+                    loading={loading}
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
                 </SpaceBetween>
-              </Form>
+              }
+            >
+              <SpaceBetween size="xs">
+                <ColumnLayout borders="horizontal">
+                  <ColumnLayout columns={4}>
+                    <FormField label="Account Name:">
+                      <Input
+                        value={name}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setName(detail.value)}
+                        placeholder="Enter Name"
+                      />
+                    </FormField>
+                    <FormField label="Address:">
+                      <Input
+                        value={address}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setAddress(detail.value)}
+                        placeholder="Enter Address"
+                      />
+                    </FormField>
+                    <FormField label="City:">
+                      <Input
+                        value={city}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setCity(detail.value)}
+                        placeholder="Enter City"
+                      />
+                    </FormField>
+                    <FormField label="State:">
+                      <Input
+                        value={state}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setState(detail.value)}
+                        placeholder="Enter State"
+                      />
+                    </FormField>
+
+                    <FormField label="Postal Code:">
+                      <Input
+                        value={postal}
+                        inputMode="numeric"
+                        ariaRequired
+                        onChange={({ detail }) => setPostal(detail.value)}
+                        placeholder="Enter Postal"
+                      />
+                    </FormField>
+                    <FormField label="Country:">
+                      <Input
+                        value={country}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setCountry(detail.value)}
+                        placeholder="Enter Country"
+                      />
+                    </FormField>
+                    <FormField label="Phone Number:">
+                      <Input
+                        value={phone}
+                        inputMode="tel"
+                        ariaRequired
+                        onChange={({ detail }) => setPhone(detail.value)}
+                        placeholder="Enter Phone"
+                      />
+                    </FormField>
+                    <FormField label="Company Name:">
+                      <Input
+                        value={company}
+                        inputMode="text"
+                        ariaRequired
+                        onChange={({ detail }) => setCompany(detail.value)}
+                        placeholder="Enter Company"
+                      />
+                    </FormField>
+                    <FormField label="Website URL:">
+                      <Input
+                        value={website}
+                        inputMode="url"
+                        ariaRequired
+                        onChange={({ detail }) => setWebsite(detail.value)}
+                        placeholder="Enter Website URL"
+                      />
+                    </FormField>
+                  </ColumnLayout>
+                </ColumnLayout>
+              </SpaceBetween>
+            </Form>
           </>
         ) : (
           <SpaceBetween size="xs">
@@ -470,54 +470,54 @@ const Payment = (props) => {
       >
         {edit ? (
           <>
-              <Form
-                actions={
-                  <SpaceBetween direction="horizontal" size="xs">
-                    <Button
-                      formAction="none"
-                      variant="link"
-                      onClick={() => {
-                        setEdit(false);
-                        setCurrency(currency);
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="primary"
-                      formAction="submit"
-                      loading={loading}
-                      onClick={handleSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </SpaceBetween>
-                }
-              >
-                <SpaceBetween size="xs">
-                  <ColumnLayout borders="horizontal">
-                    <ColumnLayout columns={4}>
-                      <FormField label="Currency:">
-                        <Select
-                          ariaRequired
-                          onChange={({ detail }) =>
-                            setCurrency(detail.selectedOption)
-                          }
-                          selectedOption={currency}
-                          options={[
-                            { label: 'US Dollar', value: '1' },
-                            { label: 'Europe Euro', value: '2' },
-                            { label: 'Canada CA', value: '3' },
-                            { label: 'China YEN', value: '4' },
-                            { label: 'India RS', value: '5' },
-                          ]}
-                          selectedAriaLabel="Selected"
-                        />
-                      </FormField>
-                    </ColumnLayout>
-                  </ColumnLayout>
+            <Form
+              actions={
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Button
+                    formAction="none"
+                    variant="link"
+                    onClick={() => {
+                      setEdit(false);
+                      setCurrency(currency);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    formAction="submit"
+                    loading={loading}
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
                 </SpaceBetween>
-              </Form>
+              }
+            >
+              <SpaceBetween size="xs">
+                <ColumnLayout borders="horizontal">
+                  <ColumnLayout columns={4}>
+                    <FormField label="Currency:">
+                      <Select
+                        ariaRequired
+                        onChange={({ detail }) =>
+                          setCurrency(detail.selectedOption)
+                        }
+                        selectedOption={currency}
+                        options={[
+                          { label: 'US Dollar', value: '1' },
+                          { label: 'Europe Euro', value: '2' },
+                          { label: 'Canada CA', value: '3' },
+                          { label: 'China YEN', value: '4' },
+                          { label: 'India RS', value: '5' },
+                        ]}
+                        selectedAriaLabel="Selected"
+                      />
+                    </FormField>
+                  </ColumnLayout>
+                </ColumnLayout>
+              </SpaceBetween>
+            </Form>
           </>
         ) : (
           <>
@@ -544,18 +544,16 @@ const CloseAccount = () => {
   const [checked4, setChecked4] = useState(false);
   const [loading, setLoading] = useState(false);
 
-    const fakeDataFetch = (delay) =>
+  const fakeDataFetch = (delay) =>
     new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
 
   const AlertPop = () => {
-    return(
-
-      <Alert statusIconAriaLabel="Info"
-        header="Account Closed">
+    return (
+      <Alert statusIconAriaLabel="Info" header="Account Closed">
         Your account has been closed !!!
-        </Alert>
-      );
-  }
+      </Alert>
+    );
+  };
 
   const closeAccount = async (e) => {
     e.preventDefault();
@@ -563,56 +561,96 @@ const CloseAccount = () => {
     await fakeDataFetch(2500);
     setLoading(false);
     // AlertPop();
-
   };
   return (
     <SpaceBetween size="l">
-      <ExpandableSection variant="container" defaultExpanded headerText="Close Account">
-          <SpaceBetween size="xs">
-          <Checkbox onChange ={({detail}) => setChecked1(detail.checked)} checked={checked1}>
-          I understand that by clicking this checkbox, I am closing my AWS account. The closure of my AWS account serves as notice to AWS that I wish to terminate
-          the AWS Customer Agreement or any other agreement with AWS that governs my AWS account, solely with repect to that AWS account. 
+      <ExpandableSection
+        variant="container"
+        defaultExpanded
+        headerText="Close Account"
+      >
+        <SpaceBetween size="xs">
+          <Checkbox
+            onChange={({ detail }) => setChecked1(detail.checked)}
+            checked={checked1}
+          >
+            I understand that by clicking this checkbox, I am closing my AWS
+            account. The closure of my AWS account serves as notice to AWS that
+            I wish to terminate the AWS Customer Agreement or any other
+            agreement with AWS that governs my AWS account, solely with repect
+            to that AWS account.
           </Checkbox>
           <Box>
-            Monthly usage of certain AWS services is calculated and billed at the begninning of the following month. If I have used these types of services
-            this month, then at the beginning of next month I will recieve a bill for usage that occurred prior to termination of my account. In addition, if I
-            have any active subscriptions (such as a Reserved Instance for which bI have elected to pay in monthly installements), then even after my account is closed
-            I may continue to be billed for the subscription until the subscription expires or is sold in accordance with the terms governing the subscription.
+            Monthly usage of certain AWS services is calculated and billed at
+            the begninning of the following month. If I have used these types of
+            services this month, then at the beginning of next month I will
+            recieve a bill for usage that occurred prior to termination of my
+            account. In addition, if I have any active subscriptions (such as a
+            Reserved Instance for which bI have elected to pay in monthly
+            installements), then even after my account is closed I may continue
+            to be billed for the subscription until the subscription expires or
+            is sold in accordance with the terms governing the subscription.
           </Box>
           <Box>
-            I acknowledge that I may reopen my AWS account only within 90 days of my account closure (the "Post-Closure Period"). If I reopen my account 
-            during the Post-Closure Period, I may be charged for any AWS services thast werer not terminated beforen I closed my account. If I reopen my AWS account,
-            I agree that the same terms will govern my access to and use of AWS services through my reopened AWS account.
+            I acknowledge that I may reopen my AWS account only within 90 days
+            of my account closure (the "Post-Closure Period"). If I reopen my
+            account during the Post-Closure Period, I may be charged for any AWS
+            services thast werer not terminated beforen I closed my account. If
+            I reopen my AWS account, I agree that the same terms will govern my
+            access to and use of AWS services through my reopened AWS account.
           </Box>
           <Box>
-            If I choose not to reopen my account the Post_Closure Period, any content remaining in my AWS account will be deleted. For more information, please see the beginning
-            {" "}<Link>Amazon Web Services Account Closure page.</Link>
+            If I choose not to reopen my account the Post_Closure Period, any
+            content remaining in my AWS account will be deleted. For more
+            information, please see the beginning{' '}
+            <Link>Amazon Web Services Account Closure page.</Link>
           </Box>
-          <Checkbox onChange ={({detail}) => setChecked2(detail.checked)} checked={checked2}>
-            I understand that after the Post-Closure Period I will no longer be able to reopen my closed account.
+          <Checkbox
+            onChange={({ detail }) => setChecked2(detail.checked)}
+            checked={checked2}
+          >
+            I understand that after the Post-Closure Period I will no longer be
+            able to reopen my closed account.
           </Checkbox>
-          <Checkbox onChange ={({detail}) => setChecked3(detail.checked)} checked={checked3}>
-            I understand that after the Post-Closure Period I will no longer be able to access the Billing Console to download pasts bills and tax invoices.
+          <Checkbox
+            onChange={({ detail }) => setChecked3(detail.checked)}
+            checked={checked3}
+          >
+            I understand that after the Post-Closure Period I will no longer be
+            able to access the Billing Console to download pasts bills and tax
+            invoices.
           </Checkbox>
           <Box>
-            If you wish to {" "} <Link>download any statements you can do so here. </Link> Select the month and expand the summary section to download the 
-            payment invoices and/or tax documents.  
+            If you wish to{' '}
+            <Link>download any statements you can do so here. </Link> Select the
+            month and expand the summary section to download the payment
+            invoices and/or tax documents.
           </Box>
-          <Checkbox onChange ={({detail}) => setChecked4(detail.checked)} checked={checked4}>
-            I understand that after the Post-Closure Period I will not be able to create a new AWS account with the email address currently associated with this account.
+          <Checkbox
+            onChange={({ detail }) => setChecked4(detail.checked)}
+            checked={checked4}
+          >
+            I understand that after the Post-Closure Period I will not be able
+            to create a new AWS account with the email address currently
+            associated with this account.
           </Checkbox>
           <Box>
-          If you wish to update your e-mail address. {" "} <Link>follow the directions here. </Link>
+            If you wish to update your e-mail address.{' '}
+            <Link>follow the directions here. </Link>
           </Box>
-          <Button variant="primary" disabled={!checked1 || !checked2 || !checked3 || !checked4}
-            onClick={closeAccount} loading={loading}>
-          Close Account
+          <Button
+            variant="primary"
+            disabled={!checked1 || !checked2 || !checked3 || !checked4}
+            onClick={closeAccount}
+            loading={loading}
+          >
+            Close Account
           </Button>
-          </SpaceBetween>
-          </ExpandableSection>
+        </SpaceBetween>
+      </ExpandableSection>
     </SpaceBetween>
-    );
-}
+  );
+};
 
 const Profiler = (props) => {
   return (
@@ -665,26 +703,26 @@ function Profile(props) {
       <AppLayout
         content={
           <Provider store={store}>
-            {!loading ? ( 
-            <ContentLayout
-              header={
-                <DashboardHeader
-                  loadHelpPanelContent={loadHelpPanelContent}
-                  title="Profile"
-                  des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
+            {!loading ? (
+              <ContentLayout
+                header={
+                  <DashboardHeader
+                    loadHelpPanelContent={loadHelpPanelContent}
+                    title="Profile"
+                    des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
                          resizeable computing capacity&mdash;literally, servers in Amazon's data
                          centers&mdash;that you use to build and host your software systems."
-                />
-              }
-            >
-              <SpaceBetween size={'m'}>
-                <Profiler
-                  loadHelpPanelContent={loadHelpPanelContent}
-                  {...props}
-                />
-              </SpaceBetween>
-            </ContentLayout>
-             ) : (
+                  />
+                }
+              >
+                <SpaceBetween size={'m'}>
+                  <Profiler
+                    loadHelpPanelContent={loadHelpPanelContent}
+                    {...props}
+                  />
+                </SpaceBetween>
+              </ContentLayout>
+            ) : (
               <Spinner size="large" className="spinner" />
             )}
           </Provider>

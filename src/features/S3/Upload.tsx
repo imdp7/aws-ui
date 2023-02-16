@@ -739,7 +739,7 @@ function Upload(props) {
                                   <Link
                                     external
                                     fontSize="inherit"
-                                    href="https://www/aws.com"
+                                    href="https://www.aws.com"
                                   >
                                     {' '}
                                     Learn more

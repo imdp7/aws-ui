@@ -19,9 +19,9 @@ import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import ObjectsPane from './components/Objects';
-import Properties from './components/Properties'
-import Permissions from './components/Permissions'
-import Metrics from './components/Metrics'
+import Properties from './components/Properties';
+import Permissions from './components/Permissions';
+import Metrics from './components/Metrics';
 import { dataBucketFiles } from '../resources/s3Bucket';
 
 function BucketDetail(props) {
@@ -90,8 +90,8 @@ function BucketDetail(props) {
   };
 
   useEffect(() => {
-    document.title=`${id} - S3 Bucket`;
-  },[id])
+    document.title = `${id} - S3 Bucket`;
+  }, [id]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

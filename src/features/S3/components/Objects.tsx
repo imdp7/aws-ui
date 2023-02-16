@@ -3,7 +3,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useRef } from 'react';
 import {
-  Container,
   SpaceBetween,
   Box,
   Button,
@@ -17,7 +16,6 @@ import {
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { dataBucketFiles } from '../../resources/s3Bucket';
-import fs from 'fs';
 
 export const ObjectsPane = (props) => {
   const data = [{ title: 'Objects' }];
@@ -26,7 +24,7 @@ export const ObjectsPane = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = React.useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [preferences, setPreferences] = useLocalStorage(
@@ -50,7 +48,6 @@ export const ObjectsPane = (props) => {
     folderInputRef.current.click();
   };
 
-
   const handleChange = (event) => {
     const files = event.target.files;
     // Iterate over the files and do something with them, such as uploading them to a server
@@ -59,14 +56,14 @@ export const ObjectsPane = (props) => {
       return;
     }
 
-    setError(null);
+    setError('');
     const newFolders: string[] = Array.from(files);
     setSelectedFiles([...selectedFiles, ...newFolders]);
     //addData(selectedFiles);
 
     const folders = [];
-    for (let i = 0; i < selectedFiles.length; i++) {
-      folders.push(selectedFiles[i]);
+    for (const element of selectedFiles) {
+      folders.push(element);
     }
   };
 
@@ -76,9 +73,7 @@ export const ObjectsPane = (props) => {
   //   console.log("data uploaded", dataBucketFiles)
   // }
 
-  const removeAsset = () => {
-    
-  }
+  const removeAsset = () => {};
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {

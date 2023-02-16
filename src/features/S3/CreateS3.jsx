@@ -10,30 +10,19 @@ import {
   ContentLayout,
   SpaceBetween,
   Autosuggest,
-  Spinner,
   Header,
   Checkbox,
   Box,
   Input,
-  Select,
-  TextFilter,
-  Pagination,
-  CollectionPreferences,
-  Table,
   TagEditor,
   FormField,
-  ColumnLayout,
   BreadcrumbGroup,
   S3ResourceSelector,
   Button,
   RadioGroup,
   Tiles,
-  Popover,
-  StatusIndicator,
   Link,
   Alert,
-  Modal,
-  Flashbar,
   ExpandableSection,
 } from '@cloudscape-design/components';
 import {
@@ -41,12 +30,12 @@ import {
   Navigation,
   S3navItems,
   S3Header,
+  InfoLink,
 } from '../EC2/commons/common-components';
 import { Provider } from 'react-redux';
 import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { store } from '../../app/store';
 import { DashboardHeader, HelpPanels } from '../EC2/components/header';
-import { InfoLink } from '../EC2/commons/common-components';
 
 const regions = [
   {
@@ -156,8 +145,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
   const [advance, setAdvance] = useState('first');
   const [advanceConfirm, setAdvanceConfirm] = useState(false);
 
-
-const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // await axios.post(
     //   'https://crink7xwud.execute-api.us-east-1.amazonaws.com/default/createS3Function',
@@ -165,10 +153,23 @@ const handleSubmit = (e) => {
     //   {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
     //   {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}`}
     //   );
-    console.log("name", name, "region", region, "control", control, "ACLEnabled", ACLEnabled, "blockedAll", blockedAll, "blockedFirst", blockedFirst)
-       // {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
-       // {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}
-  }
+    console.log(
+      'name',
+      name,
+      'region',
+      region,
+      'control',
+      control,
+      'ACLEnabled',
+      ACLEnabled,
+      'blockedAll',
+      blockedAll,
+      'blockedFirst',
+      blockedFirst
+    );
+    // {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
+    // {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}
+  };
   return (
     <SpaceBetween size="m">
       <Container header={<Header variant="h2">General configuration</Header>}>
@@ -752,7 +753,9 @@ const handleSubmit = (e) => {
       </Alert>
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
         <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary" onClick={handleSubmit}>Create Bucket</Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          Create Bucket
+        </Button>
       </SpaceBetween>
     </SpaceBetween>
   );
