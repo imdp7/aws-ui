@@ -19,10 +19,12 @@ import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import ObjectsPane from './components/Objects';
+import Properties from './components/Properties'
+import Permissions from './components/Permissions'
+import Metrics from './components/Metrics'
 import { dataBucketFiles } from '../resources/s3Bucket';
 
 function BucketDetail(props) {
-  console.log(dataBucketFiles);
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
@@ -58,17 +60,17 @@ function BucketDetail(props) {
     {
       label: 'Properties',
       id: 'properties',
-      content: <div>Logs</div>,
+      content: <Properties id={id} />,
     },
     {
       label: 'Permissions',
       id: 'permissions',
-      content: <div>Origins</div>,
+      content: <Permissions id={id} />,
     },
     {
       label: 'Metrics',
       id: 'metrics',
-      content: <div>Behaviors</div>,
+      content: <Metrics id={id} />,
     },
     {
       label: 'Management',
@@ -88,8 +90,9 @@ function BucketDetail(props) {
   };
 
   useEffect(() => {
-    document.title = 'S3 Management Console';
-  }, [location]);
+    document.title=`${id} - S3 Bucket`;
+  },[id])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);

@@ -183,6 +183,7 @@ export const AppHeader = (props: State): JSX.Element => {
             {
               type: 'menu-dropdown',
               ariaLabel: 'Available Zones',
+              disableUtilityCollapse: false,
               text: `${selection[0].text || selection}`,
               title: 'Zones',
               onItemClick: (evt) => {
@@ -192,6 +193,7 @@ export const AppHeader = (props: State): JSX.Element => {
               items: [
                 {
                   id: 'north',
+                  text:'North America',
                   items: [
                     {
                       id: 'US East (N. Virginia)',
@@ -213,6 +215,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'asia',
+                  text:'Asia',
                   title: 'Asia Pacific',
                   ariaLabel: 'Asia Pacific',
                   items: [
@@ -244,6 +247,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'central',
+                  text:'Central',
                   title: 'Canada',
                   ariaLabel: 'Canada',
                   items: [
@@ -255,6 +259,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'europe',
+                  text:'Europe',
                   title: 'Europe',
                   items: [
                     {
@@ -281,6 +286,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'south',
+                  text:'South America',
                   title: 'South America',
                   ariaLabel: 'South America',
                   items: [
