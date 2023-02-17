@@ -74,11 +74,12 @@ export const ObjectsPane = (props) => {
   // }
 
   const removeAsset = () => {};
+
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
   };
 
   return (
@@ -130,6 +131,7 @@ export const ObjectsPane = (props) => {
       ]}
       items={selectedFiles}
       loadingText="Loading resources"
+      loading={loading}
       selectionType="multi"
       resizableColumns
       visibleColumns={preferences.visibleContent}

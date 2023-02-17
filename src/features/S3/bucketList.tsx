@@ -120,7 +120,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
 
   const handleRefresh = async () => {
     setLoading(true);
-    await fakeDataFetch(1500);
+    await fakeDataFetch(2000);
     setLoading(false);
   };
 
@@ -267,6 +267,8 @@ const TableContent = ({ loadHelpPanelContent }) => {
           columnDefinitions={columnDefinitions}
           visibleColumns={preferences.visibleContent}
           items={items}
+          loading={loading}
+          loadingText="Loading Resources"
           variant="container"
           resizableColumns={true}
           onColumnWidthsChange={saveWidths}
@@ -291,6 +293,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
                     ariaExpanded
                     loading={loading}
                     iconName="refresh"
+                    aria-label="Refresh"
                     onClick={handleRefresh}
                   />
                   <CopyARN {...collectionProps} />

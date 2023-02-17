@@ -336,6 +336,15 @@ function Panel1({
     };
   };
 
+  const [loading, setLoading] = useState('finished');
+
+  const handleRefresh = () => {
+    setLoading('loading');
+    setTimeout(() => {
+      setLoading('finished');
+    }, 1500);
+  };
+
   return (
     <div>
       <SpaceBetween size="xl" direction="vertical">
@@ -482,11 +491,11 @@ function Panel1({
             ariaRequired
             expandToViewport
             filteringType="auto"
-            loadingText="loading"
+            loadingText="loading Instance"
             selectedAriaLabel="Selected"
             triggerVariant="option"
             virtualScroll
-            //statusType="loading"
+            statusType="loading"
           />
         </ExpandableSection>
 
@@ -504,6 +513,8 @@ function Panel1({
               onChange={({ detail }) =>
                 setSelectedOption(detail.selectedOption)
               }
+              statusType={loading}
+              loadingText="Loading Resources"
               options={[
                 { label: 'Option 1', value: '1' },
                 { label: 'Option 2', value: '2' },
@@ -511,13 +522,13 @@ function Panel1({
                 { label: 'Option 4', value: '4' },
                 { label: 'Option 5', value: '5' },
               ]}
-              loadingText="Loading instances"
+              empty="No options"
               placeholder="Choose an option"
               selectedAriaLabel="Selected"
             />
             <div>
-              <SpaceBetween size={'xxl'} direction="horizontal">
-                <Button iconName="refresh" />
+              <SpaceBetween size={'xl'} direction="horizontal">
+                <Button iconName="refresh" onClick={handleRefresh} />
                 <Link>Add new Key Value Pair</Link>
               </SpaceBetween>
             </div>
@@ -616,7 +627,7 @@ function Panel1({
                     <Box>
                       <Checkbox
                         checked={checked}
-                        onChange={(detail) => setChecked(detail.checked)}
+                        onChange={({ detail }) => setChecked(detail.checked)}
                         key={1}
                         description="Helps you connect to your instance"
                       >
@@ -625,7 +636,7 @@ function Panel1({
                       <Checkbox
                         key={2}
                         checked={checked}
-                        onChange={({ detail }) => setChecked(!detail.checked)}
+                        onChange={({ detail }) => setChecked(detail.checked)}
                         description="To set up an endpoint, for example when creating a web server"
                       >
                         Allow HTTPS traffic from the internet
@@ -634,7 +645,7 @@ function Panel1({
                         key={3}
                         description="To set up an endpoint, for example when creating a web server"
                         checked={checked}
-                        onChange={() => setChecked(checked)}
+                        onChange={({ detail }) => setChecked(detail.checked)}
                       >
                         Allow HTTP traffic from the internet
                       </Checkbox>
@@ -699,6 +710,8 @@ function Panel1({
                     { label: 'Option 5', value: '5' },
                   ]}
                   selectedAriaLabel="Selected"
+                  statusType={loading}
+                  loadingText="Loading Resources"
                 />
               </FormField>
             )}

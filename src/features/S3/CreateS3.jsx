@@ -176,7 +176,11 @@ const Content = ({ loadHelpPanelContent }, props) => {
         <SpaceBetween size="xs">
           <FormField
             label="Bucket Name"
-            stretch
+            errorText={
+              name.length <= 3 && name.length !== 0
+                ? 'Bucket name cannot be empty and more than 3 characters.'
+                : null
+            }
             constraintText={
               <>
                 Bucket name must be globally unique and must not contain spaces
@@ -196,6 +200,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
               value={name}
               onChange={(event) => setName(event.detail.value)}
               placeholder="myawsbucket"
+              invalid={name.length <= 3 && name.length !== 0}
             />
           </FormField>
 
@@ -205,7 +210,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
               value={region}
               options={regions}
               enteredTextLabel={(value) => `Use: "${value}"`}
-              placeholder={region}
+              placeholder="Select the AWS region"
               empty="Select available Region"
             />
           </FormField>
@@ -214,9 +219,9 @@ const Content = ({ loadHelpPanelContent }, props) => {
             description="Only the bucket settings in the following configuration are copied."
           >
             <Button
-              onClick={() => (
-                <S3ResourceSelector {...s3ResourceSelectorProps} />
-              )}
+              onClick={() => {
+                return <S3ResourceSelector {...s3ResourceSelectorProps} />;
+              }}
             >
               Choose Bucket
             </Button>

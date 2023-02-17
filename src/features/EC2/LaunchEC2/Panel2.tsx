@@ -13,6 +13,7 @@ import {
   Flashbar,
   Spinner,
 } from '@cloudscape-design/components';
+import { useNavigate } from 'react-router-dom';
 
 const DATA = {
   image: 'Amazon Linux 2 Kernel 5.10 AMI',
@@ -28,6 +29,7 @@ function Panel2(props) {
   const [visible, setVisible] = useState(true);
   const [btn, setBtn] = useState(true);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -35,6 +37,7 @@ function Panel2(props) {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+
   return (
     <>
       {!loading ? (
@@ -109,8 +112,7 @@ function Panel2(props) {
                 <Button
                   ariaExpanded
                   variant="link"
-                  href="/ec2_instance/dashboard"
-                  disabled={!(!DATA.status ?? btn)}
+                  onClick={() => navigate(-1)}
                 >
                   Cancel
                 </Button>
@@ -118,7 +120,6 @@ function Panel2(props) {
                 <Button
                   ariaExpanded
                   onClick={props.createInstance}
-                  disabled={!(DATA.status ?? !btn)}
                   iconName="add-plus"
                   loadingText="loading"
                 >

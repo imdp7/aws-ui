@@ -269,69 +269,69 @@ const IntelligentTiering = () => {
   ];
 
   return (
-      <SpaceBetween size="m">
-        <Table
-          onSelectionChange={({ detail }) =>
-            setSelectedItems(detail.selectedItems)
-          }
-          items={[]}
-          selectedItems={selectedItems}
-          columnDefinitions={columnDefinitions}
-          loadingText="Loading resources"
-          selectionType="single"
-          trackBy="name"
-          visibleColumns={[
-            'name',
-            'status',
-            'scope',
-            'daysArchieveAccess',
-            'daysDeepArchieveAccess',
-          ]}
-          empty={
-            <Box textAlign="center" color="inherit">
-              <b>No archive configurations</b>
-              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-                No configurations to display.
-              </Box>
-              <Button>Create Configuration</Button>
+    <SpaceBetween size="m">
+      <Table
+        onSelectionChange={({ detail }) =>
+          setSelectedItems(detail.selectedItems)
+        }
+        items={[]}
+        selectedItems={selectedItems}
+        columnDefinitions={columnDefinitions}
+        loadingText="Loading resources"
+        selectionType="single"
+        trackBy="name"
+        visibleColumns={[
+          'name',
+          'status',
+          'scope',
+          'daysArchieveAccess',
+          'daysDeepArchieveAccess',
+        ]}
+        empty={
+          <Box textAlign="center" color="inherit">
+            <b>No archive configurations</b>
+            <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+              No configurations to display.
             </Box>
-          }
-          filter={
-            <TextFilter
-              filterPlaceholder="Find Intelligent-Tiering Archive Configurations"
-              filteringText=""
-              onChange = {({detail}) => setSelectedItems(detail.value)}
-            />
-          }
-          header={
-        <Header
-          variant="h2"
-          description={
-            <>
-              Enable objects stored in the Intelligent-Tiering storage class to
-              tier-down to the Archive Access tier or the Deep Archive Access
-              tier which are optimized for objects that will be rarely accessed
-              for long periods of time.{' '}
-              <Link external fontSize="inherit">
-                Learn more
-              </Link>
-            </>
-          }
-          counter="(0)"
-          actions={
-            <SpaceBetween size="m" direction="horizontal">
-              <Button disabled>View Details</Button>
-              <Button disabled>Edit</Button>
-              <Button disabled>Delete</Button>
-              <Button>Create Configuration</Button>
-            </SpaceBetween>
-          }
-        >
-          Intelligent-Tiering Archive configurations
-        </Header>
-      }
-        />
-      </SpaceBetween>
+            <Button>Create Configuration</Button>
+          </Box>
+        }
+        filter={
+          <TextFilter
+            filterPlaceholder="Find Intelligent-Tiering Archive Configurations"
+            filteringText=""
+            onChange={({ detail }) => setSelectedItems(detail.value)}
+          />
+        }
+        header={
+          <Header
+            variant="h2"
+            description={
+              <>
+                Enable objects stored in the Intelligent-Tiering storage class
+                to tier-down to the Archive Access tier or the Deep Archive
+                Access tier which are optimized for objects that will be rarely
+                accessed for long periods of time.{' '}
+                <Link external fontSize="inherit">
+                  Learn more
+                </Link>
+              </>
+            }
+            counter="(0)"
+            actions={
+              <SpaceBetween size="m" direction="horizontal">
+                <Button disabled>View Details</Button>
+                <Button disabled>Edit</Button>
+                <Button disabled>Delete</Button>
+                <Button>Create Configuration</Button>
+              </SpaceBetween>
+            }
+          >
+            Intelligent-Tiering Archive configurations
+          </Header>
+        }
+      />
+    </SpaceBetween>
   );
 };
 
