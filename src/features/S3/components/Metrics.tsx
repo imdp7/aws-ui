@@ -442,32 +442,7 @@ const Analysis = () => {
   ];
 
   return (
-    <Container
-      header={
-        <Header
-          variant="h2"
-          info={<Link>Info</Link>}
-          counter="(0)"
-          description={
-            <>
-              Analyze storage access patterns to help you decide when to
-              transition objects to the appropriate storage class.{' '}
-              <Link external>Learn More</Link>
-            </>
-          }
-          actions={
-            <SpaceBetween size="xxs" direction="horizontal">
-              <Button disabled>Edit</Button>
-              <Button disabled>Delete</Button>
-              <Button>Create Analysis configuration</Button>
-            </SpaceBetween>
-          }
-        >
-          Storage Class Analysis
-        </Header>
-      }
-    >
-      <SpaceBetween size="s">
+
         <Table
           items={[]}
           onSelectionChange={({ detail }) =>
@@ -476,7 +451,7 @@ const Analysis = () => {
           selectedItems={selectedItems}
           columnDefinitions={columnDefinitions}
           loadingText="Loading resources"
-          variant="embedded"
+
           selectionType="single"
           trackBy="name"
           visibleColumns={['name', 'filter', 'destination']}
@@ -489,9 +464,30 @@ const Analysis = () => {
               <Button>Create Configuration</Button>
             </Box>
           }
+           header={
+        <Header
+          variant="h2"
+          info={<Link>Info</Link>}
+          counter="(0)"
+          description={
+            <>
+              Analyze storage access patterns to help you decide when to
+              transition objects to the appropriate storage class.{' '}
+              <Link external>Learn More</Link>
+            </>
+          }
+          actions={
+            <SpaceBetween size="s" direction="horizontal">
+              <Button disabled>Edit</Button>
+              <Button disabled>Delete</Button>
+              <Button>Create Analysis configuration</Button>
+            </SpaceBetween>
+          }
+        >
+          Storage Class Analysis
+        </Header>
+      }
         />
-      </SpaceBetween>
-    </Container>
   );
 };
 

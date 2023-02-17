@@ -22,6 +22,7 @@ import ObjectsPane from './components/Objects';
 import Properties from './components/Properties';
 import Permissions from './components/Permissions';
 import Metrics from './components/Metrics';
+import Management from './components/Management'
 import { dataBucketFiles } from '../resources/s3Bucket';
 
 function BucketDetail(props) {
@@ -75,7 +76,7 @@ function BucketDetail(props) {
     {
       label: 'Management',
       id: 'management',
-      content: <div>Invalidations</div>,
+      content: <Management id={id} />,
     },
     {
       label: 'Access Points',

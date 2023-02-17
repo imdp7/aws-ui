@@ -269,8 +269,41 @@ const IntelligentTiering = () => {
   ];
 
   return (
-    <Container
-      header={
+      <SpaceBetween size="m">
+        <Table
+          onSelectionChange={({ detail }) =>
+            setSelectedItems(detail.selectedItems)
+          }
+          items={[]}
+          selectedItems={selectedItems}
+          columnDefinitions={columnDefinitions}
+          loadingText="Loading resources"
+          selectionType="single"
+          trackBy="name"
+          visibleColumns={[
+            'name',
+            'status',
+            'scope',
+            'daysArchieveAccess',
+            'daysDeepArchieveAccess',
+          ]}
+          empty={
+            <Box textAlign="center" color="inherit">
+              <b>No archive configurations</b>
+              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                No configurations to display.
+              </Box>
+              <Button>Create Configuration</Button>
+            </Box>
+          }
+          filter={
+            <TextFilter
+              filterPlaceholder="Find Intelligent-Tiering Archive Configurations"
+              filteringText=""
+              onChange = {({detail}) => setSelectedItems(detail.value)}
+            />
+          }
+          header={
         <Header
           variant="h2"
           description={
@@ -297,44 +330,8 @@ const IntelligentTiering = () => {
           Intelligent-Tiering Archive configurations
         </Header>
       }
-    >
-      <SpaceBetween size="m">
-        <Table
-          onSelectionChange={({ detail }) =>
-            setSelectedItems(detail.selectedItems)
-          }
-          items={[]}
-          selectedItems={selectedItems}
-          columnDefinitions={columnDefinitions}
-          loadingText="Loading resources"
-          variant="embedded"
-          selectionType="single"
-          trackBy="name"
-          visibleColumns={[
-            'name',
-            'status',
-            'scope',
-            'daysArchieveAccess',
-            'daysDeepArchieveAccess',
-          ]}
-          empty={
-            <Box textAlign="center" color="inherit">
-              <b>No archive configurations</b>
-              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-                No configurations to display.
-              </Box>
-              <Button>Create Configuration</Button>
-            </Box>
-          }
-          filter={
-            <TextFilter
-              filterPlaceholder="Find Intelligent-Tiering Archive Configurations"
-              filteringText=""
-            />
-          }
         />
       </SpaceBetween>
-    </Container>
   );
 };
 
