@@ -14,7 +14,7 @@ import {
   Alert,
 } from '@cloudscape-design/components';
 import CopyText from '../../EC2/commons/copy-text';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const Overview = () => {
   return (
@@ -74,14 +74,21 @@ const Versioning = () => {
             </>
           }
           actions={
-            <Button onClick={() => navigate('property/versioning/edit',
-            {state:{
-              name:'Edit Bucket Versioning',
-              head:'Bucket Versioning',
-              description: 'Versioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. With versioning, you can easily recover from both unintended user actions and application failures.',
-              info: 'You can use S3 Versioning to back up the objects in your bucket. With S3 Versioning, you can preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. S3 Versioning can help you recover objects from unintended user actions or application failures.',
-
-          }})}>Edit</Button>
+            <Button
+              onClick={() =>
+                navigate('property/versioning/edit', {
+                  state: {
+                    name: 'Edit Bucket Versioning',
+                    head: 'Bucket Versioning',
+                    description:
+                      'Versioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. With versioning, you can easily recover from both unintended user actions and application failures.',
+                    info: 'You can use S3 Versioning to back up the objects in your bucket. With S3 Versioning, you can preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. S3 Versioning can help you recover objects from unintended user actions or application failures.',
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
           }
         >
           Bucket Versioning
@@ -135,16 +142,23 @@ const Tags = () => {
               </Link>
             </>
           }
-          actions={ 
-          <Button onClick={() => navigate('property/tags/edit',
-            {state:{
-              name:'Edit bucket Tagging',
-              head:'Tags',
-              description: 'You can use bucket tags to track storage costs and organize buckets.',
-              info: 'Bucket tags provide a way to track costs and other criteria for Amazon S3 buckets. You can use bucket tags to monitor the usage and cost for specific applications, users, or resources. You can add, edit, or remove bucket tags using the Amazon S3 console.',
-
-          }})}>
-          Edit</Button>}
+          actions={
+            <Button
+              onClick={() =>
+                navigate('property/tags/edit', {
+                  state: {
+                    name: 'Edit bucket Tagging',
+                    head: 'Tags',
+                    description:
+                      'You can use bucket tags to track storage costs and organize buckets.',
+                    info: 'Bucket tags provide a way to track costs and other criteria for Amazon S3 buckets. You can use bucket tags to monitor the usage and cost for specific applications, users, or resources. You can add, edit, or remove bucket tags using the Amazon S3 console.',
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
+          }
         >
           Tags
         </Header>
@@ -226,14 +240,21 @@ const Encryption = () => {
             </>
           }
           actions={
-            <Button onClick={() => navigate('property/encryption/edit',
-            {state:{
-              name:'Edit default encryption',
-              head:'Default encryption',
-              description: 'Server-side encryption is automatically applied to new objects stored in this bucket.',
-              info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
-
-          }})}>Edit</Button>
+            <Button
+              onClick={() =>
+                navigate('property/encryption/edit', {
+                  state: {
+                    name: 'Edit default encryption',
+                    head: 'Default encryption',
+                    description:
+                      'Server-side encryption is automatically applied to new objects stored in this bucket.',
+                    info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
           }
         >
           Default Encryption
@@ -271,6 +292,7 @@ const Encryption = () => {
 };
 
 const IntelligentTiering = () => {
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
 
   const columnDefinitions = [
@@ -326,7 +348,21 @@ const IntelligentTiering = () => {
             <Box padding={{ bottom: 's' }} variant="p" color="inherit">
               No configurations to display.
             </Box>
-            <Button>Create Configuration</Button>
+            <Button
+              onClick={() =>
+                navigate('property/int_tiering_config/create', {
+                  state: {
+                    name: 'Create Intelligent-Tiering Archive configuration',
+                    head: 'Archive configuration settings',
+                    description:
+                      'Enable objects stored in the Intelligent-Tiering storage class to tier-down to the Archive Access tier or the Deep Archive Access tier which are optimized for objects that will be rarely accessed for long periods of time. Activate the Archive Access and Deep Archive Access tiers only if your objects can be accessed asynchronously by your application.',
+                    info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                  },
+                })
+              }
+            >
+              Create Configuration
+            </Button>
           </Box>
         }
         filter={
@@ -356,7 +392,21 @@ const IntelligentTiering = () => {
                 <Button disabled>View Details</Button>
                 <Button disabled>Edit</Button>
                 <Button disabled>Delete</Button>
-                <Button>Create Configuration</Button>
+                <Button
+                  onClick={() =>
+                    navigate('property/int_tiering_config/create', {
+                      state: {
+                        name: 'Create Intelligent-Tiering Archive configuration',
+                        head: 'Archive configuration settings',
+                        description:
+                          'Enable objects stored in the Intelligent-Tiering storage class to tier-down to the Archive Access tier or the Deep Archive Access tier which are optimized for objects that will be rarely accessed for long periods of time. Activate the Archive Access and Deep Archive Access tiers only if your objects can be accessed asynchronously by your application.',
+                        info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                      },
+                    })
+                  }
+                >
+                  Create Configuration
+                </Button>
               </SpaceBetween>
             }
           >
@@ -369,6 +419,7 @@ const IntelligentTiering = () => {
 };
 
 const Logging = () => {
+  const navigate = useNavigate();
   return (
     <Container
       header={
@@ -382,7 +433,22 @@ const Logging = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button
+              onClick={() =>
+                navigate('property/logging/edit', {
+                  state: {
+                    name: 'Edit server access logging',
+                    head: 'Server access logging',
+                    description: 'Log requests for access to your bucket.',
+                    info: `Use this page to enable logging of all requests to access your bucket. Server access logging provides detailed records for the requests that are made to a bucket and can provide insight into any errors users are receiving. Server access logs are useful for many applications, including understanding security, access, and your Amazon S3 bill.`,
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
+          }
         >
           Server access logging
         </Header>
