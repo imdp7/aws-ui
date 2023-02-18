@@ -14,6 +14,7 @@ import {
   Alert,
 } from '@cloudscape-design/components';
 import CopyText from '../../EC2/commons/copy-text';
+import {useNavigate} from 'react-router-dom'
 
 const Overview = () => {
   return (
@@ -54,6 +55,7 @@ const Overview = () => {
 };
 
 const Versioning = () => {
+  const navigate = useNavigate();
   return (
     <Container
       header={
@@ -71,7 +73,16 @@ const Versioning = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button onClick={() => navigate('property/versioning/edit',
+            {state:{
+              name:'Edit Bucket Versioning',
+              head:'Bucket Versioning',
+              description: 'Versioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. With versioning, you can easily recover from both unintended user actions and application failures.',
+              info: 'You can use S3 Versioning to back up the objects in your bucket. With S3 Versioning, you can preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket. S3 Versioning can help you recover objects from unintended user actions or application failures.',
+
+          }})}>Edit</Button>
+          }
         >
           Bucket Versioning
         </Header>
@@ -107,7 +118,9 @@ const Versioning = () => {
 };
 
 const Tags = () => {
+  const navigate = useNavigate();
   const [tags, setTags] = useState([]);
+
   return (
     <Container
       header={
@@ -122,7 +135,16 @@ const Tags = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={ 
+          <Button onClick={() => navigate('property/tags/edit',
+            {state:{
+              name:'Edit bucket Tagging',
+              head:'Tags',
+              description: 'You can use bucket tags to track storage costs and organize buckets.',
+              info: 'Bucket tags provide a way to track costs and other criteria for Amazon S3 buckets. You can use bucket tags to monitor the usage and cost for specific applications, users, or resources. You can add, edit, or remove bucket tags using the Amazon S3 console.',
+
+          }})}>
+          Edit</Button>}
         >
           Tags
         </Header>
@@ -180,6 +202,7 @@ const Tags = () => {
             enteredKeyLabel: (key) => 'Use "' + key + '"',
             enteredValueLabel: (value) => 'Use "' + value + '"',
           }}
+          onChange={({ detail }) => setTags(detail.tags)}
         />
       </SpaceBetween>
     </Container>
@@ -187,6 +210,7 @@ const Tags = () => {
 };
 
 const Encryption = () => {
+  const navigate = useNavigate();
   return (
     <Container
       header={
@@ -201,7 +225,16 @@ const Encryption = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button onClick={() => navigate('property/encryption/edit',
+            {state:{
+              name:'Edit default encryption',
+              head:'Default encryption',
+              description: 'Server-side encryption is automatically applied to new objects stored in this bucket.',
+              info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+
+          }})}>Edit</Button>
+          }
         >
           Default Encryption
         </Header>

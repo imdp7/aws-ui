@@ -168,7 +168,7 @@ function BucketDetail(props) {
                   />
                 }
               />
-              <Tabs tabs={tabs} ariaLabel="Resource details" id={id} />
+              <Tabs tabs={tabs} ariaLabel="Resource details" id={id} activeTd={id} />
             </SpaceBetween>
           </Provider>
         }
