@@ -8,6 +8,7 @@ import {
   AppLayout,
   BreadcrumbGroup,
   Flashbar,
+  Spinner,
   Alert,
   Button,
   Box,
@@ -23,6 +24,7 @@ import { Provider } from 'react-redux';
 import { appLayoutLabels, paginationLabels } from '../../common/labels';
 import { store } from '../../../app/store';
 import { DashboardHeader, HelpPanels } from '../../EC2/components/header';
+import BUCKETS from '../../resources/s3Bucket';
 import {
   Notifications,
   Navigation,
@@ -32,7 +34,6 @@ import {
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
-  console.log(info);
   const navigate = useNavigate();
 
   const Versioning = () => {
@@ -294,24 +295,33 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
                 onChange={({ detail }) => setResource(detail.resource)}
                 resource={resource}
                 objectsIsItemDisabled={(item) => item.IsFolder}
-                fetchBuckets={() =>
-                  Promise.resolve([
-                    {
-                      Name: 'bucket-fugiat',
-                      CreationDate: 'December 27, 2019, 22:16:38 (UTC+01:00)',
-                      Region: 'Middle East (Bahrain) me-south-1',
-                    },
-                    {
-                      Name: 'bucket-ut',
-                      CreationDate: 'July 06, 2019, 12:41:19 (UTC+02:00)',
-                      Region: 'US East (N. Virginia) us-east-1',
-                    },
-                    {
-                      Name: 'bucket-veniam',
-                      CreationDate: 'June 13, 2019, 18:32:38 (UTC+02:00)',
-                      Region: 'US East (N. Virginia) us-east-1',
-                    },
-                  ])
+                loading={loading}
+                fetchBuckets={
+                  () =>
+                    Promise.resolve([
+                      {
+                        Name: 'bucket-fugiat',
+                        CreationDate: 'December 27, 2019, 22:16:38 (UTC+01:00)',
+                        Region: 'Middle East (Bahrain) me-south-1',
+                      },
+                      {
+                        Name: 'bucket-ut',
+                        CreationDate: 'July 06, 2019, 12:41:19 (UTC+02:00)',
+                        Region: 'US East (N. Virginia) us-east-1',
+                      },
+                      {
+                        Name: 'bucket-veniam',
+                        CreationDate: 'June 13, 2019, 18:32:38 (UTC+02:00)',
+                        Region: 'US East (N. Virginia) us-east-1',
+                      },
+                    ])
+                  //   BUCKETS.forEach((item) => [
+                  //     {
+                  //       Name: item.name,
+                  //       createdAt: item.createdAt,
+                  //       region: item.region,
+                  //     },
+                  //   ])
                 }
                 fetchObjects={() =>
                   Promise.resolve([
@@ -411,12 +421,89 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
                   labelModalDismiss: 'Dismiss the modal',
                   labelBreadcrumbs: 'S3 navigation',
                 }}
-                bucketsVisibleColumns={['Name', 'Region']}
+                bucketsVisibleColumns={['Name', 'Region', 'CreationDate']}
                 selectableItemsTypes={['buckets', 'objects']}
               />
             </FormField>
           </SpaceBetween>
         )}
+        <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+      </SpaceBetween>
+    );
+  };
+
+  const EventBridge = () => {
+    const [notification, setNotification] = useState('first');
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+    return (
+      <SpaceBetween size="s">
+        <FormField
+          label="Send notifications to Amazon EventBridge for all events in this bucket"
+          info={<Link>Info</Link>}
+        >
+          <RadioGroup
+            onChange={({ detail }) => setNotification(detail.value)}
+            value={notification}
+            items={[
+              { value: 'first', label: 'Off' },
+              {
+                value: 'second',
+                label: 'On',
+              },
+            ]}
+          />
+        </FormField>
+        <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+      </SpaceBetween>
+    );
+  };
+
+  const Acceleration = () => {
+    const [acceleration, setAcceleration] = useState('first');
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+    return (
+      <SpaceBetween size="s">
+        <FormField label="Transfer acceleration" info={<Link>Info</Link>}>
+          <RadioGroup
+            onChange={({ detail }) => setAcceleration(detail.value)}
+            value={acceleration}
+            items={[
+              { value: 'first', label: 'Disable' },
+              {
+                value: 'second',
+                label: 'Enable',
+              },
+            ]}
+          />
+        </FormField>
         <SpaceBetween size="l" direction="horizontal" className="btn-right">
           <Button onClick={() => navigate(-1)}>Cancel</Button>
           <Button variant="primary" onClick={handleRefresh} loading={loading}>
@@ -451,6 +538,8 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
         {subInfo === 'tags' && <Tags />}
         {subInfo === 'encryption' && <Encryption />}
         {subInfo === 'logging' && <Logging />}
+        {subInfo === 'event_bridge' && <EventBridge />}
+        {subInfo === 'acceleration' && <Acceleration />}
       </Container>
     </SpaceBetween>
   );

@@ -22,7 +22,8 @@ import BucketDetail from './features/S3/BucketDetail';
 import Upload from './features/S3/Upload';
 import { ThemeContext } from './features/common/TopNavigations';
 import CreateS3 from './features/S3/CreateS3';
-import EditBucket from './features/S3/components/EditBucket'
+import EditBucket from './features/S3/components/EditBucket';
+import CreateComponent from './features/S3/components/CreateComponent';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -71,6 +72,12 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="buckets/:id/:info/:subInfo/edit"
               element={<EditBucket user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="buckets/:id/:info/:subInfo/create"
+              element={
+                <CreateComponent user={user.username} signOut={signOut} />
+              }
             />
             <Route
               path="buckets/create"

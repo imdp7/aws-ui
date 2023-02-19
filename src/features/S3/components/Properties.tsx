@@ -469,6 +469,7 @@ const Logging = () => {
 
 const CloudTrail = () => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate();
 
   const columnDefinitions = [
     {
@@ -499,7 +500,26 @@ const CloudTrail = () => {
               </Link>
             </>
           }
-          actions={<Button>Create Configuration</Button>}
+          actions={
+            <Button
+              target="_blank"
+              iconAlign="right"
+              iconName="external"
+              onClick={() =>
+                navigate('property/int_tiering_config/create', {
+                  state: {
+                    name: 'Create Intelligent-Tiering Archive configuration',
+                    head: 'Archive configuration settings',
+                    description:
+                      'Enable objects stored in the Intelligent-Tiering storage class to tier-down to the Archive Access tier or the Deep Archive Access tier which are optimized for objects that will be rarely accessed for long periods of time. Activate the Archive Access and Deep Archive Access tiers only if your objects can be accessed asynchronously by your application.',
+                    info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                  },
+                })
+              }
+            >
+              Create Configuration
+            </Button>
+          }
         >
           AWS CloudTrail data events
         </Header>
@@ -543,6 +563,7 @@ const CloudTrail = () => {
 
 const Notifications = () => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate();
 
   const columnDefinitions = [
     {
@@ -590,7 +611,21 @@ const Notifications = () => {
             <SpaceBetween size="m" direction="horizontal">
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
-              <Button>Create event Notification</Button>
+              <Button
+                onClick={() =>
+                  navigate('property/notification/create', {
+                    state: {
+                      name: 'Create event notification',
+                      head: 'Create event notification',
+                      description:
+                        'To enable notifications, you must first add a notification configuration that identifies the events you want Amazon S3 to publish and the destinations where you want Amazon S3 to send the notifications.',
+                      info: `With S3 Event Notifications, you can receive notifications when certain events happen in your bucket. Event notifications are designed to be delivered at least once. Typically, event notifications are delivered in seconds but can sometimes take a minute or longer. You can have 100 event notification configurations per bucket.`,
+                    },
+                  })
+                }
+              >
+                Create event Notification
+              </Button>
             </SpaceBetween>
           }
         >
@@ -624,7 +659,20 @@ const Notifications = () => {
                 Choose Create event notification to be notified when a specific
                 event occurs.
               </Box>
-              <Button>Create event notification</Button>
+              <Button
+                onClick={() =>
+                  navigate('property/notification/create', {
+                    state: {
+                      name: 'Create event notification',
+                      head: 'General configuration',
+                      desc: 'To enable notifications, you must first add a notification configuration that identifies the events you want Amazon S3 to publish and the destinations where you want Amazon S3 to send the notifications.',
+                      info: `With S3 Event Notifications, you can receive notifications when certain events happen in your bucket. Event notifications are designed to be delivered at least once. Typically, event notifications are delivered in seconds but can sometimes take a minute or longer. You can have 100 event notification configurations per bucket.`,
+                    },
+                  })
+                }
+              >
+                Create event notification
+              </Button>
             </Box>
           }
         />
@@ -634,6 +682,8 @@ const Notifications = () => {
 };
 
 const EventBridge = () => {
+  const navigate = useNavigate();
+
   return (
     <Container
       header={
@@ -652,7 +702,23 @@ const EventBridge = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button
+              onClick={() =>
+                navigate('property/event_bridge/edit', {
+                  state: {
+                    name: 'Edit Amazon EventBridge',
+                    head: 'Amazon EventBridge',
+                    description:
+                      'For additional capabilities, use Amazon EventBridge to build event-driven applications at scale using S3 event notifications.',
+                    info: `Amazon EventBridge is a serverless event bus, which receives events from AWS services.`,
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
+          }
         >
           Amazon EventBridge
         </Header>
@@ -673,6 +739,8 @@ const EventBridge = () => {
 };
 
 const Acceleration = () => {
+  const navigate = useNavigate();
+
   return (
     <Container
       header={
@@ -686,7 +754,23 @@ const Acceleration = () => {
               </Link>{' '}
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button
+              onClick={() =>
+                navigate('property/acceleration/edit', {
+                  state: {
+                    name: 'Edit transfer acceleration',
+                    head: 'Transfer acceleration',
+                    description:
+                      'Use an accelerated endpoint for faster data transfers. ',
+                    info: `Amazon S3 Transfer Acceleration speeds up file transfers over long distances between your client and an S3 bucket. Transfer Acceleration improves performance by routing traffic through Amazon CloudFront globally distributed edge locations. As the data arrives at an edge location, Transfer Acceleration routes the data to S3 over an optimized network path. Additional data transfer charges  will apply.`,
+                  },
+                })
+              }
+            >
+              Edit
+            </Button>
+          }
         >
           Transfer Acceleration
         </Header>
