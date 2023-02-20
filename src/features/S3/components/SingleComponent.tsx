@@ -14,26 +14,20 @@ import { store } from '../../../app/store';
 import { DashboardHeader, HelpPanels } from '../../EC2/components/header';
 import BUCKETS from '../../resources/s3Bucket';
 import {
-  Notifications,
   Navigation,
   S3navItems,
   S3Header,
 } from '../../EC2/commons/common-components';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Notification from './Notification';
-import IntelligentTiering from './IntelligentTiering';
-
-const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = `${id}`;
-  }, []);
-
+import { Notifications } from './Properties';
+import { IntelligentTiering } from './Properties';
+function SingleComp({ loadHelpPanelContent, state, info, subInfo, id }) {
+  console.log({ loadHelpPanelContent, state, info, subInfo, id });
   return (
-    <SpaceBetween size="m">
+    <>
+      {/* {subInfo == 'int_tiering_config' && <Notifications />} */}
       {subInfo == 'notification' && (
-        <Notification
+        <Notifications
           loadHelpPanelContent={loadHelpPanelContent}
           state={state}
           info={info}
@@ -50,11 +44,11 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
           subInfo={subInfo}
         />
       )}
-    </SpaceBetween>
+    </>
   );
-};
+}
 
-const CreateComponent = (props) => {
+const SingleComponent = (props) => {
   const { info, id, subInfo } = useParams();
   const { state } = useLocation();
   const appLayout = useRef();
@@ -63,9 +57,9 @@ const CreateComponent = (props) => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
-      title={state.name}
-      info={state.info}
-      des={state.description}
+      title={state?.name}
+      info={state?.info}
+      des={state?.description}
       //       ul={[
       //         {
       //           h5: 'Manage access',
@@ -115,13 +109,13 @@ const CreateComponent = (props) => {
                     header={
                       <DashboardHeader
                         loadHelpPanelContent={loadHelpPanelContent}
-                        title={state.name}
-                        info={state.info}
-                        des={state.description}
+                        title={state?.name}
+                        info={state?.info}
+                        des={state?.description}
                       />
                     }
                   />
-                  <Content
+                  <SingleComp
                     loadHelpPanelContent={loadHelpPanelContent}
                     state={state}
                     info={info}
@@ -141,11 +135,7 @@ const CreateComponent = (props) => {
               { text: 'Amazon S3', href: '/S3/home' },
               { text: 'Buckets', href: '/s3/buckets' },
               { text: `${id}`, href: `/s3/buckets/${id}` },
-              {
-                text: `${state.title}`,
-                href: `/s3/buckets/${id}/${info}/${subInfo}`,
-              },
-              { text: `${state.name}`, href: 'info' },
+              { text: `${subInfo}`, href: `${subInfo}` },
             ]}
           />
         }
@@ -172,4 +162,4 @@ const CreateComponent = (props) => {
   );
 };
 
-export default CreateComponent;
+export default SingleComponent;

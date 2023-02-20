@@ -442,29 +442,25 @@ const Analysis = () => {
   ];
 
   return (
-
-        <Table
-          items={[]}
-          onSelectionChange={({ detail }) =>
-            setSelectedItems(detail.selectedItems)
-          }
-          selectedItems={selectedItems}
-          columnDefinitions={columnDefinitions}
-          loadingText="Loading resources"
-
-          selectionType="single"
-          trackBy="name"
-          visibleColumns={['name', 'filter', 'destination']}
-          empty={
-            <Box textAlign="center" color="inherit">
-              <b>There are no analytics configurations</b>
-              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-                No configurations to display.
-              </Box>
-              <Button>Create Configuration</Button>
-            </Box>
-          }
-           header={
+    <Table
+      items={[]}
+      onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+      selectedItems={selectedItems}
+      columnDefinitions={columnDefinitions}
+      loadingText="Loading resources"
+      selectionType="single"
+      trackBy="name"
+      visibleColumns={['name', 'filter', 'destination']}
+      empty={
+        <Box textAlign="center" color="inherit">
+          <b>There are no analytics configurations</b>
+          <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+            No configurations to display.
+          </Box>
+          <Button>Create Configuration</Button>
+        </Box>
+      }
+      header={
         <Header
           variant="h2"
           info={<Link>Info</Link>}
@@ -487,7 +483,7 @@ const Analysis = () => {
           Storage Class Analysis
         </Header>
       }
-        />
+    />
   );
 };
 

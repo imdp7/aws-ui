@@ -24,6 +24,7 @@ import { ThemeContext } from './features/common/TopNavigations';
 import CreateS3 from './features/S3/CreateS3';
 import EditBucket from './features/S3/components/EditBucket';
 import CreateComponent from './features/S3/components/CreateComponent';
+import SingleComponent from './features/S3/components/SingleComponent';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -77,6 +78,12 @@ const App = ({ user, signOut }): JSX.Element => {
               path="buckets/:id/:info/:subInfo/create"
               element={
                 <CreateComponent user={user.username} signOut={signOut} />
+              }
+            />
+            <Route
+              path="buckets/:id/:info/:subInfo"
+              element={
+                <SingleComponent user={user.username} signOut={signOut} />
               }
             />
             <Route

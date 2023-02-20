@@ -291,7 +291,7 @@ const Encryption = () => {
   );
 };
 
-const IntelligentTiering = () => {
+export const IntelligentTiering = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -353,6 +353,7 @@ const IntelligentTiering = () => {
                 navigate('property/int_tiering_config/create', {
                   state: {
                     name: 'Create Intelligent-Tiering Archive configuration',
+                    title: 'Intelligent-Tiering Archive configurations',
                     head: 'Archive configuration settings',
                     description:
                       'Enable objects stored in the Intelligent-Tiering storage class to tier-down to the Archive Access tier or the Deep Archive Access tier which are optimized for objects that will be rarely accessed for long periods of time. Activate the Archive Access and Deep Archive Access tiers only if your objects can be accessed asynchronously by your application.',
@@ -394,10 +395,11 @@ const IntelligentTiering = () => {
                 <Button disabled>Delete</Button>
                 <Button
                   onClick={() =>
-                    navigate('property/int_tiering_config/create', {
+                    navigate('create', {
                       state: {
                         name: 'Create Intelligent-Tiering Archive configuration',
                         head: 'Archive configuration settings',
+                        title: 'Intelligent-Tiering Archive configurations',
                         description:
                           'Enable objects stored in the Intelligent-Tiering storage class to tier-down to the Archive Access tier or the Deep Archive Access tier which are optimized for objects that will be rarely accessed for long periods of time. Activate the Archive Access and Deep Archive Access tiers only if your objects can be accessed asynchronously by your application.',
                         info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
@@ -506,7 +508,7 @@ const CloudTrail = () => {
               iconAlign="right"
               iconName="external"
               onClick={() =>
-                navigate('property/int_tiering_config/create', {
+                navigate('create', {
                   state: {
                     name: 'Create Intelligent-Tiering Archive configuration',
                     head: 'Archive configuration settings',
@@ -561,7 +563,7 @@ const CloudTrail = () => {
   );
 };
 
-const Notifications = () => {
+export const Notifications = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
 
@@ -613,9 +615,10 @@ const Notifications = () => {
               <Button disabled>Delete</Button>
               <Button
                 onClick={() =>
-                  navigate('property/notification/create', {
+                  navigate('create', {
                     state: {
                       name: 'Create event notification',
+                      title: 'Event notification',
                       head: 'Create event notification',
                       description:
                         'To enable notifications, you must first add a notification configuration that identifies the events you want Amazon S3 to publish and the destinations where you want Amazon S3 to send the notifications.',
@@ -665,6 +668,7 @@ const Notifications = () => {
                     state: {
                       name: 'Create event notification',
                       head: 'General configuration',
+                      title: 'Event notification',
                       desc: 'To enable notifications, you must first add a notification configuration that identifies the events you want Amazon S3 to publish and the destinations where you want Amazon S3 to send the notifications.',
                       info: `With S3 Event Notifications, you can receive notifications when certain events happen in your bucket. Event notifications are designed to be delivered at least once. Typically, event notifications are delivered in seconds but can sometimes take a minute or longer. You can have 100 event notification configurations per bucket.`,
                     },
@@ -788,7 +792,6 @@ const Acceleration = () => {
 };
 
 const ObjectLock = () => {
-
   return (
     <Container
       header={
@@ -844,7 +847,7 @@ const Requester = () => {
             </>
           }
           actions={
-            <Button 
+            <Button
               onClick={() =>
                 navigate('property/rp/edit', {
                   state: {
@@ -857,9 +860,10 @@ const Requester = () => {
                   },
                 })
               }
-          >
-          Edit
-          </Button>}
+            >
+              Edit
+            </Button>
+          }
         >
           Requester pays
         </Header>
@@ -893,7 +897,7 @@ const StaticWebsite = () => {
           }
           actions={
             <Button
-             onClick={() =>
+              onClick={() =>
                 navigate('property/website/edit', {
                   state: {
                     name: 'Edit Static website hosting',
@@ -904,7 +908,10 @@ const StaticWebsite = () => {
                   },
                 })
               }
-            >Edit</Button>}
+            >
+              Edit
+            </Button>
+          }
         >
           Static Website Hosting
         </Header>
