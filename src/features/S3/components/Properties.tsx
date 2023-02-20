@@ -788,6 +788,7 @@ const Acceleration = () => {
 };
 
 const ObjectLock = () => {
+
   return (
     <Container
       header={
@@ -803,7 +804,7 @@ const ObjectLock = () => {
               </Link>{' '}
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={<Button disabled>Edit</Button>}
         >
           Object Lock
         </Header>
@@ -826,6 +827,8 @@ const ObjectLock = () => {
 };
 
 const Requester = () => {
+  const navigate = useNavigate();
+
   return (
     <Container
       header={
@@ -840,7 +843,23 @@ const Requester = () => {
               </Link>{' '}
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button 
+              onClick={() =>
+                navigate('property/rp/edit', {
+                  state: {
+                    name: 'Edit requester pays',
+                    head: 'Requester pays',
+                    description:
+                      'When enabled, the requester pays for requests and data transfer costs, and anonymous access to this bucket is disabled.',
+                    info: `In general, bucket owners pay for all Amazon S3 storage and data transfer costs that are associated with their bucket. 
+                    However, you can configure a bucket to be a Requester Pays bucket.`,
+                  },
+                })
+              }
+          >
+          Edit
+          </Button>}
         >
           Requester pays
         </Header>
@@ -858,6 +877,7 @@ const Requester = () => {
 };
 
 const StaticWebsite = () => {
+  const navigate = useNavigate();
   return (
     <Container
       header={
@@ -871,7 +891,20 @@ const StaticWebsite = () => {
               </Link>{' '}
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={
+            <Button
+             onClick={() =>
+                navigate('property/website/edit', {
+                  state: {
+                    name: 'Edit Static website hosting',
+                    head: 'Static website hosting',
+                    description:
+                      'Use this bucket to host a website or redirect requests.',
+                    info: `When you enable static website hosting, you can configure your Amazon S3 bucket to host a static website or redirect requests.`,
+                  },
+                })
+              }
+            >Edit</Button>}
         >
           Static Website Hosting
         </Header>

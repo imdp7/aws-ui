@@ -6,11 +6,14 @@ import {
   Container,
   ContentLayout,
   AppLayout,
+  Checkbox,
   BreadcrumbGroup,
   Flashbar,
   Alert,
   Button,
+  ColumnLayout,
   Box,
+  Select,
   RadioGroup,
   TagEditor,
   FormField,
@@ -33,99 +36,30 @@ import {
   S3Header,
 } from '../../EC2/commons/common-components';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-
-const Notification = (props) => {
-  const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [prefix, setPrefix] = useState('');
-  const [suffix, setSufffix] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate(-1);
-    }, 1500);
-  };
-
-  return (
-    <SpaceBetween size="m">
-      <Container
-        header={
-          <Header
-            variant="h2"
-            description={
-              <>
-                {props.state.description}{' '}
-                <Link external fontSize="inherit">
-                  {' '}
-                  Learn more
-                </Link>
-              </>
-            }
-          >
-            {props.state.head}
-          </Header>
-        }
-      >
-        <FormField
-          label="Event name"
-          constraintText="Event name can contain up to 255 characters."
-        >
-          <Input
-            placeholder="Event name"
-            value={name}
-            onChange={({ detail }) => setName(detail.value)}
-          />
-        </FormField>
-        <FormField
-          label={
-            <span>
-              Prefix <i>- optional</i>{' '}
-            </span>
-          }
-          description="Limit the notifications to objects with key starting with specified characters."
-        >
-          <Input
-            placeholder="images/"
-            value={prefix}
-            onChange={({ detail }) => setPrefix(detail.value)}
-          />
-        </FormField>
-        <FormField
-          label={
-            <span>
-              Suffix <i>- optional</i>{' '}
-            </span>
-          }
-          description="Limit the notifications to objects with key ending with specified characters."
-        >
-          <Input
-            placeholder=".jpg"
-            value={suffix}
-            onChange={({ detail }) => setSuffix(detail.value)}
-          />
-        </FormField>
-      </Container>
-      <SpaceBetween size="l" direction="horizontal" className="btn-right">
-        <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary" onClick={handleRefresh} loading={loading}>
-          Save changes
-        </Button>
-      </SpaceBetween>
-    </SpaceBetween>
-  );
-};
+import Notification from './Notification'
+import IntelligentTiering from './IntelligentTiering'
 
 const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
-  console.log(info);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = `${id}`;
+  },[])
 
   return (
     <SpaceBetween size="m">
       {subInfo == 'notification' && (
         <Notification
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'int_tiering_config' && (
+        <IntelligentTiering
           loadHelpPanelContent={loadHelpPanelContent}
           state={state}
           info={info}

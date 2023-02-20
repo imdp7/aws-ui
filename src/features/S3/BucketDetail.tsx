@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   AppLayout,
   BreadcrumbGroup,
@@ -27,10 +27,12 @@ import { dataBucketFiles } from '../resources/s3Bucket';
 
 function BucketDetail(props) {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
+  const [activeTabId, setActiveTabId] = useState("objects")
   const [toolsOpen, setToolsOpen] = useState(false);
+  console.log(activeTabId)
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Buckets"
@@ -92,7 +94,8 @@ function BucketDetail(props) {
 
   useEffect(() => {
     document.title = `${id} - S3 Bucket`;
-  }, [id]);
+    navigate(`?tabs=${activeTabId}`, {replace: true});
+  }, [id, activeTabId]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -101,12 +104,6 @@ function BucketDetail(props) {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <>
@@ -168,7 +165,7 @@ function BucketDetail(props) {
                   />
                 }
               />
-              <Tabs tabs={tabs} ariaLabel="Resource details" id={id} activeTd={id} />
+              <Tabs tabs={tabs} ariaLabel="Resource details" id={id} activeTabTd={activeTabId} onChange={({detail}) => setActiveTabId(detail.activeTabId)} />
             </SpaceBetween>
           </Provider>
         }

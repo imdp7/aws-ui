@@ -11,7 +11,9 @@ import {
   Spinner,
   Alert,
   Button,
+  Checkbox,
   Box,
+  Tiles,
   RadioGroup,
   TagEditor,
   FormField,
@@ -514,6 +516,249 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
     );
   };
 
+  const Requester = () => {
+    const [pays, setPays] = useState('first');
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+    return (
+      <SpaceBetween size="s">
+        <FormField label="Requester pays" info={<Link>Info</Link>}>
+          <RadioGroup
+            onChange={({ detail }) => setPays(detail.value)}
+            value={pays}
+            items={[
+              { value: 'first', label: 'Disable', description: 'Bucket owner pays the cost of data requests and downloads from this bucket.' },
+              {
+                value: 'second',
+                label: 'Enable',
+                description: 'Requester will pay for requests and data transfer. While requester pays is enabled, anonymous access to this bucket is disabled.'
+              },
+            ]}
+          />
+        </FormField>
+        <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+      </SpaceBetween>
+    );
+  };
+
+   const Website = () => {
+    const [hosting, setHosting] = useState('first');
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+    return (
+      <SpaceBetween size="s">
+        <FormField label="Static website hosting" info={<Link>Info</Link>}>
+          <RadioGroup
+            onChange={({ detail }) => setHosting(detail.value)}
+            value={hosting}
+            items={[
+              { value: 'first', label: 'Disable',},
+              {
+                value: 'second',
+                label: 'Enable',
+              },
+            ]}
+          />
+        </FormField>
+        <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+      </SpaceBetween>
+    );
+  };
+
+  const Ownership = () => {
+    const [ACL, setACL] = useState('first');
+    const [acknowledge, setAcknowledge] = useState(false);
+    const [ownership, setOwnership] = useState("owner");
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+    return (
+      <SpaceBetween size="s">
+        <FormField label="Object Ownership" info={<Link>Info</Link>}>
+          <Tiles
+            onChange={({ detail }) => setACL(detail.value)}
+            value={ACL}
+            items={[
+              { value: 'first', label: 'ACLs disabled (recommended)', description:"All objects in this bucket are owned by this account. Access to this bucket and its objects is specified using only policies."},
+              {
+                value: 'second',
+                label: 'ACLs enabled',
+                description: 'Objects in this bucket can be owned by other AWS accounts. Access to this bucket and its objects can be specified using ACLs.'
+              },
+            ]}
+          />
+        </FormField>
+        {ACL == "first" ? (
+        <FormField label="Object Ownership">
+        <Box variant="p" fontSize="heading-s">Bucket owner enforced</Box>
+        </FormField>
+        ) : (
+        <SpaceBetween size="s">
+        <Alert type="warning" header="Enabling ACLs turns off the bucket owner enforced setting for Object Ownership">
+        <SpaceBetween size="m">
+          Once the bucket owner enforced setting is turned off, access control lists (ACLs) and their associated permissions are restored. Access to objects that you do not own will be based on ACLs and not the bucket policy.
+        <Checkbox 
+         checked = {acknowledge}
+         onChange = {({detail}) => setAcknowledge(detail.checked)}
+        >
+        I acknowledge that ACLs will be restored.
+        </Checkbox>
+        </SpaceBetween>
+        </Alert>
+        <FormField label="Object Ownership">
+        <RadioGroup
+            onChange={({ detail }) => setOwnership(detail.value)}
+            value={ownership}
+            items={[
+              { value: 'owner', label: 'Bucket owner preferred', description: 'If new objects written to this bucket specify the bucket-owner-full-control canned ACL, they are owned by the bucket owner. Otherwise, they are owned by the object writer.'},
+              {
+                value: 'writer',
+                label: 'Object writer',
+                description: 'The object writer remains the object owner.',
+              },
+            ]}
+          />
+        </FormField>
+        {ownership === "owner" && (
+        <Alert type="info">
+        <>
+        If you want to enforce object ownership for new objects only, your bucket policy must specify that the bucket-owner-full-control canned ACL is required for object uploads. {" "}
+        <Link external fontSize="inherit">Learn more</Link>
+        </>
+        </Alert>
+        )}
+        </SpaceBetween>
+        )}
+        <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+      </SpaceBetween>
+    );
+  };
+
+  const BucketSettings = () => {
+
+  const [blockedAll, setBlockedAll] = useState(true);
+  const [blockedFirst, setBlockedFirst] = useState(false);
+  const [blockedSecond, setBlockedSecond] = useState(false);
+  const [blockedThird, setBlockedThird] = useState(false);
+  const [blockedFourth, setBlockedFourth] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(-1);
+      }, 1500);
+    };
+
+  return (
+       <SpaceBetween size="m">
+          <Checkbox
+            onChange={({ detail }) => setBlockedAll(detail.checked)}
+            checked={blockedAll}
+            description="Turning this setting on is the same as turning on all four settings below. Each of the following settings are independent of one another."
+          >
+            Block all public access
+          </Checkbox>
+          <div className="divider">
+            <>
+              <div className="dash">
+                <Checkbox
+                  onChange={({ detail }) => setBlockedFirst(detail.checked)}
+                  checked={blockedFirst || blockedAll}
+                  disabled={blockedAll}
+                  description="S3 will block public access permissions applied to newly added buckets or objects, and prevent the creation of new public access ACLs for existing buckets and objects. This setting doesn’t change any existing permissions that allow public access to S3 resources using ACLs."
+                >
+                  Block public access to buckets and objects granted through new
+                  access control lists (ACLs)
+                </Checkbox>
+              </div>
+              <div className="dash">
+                <Checkbox
+                  onChange={({ detail }) => {
+                    setBlockedSecond(detail.checked);
+                  }}
+                  checked={blockedSecond || blockedAll}
+                  disabled={blockedAll}
+                  description="TS3 will ignore all ACLs that grant public access to buckets and objects."
+                >
+                  Block public access to buckets and objects granted through any
+                  access control lists (ACLs)
+                </Checkbox>
+              </div>
+              <div className="dash">
+                <Checkbox
+                  onChange={({ detail }) => setBlockedThird(detail.checked)}
+                  checked={blockedThird || blockedAll}
+                  disabled={blockedAll}
+                  description="S3 will block new bucket and access point policies that grant public access to buckets and objects. This setting doesn't change any existing policies that allow public access to S3 resources."
+                >
+                  Block public access to buckets and objects granted through new
+                  public bucket or access point policies
+                </Checkbox>
+              </div>
+              <div className="dash">
+                <Checkbox
+                  onChange={({ detail }) => setBlockedFourth(detail.checked)}
+                  checked={blockedFourth || blockedAll}
+                  disabled={blockedAll}
+                  description="S3 will ignore public and cross-account access for buckets or access points with policies that grant public access to buckets and objects."
+                >
+                  Block public and cross-account access to buckets and objects
+                  through any public bucket or access point policies
+                </Checkbox>
+              </div>
+            </>
+          </div>
+            <SpaceBetween size="l" direction="horizontal" className="btn-right">
+          <Button onClick={() => navigate(-1)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRefresh} loading={loading}>
+            Save changes
+          </Button>
+        </SpaceBetween>
+          </SpaceBetween>
+
+  );
+};
+
   return (
     <SpaceBetween size="m">
       <Container
@@ -540,6 +785,10 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
         {subInfo === 'logging' && <Logging />}
         {subInfo === 'event_bridge' && <EventBridge />}
         {subInfo === 'acceleration' && <Acceleration />}
+        {subInfo === 'rp' && <Requester />}
+        {subInfo === 'website' && <Website />}
+        {subInfo === 'oo' && <Ownership />}
+        {subInfo === 'bpa' && <BucketSettings />}
       </Container>
     </SpaceBetween>
   );

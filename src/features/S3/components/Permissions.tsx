@@ -16,6 +16,7 @@ import {
   ExpandableSection,
   Checkbox,
 } from '@cloudscape-design/components';
+import {useNavigate} from 'react-router-dom';
 
 const Overview = () => {
   const [privateAccess, setPrivateAccess] = useState('Objects can be public');
@@ -72,6 +73,8 @@ const Overview = () => {
 };
 
 const BucketSettings = () => {
+	const navigate = useNavigate();
+
   const [indicator, setIndicator] = useState('Off');
   const [blockedFirst, setBlockedFirst] = useState(false);
   const [blockedSecond, setBlockedSecond] = useState(false);
@@ -101,7 +104,21 @@ const BucketSettings = () => {
               </Link>
             </>
           }
-          actions={<Button>Edit</Button>}
+          actions={<Button 
+          onClick={() =>
+                navigate('permissions/bpa/edit', {
+                  state: {
+                    name: 'Edit Block public access (bucket settings)',
+                    head: 'Block public access (bucket settings)',
+                    description: 'Public access is granted to buckets and objects through access control lists (ACLs), bucket policies, access point policies, or all. In order to ensure that public access to all your S3 buckets and objects is blocked, turn on Block all public access. These settings apply only to this bucket and its access points. AWS recommends that you turn on Block all public access, but before applying any of these settings, ensure that your applications will work correctly without public access. If you require some level of public access to your buckets or objects within, you can customize the individual settings below to suit your specific storage use cases.',
+                    info: `By default, new buckets, access points, and objects don't allow public access. However, you can modify bucket policies, access point policies, or object permissions to allow public access. S3 Block Public Access settings override these policies and permissions so that you can limit public access to these resources.`,
+                  },
+                })
+              }
+              >
+              Edit
+              </Button>
+            }
         >
           Block public access (bucket settings)
         </Header>
@@ -178,6 +195,7 @@ const BucketSettings = () => {
 };
 
 const BucketPolicy = () => {
+
   const [value, setValue] = useState('');
 
   return (
@@ -197,7 +215,9 @@ const BucketPolicy = () => {
           }
           actions={
             <SpaceBetween size="m" direction="horizontal">
-              <Button>Edit</Button>
+              <Button>
+              Edit
+              </Button>
               <Button disabled>Delete</Button>
             </SpaceBetween>
           }
@@ -227,10 +247,30 @@ const BucketPolicy = () => {
 };
 
 const Ownership = () => {
+	const navigate = useNavigate();
   return (
     <Container
       header={
-        <Header variant="h2" info={<Link>Info</Link>}>
+        <Header 
+        variant="h2" 
+        description="Control ownership of objects written to this bucket from other AWS accounts and the use of access control lists (ACLs). Object ownership determines who can specify access to objects."
+        info={<Link>Info</Link>}
+        actions={<Button 
+         onClick={() =>
+                navigate('permissions/oo/edit', {
+                  state: {
+                    name: 'Edit Object Ownership',
+                    head: 'Object Ownership',
+                    description: 'Control ownership of objects written to this bucket from other AWS accounts and the use of access control lists (ACLs). Object ownership determines who can specify access to objects.',
+                    info: `You use Object Ownership to disable access control lists (ACLs) and take ownership of every object in your bucket, simplifying access management for data stored in Amazon S3. A majority of modern use cases in Amazon S3 no longer require the use of ACLs, and we recommend that you disable ACLs except in unusual circumstances where you need to control access for each object individually.`,
+                  },
+                })
+              }
+              >
+              Edit
+              </Button>
+            }
+        >
           Object Ownership
         </Header>
       }
