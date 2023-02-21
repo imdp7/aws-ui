@@ -203,7 +203,7 @@ export function DashboardHeader(props) {
   return (
     <Header
       variant="h1"
-      description={props.description}
+      description={props.des}
       info={
         <InfoLink
           onFollow={() =>

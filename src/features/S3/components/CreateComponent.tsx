@@ -22,6 +22,8 @@ import {
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Notification from './Notification';
 import IntelligentTiering from './IntelligentTiering';
+import  StorageConfigure from './StorageConfigure';
+import Lifecycle from './Lifecycle';
 
 const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
   const navigate = useNavigate();
@@ -43,6 +45,24 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
       )}
       {subInfo == 'int_tiering_config' && (
         <IntelligentTiering
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'storage_class_analysis' && (
+        <StorageConfigure
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'lifecycle' && (
+        <Lifecycle
           loadHelpPanelContent={loadHelpPanelContent}
           state={state}
           info={info}
@@ -141,6 +161,7 @@ const CreateComponent = (props) => {
               { text: 'Amazon S3', href: '/S3/home' },
               { text: 'Buckets', href: '/s3/buckets' },
               { text: `${id}`, href: `/s3/buckets/${id}` },
+              { text: `${info}`, href: `/s3/buckets/${id}` },
               {
                 text: `${state.title}`,
                 href: `/s3/buckets/${id}/${info}/${subInfo}`,

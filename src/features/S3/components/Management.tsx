@@ -10,8 +10,10 @@ import {
   Table,
   Box,
 } from '@cloudscape-design/components';
+import {useNavigate} from 'react-router-dom'
 
 const Lifecycle = () => {
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -98,7 +100,18 @@ const Lifecycle = () => {
           <Box padding={{ bottom: 's' }} variant="p" color="inherit">
             There are no lifecycle rules for this bucket.
           </Box>
-          <Button ariaLabel="Create lifecycle rule" href="https://www.aws.com">
+          <Button ariaLabel="Create lifecycle rule"
+          onClick={() =>
+                navigate('management/lifecycle/create', {
+                  state: {
+                    name: 'Create lifecycle rule',
+                    title: 'Life cycle configuration',
+                    head: 'lifecycle rule configuration',
+                    info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                  },
+                })
+              }
+          >
             Create lifecycle rule
           </Button>
         </Box>
@@ -128,6 +141,7 @@ const Lifecycle = () => {
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
               <ButtonDropdown
+                disabled
                 items={[
                   { text: 'Delete', id: 'rm', disabled: false },
                   { text: 'Move', id: 'mv', disabled: false },
@@ -300,6 +314,7 @@ const Replication = () => {
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
               <ButtonDropdown
+                disabled
                 items={[
                   { text: 'Delete', id: 'rm', disabled: false },
                   { text: 'Move', id: 'mv', disabled: false },
@@ -440,6 +455,7 @@ const Inventory = () => {
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
               <ButtonDropdown
+                disabled
                 items={[
                   { text: 'Delete', id: 'rm', disabled: false },
                   { text: 'Move', id: 'mv', disabled: false },
