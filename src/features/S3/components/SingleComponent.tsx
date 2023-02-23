@@ -1,9 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { useRef, useState, useEffect } from 'react';
 import {
   SpaceBetween,
   ContentLayout,
   AppLayout,
   BreadcrumbGroup,
+  Container,
+  Header,
+  Link,
   Spinner,
 } from '@cloudscape-design/components';
 import { AppHeader } from '../../common/TopNavigations';
@@ -21,8 +25,9 @@ import {
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Notifications } from './Properties';
 import { IntelligentTiering } from './Properties';
+import { Inventory, Lifecycle } from './Management';
+import { Replication } from './Management';
 function SingleComp({ loadHelpPanelContent, state, info, subInfo, id }) {
-  console.log({ loadHelpPanelContent, state, info, subInfo, id });
   return (
     <>
       {/* {subInfo == 'int_tiering_config' && <Notifications />} */}
@@ -35,8 +40,35 @@ function SingleComp({ loadHelpPanelContent, state, info, subInfo, id }) {
           subInfo={subInfo}
         />
       )}
+      {subInfo == 'lifecycle' && (
+        <Lifecycle
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
       {subInfo == 'int_tiering_config' && (
         <IntelligentTiering
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'replication' && (
+        <Replication
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'inventory' && (
+        <Inventory
           loadHelpPanelContent={loadHelpPanelContent}
           state={state}
           info={info}
@@ -81,7 +113,6 @@ const SingleComponent = (props) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
   };
-
   useEffect(() => {
     document.title = 'S3 Management Console';
     const timer = setTimeout(() => {
@@ -89,6 +120,10 @@ const SingleComponent = (props) => {
     }, 3000);
     return () => clearTimeout(timer);
   }, [location]);
+
+  const capital = (text) => {
+    return text[0].toUpperCase() + text.slice(1);
+  };
 
   return (
     <>
@@ -109,7 +144,7 @@ const SingleComponent = (props) => {
                     header={
                       <DashboardHeader
                         loadHelpPanelContent={loadHelpPanelContent}
-                        title={state?.name}
+                        title={state?.title}
                         info={state?.info}
                         des={state?.description}
                       />
@@ -135,7 +170,7 @@ const SingleComponent = (props) => {
               { text: 'Amazon S3', href: '/S3/home' },
               { text: 'Buckets', href: '/s3/buckets' },
               { text: `${id}`, href: `/s3/buckets/${id}` },
-              { text: `${subInfo}`, href: `${subInfo}` },
+              { text: capital(`${subInfo}`), href: `${subInfo}` },
             ]}
           />
         }

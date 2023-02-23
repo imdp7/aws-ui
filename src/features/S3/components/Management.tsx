@@ -9,13 +9,40 @@ import {
   ButtonDropdown,
   Table,
   Box,
+  CollectionPreferences,
+  Pagination,
 } from '@cloudscape-design/components';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from '../../common/localStorage';
+import {
+  COLUMN_DEFINITIONS,
+  VISIBLE_CONTENT_OPTIONS,
+  PAGE_SIZE_OPTIONS,
+  SEARCHABLE_COLUMNS,
+} from '../components/table-select-filter-config';
 
-const Lifecycle = () => {
+export const Lifecycle = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [preferences, setPreferences] = useLocalStorage(
+    'React-DBInstancesTable-Preferences',
+    {
+      pageSize: 10,
+      visibleContent: [
+        'name',
+        'status',
+        'scope',
+        'currentVersion',
+        'nonCurrentVersion',
+        'expiredObjects',
+        'multipart',
+      ],
+      wrapLines: false,
+      stripedRows: true,
+      custom: 'table',
+    }
+  );
 
   const columnDefinitions = [
     {
@@ -85,32 +112,27 @@ const Lifecycle = () => {
       columnDefinitions={columnDefinitions}
       loadingText="Loading Resources"
       loading={loading}
-      visibleColumns={[
-        'name',
-        'status',
-        'scope',
-        'currentVersion',
-        'nonCurrentVersion',
-        'expiredObjects',
-        'multipart',
-      ]}
+      visibleColumns={preferences.visibleContent}
+      wrapLines={preferences.wrapLines}
+      stripedRows={preferences.stripedRows}
       empty={
         <Box textAlign="center" color="inherit">
           <b>No lifecycle rules</b>
           <Box padding={{ bottom: 's' }} variant="p" color="inherit">
             There are no lifecycle rules for this bucket.
           </Box>
-          <Button ariaLabel="Create lifecycle rule"
-          onClick={() =>
-                navigate('management/lifecycle/create', {
-                  state: {
-                    name: 'Create lifecycle rule',
-                    title: 'Life cycle configuration',
-                    head: 'lifecycle rule configuration',
-                    info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
-                  },
-                })
-              }
+          <Button
+            ariaLabel="Create lifecycle rule"
+            onClick={() =>
+              navigate('management/lifecycle/create', {
+                state: {
+                  name: 'Create lifecycle rule',
+                  title: 'Life cycle configuration',
+                  head: 'lifecycle rule configuration',
+                  info: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                },
+              })
+            }
           >
             Create lifecycle rule
           </Button>
@@ -146,30 +168,129 @@ const Lifecycle = () => {
                   { text: 'Delete', id: 'rm', disabled: false },
                   { text: 'Move', id: 'mv', disabled: false },
                   { text: 'Rename', id: 'rn', disabled: true },
-                  {
-                    text: 'View metrics',
-                    href: 'https://example.com',
-                    external: true,
-                    externalIconAriaLabel: '(opens in new tab)',
-                  },
                 ]}
               >
                 Actions
               </ButtonDropdown>
-              <Button>Create Lifecycle rule</Button>
+              <Button
+                onClick={() =>
+                  navigate('create', {
+                    state: {
+                      name: 'Create lifecycle rule',
+                      title: 'Life cycle configuration',
+                      head: 'lifecycle rule configuration',
+                      description: `Use lifecycle rules to define actions you want Amazon S3 to take
+              during an object's lifetime such as transitioning objects to
+              another storage class, archiving them, or deleting them after a
+              specified period of time.`,
+                      des: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                    },
+                  })
+                }
+              >
+                Create Lifecycle rule
+              </Button>
             </SpaceBetween>
           }
         >
           Lifecycle rules
         </Header>
       }
+      pagination={
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: 'Next page',
+            previousPageLabel: 'Previous page',
+            pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+          }}
+        />
+      }
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={preferences}
+          onConfirm={({ detail }) => setPreferences(detail)}
+          pageSizePreference={{
+            title: 'Page size',
+            options: PAGE_SIZE_OPTIONS,
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Check to see all the text and wrap the lines',
+          }}
+          stripedRowsPreference={{
+            label: 'Striped rows',
+            description: 'Check to add alternating shaded rows',
+          }}
+          visibleContentPreference={{
+            title: 'Select visible content',
+            options: [
+              {
+                label: 'Main distribution properties',
+                options: [
+                  {
+                    id: 'name',
+                    label: 'Lifecycle rule name',
+                    editable: false,
+                  },
+                  { id: 'status', label: 'Status' },
+                  { id: 'scope', label: 'Scope' },
+                  {
+                    id: 'currentVersion',
+                    label: 'Current version actions',
+                  },
+                  {
+                    id: 'nonCurrentVersion',
+                    label: 'Current version actions',
+                  },
+                  {
+                    id: 'expiredObjects',
+                    label: 'Expired objects delete markers',
+                  },
+                  {
+                    id: 'multipart',
+                    label: 'Incomplete multipart uploads',
+                  },
+                ],
+              },
+            ],
+          }}
+        />
+      }
     />
   );
 };
 
-const Replication = () => {
+export const Replication = () => {
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [preferences, setPreferences] = useLocalStorage(
+    'React-DBInstancesTable-Preferences',
+    {
+      pageSize: 10,
+      visibleContent: [
+        'name',
+        'status',
+        'destinationBucket',
+        'destinationRegion',
+        'priority',
+        'scope',
+        'storageClass',
+        'owner',
+        'timeControl',
+        'kmsEncrypted',
+        'modificationSync',
+      ],
+      wrapLines: false,
+      stripedRows: true,
+      custom: 'table',
+    }
+  );
 
   const handleRefresh = () => {
     setLoading(true);
@@ -202,7 +323,7 @@ const Replication = () => {
     },
     {
       id: 'destinationRegion',
-      header: 'destinationRegion',
+      header: 'Destination Region',
       cell: (e) => e.destinationRegion,
       width: 80,
       minWidth: 50,
@@ -256,6 +377,20 @@ const Replication = () => {
       width: 80,
       minWidth: 50,
     },
+    {
+      id: 'deleteMarker',
+      header: 'Delete marker replication',
+      cell: (e) => e.deleteMarker,
+      width: 80,
+      minWidth: 50,
+    },
+    {
+      id: 'metrics',
+      header: 'Replication metrics',
+      cell: (e) => e.metrics,
+      width: 80,
+      minWidth: 50,
+    },
   ];
 
   return (
@@ -263,28 +398,34 @@ const Replication = () => {
       onChange={({ detail }) => setSelectedItems(detail.value)}
       items={[]}
       columnDefinitions={columnDefinitions}
+      visibleColumns={preferences.visibleContent}
       loading={loading}
+      wrapLines={preferences.wrapLines}
+      stripedRows={preferences.stripedRows}
       loadingText="Loading Resources"
-      visibleColumns={[
-        'name',
-        'status',
-        'destinationBucket',
-        'destinationRegion',
-        'priority',
-        'scope',
-        'storageClass',
-        'owner',
-        'timeControl',
-        'kmsEncrypted',
-        'modificationSync',
-      ]}
       empty={
         <Box textAlign="center" color="inherit">
           <b>No Replication rules</b>
           <Box padding={{ bottom: 's' }} variant="p" color="inherit">
             There are no Replication rules for this bucket.
           </Box>
-          <Button ariaLabel="Create lifecycle rule" href="https://www.aws.com">
+          <Button
+            ariaLabel="Create lifecycle rule"
+            onClick={() =>
+              navigate('management/replication/create', {
+                state: {
+                  name: 'Create replication rule',
+                  title: 'Replication rules',
+                  head: 'Create Replication rules',
+                  description: `Use lifecycle rules to define actions you want Amazon S3 to take
+              during an object's lifetime such as transitioning objects to
+              another storage class, archiving them, or deleting them after a
+              specified period of time.`,
+                  des: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                },
+              })
+            }
+          >
             Create Replication rule
           </Button>
         </Box>
@@ -314,35 +455,157 @@ const Replication = () => {
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
               <ButtonDropdown
-                disabled
                 items={[
-                  { text: 'Delete', id: 'rm', disabled: false },
-                  { text: 'Move', id: 'mv', disabled: false },
-                  { text: 'Rename', id: 'rn', disabled: true },
-                  {
-                    text: 'View metrics',
-                    href: 'https://example.com',
-                    external: true,
-                    externalIconAriaLabel: '(opens in new tab)',
-                  },
+                  { text: 'Enable rule', id: 'rm', disabled: true },
+                  { text: 'Disable rule', id: 'mv', disabled: true },
+                  { text: 'Enable all', id: 'ea', disabled: true },
+                  { text: 'Disable all', id: 'dl', disabled: true },
+                  { text: 'Delete all', id: 'dll', disabled: true },
+                  { text: 'Edit priority', id: 'ep', disabled: true },
+                  { text: 'Receive replicated objects', id: 'rro' },
                 ]}
               >
                 Actions
               </ButtonDropdown>
-              <Button>Create Replication rule</Button>
+              <Button
+                onClick={() =>
+                  navigate('create', {
+                    state: {
+                      name: 'Create replication rule',
+                      title: 'Replication rules',
+                      head: 'Create Replication rules',
+                      description: `Use lifecycle rules to define actions you want Amazon S3 to take
+              during an object's lifetime such as transitioning objects to
+              another storage class, archiving them, or deleting them after a
+              specified period of time.`,
+                      des: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                    },
+                  })
+                }
+              >
+                Create Replication rule
+              </Button>
             </SpaceBetween>
           }
         >
           Replication rules
         </Header>
       }
+      pagination={
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: 'Next page',
+            previousPageLabel: 'Previous page',
+            pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+          }}
+        />
+      }
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={preferences}
+          onConfirm={({ detail }) => setPreferences(detail)}
+          pageSizePreference={{
+            title: 'Page size',
+            options: PAGE_SIZE_OPTIONS,
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Check to see all the text and wrap the lines',
+          }}
+          stripedRowsPreference={{
+            label: 'Striped rows',
+            description: 'Check to add alternating shaded rows',
+          }}
+          visibleContentPreference={{
+            title: 'Select visible content',
+            options: [
+              {
+                label: 'Main distribution properties',
+                options: [
+                  {
+                    id: 'name',
+                    label: 'Replication rule name',
+                    editable: false,
+                  },
+                  { id: 'status', label: 'Status' },
+                  { id: 'destinationBucket', label: 'Destination bucket' },
+                  {
+                    id: 'destinationRegion',
+                    label: 'Destination Region',
+                  },
+                  {
+                    id: 'priority',
+                    label: 'Priority',
+                  },
+                  {
+                    id: 'scope',
+                    label: 'Scope',
+                  },
+                  {
+                    id: 'storageClass',
+                    label: 'Storage class',
+                  },
+                  {
+                    id: 'owner',
+                    label: 'Replica owner',
+                  },
+                  {
+                    id: 'timeControl',
+                    label: 'Replica TIme Control',
+                  },
+                  {
+                    id: 'kmsEncrypted',
+                    label: 'KMS-encrypted objects',
+                  },
+                  {
+                    id: 'modificationSync',
+                    label: 'Replica modification sync',
+                  },
+                  {
+                    id: 'metrics',
+                    label: 'Replication metrics',
+                  },
+                  {
+                    id: 'deleteMarker',
+                    label: 'Delete marker replication',
+                  },
+                ],
+              },
+            ],
+          }}
+        />
+      }
     />
   );
 };
 
-const Inventory = () => {
+export const Inventory = () => {
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [preferences, setPreferences] = useLocalStorage(
+    'React-DBInstancesTable-Preferences',
+    {
+      pageSize: 10,
+      visibleContent: [
+        'name',
+        'status',
+        'scope',
+        'destination',
+        'frequency',
+        'lastExport',
+        'format',
+      ],
+      wrapLines: false,
+      stripedRows: true,
+      custom: 'table',
+    }
+  );
 
   const handleRefresh = () => {
     setLoading(true);
@@ -409,23 +672,30 @@ const Inventory = () => {
       items={[]}
       columnDefinitions={columnDefinitions}
       loadingText="Loading Resources"
+      visibleColumns={preferences.visibleContent}
       loading={loading}
-      visibleColumns={[
-        'name',
-        'status',
-        'scope',
-        'destination',
-        'frequency',
-        'lastExport',
-        'format',
-      ]}
+      wrapLines={preferences.wrapLines}
+      stripedRows={preferences.stripedRows}
       empty={
         <Box textAlign="center" color="inherit">
           <b>No Replication rules</b>
           <Box padding={{ bottom: 's' }} variant="p" color="inherit">
             There are no Inventory configuration for this bucket.
           </Box>
-          <Button ariaLabel="Create lifecycle rule" href="https://www.aws.com">
+          <Button
+            ariaLabel="Create inventory rule"
+            onClick={() =>
+              navigate('management/inventory/create', {
+                state: {
+                  name: 'Create inventory configuration',
+                  title: 'Inventory configurations',
+                  head: 'Create inventory configuration',
+                  description: `You can create inventory configurations on a bucket to generate a flat file list of your objects and metadata. These scheduled reports can include all objects in the bucket or be limited to a shared prefix.`,
+                  des: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                },
+              })
+            }
+          >
             Create Inventory configuration
           </Button>
         </Box>
@@ -451,31 +721,85 @@ const Inventory = () => {
                 onClick={handleRefresh}
                 aria-label="Refresh"
               />
-              <Button disabled>View Details</Button>
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
-              <ButtonDropdown
-                disabled
-                items={[
-                  { text: 'Delete', id: 'rm', disabled: false },
-                  { text: 'Move', id: 'mv', disabled: false },
-                  { text: 'Rename', id: 'rn', disabled: true },
-                  {
-                    text: 'View metrics',
-                    href: 'https://example.com',
-                    external: true,
-                    externalIconAriaLabel: '(opens in new tab)',
-                  },
-                ]}
+              <Button disabled>Create job from manifest</Button>
+              <Button
+                onClick={() =>
+                  navigate('create', {
+                    state: {
+                      name: 'Create inventory configuration',
+                      title: 'Inventory configurations',
+                      head: 'Create inventory configuration',
+                      description: `You can create inventory configurations on a bucket to generate a flat file list of your objects and metadata. These scheduled reports can include all objects in the bucket or be limited to a shared prefix.`,
+                      des: `Server-side encryption with Amazon S3 managed keys (SSE-S3) is the base level of encryption configuration for an Amazon S3 bucket. With server-side encryption, Amazon S3 encrypts a newly uploaded object in the bucket before saving it to disk and decrypts it when you download the object. Encryption doesn't change the way that you access data as an authorized user. It only further protects your data.`,
+                    },
+                  })
+                }
               >
-                Actions
-              </ButtonDropdown>
-              <Button>Create Inventory configuration</Button>
+                Create Inventory configuration
+              </Button>
             </SpaceBetween>
           }
         >
           Inventory configurations
         </Header>
+      }
+      pagination={
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: 'Next page',
+            previousPageLabel: 'Previous page',
+            pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+          }}
+        />
+      }
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={preferences}
+          onConfirm={({ detail }) => setPreferences(detail)}
+          pageSizePreference={{
+            title: 'Page size',
+            options: PAGE_SIZE_OPTIONS,
+          }}
+          wrapLinesPreference={{
+            label: 'Wrap lines',
+            description: 'Check to see all the text and wrap the lines',
+          }}
+          stripedRowsPreference={{
+            label: 'Striped rows',
+            description: 'Check to add alternating shaded rows',
+          }}
+          visibleContentPreference={{
+            title: 'Select visible content',
+            options: [
+              {
+                label: 'Main distribution properties',
+                options: [
+                  {
+                    id: 'name',
+                    label: 'Name',
+                    editable: false,
+                  },
+                  { id: 'status', label: 'Status' },
+                  { id: 'scope', label: 'Scope' },
+                  {
+                    id: 'destination',
+                    label: 'Destination',
+                  },
+                  { id: 'frequency', label: 'Frequency' },
+                  { id: 'lastExport', label: 'Last export' },
+                  { id: 'format', label: 'Format' },
+                ],
+              },
+            ],
+          }}
+        />
       }
     />
   );

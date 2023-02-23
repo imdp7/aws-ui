@@ -22,7 +22,7 @@ import {
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Notification from './Notification';
 import IntelligentTiering from './IntelligentTiering';
-import  StorageConfigure from './StorageConfigure';
+import StorageConfigure from './StorageConfigure';
 import Lifecycle from './Lifecycle';
 
 const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
@@ -107,7 +107,9 @@ const CreateComponent = (props) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
   };
-
+  const capital = (text) => {
+    return text[0].toUpperCase() + text.slice(1);
+  };
   useEffect(() => {
     document.title = 'S3 Management Console';
     const timer = setTimeout(() => {
@@ -160,13 +162,13 @@ const CreateComponent = (props) => {
             items={[
               { text: 'Amazon S3', href: '/S3/home' },
               { text: 'Buckets', href: '/s3/buckets' },
-              { text: `${id}`, href: `/s3/buckets/${id}` },
-              { text: `${info}`, href: `/s3/buckets/${id}` },
+              { text: capital(`${id}`), href: `/s3/buckets/${id}` },
+              { text: capital(`${info}`), href: `/s3/buckets/${id}` },
               {
-                text: `${state.title}`,
+                text: capital(`${state.title}`),
                 href: `/s3/buckets/${id}/${info}/${subInfo}`,
               },
-              { text: `${state.name}`, href: 'info' },
+              { text: capital(`${state.name}`), href: 'info' },
             ]}
           />
         }
