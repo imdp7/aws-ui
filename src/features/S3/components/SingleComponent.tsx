@@ -170,6 +170,7 @@ const SingleComponent = (props) => {
               { text: 'Amazon S3', href: '/S3/home' },
               { text: 'Buckets', href: '/s3/buckets' },
               { text: `${id}`, href: `/s3/buckets/${id}` },
+              { text: capital(`${info}`), href: `/s3/buckets/${id}` },
               { text: capital(`${subInfo}`), href: `${subInfo}` },
             ]}
           />

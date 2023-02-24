@@ -13,8 +13,9 @@ import {
   MixedLineBarChart,
   BarChart,
   LineChart,
+  Pagination,
 } from '@cloudscape-design/components';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const data = [
   {
@@ -459,21 +460,21 @@ const Analysis = () => {
           <Box padding={{ bottom: 's' }} variant="p" color="inherit">
             No configurations to display.
           </Box>
-          <Button 
-           onClick={() =>
-                  navigate('metrics/storage_class_analysis/create', {
-                    state: {
-                      name: 'Create Configuration',
-                      title: 'Storage Class Analysis',
-                      head: 'Name',
-                      description:
-                        'You can configure Storage Class Analysis to analyze all the objects in the bucket or configure filters to group objects together for analysis by common prefix, by object tags, or by both rpefix and tags.',
-                      info: `With S3 Event Notifications, you can receive notifications when certain events happen in your bucket. Event notifications are designed to be delivered at least once. Typically, event notifications are delivered in seconds but can sometimes take a minute or longer. You can have 100 event notification configurations per bucket.`,
-                    },
-                  })
-                }
+          <Button
+            onClick={() =>
+              navigate('metrics/storage_class_analysis/create', {
+                state: {
+                  name: 'Create Configuration',
+                  title: 'Storage Class Analysis',
+                  head: 'Name',
+                  description:
+                    'You can configure Storage Class Analysis to analyze all the objects in the bucket or configure filters to group objects together for analysis by common prefix, by object tags, or by both rpefix and tags.',
+                  info: `With S3 Event Notifications, you can receive notifications when certain events happen in your bucket. Event notifications are designed to be delivered at least once. Typically, event notifications are delivered in seconds but can sometimes take a minute or longer. You can have 100 event notification configurations per bucket.`,
+                },
+              })
+            }
           >
-          Create Configuration
+            Create Configuration
           </Button>
         </Box>
       }
@@ -493,8 +494,8 @@ const Analysis = () => {
             <SpaceBetween size="s" direction="horizontal">
               <Button disabled>Edit</Button>
               <Button disabled>Delete</Button>
-              <Button 
-                 onClick={() =>
+              <Button
+                onClick={() =>
                   navigate('metrics/storage_class_analysis/create', {
                     state: {
                       name: 'Create Configuration',
@@ -506,12 +507,25 @@ const Analysis = () => {
                     },
                   })
                 }
-                >Create Analysis configuration</Button>
+              >
+                Create Analysis configuration
+              </Button>
             </SpaceBetween>
           }
         >
           Storage Class Analysis
         </Header>
+      }
+      pagination={
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: 'Next page',
+            previousPageLabel: 'Previous page',
+            pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+          }}
+        />
       }
     />
   );

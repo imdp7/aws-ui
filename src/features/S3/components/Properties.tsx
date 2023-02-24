@@ -12,10 +12,18 @@ import {
   Table,
   TextFilter,
   Alert,
+  CollectionPreferences,
+  Pagination,
 } from '@cloudscape-design/components';
 import CopyText from '../../EC2/commons/copy-text';
 import { useNavigate } from 'react-router-dom';
-
+import { useLocalStorage } from '../../common/localStorage';
+import {
+  COLUMN_DEFINITIONS,
+  VISIBLE_CONTENT_OPTIONS,
+  PAGE_SIZE_OPTIONS,
+  SEARCHABLE_COLUMNS,
+} from '../components/table-select-filter-config';
 const Overview = () => {
   return (
     <Container header={<Header variant="h2">Bucket Overview</Header>}>
@@ -294,7 +302,30 @@ const Encryption = () => {
 export const IntelligentTiering = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [preferences, setPreferences] = useLocalStorage(
+    'React-DBInstancesTable-Preferences',
+    {
+      pageSize: 10,
+      visibleContent: [
+        'name',
+        'status',
+        'scope',
+        'daysArchieveAccess',
+        'daysDeepArchieveAccess',
+      ],
+      wrapLines: false,
+      stripedRows: true,
+      custom: 'table',
+    }
+  );
 
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
   const columnDefinitions = [
     {
       id: 'name',
@@ -313,12 +344,12 @@ export const IntelligentTiering = () => {
     },
     {
       id: 'daysArchieveAccess',
-      header: 'Days untill transition to Archieve Access tier',
+      header: 'Days until transition to Archieve Access tier',
       cell: (e) => e.daysArchieveAccess,
     },
     {
       id: 'daysDeepArchieveAccess',
-      header: 'Days untill transition to Deep Archieve Access tier',
+      header: 'Days until transition to Deep Archieve Access tier',
       cell: (e) => e.daysDeepArchieveAccess,
     },
   ];
@@ -335,13 +366,10 @@ export const IntelligentTiering = () => {
         loadingText="Loading resources"
         selectionType="single"
         trackBy="name"
-        visibleColumns={[
-          'name',
-          'status',
-          'scope',
-          'daysArchieveAccess',
-          'daysDeepArchieveAccess',
-        ]}
+        visibleColumns={preferences.visibleContent}
+        loading={loading}
+        wrapLines={preferences.wrapLines}
+        stripedRows={preferences.stripedRows}
         empty={
           <Box textAlign="center" color="inherit">
             <b>No archive configurations</b>
@@ -371,6 +399,53 @@ export const IntelligentTiering = () => {
             filterPlaceholder="Find Intelligent-Tiering Archive Configurations"
             filteringText=""
             onChange={({ detail }) => setSelectedItems(detail.value)}
+          />
+        }
+        preferences={
+          <CollectionPreferences
+            title="Preferences"
+            confirmLabel="Confirm"
+            cancelLabel="Cancel"
+            preferences={preferences}
+            onConfirm={({ detail }) => setPreferences(detail)}
+            pageSizePreference={{
+              title: 'Page size',
+              options: PAGE_SIZE_OPTIONS,
+            }}
+            wrapLinesPreference={{
+              label: 'Wrap lines',
+              description: 'Check to see all the text and wrap the lines',
+            }}
+            stripedRowsPreference={{
+              label: 'Striped rows',
+              description: 'Check to add alternating shaded rows',
+            }}
+            visibleContentPreference={{
+              title: 'Select visible content',
+              options: [
+                {
+                  label: 'Main distribution properties',
+                  options: [
+                    {
+                      id: 'name',
+                      label: 'Name',
+                      editable: false,
+                    },
+                    { id: 'status', label: 'Status' },
+                    { id: 'scope', label: 'Scope' },
+                    {
+                      id: 'daysArchieveAccess',
+                      label: 'Days untill transition to Archieve Access tier',
+                    },
+                    {
+                      id: 'daysDeepArchieveAccess',
+                      label:
+                        'Days until transition to Deep Archieve Access tier',
+                    },
+                  ],
+                },
+              ],
+            }}
           />
         }
         header={
@@ -414,6 +489,17 @@ export const IntelligentTiering = () => {
           >
             Intelligent-Tiering Archive configurations
           </Header>
+        }
+        pagination={
+          <Pagination
+            currentPageIndex={1}
+            pagesCount={1}
+            ariaLabels={{
+              nextPageLabel: 'Next page',
+              previousPageLabel: 'Previous page',
+              pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+            }}
+          />
         }
       />
     </SpaceBetween>
