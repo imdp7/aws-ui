@@ -174,7 +174,7 @@ function InstancesPage({
             ariaLabel="Breadcrumbs"
           />
         }
-        notifications={<Flashbar items={notifications} />}
+        notifications={<Flashbar items={notifications} stackItems/>}
         navigation={
           <Navigation
             activeHref="instances"

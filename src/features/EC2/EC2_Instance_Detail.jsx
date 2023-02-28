@@ -10,10 +10,15 @@ import {
   ContentLayout,
   Header,
   Pagination,
+  StatusIndicator,
   SpaceBetween,
   Table,
+  FormField,
   Box,
+  Icon,
   Alert,
+  ColumnLayout,
+  ButtonDropdown,
   Flashbar,
   Link,
   Modal,
@@ -24,6 +29,7 @@ import {
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useAsyncData } from './commons/use-async-data';
 import DataProvider from './commons/data-provider';
+import CopyText from './commons/copy-text';
 import {
   INSTANCE_DROPDOWN_ITEMS,
   LOGS_COLUMN_DEFINITIONS,
@@ -33,7 +39,6 @@ import {
   BehaviorsTable,
   Breadcrumbs,
   EmptyTable,
-  GeneralConfig,
   OriginsTable,
   PageHeader,
   SettingsDetails,
@@ -81,6 +86,189 @@ const Details = ({ loadHelpPanelContent, id }) => (
     <SettingsDetails id={id} isInProgress={false} />
   </Container>
 );
+
+const GeneralConfig = ({id}) => {
+  const [state, setState] = useState("Running");
+  const [loading, setLoading] = useState(false);
+
+ const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
+
+  return (
+    <SpaceBetween size="m">
+     <Container 
+      header={
+                  <Header
+                    variant="h2"
+                    info={<Link>Info</Link>}
+                    description={
+                       loading ? 
+                        <>
+                      <Spinner/>
+                        <span style={{paddingLeft:"5px"}}>Refreshing instance data</span>
+                      </>
+                       : "Updated less than a minute ago"}
+                    actions={
+                      <SpaceBetween size="s" direction="horizontal">
+                        <Button iconName="refresh" loading={loading} onClick={handleRefresh} />
+                        <Button>
+                          Connect
+                        </Button>
+                        <ButtonDropdown
+                        items={[
+                            { text: "Stop instance", id: "stop", disabled: false },
+                            { text: "Start instance", id: "start", disabled: true },
+                            { text: "Reboot instance", id: "reboot", disabled: false },
+                            { text: "Hibernate instance", id: "hibernate", disabled: true },
+                            { text: "Terminate instance", id: "terminate", disabled: false },
+                          ]}
+                        >
+                          Instance state
+                        </ButtonDropdown>
+                         <ButtonDropdown
+                        items={[
+                            { text: "Connect", id: "connect", disabled: false },
+                            { text: "Manage instance state", id: "manage", disabled: false },
+                            { text: "Instance settings", id: "settings", disabled: true },
+                            {
+                              id: "networking",
+                              text: "Networking",
+                              items: [
+                                { id: "attach", text: "Attach nwtwork interface" },
+                                { id: "detach", text: "Detach nwtwork interface"},
+                                {
+                                  id: "connect",
+                                  text: "Connect RDS database",
+                                },
+                                {
+                                  id: "change",
+                                  text: "Change source/destination check",
+                                },
+                                { id: "disassciate", text: "Disassociate Elastic IP address", disabled: 'true' },
+                                { id: "manageIP", text: "Manage IP addresses" },
+                              ]
+                            },
+                            { text: "Security", id: "security", disabled: true },
+                            { text: "Image and templates", id: "security", disabled: true },
+                            { text: "Monitor and troubleshoot", id: "monitor", disabled: true },
+                          ]}
+                          expandableGroups
+                        >
+                          Actions
+                        </ButtonDropdown>
+                      </SpaceBetween>
+                    }
+                  >
+                    Instance summary for {id}
+                  </Header>
+                }
+                >
+                
+    <ColumnLayout columns={3} variant="text-grid">
+        <FormField label="Instance ID">
+        <CopyText
+          copyText={`arn:aws:cloudfront::a123`}
+          copyButtonLabel="Copy ID"
+          successText="Instance ID copied"
+          errorText="Instance ID failed to copy"
+        />
+        </FormField>
+      <FormField label="Public IPv4 address">
+        <CopyText
+          copyText={`100.25.222.196`}
+          copyButtonLabel="Copy Public Address"
+          successText="Public IPv4 copied"
+          errorText="Public IPv4 failed to copy"
+        />
+        </FormField>
+      <FormField label="Private IPv4 address">
+        <CopyText
+          copyText={`172.31.60.65`}
+          copyButtonLabel="Copy Private Address"
+          successText="Private IPv4 copied"
+          errorText="Private IPv4 failed to copy"
+        />
+        </FormField>
+        <FormField label="IPv6 address">
+        <Box>{loading ? <Spinner /> : '-' }</Box>
+        </FormField>
+        <FormField label="Instance state">
+           <StatusIndicator
+          type={state === 'Running' ? 'success' : 'stopped'}
+        >
+          {state}
+        </StatusIndicator>
+        </FormField>
+        <FormField label="Public IPv4 DNS">
+        <CopyText
+          copyText={`ec2-100-25-222-196.compute-1.amazonaws.com`}
+          copyButtonLabel="Copy Public DNS"
+          successText="Public DNS copied"
+          errorText="Public DNS failed to copy"
+        />
+        </FormField>
+        <FormField label="Hostname type">
+        <Box variant="span">IP name: ip-172-31-60-65.ec2.internal</Box>
+        </FormField>
+        <FormField label="Private IP DNS name (IPv4 only)">
+        <CopyText
+          copyText={`ip-172-31-60-65.ec2.internal`}
+          copyButtonLabel="Copy Private DNS name"
+          successText="Private DNS name copied"
+          errorText="Private DNS name failed to copy"
+        />
+        </FormField>
+        <FormField label="Answer private resource DNS name">
+        <Box variant="span">IPv4 (A)</Box>
+        </FormField>
+        <FormField label="Instance type">
+        <Box variant="span">t2.micro</Box>
+        </FormField>
+         <FormField label="Elastic IP addresses">
+          <Box>{loading ? <Spinner /> : '-' }</Box>
+        </FormField>
+         <FormField label="Auto-assigned IP address">
+        <CopyText
+          copyText={`100.25.222.196`}
+          copyButtonLabel="Copy Auto-assigned IP address"
+          successText="Auto-assigned IP address copied"
+          errorText="Auto-assigned IP address failed to copy"
+        />
+        </FormField>
+        <FormField label="VPC ID">
+        <CopyText
+          copyText={`vpc-070015eaa47ab026e`}
+          copyButtonLabel="Copy VPC ID"
+          successText="VPC ID copied"
+          errorText="VPC ID failed to copy"
+        />
+        </FormField>
+        <FormField label="AWS Compute Optimizer finding">
+        <Icon name="status-info"/><span style={{paddingLeft: "5px", color:"#0273BA"}}>Opt-in to AWS Compute Optimizer for recommendations.</span>
+        </FormField>
+        <FormField label="IAM Role">
+        <Box>{loading ? <Spinner /> : '-' }</Box>
+        </FormField>
+        <FormField label="Subnet ID">
+        <CopyText
+          copyText={`vpc-070015eaa47ab026e`}
+          copyButtonLabel="CopySubnet ID"
+          successText="Subnet ID copied"
+          errorText="Subnet ID failed to copy"
+        />
+        </FormField>
+        <FormField label="Auto Scaling Group name">
+        <Box>{loading ? <Spinner /> : '-' }</Box>
+        </FormField>
+    </ColumnLayout>
+  </Container>
+  </SpaceBetween>
+  );
+}
 
 function LogsTable() {
   const [logs, logsLoading] = useAsyncData(() =>
@@ -227,6 +415,7 @@ export function EC2_Instances_Detail(props) {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+
   const loadHelpPanelContent = (toolsContent) => {
     setToolsOpen(true);
     setToolsContent(toolsContent);
@@ -239,23 +428,23 @@ export function EC2_Instances_Detail(props) {
       content: <Details id={id} loadHelpPanelContent={loadHelpPanelContent} />,
     },
     {
-      label: 'Logs',
-      id: 'logs',
+      label: 'Security',
+      id: 'security',
       content: <LogsTable />,
     },
     {
-      label: 'Origins',
-      id: 'origins',
+      label: 'Networking',
+      id: 'networking',
       content: <OriginsTable />,
     },
     {
-      label: 'Behaviors',
-      id: 'behaviors',
+      label: 'Storage',
+      id: 'storage',
       content: <BehaviorsTable />,
     },
     {
-      label: 'Invalidations',
-      id: 'invalidations',
+      label: 'Status checks',
+      id: 'statusChecks',
       content: (
         <EmptyTable
           title="Invalidation"
@@ -264,9 +453,14 @@ export function EC2_Instances_Detail(props) {
       ),
     },
     {
-      label: 'Tags',
-      id: 'tags',
+      label: 'Monitoring',
+      id: 'monitoring',
       content: <TagsTable loadHelpPanelContent={loadHelpPanelContent} />,
+    },
+    {
+      label: 'Tags',
+      id: 'tsga',
+      content: <BehaviorsTable />,
     },
   ];
 
@@ -280,23 +474,10 @@ export function EC2_Instances_Detail(props) {
         content={
           <>
             {!loading ? (
-              <ContentLayout
-                header={
-                  <PageHeader
-                    id={id}
-                    buttons={[
-                      { text: 'Actions', items: INSTANCE_DROPDOWN_ITEMS },
-                      { text: 'Edit' },
-                      { text: 'Delete' },
-                    ]}
-                  />
-                }
-              >
-                <SpaceBetween size="l">
-                  <GeneralConfig />
+                <SpaceBetween size="s">
+                  <GeneralConfig id={id} />
                   <Tabs tabs={tabs} ariaLabel="Resource details" />
                 </SpaceBetween>
-              </ContentLayout>
             ) : (
               <Spinner size="large" className="spinner" />
             )}
@@ -315,7 +496,7 @@ export function EC2_Instances_Detail(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Flashbar items={notifications} />}
+        notifications={<Flashbar items={notifications} stackItems/>}
         contentType="wizard"
       />
       <AppFooter />
