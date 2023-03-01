@@ -88,12 +88,12 @@ export const S3 = (props): JSX.Element => {
                           <SpaceBetween size="m" direction="horizontal">
                             <Button
                               variant="primary"
-                              onClick={() => navigate(`/S3/${props.link}`)}
+                              onClick={() => navigate(`/s3/${props.link}`)}
                             >
                               Create Bucket
                             </Button>
                             <Button
-                              onClick={() => navigate(`/S3/${props.instances}`)}
+                              onClick={() => navigate(`/s3/${props.instances}`)}
                             >
                               View Bucket
                             </Button>

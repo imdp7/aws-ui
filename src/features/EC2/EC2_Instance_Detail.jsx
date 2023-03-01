@@ -14,9 +14,11 @@ import {
   SpaceBetween,
   Table,
   FormField,
+  CollectionPreferences,
   Box,
   Icon,
   Alert,
+  ExpandableSection,
   ColumnLayout,
   ButtonDropdown,
   Flashbar,
@@ -36,11 +38,12 @@ import {
   INVALIDATIONS_COLUMN_DEFINITIONS,
 } from './commons/details-config.jsx';
 import {
-  BehaviorsTable,
+  Storage,
   Breadcrumbs,
-  EmptyTable,
-  OriginsTable,
+  StatusCheck,
+  Networking,
   PageHeader,
+  Tags,
   SettingsDetails,
   TagsTable,
 } from './commons/detail-common.jsx';
@@ -66,23 +69,7 @@ import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 
 const Details = ({ loadHelpPanelContent, id }) => (
-  <Container
-    header={
-      <Header
-        variant="h2"
-        info={
-          <DashboardHeader
-            loadHelpPanelContent={loadHelpPanelContent}
-            title="Details"
-            des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
-                         resizeable computing capacity&mdash;literally, servers in Amazon's data
-                         centers&mdash;that you use to build and host your software systems."
-          />
-        }
-        actions={<Button>Edit</Button>}
-      />
-    }
-  >
+  <Container>
     <SettingsDetails id={id} isInProgress={false} />
   </Container>
 );
@@ -98,9 +85,9 @@ const GeneralConfig = ({id}) => {
     }, 1500);
   };
 
-  return (
-    <SpaceBetween size="m">
-     <Container 
+  const Summary = () => {
+    return (
+       <Container 
       header={
                   <Header
                     variant="h2"
@@ -171,7 +158,7 @@ const GeneralConfig = ({id}) => {
     <ColumnLayout columns={3} variant="text-grid">
         <FormField label="Instance ID">
         <CopyText
-          copyText={`arn:aws:cloudfront::a123`}
+          copyText={` i-0f878c0d33c858284 (test)`}
           copyButtonLabel="Copy ID"
           successText="Instance ID copied"
           errorText="Instance ID failed to copy"
@@ -266,73 +253,211 @@ const GeneralConfig = ({id}) => {
         </FormField>
     </ColumnLayout>
   </Container>
+    );
+  }
+
+  return (
+    <SpaceBetween size="m">
+      <Summary />
   </SpaceBetween>
   );
 }
 
-function LogsTable() {
-  const [logs, logsLoading] = useAsyncData(() =>
-    new DataProvider().getData('logs')
-  );
-  const [selectedItems, setSelectedItems] = useState([]);
-  const isOnlyOneSelected = selectedItems.length === 1;
-  const atLeastOneSelected = selectedItems.length > 0;
-  const {
-    items,
-    actions,
-    filteredItemsCount,
-    collectionProps,
-    filterProps,
-    paginationProps,
-  } = useCollection(logs, {
-    filtering: {
-      empty: <TableEmptyState resourceName="Log" />,
-      noMatch: (
-        <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
-      ),
-    },
-    pagination: { pageSize: 10 },
-  });
+function Security() {
+  const [
+    selectedItems,
+    setSelectedItems
+  ] = React.useState([]);
 
   return (
-    <Table
-      className="logs-table"
-      {...collectionProps}
-      loading={logsLoading}
-      loadingText="Loading logs"
-      columnDefinitions={LOGS_COLUMN_DEFINITIONS}
-      items={items}
-      ariaLabels={logsSelectionLabels}
-      selectionType="multi"
-      selectedItems={selectedItems}
-      resizableColumns
-      onSelectionChange={(evt) => setSelectedItems(evt.detail.selectedItems)}
-      header={
-        <TableHeader
-          title="Logs"
-          selectedItems={selectedItems}
-          totalItems={logs}
-          actionButtons={
-            <SpaceBetween direction="horizontal" size="xs">
-              <Button disabled={!isOnlyOneSelected}>View</Button>
-              <Button disabled={!atLeastOneSelected}>Watch</Button>
-              <Button disabled={!atLeastOneSelected}>Download</Button>
-            </SpaceBetween>
-          }
+    <SpaceBetween size="s">
+      <Container>
+      <ExpandableSection headerText="Security details" defaultExpanded>
+        <ColumnLayout columns={3} variant="text-grid">
+        <FormField label="IAM Role">
+          <Box>-</Box>
+        </FormField>
+        <FormField label="Owner ID">
+          <CopyText
+          copyText={`610741917922`}
+          copyButtonLabel="Copy Owner ID"
+          successText="Owner ID copied"
+          errorText="Owner ID failed to copy"
         />
+        </FormField>
+        <FormField label="Launch time">
+          <Box>Tue Feb 28 2023 04:44:10 GMT-0500 (Eastern Standard Time)</Box>
+        </FormField>
+        <FormField label="Security groups">
+          <CopyText
+          copyText={`sg-00eb617e30b7ccb09`}
+          copyButtonLabel="Copy Security group ID"
+          successText="Security group ID copied"
+          errorText="Security group ID failed to copy"
+        />
+        </FormField>
+        </ColumnLayout>
+      </ExpandableSection>
+
+      {/* Inbound Ruels */}
+      
+      <ExpandableSection headerText="Inbound rules" defaultExpanded>
+        <Table
+        columnDefinitions={[
+        {
+          id: "name",
+          header: "Name",
+          cell: e => e.name,
+        },
+        {
+          id: "ruleID",
+          header: "Security group rule ID",
+          cell: e => e.ruleID,
+        },
+        { id: "port", header: "Port Range", cell: e => e.port },
+        {
+          id: "protocol",
+          header: "Protocol",
+          cell: e => e.protocol
+        },
+        {
+          id: "source",
+          header: "Source",
+          cell: e => e.source
+        }
+      ]}
+      items={[
+        {
+          name: '-',
+          ruleID: 'sgr-03ea8e97bb1c9bc7c',
+          port: '22',
+          protocol: 'TCP',
+          source: '0.0.0.0/0'
+        }
+      ]}
+      loadingText="Loading resources"
+      trackBy= 'name'
+      visibleColumns={[
+        "name",
+        "ruleID",
+        "port",
+        "protocol",
+        "source"
+      ]}
+      empty={
+        <Box textAlign="center" color="inherit">
+          <b>No resources</b>
+          <Box
+            padding={{ bottom: "s" }}
+            variant="p"
+            color="inherit"
+          >
+            No resources to display.
+          </Box>
+          <Button>Create resource</Button>
+        </Box>
       }
-      filter={
+     filter={
         <TextFilter
-          {...filterProps}
-          filteringAriaLabel="Find logs"
-          filteringPlaceholder="Find logs"
-          countText={getFilterCounterText(filteredItemsCount)}
+          filteringAriaLabel="Filter rules"
+          filteringPlaceholder="Find rules"
         />
       }
       pagination={
-        <Pagination {...paginationProps} ariaLabels={paginationLabels} />
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: "Next page",
+            previousPageLabel: "Previous page",
+            pageLabel: pageNumber =>
+              `Page ${pageNumber} of all pages`
+          }}
+        />
       }
     />
+      </ExpandableSection>
+
+      {/* Inbound Ruels */}
+      
+      <ExpandableSection headerText="Outbound rules" defaultExpanded>
+        <Table
+        columnDefinitions={[
+        {
+          id: "name",
+          header: "Name",
+          cell: e => e.name,
+        },
+        {
+          id: "ruleID",
+          header: "Security group rule ID",
+          cell: e => e.ruleID,
+        },
+        { id: "port", header: "Port Range", cell: e => e.port },
+        {
+          id: "protocol",
+          header: "Protocol",
+          cell: e => e.protocol
+        },
+        {
+          id: "destination",
+          header: "Destination",
+          cell: e => e.destination
+        }
+      ]}
+      items={[
+        {
+          name: '-',
+          ruleID: 'sgr-07445af86bf6b7233',
+          port: 'All',
+          protocol: 'All',
+          destination: '0.0.0.0/0'
+        }
+      ]}
+      loadingText="Loading resources"
+      trackBy= 'name'
+      visibleColumns={[
+        "name",
+        "ruleID",
+        "port",
+        "protocol",
+        "destination"
+      ]}
+      empty={
+        <Box textAlign="center" color="inherit">
+          <b>No resources</b>
+          <Box
+            padding={{ bottom: "s" }}
+            variant="p"
+            color="inherit"
+          >
+            No resources to display.
+          </Box>
+          <Button>Create resource</Button>
+        </Box>
+      }
+     filter={
+        <TextFilter
+          filteringAriaLabel="Filter rules"
+          filteringPlaceholder="Find rules"
+        />
+      }
+      pagination={
+        <Pagination
+          currentPageIndex={1}
+          pagesCount={1}
+          ariaLabels={{
+            nextPageLabel: "Next page",
+            previousPageLabel: "Previous page",
+            pageLabel: pageNumber =>
+              `Page ${pageNumber} of all pages`
+          }}
+        />
+      }
+    />
+      </ExpandableSection>
+      </Container>
+    </SpaceBetween>
   );
 }
 
@@ -430,37 +555,32 @@ export function EC2_Instances_Detail(props) {
     {
       label: 'Security',
       id: 'security',
-      content: <LogsTable />,
+      content: <Security />,
     },
     {
       label: 'Networking',
       id: 'networking',
-      content: <OriginsTable />,
+      content: <Networking />,
     },
     {
       label: 'Storage',
       id: 'storage',
-      content: <BehaviorsTable />,
+      content: <Storage />,
     },
     {
       label: 'Status checks',
       id: 'statusChecks',
-      content: (
-        <EmptyTable
-          title="Invalidation"
-          columnDefinitions={INVALIDATIONS_COLUMN_DEFINITIONS}
-        />
-      ),
+      content: <StatusCheck />
     },
     {
       label: 'Monitoring',
       id: 'monitoring',
-      content: <TagsTable loadHelpPanelContent={loadHelpPanelContent} />,
+      content: <StatusCheck />,
     },
     {
       label: 'Tags',
       id: 'tsga',
-      content: <BehaviorsTable />,
+      content: <Tags />,
     },
   ];
 

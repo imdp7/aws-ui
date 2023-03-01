@@ -174,7 +174,7 @@ export default function EC2(props): JSX.Element {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Flashbar items={notifications} />}
+        notifications={<Flashbar items={notifications} stackItems />}
       />
       <AppFooter />
     </>

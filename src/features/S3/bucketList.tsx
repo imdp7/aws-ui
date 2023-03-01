@@ -697,7 +697,7 @@ export default function BucketList(props) {
         tools={toolsContent}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Flashbar items={notifications} />}
+        notifications={<Flashbar items={notifications} stackItems />}
       />
       <AppFooter />
     </>
