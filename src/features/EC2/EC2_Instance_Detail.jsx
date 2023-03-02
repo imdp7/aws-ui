@@ -74,11 +74,11 @@ const Details = ({ loadHelpPanelContent, id }) => (
   </Container>
 );
 
-const GeneralConfig = ({id}) => {
-  const [state, setState] = useState("Running");
+const GeneralConfig = ({ id }) => {
+  const [state, setState] = useState('Running');
   const [loading, setLoading] = useState(false);
 
- const handleRefresh = () => {
+  const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -87,375 +87,393 @@ const GeneralConfig = ({id}) => {
 
   const Summary = () => {
     return (
-       <Container 
-      header={
-                  <Header
-                    variant="h2"
-                    info={<Link>Info</Link>}
-                    description={
-                       loading ? 
-                        <>
-                      <Spinner/>
-                        <span style={{paddingLeft:"5px"}}>Refreshing instance data</span>
-                      </>
-                       : "Updated less than a minute ago"}
-                    actions={
-                      <SpaceBetween size="s" direction="horizontal">
-                        <Button iconName="refresh" loading={loading} onClick={handleRefresh} />
-                        <Button>
-                          Connect
-                        </Button>
-                        <ButtonDropdown
-                        items={[
-                            { text: "Stop instance", id: "stop", disabled: false },
-                            { text: "Start instance", id: "start", disabled: true },
-                            { text: "Reboot instance", id: "reboot", disabled: false },
-                            { text: "Hibernate instance", id: "hibernate", disabled: true },
-                            { text: "Terminate instance", id: "terminate", disabled: false },
-                          ]}
-                        >
-                          Instance state
-                        </ButtonDropdown>
-                         <ButtonDropdown
-                        items={[
-                            { text: "Connect", id: "connect", disabled: false },
-                            { text: "Manage instance state", id: "manage", disabled: false },
-                            { text: "Instance settings", id: "settings", disabled: true },
-                            {
-                              id: "networking",
-                              text: "Networking",
-                              items: [
-                                { id: "attach", text: "Attach nwtwork interface" },
-                                { id: "detach", text: "Detach nwtwork interface"},
-                                {
-                                  id: "connect",
-                                  text: "Connect RDS database",
-                                },
-                                {
-                                  id: "change",
-                                  text: "Change source/destination check",
-                                },
-                                { id: "disassciate", text: "Disassociate Elastic IP address", disabled: 'true' },
-                                { id: "manageIP", text: "Manage IP addresses" },
-                              ]
-                            },
-                            { text: "Security", id: "security", disabled: true },
-                            { text: "Image and templates", id: "security", disabled: true },
-                            { text: "Monitor and troubleshoot", id: "monitor", disabled: true },
-                          ]}
-                          expandableGroups
-                        >
-                          Actions
-                        </ButtonDropdown>
-                      </SpaceBetween>
-                    }
-                  >
-                    Instance summary for {id}
-                  </Header>
-                }
+      <Container
+        header={
+          <Header
+            variant="h2"
+            info={<Link>Info</Link>}
+            description={
+              loading ? (
+                <>
+                  <Spinner />
+                  <span style={{ paddingLeft: '5px' }}>
+                    Refreshing instance data
+                  </span>
+                </>
+              ) : (
+                'Updated less than a minute ago'
+              )
+            }
+            actions={
+              <SpaceBetween size="s" direction="horizontal">
+                <Button
+                  iconName="refresh"
+                  loading={loading}
+                  onClick={handleRefresh}
+                />
+                <Button>Connect</Button>
+                <ButtonDropdown
+                  items={[
+                    { text: 'Stop instance', id: 'stop', disabled: false },
+                    { text: 'Start instance', id: 'start', disabled: true },
+                    { text: 'Reboot instance', id: 'reboot', disabled: false },
+                    {
+                      text: 'Hibernate instance',
+                      id: 'hibernate',
+                      disabled: true,
+                    },
+                    {
+                      text: 'Terminate instance',
+                      id: 'terminate',
+                      disabled: false,
+                    },
+                  ]}
                 >
-                
-    <ColumnLayout columns={3} variant="text-grid">
-        <FormField label="Instance ID">
-        <CopyText
-          copyText={` i-0f878c0d33c858284 (test)`}
-          copyButtonLabel="Copy ID"
-          successText="Instance ID copied"
-          errorText="Instance ID failed to copy"
-        />
-        </FormField>
-      <FormField label="Public IPv4 address">
-        <CopyText
-          copyText={`100.25.222.196`}
-          copyButtonLabel="Copy Public Address"
-          successText="Public IPv4 copied"
-          errorText="Public IPv4 failed to copy"
-        />
-        </FormField>
-      <FormField label="Private IPv4 address">
-        <CopyText
-          copyText={`172.31.60.65`}
-          copyButtonLabel="Copy Private Address"
-          successText="Private IPv4 copied"
-          errorText="Private IPv4 failed to copy"
-        />
-        </FormField>
-        <FormField label="IPv6 address">
-        <Box>{loading ? <Spinner /> : '-' }</Box>
-        </FormField>
-        <FormField label="Instance state">
-           <StatusIndicator
-          type={state === 'Running' ? 'success' : 'stopped'}
-        >
-          {state}
-        </StatusIndicator>
-        </FormField>
-        <FormField label="Public IPv4 DNS">
-        <CopyText
-          copyText={`ec2-100-25-222-196.compute-1.amazonaws.com`}
-          copyButtonLabel="Copy Public DNS"
-          successText="Public DNS copied"
-          errorText="Public DNS failed to copy"
-        />
-        </FormField>
-        <FormField label="Hostname type">
-        <Box variant="span">IP name: ip-172-31-60-65.ec2.internal</Box>
-        </FormField>
-        <FormField label="Private IP DNS name (IPv4 only)">
-        <CopyText
-          copyText={`ip-172-31-60-65.ec2.internal`}
-          copyButtonLabel="Copy Private DNS name"
-          successText="Private DNS name copied"
-          errorText="Private DNS name failed to copy"
-        />
-        </FormField>
-        <FormField label="Answer private resource DNS name">
-        <Box variant="span">IPv4 (A)</Box>
-        </FormField>
-        <FormField label="Instance type">
-        <Box variant="span">t2.micro</Box>
-        </FormField>
-         <FormField label="Elastic IP addresses">
-          <Box>{loading ? <Spinner /> : '-' }</Box>
-        </FormField>
-         <FormField label="Auto-assigned IP address">
-        <CopyText
-          copyText={`100.25.222.196`}
-          copyButtonLabel="Copy Auto-assigned IP address"
-          successText="Auto-assigned IP address copied"
-          errorText="Auto-assigned IP address failed to copy"
-        />
-        </FormField>
-        <FormField label="VPC ID">
-        <CopyText
-          copyText={`vpc-070015eaa47ab026e`}
-          copyButtonLabel="Copy VPC ID"
-          successText="VPC ID copied"
-          errorText="VPC ID failed to copy"
-        />
-        </FormField>
-        <FormField label="AWS Compute Optimizer finding">
-        <Icon name="status-info"/><span style={{paddingLeft: "5px", color:"#0273BA"}}>Opt-in to AWS Compute Optimizer for recommendations.</span>
-        </FormField>
-        <FormField label="IAM Role">
-        <Box>{loading ? <Spinner /> : '-' }</Box>
-        </FormField>
-        <FormField label="Subnet ID">
-        <CopyText
-          copyText={`vpc-070015eaa47ab026e`}
-          copyButtonLabel="CopySubnet ID"
-          successText="Subnet ID copied"
-          errorText="Subnet ID failed to copy"
-        />
-        </FormField>
-        <FormField label="Auto Scaling Group name">
-        <Box>{loading ? <Spinner /> : '-' }</Box>
-        </FormField>
-    </ColumnLayout>
-  </Container>
+                  Instance state
+                </ButtonDropdown>
+                <ButtonDropdown
+                  items={[
+                    { text: 'Connect', id: 'connect', disabled: false },
+                    {
+                      text: 'Manage instance state',
+                      id: 'manage',
+                      disabled: false,
+                    },
+                    {
+                      text: 'Instance settings',
+                      id: 'settings',
+                      disabled: true,
+                    },
+                    {
+                      id: 'networking',
+                      text: 'Networking',
+                      items: [
+                        { id: 'attach', text: 'Attach nwtwork interface' },
+                        { id: 'detach', text: 'Detach nwtwork interface' },
+                        {
+                          id: 'connect',
+                          text: 'Connect RDS database',
+                        },
+                        {
+                          id: 'change',
+                          text: 'Change source/destination check',
+                        },
+                        {
+                          id: 'disassciate',
+                          text: 'Disassociate Elastic IP address',
+                          disabled: 'true',
+                        },
+                        { id: 'manageIP', text: 'Manage IP addresses' },
+                      ],
+                    },
+                    { text: 'Security', id: 'security', disabled: true },
+                    {
+                      text: 'Image and templates',
+                      id: 'security',
+                      disabled: true,
+                    },
+                    {
+                      text: 'Monitor and troubleshoot',
+                      id: 'monitor',
+                      disabled: true,
+                    },
+                  ]}
+                  expandableGroups
+                >
+                  Actions
+                </ButtonDropdown>
+              </SpaceBetween>
+            }
+          >
+            Instance summary for {id}
+          </Header>
+        }
+      >
+        <ColumnLayout columns={3} variant="text-grid">
+          <FormField label="Instance ID">
+            <CopyText
+              copyText={` i-0f878c0d33c858284 (test)`}
+              copyButtonLabel="Copy ID"
+              successText="Instance ID copied"
+              errorText="Instance ID failed to copy"
+            />
+          </FormField>
+          <FormField label="Public IPv4 address">
+            <CopyText
+              copyText={`100.25.222.196`}
+              copyButtonLabel="Copy Public Address"
+              successText="Public IPv4 copied"
+              errorText="Public IPv4 failed to copy"
+            />
+          </FormField>
+          <FormField label="Private IPv4 address">
+            <CopyText
+              copyText={`172.31.60.65`}
+              copyButtonLabel="Copy Private Address"
+              successText="Private IPv4 copied"
+              errorText="Private IPv4 failed to copy"
+            />
+          </FormField>
+          <FormField label="IPv6 address">
+            <Box>{loading ? <Spinner /> : '-'}</Box>
+          </FormField>
+          <FormField label="Instance state">
+            <StatusIndicator type={state === 'Running' ? 'success' : 'stopped'}>
+              {state}
+            </StatusIndicator>
+          </FormField>
+          <FormField label="Public IPv4 DNS">
+            <CopyText
+              copyText={`ec2-100-25-222-196.compute-1.amazonaws.com`}
+              copyButtonLabel="Copy Public DNS"
+              successText="Public DNS copied"
+              errorText="Public DNS failed to copy"
+            />
+          </FormField>
+          <FormField label="Hostname type">
+            <Box variant="span">IP name: ip-172-31-60-65.ec2.internal</Box>
+          </FormField>
+          <FormField label="Private IP DNS name (IPv4 only)">
+            <CopyText
+              copyText={`ip-172-31-60-65.ec2.internal`}
+              copyButtonLabel="Copy Private DNS name"
+              successText="Private DNS name copied"
+              errorText="Private DNS name failed to copy"
+            />
+          </FormField>
+          <FormField label="Answer private resource DNS name">
+            <Box variant="span">IPv4 (A)</Box>
+          </FormField>
+          <FormField label="Instance type">
+            <Box variant="span">t2.micro</Box>
+          </FormField>
+          <FormField label="Elastic IP addresses">
+            <Box>{loading ? <Spinner /> : '-'}</Box>
+          </FormField>
+          <FormField label="Auto-assigned IP address">
+            <CopyText
+              copyText={`100.25.222.196`}
+              copyButtonLabel="Copy Auto-assigned IP address"
+              successText="Auto-assigned IP address copied"
+              errorText="Auto-assigned IP address failed to copy"
+            />
+          </FormField>
+          <FormField label="VPC ID">
+            <CopyText
+              copyText={`vpc-070015eaa47ab026e`}
+              copyButtonLabel="Copy VPC ID"
+              successText="VPC ID copied"
+              errorText="VPC ID failed to copy"
+            />
+          </FormField>
+          <FormField label="AWS Compute Optimizer finding">
+            <Icon name="status-info" />
+            <span style={{ paddingLeft: '5px', color: '#0273BA' }}>
+              Opt-in to AWS Compute Optimizer for recommendations.
+            </span>
+          </FormField>
+          <FormField label="IAM Role">
+            <Box>{loading ? <Spinner /> : '-'}</Box>
+          </FormField>
+          <FormField label="Subnet ID">
+            <CopyText
+              copyText={`vpc-070015eaa47ab026e`}
+              copyButtonLabel="CopySubnet ID"
+              successText="Subnet ID copied"
+              errorText="Subnet ID failed to copy"
+            />
+          </FormField>
+          <FormField label="Auto Scaling Group name">
+            <Box>{loading ? <Spinner /> : '-'}</Box>
+          </FormField>
+        </ColumnLayout>
+      </Container>
     );
-  }
+  };
 
   return (
     <SpaceBetween size="m">
       <Summary />
-  </SpaceBetween>
+    </SpaceBetween>
   );
-}
+};
 
 function Security() {
-  const [
-    selectedItems,
-    setSelectedItems
-  ] = React.useState([]);
+  const [selectedItems, setSelectedItems] = React.useState([]);
 
   return (
     <SpaceBetween size="s">
       <Container>
-      <ExpandableSection headerText="Security details" defaultExpanded>
-        <ColumnLayout columns={3} variant="text-grid">
-        <FormField label="IAM Role">
-          <Box>-</Box>
-        </FormField>
-        <FormField label="Owner ID">
-          <CopyText
-          copyText={`610741917922`}
-          copyButtonLabel="Copy Owner ID"
-          successText="Owner ID copied"
-          errorText="Owner ID failed to copy"
-        />
-        </FormField>
-        <FormField label="Launch time">
-          <Box>Tue Feb 28 2023 04:44:10 GMT-0500 (Eastern Standard Time)</Box>
-        </FormField>
-        <FormField label="Security groups">
-          <CopyText
-          copyText={`sg-00eb617e30b7ccb09`}
-          copyButtonLabel="Copy Security group ID"
-          successText="Security group ID copied"
-          errorText="Security group ID failed to copy"
-        />
-        </FormField>
-        </ColumnLayout>
-      </ExpandableSection>
+        <ExpandableSection headerText="Security details" defaultExpanded>
+          <ColumnLayout columns={3} variant="text-grid">
+            <FormField label="IAM Role">
+              <Box>-</Box>
+            </FormField>
+            <FormField label="Owner ID">
+              <CopyText
+                copyText={`610741917922`}
+                copyButtonLabel="Copy Owner ID"
+                successText="Owner ID copied"
+                errorText="Owner ID failed to copy"
+              />
+            </FormField>
+            <FormField label="Launch time">
+              <Box>
+                Tue Feb 28 2023 04:44:10 GMT-0500 (Eastern Standard Time)
+              </Box>
+            </FormField>
+            <FormField label="Security groups">
+              <CopyText
+                copyText={`sg-00eb617e30b7ccb09`}
+                copyButtonLabel="Copy Security group ID"
+                successText="Security group ID copied"
+                errorText="Security group ID failed to copy"
+              />
+            </FormField>
+          </ColumnLayout>
+        </ExpandableSection>
 
-      {/* Inbound Ruels */}
-      
-      <ExpandableSection headerText="Inbound rules" defaultExpanded>
-        <Table
-        columnDefinitions={[
-        {
-          id: "name",
-          header: "Name",
-          cell: e => e.name,
-        },
-        {
-          id: "ruleID",
-          header: "Security group rule ID",
-          cell: e => e.ruleID,
-        },
-        { id: "port", header: "Port Range", cell: e => e.port },
-        {
-          id: "protocol",
-          header: "Protocol",
-          cell: e => e.protocol
-        },
-        {
-          id: "source",
-          header: "Source",
-          cell: e => e.source
-        }
-      ]}
-      items={[
-        {
-          name: '-',
-          ruleID: 'sgr-03ea8e97bb1c9bc7c',
-          port: '22',
-          protocol: 'TCP',
-          source: '0.0.0.0/0'
-        }
-      ]}
-      loadingText="Loading resources"
-      trackBy= 'name'
-      visibleColumns={[
-        "name",
-        "ruleID",
-        "port",
-        "protocol",
-        "source"
-      ]}
-      empty={
-        <Box textAlign="center" color="inherit">
-          <b>No resources</b>
-          <Box
-            padding={{ bottom: "s" }}
-            variant="p"
-            color="inherit"
-          >
-            No resources to display.
-          </Box>
-          <Button>Create resource</Button>
-        </Box>
-      }
-     filter={
-        <TextFilter
-          filteringAriaLabel="Filter rules"
-          filteringPlaceholder="Find rules"
-        />
-      }
-      pagination={
-        <Pagination
-          currentPageIndex={1}
-          pagesCount={1}
-          ariaLabels={{
-            nextPageLabel: "Next page",
-            previousPageLabel: "Previous page",
-            pageLabel: pageNumber =>
-              `Page ${pageNumber} of all pages`
-          }}
-        />
-      }
-    />
-      </ExpandableSection>
+        {/* Inbound Ruels */}
 
-      {/* Inbound Ruels */}
-      
-      <ExpandableSection headerText="Outbound rules" defaultExpanded>
-        <Table
-        columnDefinitions={[
-        {
-          id: "name",
-          header: "Name",
-          cell: e => e.name,
-        },
-        {
-          id: "ruleID",
-          header: "Security group rule ID",
-          cell: e => e.ruleID,
-        },
-        { id: "port", header: "Port Range", cell: e => e.port },
-        {
-          id: "protocol",
-          header: "Protocol",
-          cell: e => e.protocol
-        },
-        {
-          id: "destination",
-          header: "Destination",
-          cell: e => e.destination
-        }
-      ]}
-      items={[
-        {
-          name: '-',
-          ruleID: 'sgr-07445af86bf6b7233',
-          port: 'All',
-          protocol: 'All',
-          destination: '0.0.0.0/0'
-        }
-      ]}
-      loadingText="Loading resources"
-      trackBy= 'name'
-      visibleColumns={[
-        "name",
-        "ruleID",
-        "port",
-        "protocol",
-        "destination"
-      ]}
-      empty={
-        <Box textAlign="center" color="inherit">
-          <b>No resources</b>
-          <Box
-            padding={{ bottom: "s" }}
-            variant="p"
-            color="inherit"
-          >
-            No resources to display.
-          </Box>
-          <Button>Create resource</Button>
-        </Box>
-      }
-     filter={
-        <TextFilter
-          filteringAriaLabel="Filter rules"
-          filteringPlaceholder="Find rules"
-        />
-      }
-      pagination={
-        <Pagination
-          currentPageIndex={1}
-          pagesCount={1}
-          ariaLabels={{
-            nextPageLabel: "Next page",
-            previousPageLabel: "Previous page",
-            pageLabel: pageNumber =>
-              `Page ${pageNumber} of all pages`
-          }}
-        />
-      }
-    />
-      </ExpandableSection>
+        <ExpandableSection headerText="Inbound rules" defaultExpanded>
+          <Table
+            columnDefinitions={[
+              {
+                id: 'name',
+                header: 'Name',
+                cell: (e) => e.name,
+              },
+              {
+                id: 'ruleID',
+                header: 'Security group rule ID',
+                cell: (e) => e.ruleID,
+              },
+              { id: 'port', header: 'Port Range', cell: (e) => e.port },
+              {
+                id: 'protocol',
+                header: 'Protocol',
+                cell: (e) => e.protocol,
+              },
+              {
+                id: 'source',
+                header: 'Source',
+                cell: (e) => e.source,
+              },
+            ]}
+            items={[
+              {
+                name: '-',
+                ruleID: 'sgr-03ea8e97bb1c9bc7c',
+                port: '22',
+                protocol: 'TCP',
+                source: '0.0.0.0/0',
+              },
+            ]}
+            loadingText="Loading resources"
+            trackBy="name"
+            visibleColumns={['name', 'ruleID', 'port', 'protocol', 'source']}
+            empty={
+              <Box textAlign="center" color="inherit">
+                <b>No resources</b>
+                <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                  No resources to display.
+                </Box>
+                <Button>Create resource</Button>
+              </Box>
+            }
+            filter={
+              <TextFilter
+                filteringAriaLabel="Filter rules"
+                filteringPlaceholder="Find rules"
+              />
+            }
+            pagination={
+              <Pagination
+                currentPageIndex={1}
+                pagesCount={1}
+                ariaLabels={{
+                  nextPageLabel: 'Next page',
+                  previousPageLabel: 'Previous page',
+                  pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+                }}
+              />
+            }
+          />
+        </ExpandableSection>
+
+        {/* Inbound Ruels */}
+
+        <ExpandableSection headerText="Outbound rules" defaultExpanded>
+          <Table
+            columnDefinitions={[
+              {
+                id: 'name',
+                header: 'Name',
+                cell: (e) => e.name,
+              },
+              {
+                id: 'ruleID',
+                header: 'Security group rule ID',
+                cell: (e) => e.ruleID,
+              },
+              { id: 'port', header: 'Port Range', cell: (e) => e.port },
+              {
+                id: 'protocol',
+                header: 'Protocol',
+                cell: (e) => e.protocol,
+              },
+              {
+                id: 'destination',
+                header: 'Destination',
+                cell: (e) => e.destination,
+              },
+            ]}
+            items={[
+              {
+                name: '-',
+                ruleID: 'sgr-07445af86bf6b7233',
+                port: 'All',
+                protocol: 'All',
+                destination: '0.0.0.0/0',
+              },
+            ]}
+            loadingText="Loading resources"
+            trackBy="name"
+            visibleColumns={[
+              'name',
+              'ruleID',
+              'port',
+              'protocol',
+              'destination',
+            ]}
+            empty={
+              <Box textAlign="center" color="inherit">
+                <b>No resources</b>
+                <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                  No resources to display.
+                </Box>
+                <Button>Create resource</Button>
+              </Box>
+            }
+            filter={
+              <TextFilter
+                filteringAriaLabel="Filter rules"
+                filteringPlaceholder="Find rules"
+              />
+            }
+            pagination={
+              <Pagination
+                currentPageIndex={1}
+                pagesCount={1}
+                ariaLabels={{
+                  nextPageLabel: 'Next page',
+                  previousPageLabel: 'Previous page',
+                  pageLabel: (pageNumber) => `Page ${pageNumber} of all pages`,
+                }}
+              />
+            }
+          />
+        </ExpandableSection>
       </Container>
     </SpaceBetween>
   );
@@ -514,6 +532,46 @@ function DeleteModal({ distributions, visible, onDiscard, onDelete }) {
     </Modal>
   );
 }
+export const TabsSection = ({ id, loadHelpPanelContent }) => {
+  const tabs = [
+    {
+      label: 'Details',
+      id: 'details',
+      content: <Details id={id} loadHelpPanelContent={loadHelpPanelContent} />,
+    },
+    {
+      label: 'Security',
+      id: 'security',
+      content: <Security />,
+    },
+    {
+      label: 'Networking',
+      id: 'networking',
+      content: <Networking />,
+    },
+    {
+      label: 'Storage',
+      id: 'storage',
+      content: <Storage />,
+    },
+    {
+      label: 'Status checks',
+      id: 'statusChecks',
+      content: <StatusCheck />,
+    },
+    {
+      label: 'Monitoring',
+      id: 'monitoring',
+      content: <StatusCheck />,
+    },
+    {
+      label: 'Tags',
+      id: 'tsga',
+      content: <Tags />,
+    },
+  ];
+  return <Tabs tabs={tabs} ariaLabel="Resource details" />;
+};
 
 export function EC2_Instances_Detail(props) {
   const { id } = useParams();
@@ -546,58 +604,22 @@ export function EC2_Instances_Detail(props) {
     setToolsContent(toolsContent);
   };
 
-  const tabs = [
-    {
-      label: 'Details',
-      id: 'details',
-      content: <Details id={id} loadHelpPanelContent={loadHelpPanelContent} />,
-    },
-    {
-      label: 'Security',
-      id: 'security',
-      content: <Security />,
-    },
-    {
-      label: 'Networking',
-      id: 'networking',
-      content: <Networking />,
-    },
-    {
-      label: 'Storage',
-      id: 'storage',
-      content: <Storage />,
-    },
-    {
-      label: 'Status checks',
-      id: 'statusChecks',
-      content: <StatusCheck />
-    },
-    {
-      label: 'Monitoring',
-      id: 'monitoring',
-      content: <StatusCheck />,
-    },
-    {
-      label: 'Tags',
-      id: 'tsga',
-      content: <Tags />,
-    },
-  ];
-
   return (
     <>
       <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
         <AppHeader {...props} />
       </div>
-
       <AppLayout
         content={
           <>
             {!loading ? (
-                <SpaceBetween size="s">
-                  <GeneralConfig id={id} />
-                  <Tabs tabs={tabs} ariaLabel="Resource details" />
-                </SpaceBetween>
+              <SpaceBetween size="s">
+                <GeneralConfig id={id} />
+                <TabsSection
+                  id={id}
+                  loadHelpPanelContent={loadHelpPanelContent}
+                />
+              </SpaceBetween>
             ) : (
               <Spinner size="large" className="spinner" />
             )}
@@ -616,7 +638,7 @@ export function EC2_Instances_Detail(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        notifications={<Flashbar items={notifications} stackItems/>}
+        notifications={<Flashbar items={notifications} stackItems />}
         contentType="wizard"
       />
       <AppFooter />

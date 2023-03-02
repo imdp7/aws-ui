@@ -61,7 +61,7 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   const onSubmit = () => {
     setVisible(false);
   };
-  
+
   return (
     <SpaceBetween size="s">
       <Box
@@ -154,10 +154,10 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   };
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
 
-const RecenltyVisited = () => {
-  return (
+  const RecenltyVisited = () => {
+    return (
       <>
-      <Container
+        <Container
           header={
             <Header
               variant="h2"
@@ -197,12 +197,12 @@ const RecenltyVisited = () => {
                   display: 'flex',
                   justifyItems: 'center',
                   textAlign: 'center',
-                  fontSize: '10px'
+                  fontSize: '10px',
                 }}
               >
                 <img src={`${d[1]}`} alt="logo" height="35" width="35" />
                 <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                <Link
+                  <Link
                     variant="secondary"
                     href={`${d[2]}`}
                     onFollow={defaultOnFollowHandler}
@@ -214,470 +214,470 @@ const RecenltyVisited = () => {
             ))}
           </ColumnLayout>
         </Container>
-        </>
+      </>
     );
-}
+  };
 
-const Health = () => {
-  return (
-    <>
-    <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="AWS Health"
-                          des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                AWS Health
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">Go to AWS Health</Link>
-              </Box>
-            }
-          >
+  const Health = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="AWS Health"
+                        des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              AWS Health
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">Go to AWS Health</Link>
+            </Box>
+          }
+        >
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Open Issues
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Scheduled changes
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Other notifications
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+        </Container>
+      </>
+    );
+  };
+
+  const CostUsage = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Cost and usage"
+                        des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Cost and Usage
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">Go to AWS Cost Management</Link>
+            </Box>
+          }
+        >
+          <SpaceBetween size="s">
             <Box variant="awsui-key-label" color="text-status-inactive">
               Open Issues
             </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Scheduled changes
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Other notifications
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-          </Container>
-          </>
+            <ColumnLayout columns={4}>
+              {arrayData.map((d) => (
+                <div
+                  key={d[0]}
+                  style={{
+                    display: 'flex',
+                    justifyItems: 'center',
+                    textAlign: 'center',
+                  }}
+                >
+                  <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                  <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                    <Link
+                      variant="secondary"
+                      href={`${d[2]}`}
+                      onFollow={defaultOnFollowHandler}
+                    >
+                      {d[0]}
+                    </Link>{' '}
+                  </Box>
+                </div>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+        </Container>
+      </>
     );
-}
+  };
 
-const CostUsage = () => {
-  return (
-    <>
-    <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Cost and usage"
-                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Cost and Usage
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">Go to AWS Cost Management</Link>
-              </Box>
-            }
-          >
-            <SpaceBetween size="s">
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                Open Issues
-              </Box>
-              <ColumnLayout columns={4}>
-                {arrayData.map((d) => (
-                  <div
-                    key={d[0]}
-                    style={{
-                      display: 'flex',
-                      justifyItems: 'center',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                    <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                      <Link
-                        variant="secondary"
-                        href={`${d[2]}`}
-                        onFollow={defaultOnFollowHandler}
-                      >
-                        {d[0]}
-                      </Link>{' '}
-                    </Box>
-                  </div>
-                ))}
-              </ColumnLayout>
-            </SpaceBetween>
-          </Container>
-    </>
-    );
-}
-
-const BuildSolution = () => {
-  return (
-    <>
-     <Container
-            header={
-              <Header
-                variant="h2"
-                description="Start building with simple wizards and automated workflows."
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Build a solution"
-                          des="Access workflows and wizards that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Build a solution
-              </Header>
-            }
-          >
-            <SpaceBetween size="s">
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                Open Issues
-              </Box>
-              <ColumnLayout columns={4}>
-                {arrayData.map((d) => (
-                  <div
-                    key={d[0]}
-                    style={{
-                      display: 'flex',
-                      justifyItems: 'center',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                    <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                      <Link
-                        variant="secondary"
-                        href={`${d[2]}`}
-                        onFollow={defaultOnFollowHandler}
-                      >
-                        {d[0]}
-                      </Link>{' '}
-                    </Box>
-                  </div>
-                ))}
-              </ColumnLayout>
-            </SpaceBetween>
-          </Container>
-          </>
-    );
-}
-
-const TrustedAdviser = () => {
-  return (
-    <>
-    <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Trusted Advisor"
-                          des="Accounts with AWS Business Support or AWS Enterprise Support can see an overview of automated checks on the Trusted Advisor widget. Core security checks and checks for service quotas are available to all accounts on the Trusted Advisor console, inclusive of AWS Developer Support and AWS Basic Support plans."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Trusted Advisor
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">Go to Trusted Advisor</Link>
-              </Box>
-            }
-          >
-            <Box variant="awsui-key-label" color="text-status-error">
-              Action recommended
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-error" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                <Link href="#" variant="primary">
-                  Details
-                </Link>
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-info">
-              Investigation recommended
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                <Link href="#" variant="primary">
-                  Details
-                </Link>
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-success">
-              Other notifications
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-success" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                <Link href="#" variant="primary">
-                  Details
-                </Link>
-              </Box>
-            </Grid>
-          </Container>
-    </>
-    );
-}
-
-const ExlporeAWS = () => {
-  return (
-    <>
-       <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Explore AWS"
-                          des="Explore AWS products, services, resources, events, and more."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Explore AWS
-              </Header>
-            }
-          >
-            <SpaceBetween size="m">
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                <Link external fontSize="heading-s">
-                  {' '}
-                  AWS Certifications
-                </Link>
-                <Box>Propel your career forward with AWS Certification.</Box>
-              </Box>
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                <Link external fontSize="heading-s">
-                  {' '}
-                  Free AWS Training
-                </Link>
-                <Box>
-                  Advance your career with AWS Cloud Practitioner Essentials—a
-                  free, six-hour, foundational course.
-                </Box>
-              </Box>
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                <Link external fontSize="heading-s">
-                  AWS Training
-                </Link>
-                <Box>Free digital courses to help you develop your skills.</Box>
-              </Box>
-              <Box variant="awsui-key-label" color="text-status-inactive">
-                <Link external fontSize="heading-s">
-                  Free AWS Digital Training
-                </Link>
-                <Box>
-                  Learn the AWS Cloud today to create opportunities tomorrow:
-                  find out how.
-                </Box>
-              </Box>
-            </SpaceBetween>
-          </Container>
-    </>
-    );
-}
-
-const LatestAnnouncement = () => {
-  return (
-    <>
-    <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Latest announcements"
-                          des="View the latest announcement for the AWS services you're using. Learn about new capabilities that you can use to experiment and innovate. These announcements are personalized to your account."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Latest Announcements
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">View all Announcements</Link>
-              </Box>
-            }
-          >
-            <Box color="text-status-info" variant="h2">
-              <Link>
-                {strReduce(
-                  'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
-                )}
-              </Link>
-              <Link>
-                {strReduce(
-                  'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
-                )}
-              </Link>
-            </Box>
-          </Container>
-          </>
-    );
-}
-
-const AWSBlogs = () => {
-  return (
-    <>
-      <Container
-            header={
-              <Header
-                variant="h2"
-                info={
-                  <InfoLink
-                    onFollow={() =>
-                      loadHelpPanelContent(
-                        <HelpPanels
-                          title="Cost and usage"
-                          des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
-                        />
-                      )
-                    }
-                  />
-                }
-              >
-                Recent AWS Blogs
-              </Header>
-            }
-            footer={
-              <Box
-                variant="h5"
-                tagOverride="h5"
-                //padding={{ bottom: 's', top: 'l' }}
-                textAlign="center"
-              >
-                <Link href="/console/services">Go to AWS Cost Management</Link>
-              </Box>
-            }
-          >
+  const BuildSolution = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              description="Start building with simple wizards and automated workflows."
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Build a solution"
+                        des="Access workflows and wizards that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Build a solution
+            </Header>
+          }
+        >
+          <SpaceBetween size="s">
             <Box variant="awsui-key-label" color="text-status-inactive">
               Open Issues
             </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Scheduled changes
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Other notifications
-            </Box>
-            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
-              <Box color="text-status-info" variant="h1" textAlign="center">
-                0
-              </Box>
-              <Box float="right" textAlign="center">
-                7 days ago
-              </Box>
-            </Grid>
-          </Container>
-    </>
+            <ColumnLayout columns={4}>
+              {arrayData.map((d) => (
+                <div
+                  key={d[0]}
+                  style={{
+                    display: 'flex',
+                    justifyItems: 'center',
+                    textAlign: 'center',
+                  }}
+                >
+                  <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                  <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                    <Link
+                      variant="secondary"
+                      href={`${d[2]}`}
+                      onFollow={defaultOnFollowHandler}
+                    >
+                      {d[0]}
+                    </Link>{' '}
+                  </Box>
+                </div>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+        </Container>
+      </>
     );
-}
+  };
+
+  const TrustedAdviser = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Trusted Advisor"
+                        des="Accounts with AWS Business Support or AWS Enterprise Support can see an overview of automated checks on the Trusted Advisor widget. Core security checks and checks for service quotas are available to all accounts on the Trusted Advisor console, inclusive of AWS Developer Support and AWS Basic Support plans."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Trusted Advisor
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">Go to Trusted Advisor</Link>
+            </Box>
+          }
+        >
+          <Box variant="awsui-key-label" color="text-status-error">
+            Action recommended
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-error" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              <Link href="#" variant="primary">
+                Details
+              </Link>
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-info">
+            Investigation recommended
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              <Link href="#" variant="primary">
+                Details
+              </Link>
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-success">
+            Other notifications
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-success" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              <Link href="#" variant="primary">
+                Details
+              </Link>
+            </Box>
+          </Grid>
+        </Container>
+      </>
+    );
+  };
+
+  const ExlporeAWS = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Explore AWS"
+                        des="Explore AWS products, services, resources, events, and more."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Explore AWS
+            </Header>
+          }
+        >
+          <SpaceBetween size="m">
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              <Link external fontSize="heading-s">
+                {' '}
+                AWS Certifications
+              </Link>
+              <Box>Propel your career forward with AWS Certification.</Box>
+            </Box>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              <Link external fontSize="heading-s">
+                {' '}
+                Free AWS Training
+              </Link>
+              <Box>
+                Advance your career with AWS Cloud Practitioner Essentials—a
+                free, six-hour, foundational course.
+              </Box>
+            </Box>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              <Link external fontSize="heading-s">
+                AWS Training
+              </Link>
+              <Box>Free digital courses to help you develop your skills.</Box>
+            </Box>
+            <Box variant="awsui-key-label" color="text-status-inactive">
+              <Link external fontSize="heading-s">
+                Free AWS Digital Training
+              </Link>
+              <Box>
+                Learn the AWS Cloud today to create opportunities tomorrow: find
+                out how.
+              </Box>
+            </Box>
+          </SpaceBetween>
+        </Container>
+      </>
+    );
+  };
+
+  const LatestAnnouncement = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Latest announcements"
+                        des="View the latest announcement for the AWS services you're using. Learn about new capabilities that you can use to experiment and innovate. These announcements are personalized to your account."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Latest Announcements
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">View all Announcements</Link>
+            </Box>
+          }
+        >
+          <Box color="text-status-info" variant="h2">
+            <Link>
+              {strReduce(
+                'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
+              )}
+            </Link>
+            <Link>
+              {strReduce(
+                'Amazon AppFlow now supports Microsoft SharePoint Online as a source'
+              )}
+            </Link>
+          </Box>
+        </Container>
+      </>
+    );
+  };
+
+  const AWSBlogs = () => {
+    return (
+      <>
+        <Container
+          header={
+            <Header
+              variant="h2"
+              info={
+                <InfoLink
+                  onFollow={() =>
+                    loadHelpPanelContent(
+                      <HelpPanels
+                        title="Cost and usage"
+                        des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
+                      />
+                    )
+                  }
+                />
+              }
+            >
+              Recent AWS Blogs
+            </Header>
+          }
+          footer={
+            <Box
+              variant="h5"
+              tagOverride="h5"
+              //padding={{ bottom: 's', top: 'l' }}
+              textAlign="center"
+            >
+              <Link href="/console/services">Go to AWS Cost Management</Link>
+            </Box>
+          }
+        >
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Open Issues
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Scheduled changes
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Other notifications
+          </Box>
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 8 }]}>
+            <Box color="text-status-info" variant="h1" textAlign="center">
+              0
+            </Box>
+            <Box float="right" textAlign="center">
+              7 days ago
+            </Box>
+          </Grid>
+        </Container>
+      </>
+    );
+  };
   return (
     <>
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
@@ -695,20 +695,20 @@ const AWSBlogs = () => {
           gridDefinition={[
             { colspan: { default: 12, m: 8 } },
             { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, xs: 4 }},
+            { colspan: { default: 12, xs: 4 } },
             { colspan: { default: 12, m: 8 } },
             { colspan: { default: 12, m: 8 } },
             { colspan: { default: 12, xs: 4 } },
-             { colspan: { default: 12, xs: 4 } },
+            { colspan: { default: 12, xs: 4 } },
             { colspan: { default: 12, xs: 4 } },
             { colspan: { default: 12, xs: 4 } },
           ]}
         >
-        <RecenltyVisited />
-        <AWSBlogs />
+          <RecenltyVisited />
+          <AWSBlogs />
           <Health />
           <CostUsage />
-         <BuildSolution />
+          <BuildSolution />
           <TrustedAdviser />
           <ExlporeAWS />
           {/*<LatestAnnouncement />*/}

@@ -29,15 +29,19 @@ interface State {
 }
 export const ThemeContext = createContext();
 
-const ec2_region =  [{
-      id: 'US East (N. Virginia)',
-      text: 'US East (N. Virginia)',
-    }]
+const ec2_region = [
+  {
+    id: 'US East (N. Virginia)',
+    text: 'US East (N. Virginia)',
+  },
+];
 
-const s3_region =  [{
-      id: 'Global',
-      text: 'Global',
-    }]
+const s3_region = [
+  {
+    id: 'Global',
+    text: 'Global',
+  },
+];
 
 export const AppHeader = (props: State): JSX.Element => {
   const [mode, setMode] = useState(false);
@@ -49,11 +53,15 @@ export const AppHeader = (props: State): JSX.Element => {
   const [selection, setSelection] = React.useState(ec2_region || s3_region);
 
   const value = useMemo(() => ({
-    mode, setMode,
-    density, setDensity,
-    motion, setMotion,
-    selection, setSelection
-  }))
+    mode,
+    setMode,
+    density,
+    setDensity,
+    motion,
+    setMotion,
+    selection,
+    setSelection,
+  }));
 
   const navigate = useNavigate();
 
@@ -158,8 +166,8 @@ export const AppHeader = (props: State): JSX.Element => {
                 {
                   id: 'other_notifications',
                   text: 'Other Notifications',
-                }
-                ],
+                },
+              ],
             },
             {
               type: 'menu-dropdown',
@@ -193,7 +201,7 @@ export const AppHeader = (props: State): JSX.Element => {
               items: [
                 {
                   id: 'north',
-                  text:'North America',
+                  text: 'North America',
                   items: [
                     {
                       id: 'US East (N. Virginia)',
@@ -215,7 +223,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'asia',
-                  text:'Asia',
+                  text: 'Asia',
                   title: 'Asia Pacific',
                   ariaLabel: 'Asia Pacific',
                   items: [
@@ -247,7 +255,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'central',
-                  text:'Central',
+                  text: 'Central',
                   title: 'Canada',
                   ariaLabel: 'Canada',
                   items: [
@@ -259,7 +267,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'europe',
-                  text:'Europe',
+                  text: 'Europe',
                   title: 'Europe',
                   items: [
                     {
@@ -286,7 +294,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 },
                 {
                   id: 'south',
-                  text:'South America',
+                  text: 'South America',
                   title: 'South America',
                   ariaLabel: 'South America',
                   items: [

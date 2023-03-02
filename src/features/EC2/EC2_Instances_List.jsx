@@ -20,6 +20,7 @@ import {
   Modal,
   SpaceBetween,
   Spinner,
+  SplitPanel,
 } from '@cloudscape-design/components';
 import {
   ec2navItems,
@@ -34,6 +35,9 @@ import useNotifications from './commons/use-notifications';
 import InstancesTable from './components/instance-table';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
+import { getPanelContent, useSplitPanel } from './utils';
+import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
+import { useCollection } from '@cloudscape-design/collection-hooks';
 
 function EC2_Instances_List(props) {
   const [instances, setInstances] = useState(INSTANCES);
@@ -49,7 +53,6 @@ function EC2_Instances_List(props) {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
-
 
   const locationHash = useLocationHash();
   const locationInstance = instances.find((it) => it.id === locationHash);
@@ -133,6 +136,17 @@ function InstancesPage({
 }) {
   const [loading, setLoading] = useState(true);
 
+  const { header: panelHeader, body: panelBody } = getPanelContent(
+    selectedItems,
+    'comparision'
+  );
+  const {
+    splitPanelOpen,
+    onSplitPanelToggle,
+    splitPanelSize,
+    onSplitPanelResize,
+  } = useSplitPanel(selectedItems);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -164,6 +178,18 @@ function InstancesPage({
         }
         headerSelector="#h"
         footerSelector="#f"
+        splitPanel={
+          <SplitPanel
+            header={panelHeader}
+            i18nStrings={SPLIT_PANEL_I18NSTRINGS}
+          >
+            {panelBody}
+          </SplitPanel>
+        }
+        splitPanelOpen={splitPanelOpen}
+        splitPanelSize={splitPanelSize}
+        onSplitPanelToggle={onSplitPanelToggle}
+        onSplitPanelResize={onSplitPanelResize}
         breadcrumbs={
           <BreadcrumbGroup
             items={[
@@ -174,7 +200,7 @@ function InstancesPage({
             ariaLabel="Breadcrumbs"
           />
         }
-        notifications={<Flashbar items={notifications} stackItems/>}
+        notifications={<Flashbar items={notifications} stackItems />}
         navigation={
           <Navigation
             activeHref="instances"

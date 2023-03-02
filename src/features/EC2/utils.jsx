@@ -13,6 +13,7 @@ import {
   SELECTION_LABELS,
 } from './table-config';
 import { CounterLink } from '../EC2/commons/common-components';
+import { TabsSection } from './EC2_Instance_Detail';
 
 const EMPTY_PANEL_CONTENT = {
   header: '0 instances selected',
@@ -38,18 +39,7 @@ export const getPanelContentSingle = (items) => {
 
   return {
     header: item.id,
-    body: (
-      <Table
-        header={
-          <Header variant="h2" counter={`(${item.inboundRules.length})`}>
-            Inbound rules
-          </Header>
-        }
-        columnDefinitions={COLUMN_DEFINITIONS_PANEL_CONTENT_SINGLE}
-        items={item.inboundRules}
-        variant="embedded"
-      ></Table>
-    ),
+    body: <TabsSection />,
   };
 };
 
@@ -95,12 +85,32 @@ export const getPanelContentMultiple = (items) => {
           <CounterLink>{volumes}</CounterLink>
         </div>
         <div>
+          <Box variant="awsui-key-label">Instance Type</Box>
+          <CounterLink>{type}</CounterLink>
+        </div>
+        <div>
+          <Box variant="awsui-key-label">Load Balancers</Box>
+          <CounterLink>{loadBalancers}</CounterLink>
+        </div>
+        <div>
           <Box variant="awsui-key-label">Security groups</Box>
           <CounterLink>{securityGroups}</CounterLink>
         </div>
         <div>
           <Box variant="awsui-key-label">Load balancers</Box>
           <CounterLink>{loadBalancers}</CounterLink>
+        </div>
+        <div>
+          <Box variant="awsui-key-label">Instance State</Box>
+          <CounterLink>{state}</CounterLink>
+        </div>
+        <div>
+          <Box variant="awsui-key-label">Inbound Rules</Box>
+          <CounterLink>{inboundRules}</CounterLink>
+        </div>
+        <div>
+          <Box variant="awsui-key-label">Monitoring</Box>
+          <CounterLink>{monitoring}</CounterLink>
         </div>
       </ColumnLayout>
     ),
@@ -110,7 +120,7 @@ export const getPanelContentMultiple = (items) => {
 export const getPanelContentComparison = (items) => {
   if (!items.length) {
     return {
-      header: '0 instances selected',
+      header: 'Select an instance',
       body: 'Select an instance to see its details. Select multiple instances to compare.',
     };
   }
@@ -123,8 +133,12 @@ export const getPanelContentComparison = (items) => {
     numOfvCpu: 'Number of vCPUs',
     launchTime: 'Launch time',
     availabilityZone: 'Availability zone',
-    monitoring: 'Monitoring',
+    type: 'Instance Type',
+    loadBalancers: 'Load Balancers',
     securityGroups: 'Security groups',
+    state: 'Instance State',
+    inboundRules: 'Inbound Rules',
+    monitoring: 'Monitoring',
   };
   const transformedData = [
     'platformDetails',
@@ -133,6 +147,11 @@ export const getPanelContentComparison = (items) => {
     'availabilityZone',
     'monitoring',
     'securityGroups',
+    'state',
+    'inboundRules',
+    'monitoring',
+    'type',
+    'loadBalancers',
   ].map((key) => {
     const data = { comparisonType: keyHeaderMap[key] };
 
