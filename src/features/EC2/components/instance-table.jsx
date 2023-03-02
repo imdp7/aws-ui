@@ -207,7 +207,7 @@ export default function InstancesTable({
                 disabled={selectedItems.length == 0}
                 onClick={(e) => {
                   e.preventDefault();
-                  window.location.href = `${selectedItems[0]?.id}`;
+                  navigate(`${selectedItems[0]?.id}`);
                 }}
               >
                 Instance state
