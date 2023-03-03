@@ -68,7 +68,7 @@
   margin-right: 0;
   margin-bottom: -1rem;
   margin-right: 1rem;
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .input-filter {
@@ -117,7 +117,7 @@
 }
 
 .dash {
-  content: "-";
+  content: '-';
   hyphens: manual;
   display: flex;
   font-size: 2rem;
@@ -125,6 +125,6 @@
   color: black;
 }
 
-.text-area{
+.text-area {
   float: right;
 }

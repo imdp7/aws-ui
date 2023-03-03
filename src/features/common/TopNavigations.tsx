@@ -194,9 +194,9 @@ export const AppHeader = (props: State): JSX.Element => {
               disableUtilityCollapse: false,
               text: `${selection[0].text || selection}`,
               title: 'Zones',
-              onItemClick: (evt) => {
-                evt.preventDefault();
-                setSelection(evt.detail.id);
+              onItemClick: (e) => {
+                e.preventDefault();
+                setSelection(({ detail }) => e.detail.id);
               },
               items: [
                 {

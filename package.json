@@ -15,10 +15,10 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^4.2.1",
     "@awsui/collection-hooks": "^1.0.31",
-    "@awsui/components-react": "^3.0.545",
+    "@awsui/components-react": "^3.0.763",
     "@awsui/design-tokens": "^3.0.27",
     "@awsui/global-styles": "^1.0.19",
-    "@cloudscape-design/components": "^3.0.126",
+    "@cloudscape-design/components": "^3.0.218",
     "@cloudscape-design/design-tokens": "^3.0.6",
     "@cloudscape-design/global-styles": "^1.0.2",
     "@reduxjs/toolkit": "^1.8.3",
