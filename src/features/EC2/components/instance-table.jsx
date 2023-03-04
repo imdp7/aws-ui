@@ -219,6 +219,11 @@ export default function InstancesTable({
   const [data, setData] = useState({});
   const handleClick = (e) => {
     {
+      e.detail.id === 'view_details'
+        ? navigate(`${selectedItems[0]?.id}`)
+        : null;
+    }
+    {
       e.detail.id === 'stop'
         ? (setVisible(true),
           setData({
@@ -273,6 +278,25 @@ export default function InstancesTable({
           }))
         : null;
     }
+    {
+      e.detail.id === 'manage' &&
+        navigate(`${selectedItems[0]?.id}/ManageInstanceState`, {
+          state: {
+            name: 'Manage instance state',
+            head: 'Instance details',
+            event: selectedItems[0]?.state,
+          },
+        });
+    }
+    {
+      e.detail.id === 'connect' &&
+        navigate(`${selectedItems[0]?.id}/connect`, {
+          state: {
+            name: 'Connect to instance',
+            event: selectedItems[0]?.state,
+          },
+        });
+    }
   };
   return (
     <>
@@ -309,36 +333,57 @@ export default function InstancesTable({
                   loading={refresh}
                   onClick={handleRefresh}
                 />
-                <Button disabled={selectedItems.length !== 1}>Connect</Button>
+                <Button
+                  id
+                  disabled={
+                    selectedItems.length !== 1 ||
+                    selectedItems[0]?.state === 'Stopped' ||
+                    selectedItems[0]?.state === 'Terminated' ||
+                    selectedItems[0]?.state === 'Pending'
+                  }
+                >
+                  Connect
+                </Button>
                 <ButtonDropdown
                   items={[
                     {
                       text: 'Stop instance',
                       id: 'stop',
-                      //disabled:
-                      //selectedItems[0]?.state == 'Deactivated' ? false : true,
-                      // disabled: items.state === 'Deactivated' ? false : true,
+                      disabled:
+                        selectedItems[0]?.state === 'Stopped' ||
+                        selectedItems[0]?.state === 'Terminated'
+                          ? true
+                          : false,
                     },
                     {
                       text: 'Start instance',
                       id: 'start',
-                      //disabled:
-                      //selectedItems[0]?.state == 'Activated' ? false : true,
+                      disabled:
+                        selectedItems[0]?.state === 'Running' ? true : false,
                     },
                     {
                       text: 'Reboot instance',
                       id: 'reboot',
-                      //disabled: 'true',
+                      disabled:
+                        selectedItems[0]?.state === 'Running' ||
+                        selectedItems[0]?.state === 'Terminated'
+                          ? false
+                          : true,
                     },
                     {
                       text: 'Hibernate instance',
                       id: 'hibernate',
-                      //disabled: 'true',
+                      disabled:
+                        selectedItems[0]?.state === 'Running' ||
+                        selectedItems[0]?.state === 'Terminated'
+                          ? false
+                          : true,
                     },
                     {
                       text: 'Terminate instance',
                       id: 'terminate',
-                      //disabled: 'true',
+                      disabled:
+                        selectedItems[0]?.state === 'Terminated' ? true : false,
                     },
                   ]}
                   disabled={selectedItems.length !== 1}
@@ -356,6 +401,11 @@ export default function InstancesTable({
                     {
                       text: 'Connect',
                       id: 'connect',
+                      disabled:
+                        selectedItems.length !== 1 ||
+                        selectedItems[0]?.state === 'Stopped' ||
+                        selectedItems[0]?.state === 'Terminated' ||
+                        selectedItems[0]?.state === 'Pending',
                     },
                     {
                       text: 'View details',

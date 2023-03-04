@@ -57,8 +57,8 @@ export const DEMO_DISTRIBUTION = {
 export const Breadcrumbs = ({ id }) => (
   <BreadcrumbGroup
     items={[
-      { text: 'EC2', href: 'dashboard' },
-      { text: 'Instances', href: 'instances' },
+      { text: 'EC2', href: '/ec2_instance/dashboard' },
+      { text: 'Instances', href: '/ec2_instance/instances' },
       { text: id, href: '#' + id },
     ]}
     expandAriaLabel="Show path"
