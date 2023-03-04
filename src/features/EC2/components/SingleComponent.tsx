@@ -28,8 +28,8 @@ const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
 
   return (
     <SpaceBetween size="m">
-      {info == 'ManageInstanceState' && <ManageState id={id} state={state} />}
-      {info == 'connect' && <ConnectInstance id={id} state={state} />}
+      {info === 'ManageInstanceState' && <ManageState id={id} state={state} />}
+      {info === 'connect' && <ConnectInstance id={id} state={state} />}
     </SpaceBetween>
   );
 };
@@ -56,13 +56,6 @@ const SingleComponent = (props) => {
   const capital = (text) => {
     return text[0].toUpperCase() + text.slice(1);
   };
-  useEffect(() => {
-    document.title = 'Manage instance state | EC2 Management Console';
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [location]);
 
   return (
     <>
@@ -109,11 +102,6 @@ const SingleComponent = (props) => {
               { text: 'EC2', href: '/EC2/home' },
               { text: 'Instances', href: '/ec2_instance/instances' },
               { text: capital(`${id}`), href: `/ec2_instance/${id}` },
-              // { text: capital(`${info}`), href: `/ec2_instance/${id}` },
-              // {
-              //   text: capital(`${state.title}`),
-              //   href: `/ec2_instance/${id}/${info}/${subInfo}`,
-              // },
               { text: capital(`${info}`), href: `${info}` },
             ]}
           />

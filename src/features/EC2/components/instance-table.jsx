@@ -293,6 +293,7 @@ export default function InstancesTable({
         navigate(`${selectedItems[0]?.id}/connect`, {
           state: {
             name: 'Connect to instance',
+            description: `Connect to your instance ${selectedItems[0]?.id} using any of these options`,
             event: selectedItems[0]?.state,
           },
         });
@@ -340,6 +341,15 @@ export default function InstancesTable({
                     selectedItems[0]?.state === 'Stopped' ||
                     selectedItems[0]?.state === 'Terminated' ||
                     selectedItems[0]?.state === 'Pending'
+                  }
+                  onClick={() =>
+                    navigate(`${selectedItems[0]?.id}/connect`, {
+                      state: {
+                        name: 'Connect to instance',
+                        description: `Connect to your instance ${selectedItems[0]?.id} using any of these options`,
+                        event: selectedItems[0]?.state,
+                      },
+                    })
                   }
                 >
                   Connect

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   ColumnLayout,
@@ -9,59 +9,57 @@ import {
   Alert,
   RadioGroup,
   Tabs,
+  Spinner,
   Button,
 } from '@cloudscape-design/components';
-import { useNavigate } from 'react-router-dom';
+import InstanceConnect from './InstanceConnect';
+import SSHClient from './SSHClient';
+import SerialConsole from './SerialConsole';
 
 function ConnectInstance({ id, state }) {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [activeTabId, setActiveTabId] = React.useState('first');
-
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
+  const [activeTabId, setActiveTabId] = useState('ec2InstanceConnect');
+  const [loading, setLoading] = useState('false');
+  useEffect(() => {
+    document.title = 'Connect to instance | EC2 Management Console';
+    const timer = setTimeout(() => {
       setLoading(false);
-      navigate(-1);
-    }, 1500);
-  };
+    }, 3000);
+  }, []);
   return (
-    <SpaceBetween size="l">
-      <Container>
-        <Tabs
-          onChange={({ detail }) => setActiveTabId(detail.activeTabId)}
-          activeTabId={activeTabId}
-          tabs={[
-            {
-              label: 'EC2 Instance Connect',
-              id: 'first',
-              content: <ConnectInstance id={id} state={state} />,
-            },
-            {
-              label: 'Session Manager',
-              id: 'second',
-              content: 'Second tab content area',
-            },
-            {
-              label: 'SSH Client',
-              id: 'third',
-              content: 'Third tab content area',
-            },
-            {
-              label: 'EC2 Serial console',
-              id: 'fourth',
-              content: 'Third tab content area',
-            },
-          ]}
-        />
-      </Container>
-      <SpaceBetween size="l" direction="horizontal" className="btn-right">
-        <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary" onClick={handleRefresh} loading={loading}>
-          Change State
-        </Button>
-      </SpaceBetween>
-    </SpaceBetween>
+    <>
+      {!loading ? (
+        <SpaceBetween size="l">
+          <Tabs
+            onChange={({ detail }) => setActiveTabId(detail.activeTabId)}
+            activeTabId={activeTabId}
+            tabs={[
+              {
+                label: 'EC2 Instance Connect',
+                id: 'ec2InstanceConnect',
+                content: <InstanceConnect id={id} state={state} />,
+              },
+              {
+                label: 'Session Manager',
+                id: 'sessionManager',
+                content: 'Second tab content area',
+              },
+              {
+                label: 'SSH Client',
+                id: 'sshClient',
+                content: <SSHClient id={id} state={state} />,
+              },
+              {
+                label: 'EC2 Serial console',
+                id: 'ec2SerialConsole',
+                content: <SerialConsole id={id} state={state} />,
+              },
+            ]}
+          />
+        </SpaceBetween>
+      ) : (
+        <Spinner classNmae="spinner" size="large" />
+      )}
+    </>
   );
 }
 
