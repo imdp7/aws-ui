@@ -21,7 +21,7 @@ import {
   EC2Header,
 } from './commons/common-components';
 import { Content } from './commons/Home';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 function EC2_HomePage(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('Homepage');

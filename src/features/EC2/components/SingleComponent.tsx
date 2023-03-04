@@ -99,7 +99,7 @@ const SingleComponent = (props) => {
         breadcrumbs={
           <BreadcrumbGroup
             items={[
-              { text: 'EC2', href: '/EC2/home' },
+              { text: 'EC2', href: '/ec2_instance/dashboard' },
               { text: 'Instances', href: '/ec2_instance/instances' },
               { text: capital(`${id}`), href: `/ec2_instance/${id}` },
               { text: capital(`${info}`), href: `${info}` },

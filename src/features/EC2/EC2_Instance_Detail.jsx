@@ -2,7 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { createRef, useState, useRef, useEffect } from 'react';
-import { useNavigation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   AppLayout,
   Button,
@@ -85,7 +85,30 @@ const GeneralConfig = ({ id }) => {
     }, 1500);
   };
 
-  const Summary = () => {
+  const Summary = ({ id }) => {
+    const navigate = useNavigate();
+    const handleClick = (e) => {
+      {
+        e.detail.id === 'manage' &&
+          navigate(`ManageInstanceState`, {
+            state: {
+              name: 'Manage instance state',
+              head: 'Instance details',
+              //event: selectedItems[0]?.state,
+            },
+          });
+      }
+      {
+        e.detail.id === 'connect' &&
+          navigate(`connect`, {
+            state: {
+              name: 'Connect to instance',
+              description: `Connect to your instance ${id} using any of these options`,
+              event: state,
+            },
+          });
+      }
+    };
     return (
       <Container
         header={
@@ -111,7 +134,19 @@ const GeneralConfig = ({ id }) => {
                   loading={loading}
                   onClick={handleRefresh}
                 />
-                <Button>Connect</Button>
+                <Button
+                  onClick={() =>
+                    navigate(`connect`, {
+                      state: {
+                        name: 'Connect to instance',
+                        description: `Connect to your instance ${id} using any of these options`,
+                        event: id,
+                      },
+                    })
+                  }
+                >
+                  Connect
+                </Button>
                 <ButtonDropdown
                   items={[
                     { text: 'Stop instance', id: 'stop', disabled: false },
@@ -132,6 +167,9 @@ const GeneralConfig = ({ id }) => {
                   Instance state
                 </ButtonDropdown>
                 <ButtonDropdown
+                  onItemClick={(e) => {
+                    handleClick(e);
+                  }}
                   items={[
                     { text: 'Connect', id: 'connect', disabled: false },
                     {
@@ -192,7 +230,7 @@ const GeneralConfig = ({ id }) => {
         <ColumnLayout columns={3} variant="text-grid">
           <FormField label="Instance ID">
             <CopyText
-              copyText={` i-0f878c0d33c858284 (test)`}
+              copyText={`${id}`}
               copyButtonLabel="Copy ID"
               successText="Instance ID copied"
               errorText="Instance ID failed to copy"
@@ -293,7 +331,7 @@ const GeneralConfig = ({ id }) => {
 
   return (
     <SpaceBetween size="m">
-      <Summary />
+      <Summary id={id} />
     </SpaceBetween>
   );
 };

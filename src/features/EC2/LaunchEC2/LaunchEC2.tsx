@@ -170,7 +170,7 @@ function LaunchEC2(props): JSX.Element {
         breadcrumbs={<Breadcrumbs />}
         navigation={
           <Navigation
-            activeHref="launchEC2"
+            activeHref="LaunchInstances"
             header={EC2Header}
             items={ec2navItems}
           />

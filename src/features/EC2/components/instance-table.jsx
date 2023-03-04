@@ -130,7 +130,7 @@ export default function InstancesTable({
     paginationProps,
   } = useCollection(instances, {
     filtering: {
-      empty: <TableEmptyState resourceName="Instance" link="launchEC2" />,
+      empty: <TableEmptyState resourceName="Instance" link="LaunchInstances" />,
       noMatch: (
         <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
       ),
@@ -335,7 +335,6 @@ export default function InstancesTable({
                   onClick={handleRefresh}
                 />
                 <Button
-                  id
                   disabled={
                     selectedItems.length !== 1 ||
                     selectedItems[0]?.state === 'Stopped' ||

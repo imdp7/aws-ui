@@ -139,7 +139,7 @@ const App = ({ user, signOut }): JSX.Element => {
               }
             />
             <Route
-              path="ec2_instance/LaunchInstances"
+              path="LaunchInstances"
               element={<LaunchEC2 user={user.username} signOut={signOut} />}
             />
           </Route>

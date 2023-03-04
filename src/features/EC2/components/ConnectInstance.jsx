@@ -57,7 +57,7 @@ function ConnectInstance({ id, state }) {
           />
         </SpaceBetween>
       ) : (
-        <Spinner classNmae="spinner" size="large" />
+        <Spinner className="spinner" size="large" />
       )}
     </>
   );
