@@ -138,7 +138,7 @@ export default function EC2(props): JSX.Element {
                       loadHelpPanelContent={loadHelpPanelContent}
                       title="EC2 Dashboard"
                       buttonText="Launch instance"
-                      link="'/ec2_instance/launchEC2"
+                      link="'/ec2_instance/LaunchInstances"
                       des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
                          resizeable computing capacity&mdash;literally, servers in Amazon's data
                          centers&mdash;that you use to build and host your software systems."

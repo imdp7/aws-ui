@@ -38,7 +38,7 @@ const COLUMN_DEFINITIONS = [
     id: 'id',
     header: 'Instance ID',
     sortingColumn: 'id',
-    cell: (item) => <Link href={`${item.id}`}>{item.id}</Link>,
+    cell: (item) => <Link href={`instances/${item.id}`}>{item.id}</Link>,
   },
   {
     id: 'name',
@@ -81,6 +81,11 @@ const COLUMN_DEFINITIONS = [
     id: 'launchTime',
     header: 'Launch Time',
     cell: (item) => item.launchTime,
+  },
+  {
+    id: 'statusCheck',
+    header: 'Status Check',
+    cell: (item) => <ItemState statusCheck={item.statusCheck} />,
   },
   {
     id: 'availabilityZone',
@@ -149,6 +154,7 @@ export default function InstancesTable({
         'name',
         'state',
         'type',
+        'statusCheck',
         'availabilityZone',
         'volume',
         'loadBalancers',
@@ -298,6 +304,16 @@ export default function InstancesTable({
           },
         });
     }
+    {
+      e.detail.id === 'LaunchInstanceFromTemplate' &&
+        navigate('/ec2_instance/LaunchInstanceFromTemplate', {
+          state: {
+            name: 'Launch instance from template',
+            description:
+              'Launching from a template allows you to launch from an instance configuration that you would have saved in the past. These saved configurations can be reused and shared with other users to standardize launches across an organisation.',
+          },
+        });
+    }
   };
   return (
     <>
@@ -406,6 +422,8 @@ export default function InstancesTable({
                   onItemClick={(e) => {
                     handleClick(e);
                   }}
+                  expandableGroups
+                  expandToViewport
                   items={[
                     {
                       text: 'Connect',
@@ -425,12 +443,181 @@ export default function InstancesTable({
                       id: 'manage',
                     },
                     {
-                      text: 'Hibernate instance',
-                      id: 'hibernate',
+                      id: 'instanceSettings',
+                      text: 'Instance Settings',
+                      items: [
+                        {
+                          id: 'attachAutoScaling',
+                          text: 'Attach to Autoscaling Group',
+                        },
+                        {
+                          id: 'terminationProtection',
+                          text: 'Change Termination Protection',
+                        },
+                        {
+                          id: 'changeStopProtection',
+                          text: 'Change stop protection',
+                        },
+                        {
+                          id: 'changeShutdownBehavior',
+                          text: 'Change Shutdown behavior',
+                        },
+                        {
+                          id: 'changeAutoRecoveringBehavior',
+                          text: 'Change auto-recovering behavior',
+                        },
+                        {
+                          id: 'changeInstanceType',
+                          text: 'Change instance type',
+                          disabled: true,
+                        },
+                        {
+                          id: 'changeNitroEnclaves',
+                          text: 'Change Nitro Enclaves',
+                          disabled: true,
+                        },
+                        {
+                          id: 'changeCreditSpecification',
+                          text: 'Change Credit Specification',
+                        },
+                        {
+                          id: 'changeResourceBasedNamingOptions',
+                          text: 'Change resource based naming options',
+                        },
+                        {
+                          id: 'modifyInstancePlacement',
+                          text: 'Modify instance placement',
+                          disabled: true,
+                        },
+                        {
+                          id: 'modifyCapacityReservationSettings',
+                          text: 'Modify Capacity Reservation settings',
+                          disabled: true,
+                        },
+                        {
+                          id: 'editUserData',
+                          text: 'Edit user data',
+                        },
+                        {
+                          id: 'allowTagsInstanceMetadata',
+                          text: 'Allow tags in instance metadata',
+                        },
+                        {
+                          id: 'manageTags',
+                          text: 'Manage tags',
+                        },
+                      ],
                     },
                     {
-                      text: 'Terminate instance',
-                      id: 'terminate',
+                      id: 'networking',
+                      text: 'Networking',
+                      items: [
+                        {
+                          id: 'attachNetworkInterface',
+                          text: 'Attach network interface',
+                        },
+                        {
+                          id: 'detachNetworkInterface',
+                          text: 'Detach network interface',
+                        },
+                        {
+                          id: 'connectRDSDatabase',
+                          text: 'Connect RDS database',
+                        },
+                        {
+                          id: 'changeSourceDestinationCheck',
+                          text: 'Change source/destination check',
+                        },
+                        {
+                          id: 'disAssociateElasticIPAddress',
+                          text: 'Disassociate elastic IP Address',
+                          disabled: true,
+                        },
+                        {
+                          id: 'manageIPAddress',
+                          text: 'Manage IP Address',
+                        },
+                        {
+                          id: 'manageENAExpress',
+                          text: 'Manage ENA Express',
+                          disabled: true,
+                        },
+                      ],
+                    },
+                    {
+                      id: 'security',
+                      text: 'Security',
+                      items: [
+                        {
+                          id: 'changeSecurityGroups',
+                          text: 'Change security groups',
+                        },
+                        {
+                          id: 'getWindowsPassword',
+                          text: 'Get windows password',
+                          disabled: true,
+                        },
+                        {
+                          id: 'modifyIAMRole',
+                          text: 'Modify IAM role',
+                        },
+                      ],
+                    },
+                    {
+                      id: 'imageAndTemplates',
+                      text: 'Image and templates',
+                      items: [
+                        {
+                          id: 'createImage',
+                          text: 'Create image',
+                        },
+                        {
+                          id: 'createTemplateFromInstance',
+                          text: 'Create template from instance',
+                        },
+                        {
+                          id: 'launchMore',
+                          text: 'Launch more like this',
+                        },
+                      ],
+                    },
+                    {
+                      id: 'monitorAndTroubleshoot',
+                      text: 'Monitor and troubleshoot',
+                      items: [
+                        {
+                          id: 'getSystemLog',
+                          text: 'Get system log',
+                        },
+                        {
+                          id: 'getInstanceScreenshot',
+                          text: 'Get instance screenshot',
+                        },
+                        {
+                          id: 'manageDetailedMonitoring',
+                          text: 'Manage Detailed monitoring',
+                        },
+                        {
+                          id: 'manageCloudwatchAlarms',
+                          text: 'Manage CloudWatch Alarms',
+                        },
+                        {
+                          id: 'ec2SerialConsole',
+                          text: 'EC2 serial console',
+                        },
+                        {
+                          id: 'replaceRootVolume',
+                          text: 'Replace root volume',
+                        },
+                        {
+                          id: 'fleetManager',
+                          text: 'Fleet Manager',
+                          external: true,
+                          externalIconAriaLabel: 'external',
+                          iconName: 'external',
+                          iconAlign: 'right',
+                        },
+                      ],
                     },
                   ]}
                   disabled={selectedItems.length !== 1}
@@ -521,6 +708,7 @@ export default function InstancesTable({
                     { id: 'name', label: 'Name' },
                     { id: 'state', label: 'Instance State' },
                     { id: 'type', label: 'Instance Type' },
+                    { id: 'statusCheck', label: 'Status Check' },
                     { id: 'availabilityZone', label: 'Availability Zone' },
                     { id: 'volume', label: 'Instance Volumes' },
                     { id: 'loadBalancers', label: 'Load Balancers' },

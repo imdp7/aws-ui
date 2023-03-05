@@ -374,10 +374,14 @@ export const StatusCheck = (props) => {
       <SpaceBetween size="s">
         <ColumnLayout columns={2} variant="text-grid">
           <FormField label="System status checks">
-            <StatusIndicator type="success">Running</StatusIndicator>
+            <StatusIndicator type="success">
+              System reachability check passed
+            </StatusIndicator>
           </FormField>
           <FormField label="Instance status checks">
-            <StatusIndicator type="success">Running</StatusIndicator>
+            <StatusIndicator type="success">
+              Instance reachability check passed
+            </StatusIndicator>
           </FormField>
         </ColumnLayout>
         <Box>

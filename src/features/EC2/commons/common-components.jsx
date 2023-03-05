@@ -159,11 +159,11 @@ export const userNav = [
   },
 ];
 export const ec2navItems = [
-  { type: 'link', text: 'Dashboard', href: 'dashboard' },
+  { type: 'link', text: 'Dashboard', href: '/ec2_instance/dashboard' },
   {
     type: 'link',
     text: 'Events',
-    href: 'events',
+    href: '/ec2_instance/events',
     info: (
       <Box color="text-status-info" display="inline">
         <Popover
@@ -194,19 +194,19 @@ export const ec2navItems = [
       </Box>
     ),
   },
-  { type: 'link', text: 'Tags', href: 'tags' },
-  { type: 'link', text: 'Reports', href: 'reports' },
-  { type: 'link', text: 'Limits', href: 'limits' },
+  { type: 'link', text: 'Tags', href: '/ec2_instance/tags' },
+  { type: 'link', text: 'Reports', href: '/ec2_instance/reports' },
+  { type: 'link', text: 'Limits', href: '/ec2_instance/limits' },
   {
     text: 'Instances',
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'Instances', href: 'instances' },
+      { type: 'link', text: 'Instances', href: '/ec2_instance/instances' },
       {
         type: 'link',
         text: 'Launch templates',
-        href: 'launchEC2',
+        href: '/ec2_instance/LaunchInstanceFromTemplate',
         info: (
           <Box color="text-status-info" display="inline">
             <Popover
@@ -232,17 +232,25 @@ export const ec2navItems = [
           </Box>
         ),
       },
-      { type: 'link', text: 'Spot requests', href: 'spot_requests' },
+      {
+        type: 'link',
+        text: 'Spot requests',
+        href: '/ec2_instance/spot_requests',
+      },
       {
         type: 'link',
         text: 'Reserved instances',
-        href: 'reserved_instances',
+        href: '/ec2_instance/reserved_instances',
       },
-      { type: 'link', text: 'Dedicated hosts', href: 'dedicated_hosts' },
+      {
+        type: 'link',
+        text: 'Dedicated hosts',
+        href: '/ec2_instance/dedicated_hosts',
+      },
       {
         type: 'link',
         text: 'Scheduled instances',
-        href: 'scheduled_instances',
+        href: '/ec2_instance/scheduled_instances',
         info: (
           <Box color="text-status-info" display="inline">
             <Popover
@@ -269,7 +277,7 @@ export const ec2navItems = [
       {
         type: 'link',
         text: 'Capacity reservations',
-        href: 'capacity_reservations',
+        href: '/ec2_instance/capacity_reservations',
       },
     ],
   },
@@ -278,8 +286,12 @@ export const ec2navItems = [
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'AMIs', href: 'amis' },
-      { type: 'link', text: 'Bundle tasks', href: 'bundle_tasks' },
+      { type: 'link', text: 'AMIs', href: '/ec2_instance/amis' },
+      {
+        type: 'link',
+        text: 'Bundle tasks',
+        href: '/ec2_instance/bundle_tasks',
+      },
     ],
   },
   {
@@ -287,12 +299,12 @@ export const ec2navItems = [
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'Volumes', href: 'volumes' },
-      { type: 'link', text: 'Snapshots', href: 'snapshots' },
+      { type: 'link', text: 'Volumes', href: '/ec2_instance/volumes' },
+      { type: 'link', text: 'Snapshots', href: '/ec2_instance/snapshots' },
       {
         type: 'link',
         text: 'Lifecycle manager',
-        href: 'lifecycle_manager',
+        href: '/ec2_instance/lifecycle_manager',
       },
     ],
   },
@@ -301,14 +313,22 @@ export const ec2navItems = [
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'Security groups', href: 'security_groups' },
-      { type: 'link', text: 'Elastic IPs', href: 'elastic_ips' },
-      { type: 'link', text: 'Placement groups', href: 'placement_groups' },
-      { type: 'link', text: 'Key pairs', href: 'key_pairs' },
+      {
+        type: 'link',
+        text: 'Security groups',
+        href: '/ec2_instance/security_groups',
+      },
+      { type: 'link', text: 'Elastic IPs', href: '/ec2_instance/elastic_ips' },
+      {
+        type: 'link',
+        text: 'Placement groups',
+        href: '/ec2_instance/placement_groups',
+      },
+      { type: 'link', text: 'Key pairs', href: '/ec2_instance/key_pairs' },
       {
         type: 'link',
         text: 'Network interfaces',
-        href: 'network_interfaces',
+        href: '/ec2_instance/network_interfaces',
       },
     ],
   },
@@ -317,8 +337,16 @@ export const ec2navItems = [
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'Load balancers', href: 'load_balancers' },
-      { type: 'link', text: 'Target groups', href: 'target_groups' },
+      {
+        type: 'link',
+        text: 'Load balancers',
+        href: '/ec2_instance/load_balancers',
+      },
+      {
+        type: 'link',
+        text: 'Target groups',
+        href: '/ec2_instance/target_groups',
+      },
     ],
   },
   {
@@ -329,19 +357,19 @@ export const ec2navItems = [
       {
         type: 'link',
         text: 'Launch configurations',
-        href: 'launch_configurations',
+        href: '/ec2_instance/launch_configurations',
       },
       {
         type: 'link',
         text: 'Auto scaling groups',
-        href: 'auto_scaling_groups',
+        href: '/ec2_instance/auto_scaling_groups',
       },
     ],
   },
   { type: 'divider' },
   {
     type: 'link',
-    href: '/density_settings',
+    href: '/ec2_instance/density_settings',
     text: 'Density settings',
   },
 ];

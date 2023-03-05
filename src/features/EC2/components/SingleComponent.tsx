@@ -101,7 +101,7 @@ const SingleComponent = (props) => {
             items={[
               { text: 'EC2', href: '/ec2_instance/dashboard' },
               { text: 'Instances', href: '/ec2_instance/instances' },
-              { text: capital(`${id}`), href: `/ec2_instance/${id}` },
+              { text: capital(`${id}`), href: `/ec2_instance/instances/${id}` },
               { text: capital(`${info}`), href: `${info}` },
             ]}
           />

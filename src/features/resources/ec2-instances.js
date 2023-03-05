@@ -10,6 +10,10 @@ export default Array.from({ length: 50 }).map((item, i) => ({
   monitoring: 'Default',
   state: getElement(['Stopped', 'Running', 'Terminated', 'Pending'], i),
   platformDetails: getElement(['Linux', 'Windows'], i),
+  statusCheck: getElement(
+    ['0/2 checks passed', '1/2 checks passed', '2/2 checks passed'],
+    i
+  ),
   terminalProtection: 'on',
   launchTime: `2021-05-12 16:53:${i.toString().padStart(2, '0')} GMT+0200 CEST`,
   volume: getElement([1, 2, 3, 4, 5], i),

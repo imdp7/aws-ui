@@ -203,7 +203,7 @@ function InstancesPage({
         notifications={<Flashbar items={notifications} stackItems />}
         navigation={
           <Navigation
-            activeHref="instances"
+            activeHref="/ec2_instance/instances"
             header={EC2Header}
             items={ec2navItems}
           />

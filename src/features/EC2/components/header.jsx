@@ -226,7 +226,7 @@ export function DashboardHeader(props) {
               variant="primary"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/ec2_instance/launchEC2');
+                navigate('/ec2_instance/LaunchInstances');
               }}
             >
               {props.buttonText}

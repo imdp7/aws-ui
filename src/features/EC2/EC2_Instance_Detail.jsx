@@ -67,6 +67,7 @@ import { DashboardHeader, HelpPanels } from './components/header';
 import useNotifications from './commons/use-notifications';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
+import ItemState from './components/item-state';
 
 const Details = ({ loadHelpPanelContent, id }) => (
   <Container>
@@ -186,8 +187,8 @@ const GeneralConfig = ({ id }) => {
                       id: 'networking',
                       text: 'Networking',
                       items: [
-                        { id: 'attach', text: 'Attach nwtwork interface' },
-                        { id: 'detach', text: 'Detach nwtwork interface' },
+                        { id: 'attach', text: 'Attach network interface' },
+                        { id: 'detach', text: 'Detach network interface' },
                         {
                           id: 'connect',
                           text: 'Connect RDS database',
@@ -197,7 +198,7 @@ const GeneralConfig = ({ id }) => {
                           text: 'Change source/destination check',
                         },
                         {
-                          id: 'disassciate',
+                          id: 'disassociate',
                           text: 'Disassociate Elastic IP address',
                           disabled: 'true',
                         },
@@ -256,9 +257,7 @@ const GeneralConfig = ({ id }) => {
             <Box>{loading ? <Spinner /> : '-'}</Box>
           </FormField>
           <FormField label="Instance state">
-            <StatusIndicator type={state === 'Running' ? 'success' : 'stopped'}>
-              {state}
-            </StatusIndicator>
+            <ItemState state={state} />
           </FormField>
           <FormField label="Public IPv4 DNS">
             <CopyText
@@ -667,7 +666,7 @@ export function EC2_Instances_Detail(props) {
         breadcrumbs={<Breadcrumbs id={id} />}
         navigation={
           <Navigation
-            activeHref="instances"
+            activeHref="/ec2_instance/instances"
             header={EC2Header}
             items={ec2navItems}
           />
