@@ -32,11 +32,11 @@ export function StatusCheck({ statusCheck, state }) {
   return <Box>{'-'}</Box>;
 }
 
-ItemState.propTypes = {
-  state: PropTypes.string.isRequired,
-};
+// ItemState.propTypes = {
+//   state: PropTypes.string.isRequired,
+// };
 
-StatusCheck.propTypes = {
-  state: PropTypes.string.isRequired,
-  statusCheck: PropTypes.string.isRequired,
-};
+// StatusCheck.propTypes = {
+//   state: PropTypes.string.isRequired,
+//   statusCheck: PropTypes.string.isRequired,
+// };
