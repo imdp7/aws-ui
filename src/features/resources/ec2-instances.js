@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 const getElement = (array, loopedIndex) => array[loopedIndex % array.length];
 
-export default Array.from({ length: 50 }).map((item, i) => ({
+export default Array.from({ length: 250 }).map((item, i) => ({
   id: `instance-${i}`,
   name: `web server ${i}`,
   type: getElement(['m5.large', 'm5.xlarge', 'm5.4xlarge'], i),
@@ -29,7 +29,27 @@ export default Array.from({ length: 50 }).map((item, i) => ({
     ],
     i
   ),
-  availabilityZone: getElement(['AZ 1', 'AZ 2'], i),
+  availabilityZone: getElement(
+    [
+      'US East (N. Virginia)',
+      'US East Ohio)',
+      'US West (N. California)',
+      'US West (Oregon)',
+      'Asia Pacific (Mumbai)',
+      'Asia Pacific (Osaka)',
+      'Asia Pacific (Seoul)',
+      'Asia Pacific (Sydney)',
+      'Asia Pacific (Tokyo)',
+      'Canada (Central)',
+      'Europe (Frankfurt)',
+      'Europe (Ireland)',
+      'Europe (London)',
+      'Europe (Paris)',
+      'Europe (Stockholm)',
+      'South America (Sao Paulo)',
+    ],
+    i
+  ),
   numOfvCpu: getElement([3, 5, 9], i),
   inboundRules: [
     {

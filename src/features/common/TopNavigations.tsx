@@ -240,10 +240,6 @@ export const AppHeader = (props: State): JSX.Element => {
                       text: 'Asia Pacific (Seoul)',
                     },
                     {
-                      id: 'Asia Pacific (Seoul)',
-                      text: 'Asia Pacific (Seoul)',
-                    },
-                    {
                       id: 'Asia Pacific (Sydney)',
                       text: 'Asia Pacific (Sydney)',
                     },

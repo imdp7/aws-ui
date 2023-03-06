@@ -19,6 +19,7 @@ import {
   Select,
   ColumnLayout,
   FormField,
+  Icon,
 } from '@cloudscape-design/components';
 import {
   TableEmptyState,
@@ -37,14 +38,12 @@ const COLUMN_DEFINITIONS = [
   {
     id: 'id',
     header: 'Instance ID',
-    sortingColumn: 'id',
     cell: (item) => <Link href={`instances/${item.id}`}>{item.id}</Link>,
   },
   {
     id: 'name',
     header: 'Instance name',
     sortingField: 'name',
-    minWidth: 176,
     cell: (item) => {
       return item.name;
     },
@@ -68,16 +67,19 @@ const COLUMN_DEFINITIONS = [
     id: 'state',
     header: 'Instance state',
     cell: (item) => <ItemState state={item.state} />,
+    sortingField: 'state',
   },
   {
     id: 'type',
     header: 'Instance type',
     cell: (item) => item.type,
+    sortingField: 'type',
   },
   {
     id: 'launchTime',
     header: 'Launch Time',
     cell: (item) => item.launchTime,
+    sortingField: 'launchTime',
   },
   {
     id: 'statusCheck',
@@ -87,14 +89,42 @@ const COLUMN_DEFINITIONS = [
     ),
   },
   {
+    id: 'alarmStatus',
+    header: 'Alarm Status',
+    cell: (item) => (
+      <Box
+        variant="div"
+        style={{
+          alignItems: 'center',
+          verticalAlign: 'middle',
+          display: 'flex',
+        }}
+      >
+        <Box variant="span">No Alarms</Box>
+        <Link>
+          <Icon
+            style={{
+              verticalAlign: 'middle',
+              paddingRight: '5px',
+            }}
+            name="add-plus"
+            size="small"
+          />
+        </Link>
+      </Box>
+    ),
+  },
+  {
     id: 'availabilityZone',
     header: `AZ's`,
     cell: (item) => item.availabilityZone,
+    sortingField: 'availabilityZone',
   },
   {
     id: 'volume',
     header: 'Volume',
     cell: (item) => item.volume,
+    sortingField: 'volume',
   },
   {
     id: 'loadBalancers',
@@ -105,16 +135,19 @@ const COLUMN_DEFINITIONS = [
     id: 'publicDns',
     header: 'Public DNS',
     cell: (item) => item.publicDns,
+    sortingField: 'publicDns',
   },
   {
     id: 'inboundRules',
     header: 'Inbound Rules',
     cell: (item) => item.inboundRules.map((i) => i.protocol),
+    sortingField: 'inboundRules',
   },
   {
     id: 'monitoring',
     header: 'Monitoring',
     cell: (item) => item.monitoring,
+    sortingField: 'monitoring',
   },
 ];
 
@@ -147,13 +180,14 @@ export default function InstancesTable({
   const [preferences, setPreferences] = useLocalStorage(
     'React-DBInstancesTable-Preferences',
     {
-      pageSize: 10,
+      pageSize: 50,
       visibleContent: [
         'id',
         'name',
         'state',
         'type',
         'statusCheck',
+        'alarmStatus',
         'availabilityZone',
         'volume',
         'loadBalancers',
@@ -165,6 +199,8 @@ export default function InstancesTable({
       wrapLines: false,
       stripedRows: true,
       custom: 'table',
+      resizable: false,
+      contentDensity: 'comfortable',
     }
   );
 
@@ -322,8 +358,9 @@ export default function InstancesTable({
         onSelectionChange={onSelectionChange}
         columnDefinitions={COLUMN_DEFINITIONS}
         items={items}
+        resizableColumns={preferences.resizable}
+        contentDensity={preferences.contentDensity}
         selectionType="multi"
-        resizableColumns={true}
         visibleColumns={preferences.visibleContent}
         wrapLines={preferences.wrapLines}
         stripedRows={preferences.stripedRows}
@@ -689,6 +726,10 @@ export default function InstancesTable({
                 { value: 50, label: '50' },
               ],
             }}
+            contentDensityPreference={{
+              label: 'Compact mode',
+              description: 'Content density description',
+            }}
             wrapLinesPreference={{
               label: 'Wrap lines',
               description: 'Check to see all the text and wrap the lines',
@@ -708,6 +749,7 @@ export default function InstancesTable({
                     { id: 'state', label: 'Instance State' },
                     { id: 'type', label: 'Instance Type' },
                     { id: 'statusCheck', label: 'Status Check' },
+                    { id: 'alarmStatus', label: 'Alarm Status' },
                     { id: 'availabilityZone', label: 'Availability Zone' },
                     { id: 'volume', label: 'Instance Volumes' },
                     { id: 'loadBalancers', label: 'Load Balancers' },
