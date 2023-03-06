@@ -32,11 +32,11 @@ function Breadcrumbs() {
   const breadcrumbItems = [
     {
       text: 'EC2',
-      href: 'dashboard',
+      href: '/ec2_instance/dashboard',
     },
     {
       text: 'Instances',
-      href: 'instances',
+      href: '/ec2_instance/instances',
     },
     {
       text: 'Launch an instance',
@@ -170,7 +170,7 @@ function LaunchEC2(props): JSX.Element {
         breadcrumbs={<Breadcrumbs />}
         navigation={
           <Navigation
-            activeHref="/ec2_instance/LaunchInstances"
+            activeHref="/ec2_instance/LaunchInstanceFromTemplate"
             header={EC2Header}
             items={ec2navItems}
           />

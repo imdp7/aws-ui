@@ -29,7 +29,7 @@ import { paginationLabels } from '../../common/labels';
 import { getFilterCounterText } from '../../common/tableCounterStrings';
 import { useLocalStorage } from '../../common/localStorage';
 
-import ItemState from './item-state';
+import { ItemState, StatusCheck } from './item-state';
 import { useNavigate } from 'react-router-dom';
 import CopyText from '../commons/copy-text';
 
@@ -62,9 +62,6 @@ const COLUMN_DEFINITIONS = [
         );
       },
     },
-    cell: (item) => {
-      return item.name;
-    },
   },
 
   {
@@ -85,7 +82,9 @@ const COLUMN_DEFINITIONS = [
   {
     id: 'statusCheck',
     header: 'Status Check',
-    cell: (item) => <ItemState statusCheck={item.statusCheck} />,
+    cell: (item) => (
+      <StatusCheck statusCheck={item.statusCheck} state={item.state} />
+    ),
   },
   {
     id: 'availabilityZone',

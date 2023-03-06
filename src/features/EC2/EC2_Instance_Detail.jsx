@@ -7,16 +7,10 @@ import {
   AppLayout,
   Button,
   Container,
-  ContentLayout,
   Header,
   Pagination,
-  StatusIndicator,
-  SpaceBetween,
-  Table,
   FormField,
-  CollectionPreferences,
   Box,
-  Icon,
   Alert,
   ExpandableSection,
   ColumnLayout,
@@ -28,46 +22,26 @@ import {
   TextFilter,
   Spinner,
 } from '@cloudscape-design/components';
-import { useCollection } from '@cloudscape-design/collection-hooks';
-import { useAsyncData } from './commons/use-async-data';
-import DataProvider from './commons/data-provider';
 import CopyText from './commons/copy-text';
-import {
-  INSTANCE_DROPDOWN_ITEMS,
-  LOGS_COLUMN_DEFINITIONS,
-  INVALIDATIONS_COLUMN_DEFINITIONS,
-} from './commons/details-config.jsx';
 import {
   Storage,
   Breadcrumbs,
   StatusCheck,
   Networking,
-  PageHeader,
   Tags,
   SettingsDetails,
-  TagsTable,
 } from './commons/detail-common.jsx';
 import {
   Navigation,
-  TableEmptyState,
-  TableNoMatchState,
-  TableHeader,
   ec2navItems,
   EC2Header,
 } from './commons/common-components';
-import {
-  appLayoutLabels,
-  logsSelectionLabels,
-  paginationLabels,
-} from '../../features/common/labels';
-import { getFilterCounterText } from '../../features/common/tableCounterStrings';
-import ToolsContent from './components/tools-content';
-// import './styles/base.scss';
-import { DashboardHeader, HelpPanels } from './components/header';
+import { appLayoutLabels } from '../../features/common/labels';
+import { HelpPanels } from './components/header';
 import useNotifications from './commons/use-notifications';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
-import ItemState from './components/item-state';
+import { ItemState } from './components/item-state';
 
 const Details = ({ loadHelpPanelContent, id }) => (
   <Container>
