@@ -32,7 +32,7 @@ import INSTANCES_TYPES from '../resources/ec2-instance-list';
 import './styles/base.scss';
 import useLocationHash from './components/use-location-hash';
 import useNotifications from './commons/use-notifications';
-import InstancesTypes from './components/instance-types';
+import InstancesTypes from './components/Instance-types';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import { getPanelContent, useSplitPanel } from './utils';
