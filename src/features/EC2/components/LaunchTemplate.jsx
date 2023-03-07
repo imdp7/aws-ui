@@ -130,7 +130,10 @@ function LaunchTemplate(props) {
           <BreadcrumbGroup
             items={[
               { text: 'EC2', href: '/ec2_instance/dashboard' },
-              { text: 'Instances', href: '/ec2_instance/Launch template/home' },
+              {
+                text: 'Instances',
+                href: '/ec2_instance/LaunchInstanceFromTemplate/home',
+              },
               { text: 'Create launch template', href: '#' },
             ]}
             expandAriaLabel="Show path"

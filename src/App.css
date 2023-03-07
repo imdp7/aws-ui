@@ -128,3 +128,15 @@
 .text-area {
   float: right;
 }
+
+.alarm-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.icon-alarm {
+  text-align: center;
+  margin-left: 5px;
+}

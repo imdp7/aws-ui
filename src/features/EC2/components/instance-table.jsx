@@ -92,26 +92,14 @@ const COLUMN_DEFINITIONS = [
     id: 'alarmStatus',
     header: 'Alarm Status',
     cell: (item) => (
-      <Box
-        variant="div"
-        style={{
-          alignItems: 'center',
-          verticalAlign: 'middle',
-          display: 'flex',
-        }}
-      >
-        <Box variant="span">No Alarms</Box>
-        <Link>
-          <Icon
-            style={{
-              verticalAlign: 'middle',
-              paddingRight: '5px',
-            }}
-            name="add-plus"
-            size="small"
-          />
+      <div className="alarm-status">
+        <Box>No alarms</Box>
+        <Link
+          href={`/ec2_instance/instances/${item.id}/ManageCloudWatchAlarms`}
+        >
+          <Icon name="add-plus" className="icon-alarm" size="small" />
         </Link>
-      </Box>
+      </div>
     ),
   },
   {

@@ -20,26 +20,8 @@ import {
   EC2Header,
 } from '../commons/common-components';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import ManageState from './ManageState';
-import ConnectInstance from './ConnectInstance';
-import ManageCloudwatchAlarm from './ManageCloudwatchAlarm';
 
-const Content = ({ loadHelpPanelContent, state, info, subInfo, id }) => {
-  const navigate = useNavigate();
-
-  return (
-    <SpaceBetween size="m">
-      {info === 'ManageInstanceState' && <ManageState id={id} state={state} />}
-      {info === 'connect' && <ConnectInstance id={id} state={state} />}
-      {window.location.pathname ===
-        `/ec2_instance/instances/${id}/ManageCloudWatchAlarms` && (
-        <ManageCloudwatchAlarm />
-      )}
-    </SpaceBetween>
-  );
-};
-
-const SingleComponent = (props) => {
+function ManageCloudwatchAlarm(props) {
   const { info, id, subInfo } = useParams();
   const { state } = useLocation();
   const appLayout = useRef();
@@ -81,18 +63,11 @@ const SingleComponent = (props) => {
                     header={
                       <DashboardHeader
                         loadHelpPanelContent={loadHelpPanelContent}
-                        title={state?.name}
+                        title="Manage CloudWatch alarms"
                         info={state?.info}
-                        des={state?.description}
+                        des="Create or edit a CloudWatch alarm that monitors CloudWatch metrics for the instance."
                       />
                     }
-                  />
-                  <Content
-                    loadHelpPanelContent={loadHelpPanelContent}
-                    state={state}
-                    info={info}
-                    id={id}
-                    subInfo={subInfo}
                   />
                 </>
               ) : (
@@ -132,6 +107,6 @@ const SingleComponent = (props) => {
       <AppFooter />
     </>
   );
-};
+}
 
-export default SingleComponent;
+export default ManageCloudwatchAlarm;

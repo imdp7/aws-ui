@@ -25,6 +25,7 @@ import CreateS3 from './features/S3/CreateS3';
 import EditBucket from './features/S3/components/EditBucket';
 import CreateComponent from './features/S3/components/CreateComponent';
 import SingleComponent from './features/EC2/components/SingleComponent';
+import LaunchTemplate from './features/EC2/components/LaunchTemplate';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -141,6 +142,12 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="LaunchInstances"
               element={<LaunchEC2 user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="LaunchInstanceFromTemplate"
+              element={
+                <LaunchTemplate user={user.username} signOut={signOut} />
+              }
             />
           </Route>
         </Routes>
