@@ -20,7 +20,7 @@ import EC2_HomePage from './features/EC2/EC2_HomePage';
 import BucketList from './features/S3/bucketList';
 import BucketDetail from './features/S3/BucketDetail';
 import Upload from './features/S3/Upload';
-import { ThemeContext } from './features/common/TopNavigations';
+import EC2TypesList from './features/EC2/Instance-types-list';
 import CreateS3 from './features/S3/CreateS3';
 import EditBucket from './features/S3/components/EditBucket';
 import CreateComponent from './features/S3/components/CreateComponent';
@@ -125,6 +125,10 @@ const App = ({ user, signOut }): JSX.Element => {
               element={
                 <EC2_Instances_List user={user.username} signOut={signOut} />
               }
+            />
+            <Route
+              path="InstanceTypes"
+              element={<EC2TypesList user={user.username} signOut={signOut} />}
             />
             <Route
               path="instances/:id"

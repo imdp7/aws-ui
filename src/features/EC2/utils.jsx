@@ -204,7 +204,7 @@ export const Breadcrumbs = () => (
 );
 
 export const useSplitPanel = (selectedItems) => {
-  const [splitPanelSize, setSplitPanelSize] = useState(300);
+  const [splitPanelSize, setSplitPanelSize] = useState(350);
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const [hasManuallyClosedOnce, setHasManuallyClosedOnce] = useState(false);
 

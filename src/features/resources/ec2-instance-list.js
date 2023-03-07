@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 const getElement = (array, loopedIndex) => array[loopedIndex % array.length];
 
-export default Array.from({ length: 250 }).map((item, i) => ({
-  id: `instance-${i}`,
-  name: `web server ${i}`,
+export default Array.from({ length: 50 }).map((item, i) => ({
   type: getElement(
     [
       't1.micro',
@@ -37,6 +35,9 @@ export default Array.from({ length: 250 }).map((item, i) => ({
   ),
   publicDns: `231.50.3.${i}`,
   monitoring: 'Default',
+  freeTier: getElement(['true', 'false'], i),
+  freeTrial: getElement(['true', 'false'], i),
+  bareMetal: getElement(['true', 'false'], i),
   state: getElement(['Stopped', 'Running', 'Terminated', 'Pending'], i),
   platformDetails: getElement(['Linux', 'Windows'], i),
   statusCheck: getElement(
