@@ -15,11 +15,15 @@ import {
   ExpandableSection,
   ColumnLayout,
   ButtonDropdown,
+  SpaceBetween,
+  Icon,
   Flashbar,
   Link,
   Modal,
   Tabs,
   TextFilter,
+  ContentLayout,
+  Table,
   Spinner,
 } from '@cloudscape-design/components';
 import CopyText from './commons/copy-text';
@@ -37,7 +41,7 @@ import {
   EC2Header,
 } from './commons/common-components';
 import { appLayoutLabels } from '../../features/common/labels';
-import { HelpPanels } from './components/header';
+import { HelpPanels, DashboardHeader } from './components/header';
 import useNotifications from './commons/use-notifications';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -624,7 +628,8 @@ export function EC2_Instances_Detail(props) {
         content={
           <>
             {!loading ? (
-              <SpaceBetween size="s">
+              <SpaceBetween size="m">
+                <ContentLayout />
                 <GeneralConfig id={id} />
                 <TabsSection
                   id={id}

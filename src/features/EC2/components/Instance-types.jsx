@@ -44,7 +44,7 @@ const COLUMN_DEFINITIONS = [
     id: 'type',
     header: 'Instance Type',
     cell: (item) => (
-      <Link href={`/ec2_instances/instanceType/${item.type}`}>{item.type}</Link>
+      <Link href={`InstanceTypes/${item.type}/d`}>{item.type}</Link>
     ),
   },
 
@@ -104,27 +104,8 @@ export default function InstancesTypes({
   onDelete,
   loading,
 }) {
-  const {
-    items,
-    actions,
-    filteredItemsCount,
-    collectionProps,
-    filterProps,
-    paginationProps,
-  } = useCollection(instances, {
-    filtering: {
-      empty: <TableEmptyState resourceName="Instance" link="LaunchInstances" />,
-      noMatch: (
-        <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
-      ),
-    },
-    pagination: { pageSize: 50 },
-    selection: {},
-  });
-  const [refresh, setRefresh] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [preferences, setPreferences] = useLocalStorage(
-    'React-InstancesType-Preferences',
+    'React-DistributionsTable-Preferences',
     {
       pageSize: 50,
       visibleContent: [
@@ -140,10 +121,28 @@ export default function InstancesTypes({
       wrapLines: false,
       stripedRows: true,
       custom: 'table',
-      resizable: false,
       contentDensity: 'comfortable',
     }
   );
+  const {
+    items,
+    actions,
+    filteredItemsCount,
+    collectionProps,
+    filterProps,
+    paginationProps,
+  } = useCollection(instances, {
+    filtering: {
+      empty: <TableEmptyState resourceName="Instance" link="LaunchInstances" />,
+      noMatch: (
+        <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
+      ),
+    },
+    pagination: { pageSize: preferences.pageSize },
+    selection: {},
+  });
+  const [refresh, setRefresh] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleRefresh = () => {
     setRefresh(true);
@@ -177,7 +176,7 @@ export default function InstancesTypes({
         onSelectionChange={onSelectionChange}
         columnDefinitions={COLUMN_DEFINITIONS}
         items={items}
-        resizableColumns={preferences.resizable}
+        resizableColumns="true"
         contentDensity={preferences.contentDensity}
         selectionType="multi"
         visibleColumns={preferences.visibleContent}
