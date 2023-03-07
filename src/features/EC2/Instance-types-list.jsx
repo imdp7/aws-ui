@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-no-undef */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useState, useEffect } from 'react';
@@ -28,19 +27,18 @@ import {
   EC2Header,
 } from './commons/common-components';
 import { appLayoutLabels } from '../common/labels';
-import INSTANCES from '../resources/ec2-instances';
+import INSTANCES_TYPES from '../resources/ec2-instance-list';
 import './styles/base.scss';
 import useLocationHash from './components/use-location-hash';
 import useNotifications from './commons/use-notifications';
-import InstancesTable from './components/instance-table';
+import InstancesTypes from './components/Instance-types';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import { getPanelContent, useSplitPanel } from './utils';
 import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
-import { useCollection } from '@cloudscape-design/collection-hooks';
 
-function EC2_Instances_List(props) {
-  const [instances, setInstances] = useState(INSTANCES);
+function EC2TypesList(props) {
+  const [instances, setInstances] = useState(INSTANCES_TYPES);
   const [selectedItems, setSelectedItems] = useState([]);
   const [deletedTotal, setDeletedTotal] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -80,7 +78,7 @@ function EC2_Instances_List(props) {
   }, [locationHash]);
 
   useEffect(() => {
-    setDeletedTotal(INSTANCES.length - instances.length);
+    setDeletedTotal(INSTANCES_TYPES.length - instances.length);
     notifyInProgress(instances.filter((it) => it.state === 'deleting').length);
   }, [instances, notifyInProgress]);
 
@@ -148,7 +146,7 @@ function InstancesPage({
   } = useSplitPanel(selectedItems);
 
   useEffect(() => {
-    document.title = 'Instance List | AWS EC2 management console';
+    document.title = 'Instance Types | AWS EC2 management console';
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -163,7 +161,7 @@ function InstancesPage({
         content={
           <>
             {!loading ? (
-              <InstancesTable
+              <InstancesTypes
                 instances={instances}
                 selectedItems={selectedItems}
                 onSelectionChange={(event) =>
@@ -195,7 +193,7 @@ function InstancesPage({
           <BreadcrumbGroup
             items={[
               { text: 'EC2', href: '/ec2_instance/dashboard' },
-              { text: 'Instances', href: '#' },
+              { text: 'Instance Types', href: '#' },
             ]}
             expandAriaLabel="Show path"
             ariaLabel="Breadcrumbs"
@@ -204,7 +202,7 @@ function InstancesPage({
         notifications={<Flashbar items={notifications} stackItems />}
         navigation={
           <Navigation
-            activeHref="instances"
+            activeHref="InstanceTypes"
             header={EC2Header}
             items={ec2navItems}
           />
@@ -311,4 +309,4 @@ function DeleteModal({ instances, visible, onDiscard, onDelete }) {
   );
 }
 
-export default EC2_Instances_List;
+export default EC2TypesList;

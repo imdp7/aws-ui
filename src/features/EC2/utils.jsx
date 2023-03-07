@@ -14,6 +14,7 @@ import {
 } from './table-config';
 import { CounterLink } from '../EC2/commons/common-components';
 import { TabsSection } from './EC2_Instance_Detail';
+import { TabsContent } from './Instance_type_detail';
 
 const EMPTY_PANEL_CONTENT = {
   header: '0 instances selected',
@@ -36,9 +37,10 @@ export const getPanelContentSingle = (items) => {
   }
 
   const item = items[0];
+  console.log(item);
 
   return {
-    header: item.id,
+    header: item.id || (item.type && `Instance type: ${item.type}`),
     body: <TabsSection />,
   };
 };
@@ -204,7 +206,7 @@ export const Breadcrumbs = () => (
 );
 
 export const useSplitPanel = (selectedItems) => {
-  const [splitPanelSize, setSplitPanelSize] = useState(300);
+  const [splitPanelSize, setSplitPanelSize] = useState(350);
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const [hasManuallyClosedOnce, setHasManuallyClosedOnce] = useState(false);
 

@@ -22,7 +22,7 @@ import ObjectsPane from './components/Objects';
 import Properties from './components/Properties';
 import Permissions from './components/Permissions';
 import Metrics from './components/Metrics';
-import Management from './components/Management'
+import Management from './components/Management';
 import { dataBucketFiles } from '../resources/s3Bucket';
 
 function BucketDetail(props) {
@@ -30,9 +30,9 @@ function BucketDetail(props) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
-  const [activeTabId, setActiveTabId] = useState("objects")
+  const [activeTabId, setActiveTabId] = useState('objects');
   const [toolsOpen, setToolsOpen] = useState(false);
-  console.log(activeTabId)
+  console.log(activeTabId);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Buckets"
@@ -94,7 +94,7 @@ function BucketDetail(props) {
 
   useEffect(() => {
     document.title = `${id} - S3 Bucket`;
-    navigate(`?tabs=${activeTabId}`, {replace: true});
+    navigate(`?tabs=${activeTabId}`, { replace: true });
   }, [id, activeTabId]);
 
   useEffect(() => {
@@ -103,7 +103,6 @@ function BucketDetail(props) {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
-
 
   return (
     <>
@@ -165,7 +164,13 @@ function BucketDetail(props) {
                   />
                 }
               />
-              <Tabs tabs={tabs} ariaLabel="Resource details" id={id} activeTabTd={activeTabId} onChange={({detail}) => setActiveTabId(detail.activeTabId)} />
+              <Tabs
+                tabs={tabs}
+                ariaLabel="Resource details"
+                id={id}
+                activeTabTd={activeTabId}
+                onChange={({ detail }) => setActiveTabId(detail.activeTabId)}
+              />
             </SpaceBetween>
           </Provider>
         }

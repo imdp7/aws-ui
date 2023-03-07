@@ -203,6 +203,7 @@ export const ec2navItems = [
     defaultExpanded: true,
     items: [
       { type: 'link', text: 'Instances', href: 'instances' },
+      { type: 'link', text: 'Instance Types', href: 'InstanceTypes' },
       {
         type: 'link',
         text: 'Launch templates',
