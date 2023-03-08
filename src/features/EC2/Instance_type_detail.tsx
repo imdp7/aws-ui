@@ -60,67 +60,69 @@ const Details = (props) => {
 const DetailComp = (props) => {
   const { type, hypervisor, freeTier, bareMetal } = props?.item;
   return (
-    <SpaceBetween size="m">
-      <ColumnLayout columns={4}>
-        <FormField label="Instance type">
-          <CopyText
-            copyText={`${type}`}
-            copyButtonLabel="Copy Instance type"
-            successText="Instance type copied"
-            errorText="Instance type failed to copy"
-          />
-        </FormField>
-        <FormField label="Instance family">
-          <CopyText
-            copyText={split(type, 0)}
-            copyButtonLabel="Copy Instance family"
-            successText="Instance family copied"
-            errorText="Instance family failed to copy"
-          />
-        </FormField>
-        <FormField label="Instance size">
-          <CopyText
-            copyText={split(type, 1)}
-            copyButtonLabel="Copy Instance size"
-            successText="Instance size copied"
-            errorText="Instance size failed to copy"
-          />
-        </FormField>
-        <FormField label="Hypervisor">
-          <CopyText
-            copyText={`${hypervisor}`}
-            copyButtonLabel="Copy Hypervisor"
-            successText="Hypervisor copied"
-            errorText="Hypervisor failed to copy"
-          />
-        </FormField>
-        <FormField label="Auto Recovery support">
-          <CopyText
-            copyText={`${freeTier}`}
-            copyButtonLabel="Copy Auto Recovery support"
-            successText="Auto Recovery support copied"
-            errorText="Auto Recovery support failed to copy"
-          />
-        </FormField>
-        <FormField label="Supported root device types">
-          <CopyText
-            copyText={`${bareMetal}`}
-            copyButtonLabel="Copy Auto Recovery support"
-            successText="Auto Recovery support copied"
-            errorText="Auto Recovery support failed to copy"
-          />
-        </FormField>
-        <FormField label="Dedicated Host support">
-          <Box>-</Box>
-        </FormField>
-        <FormField label="On-Demand Hibernation support">
-          <Box>-</Box>
-        </FormField>
-        <FormField label="Burstable Performance support">
-          <Box>-</Box>
-        </FormField>
-      </ColumnLayout>
-    </SpaceBetween>
+    <Container>
+      <SpaceBetween size="m">
+        <ColumnLayout columns={4}>
+          <FormField label="Instance type">
+            <CopyText
+              copyText={`${type}`}
+              copyButtonLabel="Copy Instance type"
+              successText="Instance type copied"
+              errorText="Instance type failed to copy"
+            />
+          </FormField>
+          <FormField label="Instance family">
+            <CopyText
+              copyText={split(type, 0)}
+              copyButtonLabel="Copy Instance family"
+              successText="Instance family copied"
+              errorText="Instance family failed to copy"
+            />
+          </FormField>
+          <FormField label="Instance size">
+            <CopyText
+              copyText={split(type, 1)}
+              copyButtonLabel="Copy Instance size"
+              successText="Instance size copied"
+              errorText="Instance size failed to copy"
+            />
+          </FormField>
+          <FormField label="Hypervisor">
+            <CopyText
+              copyText={`${hypervisor}`}
+              copyButtonLabel="Copy Hypervisor"
+              successText="Hypervisor copied"
+              errorText="Hypervisor failed to copy"
+            />
+          </FormField>
+          <FormField label="Auto Recovery support">
+            <CopyText
+              copyText={`${freeTier}`}
+              copyButtonLabel="Copy Auto Recovery support"
+              successText="Auto Recovery support copied"
+              errorText="Auto Recovery support failed to copy"
+            />
+          </FormField>
+          <FormField label="Supported root device types">
+            <CopyText
+              copyText={`${bareMetal}`}
+              copyButtonLabel="Copy Auto Recovery support"
+              successText="Auto Recovery support copied"
+              errorText="Auto Recovery support failed to copy"
+            />
+          </FormField>
+          <FormField label="Dedicated Host support">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="On-Demand Hibernation support">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="Burstable Performance support">
+            <Box>-</Box>
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
   );
 };
 const Compute = (props) => {
@@ -134,18 +136,96 @@ const Compute = (props) => {
 const ComputeComp = (props) => {
   const { type } = props?.item;
   return (
-    <SpaceBetween size="m">
-      <ColumnLayout columns={4}>
-        <FormField label="Instance type">
-          <CopyText
-            copyText={`${type}`}
-            copyButtonLabel="Copy Instance type"
-            successText="Instance type copied"
-            errorText="Instance type failed to copy"
-          />
-        </FormField>
-      </ColumnLayout>
-    </SpaceBetween>
+    <Container>
+      <SpaceBetween size="m">
+        <ColumnLayout columns={4}>
+          <FormField label="Instance type">
+            <CopyText
+              copyText={`${type}`}
+              copyButtonLabel="Copy Instance type"
+              successText="Instance type copied"
+              errorText="Instance type failed to copy"
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+};
+const Pricing = (props) => {
+  return (
+    <Container header={<Header variant="h3">Compute</Header>}>
+      <PricingComp {...props} />
+    </Container>
+  );
+};
+
+const PricingComp = (props) => {
+  return (
+    <Container>
+      <SpaceBetween size="m">
+        <ColumnLayout columns={4}>
+          <FormField label="On-Demand Linux pricing">
+            <CopyText
+              copyText={'0.0832 USD per Hour'}
+              copyButtonLabel="Copy On-Demand Linux pricing"
+              successText="On-Demand Linux pricing copied"
+              errorText="On-Demand Linux pricing failed to copy"
+            />
+          </FormField>
+          <FormField label="On-Demand Windows pricing">
+            <CopyText
+              copyText={'0.1108 USD per Hour'}
+              copyButtonLabel="Copy On-Demand Windows pricing"
+              successText="On-Demand Windows pricing copied"
+              errorText="On-Demand Windows pricing failed to copy"
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+};
+const Accelerators = (props) => {
+  return (
+    <Container header={<Header variant="h3">Accelerators</Header>}>
+      <AcceleratorsComp {...props} />
+    </Container>
+  );
+};
+
+const AcceleratorsComp = (props) => {
+  return (
+    <Container>
+      <SpaceBetween size="m">
+        <ColumnLayout columns={4}>
+          <FormField label="GPUs">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="GPU memory (GiB)">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="GPU manufacturer">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="GPU name">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="FPGAs">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="FPGA memory (GiB)">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="FPGA manufacturer">
+            <Box>-</Box>
+          </FormField>
+          <FormField label="FPGA name">
+            <Box>-</Box>
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
   );
 };
 
@@ -157,9 +237,29 @@ export const TabsContent = (props) => {
       content: <DetailComp {...props} />,
     },
     {
-      label: 'Security',
-      id: 'security',
+      label: 'Compute',
+      id: 'compute',
       content: <ComputeComp {...props} />,
+    },
+    {
+      label: 'Networking',
+      id: 'networking',
+      content: <ComputeComp {...props} />,
+    },
+    {
+      label: 'Storage',
+      id: 'storage',
+      content: <ComputeComp {...props} />,
+    },
+    {
+      label: 'Accelerators',
+      id: 'Accelerators',
+      content: <AcceleratorsComp {...props} />,
+    },
+    {
+      label: 'Pricing',
+      id: 'pricing',
+      content: <PricingComp {...props} />,
     },
   ];
   return <Tabs tabs={tabs} ariaLabel="Resource details" />;
@@ -228,8 +328,10 @@ function Instance_type_detail(props) {
                     />
                   }
                 />
-                <Details type={type} />
-                <Compute type={type} />
+                {/* <Details type={type} /> */}
+                {/* <Compute type={type} /> */}
+                <Accelerators type={type} />
+                <Pricing type={type} />
               </SpaceBetween>
             ) : (
               <Spinner size="large" className="spinner" />

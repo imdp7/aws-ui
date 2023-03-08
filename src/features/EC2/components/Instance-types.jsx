@@ -62,7 +62,7 @@ const COLUMN_DEFINITIONS = [
   },
   {
     id: 'availabilityZone',
-    header: `AZ's`,
+    header: `Availability Zones`,
     cell: (item) => item.availabilityZone,
     sortingField: 'availabilityZone',
   },
@@ -294,10 +294,11 @@ export default function InstancesTypes({
                 {
                   label: 'Main distribution properties',
                   options: [
-                    { id: 'type', label: 'Instance Type' },
+                    { id: 'type', label: 'Instance Type', editable: false },
                     { id: 'family', label: 'Instance Family' },
                     { id: 'size', label: 'Instance Size' },
                     { id: 'hypervisor', label: 'Hypervisor' },
+                    { id: 'availabilityZone', label: 'Availability Zones' },
                     { id: 'freeTier', label: 'Free Tier Eligibility' },
                     { id: 'freeTrial', label: 'Free trail available' },
                     { id: 'bareMetal', label: 'Bare metal' },
