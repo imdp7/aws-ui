@@ -136,7 +136,7 @@ function InstancesPage({
 
   const { header: panelHeader, body: panelBody } = getPanelContent(
     selectedItems,
-    'comparision'
+    'type'
   );
   const {
     splitPanelOpen,

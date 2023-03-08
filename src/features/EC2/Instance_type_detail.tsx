@@ -44,25 +44,80 @@ import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import { ItemState } from './components/item-state';
 
+const split = (item, index) => {
+  const name = item.split('.');
+  return name[index];
+};
+
 const Details = (props) => {
   return (
     <Container header={<Header variant="h3">Details</Header>}>
-      <DetailComp {...props} />
+      {/* <DetailComp {...props} /> */}
     </Container>
   );
 };
 
 const DetailComp = (props) => {
+  const { type, hypervisor, freeTier, bareMetal } = props?.item;
   return (
     <SpaceBetween size="m">
       <ColumnLayout columns={4}>
         <FormField label="Instance type">
           <CopyText
-            copyText={`${props.type}`}
+            copyText={`${type}`}
             copyButtonLabel="Copy Instance type"
             successText="Instance type copied"
             errorText="Instance type failed to copy"
           />
+        </FormField>
+        <FormField label="Instance family">
+          <CopyText
+            copyText={split(type, 0)}
+            copyButtonLabel="Copy Instance family"
+            successText="Instance family copied"
+            errorText="Instance family failed to copy"
+          />
+        </FormField>
+        <FormField label="Instance size">
+          <CopyText
+            copyText={split(type, 1)}
+            copyButtonLabel="Copy Instance size"
+            successText="Instance size copied"
+            errorText="Instance size failed to copy"
+          />
+        </FormField>
+        <FormField label="Hypervisor">
+          <CopyText
+            copyText={`${hypervisor}`}
+            copyButtonLabel="Copy Hypervisor"
+            successText="Hypervisor copied"
+            errorText="Hypervisor failed to copy"
+          />
+        </FormField>
+        <FormField label="Auto Recovery support">
+          <CopyText
+            copyText={`${freeTier}`}
+            copyButtonLabel="Copy Auto Recovery support"
+            successText="Auto Recovery support copied"
+            errorText="Auto Recovery support failed to copy"
+          />
+        </FormField>
+        <FormField label="Supported root device types">
+          <CopyText
+            copyText={`${bareMetal}`}
+            copyButtonLabel="Copy Auto Recovery support"
+            successText="Auto Recovery support copied"
+            errorText="Auto Recovery support failed to copy"
+          />
+        </FormField>
+        <FormField label="Dedicated Host support">
+          <Box>-</Box>
+        </FormField>
+        <FormField label="On-Demand Hibernation support">
+          <Box>-</Box>
+        </FormField>
+        <FormField label="Burstable Performance support">
+          <Box>-</Box>
         </FormField>
       </ColumnLayout>
     </SpaceBetween>
@@ -71,18 +126,19 @@ const DetailComp = (props) => {
 const Compute = (props) => {
   return (
     <Container header={<Header variant="h3">Compute</Header>}>
-      <ComputeComp {...props} />
+      {/* <ComputeComp {...props} /> */}
     </Container>
   );
 };
 
 const ComputeComp = (props) => {
+  const { type } = props?.item;
   return (
     <SpaceBetween size="m">
       <ColumnLayout columns={4}>
         <FormField label="Instance type">
           <CopyText
-            copyText={`${props.type}`}
+            copyText={`${type}`}
             copyButtonLabel="Copy Instance type"
             successText="Instance type copied"
             errorText="Instance type failed to copy"

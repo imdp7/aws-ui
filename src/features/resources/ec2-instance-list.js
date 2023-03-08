@@ -35,6 +35,7 @@ export default Array.from({ length: 50 }).map((item, i) => ({
   ),
   publicDns: `231.50.3.${i}`,
   monitoring: 'Default',
+  hypervisor: getElement(['xen', 'nitro'], i),
   freeTier: getElement(['true', 'false'], i),
   freeTrial: getElement(['true', 'false'], i),
   bareMetal: getElement(['true', 'false'], i),

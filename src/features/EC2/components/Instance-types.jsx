@@ -67,6 +67,12 @@ const COLUMN_DEFINITIONS = [
     sortingField: 'availabilityZone',
   },
   {
+    id: 'hypervisor',
+    header: 'Hypervisor',
+    cell: (item) => item.hypervisor,
+    sortingField: 'hypervisor',
+  },
+  {
     id: 'freeTier',
     header: 'Free Tier Eligibility',
     cell: (item) => item.freeTier,
@@ -113,6 +119,7 @@ export default function InstancesTypes({
         'family',
         'size',
         'availabilityZone',
+        'hypervisor',
         'freeTier',
         'freeTrial',
         'bareMetal',
@@ -290,6 +297,7 @@ export default function InstancesTypes({
                     { id: 'type', label: 'Instance Type' },
                     { id: 'family', label: 'Instance Family' },
                     { id: 'size', label: 'Instance Size' },
+                    { id: 'hypervisor', label: 'Hypervisor' },
                     { id: 'freeTier', label: 'Free Tier Eligibility' },
                     { id: 'freeTrial', label: 'Free trail available' },
                     { id: 'bareMetal', label: 'Bare metal' },

@@ -17,8 +17,12 @@ import { TabsSection } from './EC2_Instance_Detail';
 import { TabsContent } from './Instance_type_detail';
 
 const EMPTY_PANEL_CONTENT = {
-  header: '0 instances selected',
+  header: 'Select an instance',
   body: 'Select an instance to see its details.',
+};
+const EMPTY_PANEL_CONTENTS = {
+  header: 'Select an instance type',
+  body: 'Select an instance type to see its details.',
 };
 
 export const getPanelContent = (items, type) => {
@@ -26,6 +30,8 @@ export const getPanelContent = (items, type) => {
     return getPanelContentSingle(items);
   } else if (type === 'multiple') {
     return getPanelContentMultiple(items);
+  } else if (type === 'type') {
+    return getPanelContentSingles(items);
   } else {
     return getPanelContentComparison(items);
   }
@@ -40,8 +46,21 @@ export const getPanelContentSingle = (items) => {
   console.log(item);
 
   return {
-    header: item.id || (item.type && `Instance type: ${item.type}`),
+    header: item.id,
     body: <TabsSection />,
+  };
+};
+export const getPanelContentSingles = (items) => {
+  if (!items.length) {
+    return EMPTY_PANEL_CONTENTS;
+  }
+
+  const item = items[0];
+  console.log(item);
+
+  return {
+    header: item.type && `Instance type: ${item.type}`,
+    body: <TabsContent item={item} />,
   };
 };
 
