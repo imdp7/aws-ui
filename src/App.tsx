@@ -27,6 +27,7 @@ import CreateComponent from './features/S3/components/CreateComponent';
 import SingleComponent from './features/EC2/components/SingleComponent';
 import LaunchTemplate from './features/EC2/components/LaunchTemplate';
 import Instance_type_detail from './features/EC2/Instance_type_detail';
+import Bills from './Auth/Bills';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -101,6 +102,10 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="profile"
               element={<Profile user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="bills"
+              element={<Bills user={user.username} signOut={signOut} />}
             />
           </Route>
           <Route path="/ec2_instance">

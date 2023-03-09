@@ -321,7 +321,7 @@ export const AppHeader = (props: State): JSX.Element => {
                     },
                   ],
                 },
-                { id: 'profile', text: 'Profile' },
+                { id: 'profile', text: 'Account' },
                 { id: 'preferences', text: 'Preferences' },
                 { id: 'security', text: 'Security' },
                 {
