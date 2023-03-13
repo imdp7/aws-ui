@@ -4,7 +4,6 @@ import { AppFooter } from '../features/common/AppFooter';
 import { AppHeader } from '../features/common/TopNavigations';
 import {
   AppLayout,
-  Alert,
   Button,
   Container,
   Popover,
@@ -23,19 +22,15 @@ import {
   Table,
   FormField,
   Tabs,
-  Checkbox,
-  Modal,
-  Form,
-  Input,
   Link,
   Select,
   StatusIndicator,
 } from '@cloudscape-design/components';
-import { DashboardHeader, HelpPanels } from '../features/EC2/components/header';
+import { HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import { appLayoutLabels } from '../features/common/labels';
-import { InfoLink } from '../features/common/common';
+
 import {
   Navigation,
   userNav,
@@ -46,8 +41,16 @@ import Account from './Components/Account';
 import Invoices from './Components/Invoices';
 import Savings from './Components/Savings';
 import Taxes from './Components/Taxes';
+import { COLUMN_DEFINITIONS_PAYMENT } from './Components/TableFilter';
 
 const SummaryInfo = ({ loadHelpPanelContent }) => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <Container
       header={
@@ -90,7 +93,7 @@ const SummaryInfo = ({ loadHelpPanelContent }) => {
           <Box float="right">
             <FormField label="Total in USD">
               <Box variant="awsui-key-label" fontSize="heading-m">
-                USD 0.00
+                {!loading ? 'USD 0.00' : <Spinner />}
               </Box>
             </FormField>
           </Box>
@@ -107,7 +110,8 @@ const SummaryInfo = ({ loadHelpPanelContent }) => {
                 triggerType="text"
                 content={
                   <>
-                    USD 0.00 <Link external>Learn more</Link>
+                    <p>{!loading ? 'USD 0.00' : <Spinner />}</p>
+                    <Link external>Learn more</Link>
                   </>
                 }
                 renderWithPortal={true}
@@ -118,7 +122,7 @@ const SummaryInfo = ({ loadHelpPanelContent }) => {
                   fontSize="heading-xl"
                   fontWeight="bold"
                 >
-                  $0.00
+                  {!loading ? '$0.00' : <Spinner />}
                 </Box>
               </Popover>
             </Box>
@@ -131,47 +135,44 @@ const SummaryInfo = ({ loadHelpPanelContent }) => {
 };
 
 const PaymentInformation = () => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <ExpandableSection headerText="Payment information" variant="footer">
       <SpaceBetween size="m">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <FormField label="Total number of payments">
-              <Box>0</Box>
+              <Box>{!loading ? '0' : <Spinner />}</Box>
             </FormField>
           </Box>
           <Box float="right">
             <FormField label="Total received payments in USD">
-              <Box>USD 0.00</Box>
+              <Box>{!loading ? 'USD 0.00' : <Spinner />}</Box>
             </FormField>
           </Box>
         </div>
         <Table
-          columnDefinitions={[
-            {
-              id: 'variable',
-              header: 'Variable name',
-              cell: (e) => e.name,
-              sortingField: 'name',
-            },
-            {
-              id: 'value',
-              header: 'Text value',
-              cell: (e) => e.alt,
-              sortingField: 'alt',
-            },
-            { id: 'type', header: 'Type', cell: (e) => e.type },
-            {
-              id: 'description',
-              header: 'Description',
-              cell: (e) => e.description,
-            },
-          ]}
+          columnDefinitions={COLUMN_DEFINITIONS_PAYMENT}
           items={[]}
           variant="embedded"
-          loadingText="Loading resources"
+          loadingText="Loading changes in payment information"
+          loading={loading}
           trackBy="name"
-          visibleColumns={['variable', 'value', 'type', 'description']}
+          visibleColumns={[
+            'provider',
+            'type',
+            'DocumentType',
+            'invoiceID',
+            'paymentStatus',
+            'PaymentReceivedDate',
+            'total',
+          ]}
           empty={
             <Box textAlign="center" color="inherit">
               <b>No data</b>

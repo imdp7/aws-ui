@@ -140,3 +140,12 @@
   text-align: center;
   margin-left: 5px;
 }
+.input-width-card {
+  width: 60%;
+}
+.input-width-name {
+  width: 50%;
+}
+.input-width-number {
+  width: 15%;
+}

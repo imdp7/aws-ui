@@ -1,11 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import {
-  CollectionPreferences,
-  StatusIndicator,
-  Link,
-} from '@cloudscape-design/components';
+import { CollectionPreferences } from '@cloudscape-design/components';
 import { addColumnSortLabels } from '../../features/common/labels';
 
 export const COLUMN_DEFINITIONS_SERVICE = addColumnSortLabels([
@@ -28,6 +24,57 @@ export const COLUMN_DEFINITIONS_SERVICE = addColumnSortLabels([
     sortingField: 'amount',
     header: 'Amount',
     cell: (item) => item.amount,
+    minWidth: 100,
+  },
+]);
+export const COLUMN_DEFINITIONS_PAYMENT = addColumnSortLabels([
+  {
+    id: 'provider',
+    sortingField: 'provider',
+    header: 'Service provider',
+    cell: (item) => item.provider,
+    minWidth: 120,
+  },
+  {
+    id: 'type',
+    sortingField: 'type',
+    cell: (item) => item.type,
+    header: 'Charge type',
+    minWidth: 160,
+  },
+  {
+    id: 'documentType',
+    sortingField: 'documentType',
+    header: 'Document type',
+    cell: (item) => item.documentType,
+    minWidth: 100,
+  },
+  {
+    id: 'invoiceID',
+    sortingField: 'invoiceID',
+    header: 'Invoice ID',
+    cell: (item) => item.invoiceID,
+    minWidth: 100,
+  },
+  {
+    id: 'paymentStatus',
+    sortingField: 'paymentStatus',
+    header: 'Payment Status',
+    cell: (item) => item.paymentStatus,
+    minWidth: 100,
+  },
+  {
+    id: 'PaymentReceivedDate',
+    sortingField: 'PaymentReceivedDate',
+    header: 'Payment received date',
+    cell: (item) => item.PaymentReceivedDate,
+    minWidth: 100,
+  },
+  {
+    id: 'total',
+    sortingField: 'total',
+    header: 'Total',
+    cell: (item) => item.total,
     minWidth: 100,
   },
 ]);

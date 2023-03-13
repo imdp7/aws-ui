@@ -35,6 +35,7 @@ const Pane1 = (props) => {
         <p>{props?.info}</p>
         <p>{props?.des}</p>
         <h5>{props?.h5}</h5>
+        <p>{props?.des2}</p>
         {props?.ul ? (
           <div>
             {props?.ul.map((t) => {

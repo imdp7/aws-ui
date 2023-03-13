@@ -6,11 +6,9 @@ import {
   SpaceBetween,
   Table,
   Pagination,
-  CollectionPreferences,
   FormField,
   TextFilter,
   Box,
-  ColumnLayout,
   Spinner,
 } from '@cloudscape-design/components';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';

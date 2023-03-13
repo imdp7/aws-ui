@@ -28,6 +28,9 @@ import SingleComponent from './features/EC2/components/SingleComponent';
 import LaunchTemplate from './features/EC2/components/LaunchTemplate';
 import Instance_type_detail from './features/EC2/Instance_type_detail';
 import Bills from './Auth/Bills';
+import PaymentPreferences from './Auth/PaymentPreferences';
+import AddPayment from './Auth/Components/SingleComponent';
+import SinglePaymentComponent from './Auth/Components/SingleComponent';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -106,6 +109,21 @@ const App = ({ user, signOut }): JSX.Element => {
             <Route
               path="bills"
               element={<Bills user={user.username} signOut={signOut} />}
+            />
+            <Route
+              path="billing/paymentPreferences"
+              element={
+                <PaymentPreferences user={user.username} signOut={signOut} />
+              }
+            />
+            <Route
+              path="billing/paymentPreferences/:info/:subInfo"
+              element={
+                <SinglePaymentComponent
+                  user={user.username}
+                  signOut={signOut}
+                />
+              }
             />
           </Route>
           <Route path="/ec2_instance">

@@ -146,7 +146,7 @@ export const userNav = [
       {
         type: 'link',
         text: 'Payment Preferences',
-        href: 'payment_preferences',
+        href: 'billing/paymentPreferences',
       },
       {
         type: 'link',

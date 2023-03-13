@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Header,
-  Button,
   SpaceBetween,
   Table,
   Pagination,
-  CollectionPreferences,
   FormField,
   TextFilter,
   Box,
-  ColumnLayout,
   Spinner,
 } from '@cloudscape-design/components';
 import { SettingsButton } from '../Bills';

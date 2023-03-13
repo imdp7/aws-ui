@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Header,
-  Button,
   Spinner,
   SpaceBetween,
   Table,
   Pagination,
-  CollectionPreferences,
   FormField,
   TextFilter,
   Box,
-  ColumnLayout,
 } from '@cloudscape-design/components';
 import { SettingsButton } from '../Bills';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';

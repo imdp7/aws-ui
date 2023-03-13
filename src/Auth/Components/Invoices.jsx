@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Header,
-  Button,
   SpaceBetween,
   Table,
   Pagination,
-  CollectionPreferences,
   FormField,
   TextFilter,
   Box,
-  ColumnLayout,
   Spinner,
 } from '@cloudscape-design/components';
 import { SettingsButton } from '../Bills';
@@ -109,7 +106,7 @@ function Invoices(props) {
       >
         <SpaceBetween size="m">
           <FormField label="Total number of tax invoices">
-            <Box>0</Box>
+            <Box>{!loading ? '0' : <Spinner />}</Box>
           </FormField>
           <Table
             columnDefinitions={COLUMN_DEFINITIONS_TAX_INVOICES}
