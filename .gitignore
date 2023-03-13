@@ -3,7 +3,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+.env
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
