@@ -10,51 +10,21 @@ import {
   FormField,
   Checkbox,
   Button,
+  Modal,
+  Box,
   Select,
   Alert,
+  ColumnLayout,
 } from '@cloudscape-design/components';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(
-  'sk_test_51FrsMEJyECnw5rCL4g5bJkAmDbIWUonjxMQG1h6NDhCaDQ9e29456MxLFFmWRZCf30PZILvtaP0J4FXvHdieWO8e0092YqW109'
-);
-
-async function handleSubmit(event) {
-  event.preventDefault();
-  const paymentMethod = await stripe.paymentMethods.create({
-    type: 'card',
-    card: {
-      number: '4242424242424242',
-      exp_month: 12,
-      exp_year: 2023,
-      cvc: '314',
-    },
-    billing_details: {
-      address: {
-        city: 'New York',
-        country: 'US',
-        line1: '00 abc street',
-        line2: '',
-        postal_code: '08820',
-        state: 'New york',
-      },
-      email: 'abc@abc.com',
-      name: 'Darshan Patel',
-      phone: '+1 848-235-8321',
-    },
-  });
-  if (paymentMethod.error) {
-    console.log(error);
-  } else {
-    console.log(paymentMethod);
-  }
-}
-
 const Content = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [method, setMethod] = useState([
     {
       label: 'Credit or debit card',
@@ -64,8 +34,8 @@ const Content = () => {
   ]);
   const [cardNumber, setCardNumber] = useState('');
   const [date, setDate] = useState('');
-  const [name, setName] = useState('');
   const [cvc, setCVC] = useState(null);
+  const [name, setName] = useState('');
   const [defaultCard, setDefaultCard] = useState(false);
   const [select, setSelect] = React.useState({
     label: 'Use existing address',
@@ -82,13 +52,37 @@ const Content = () => {
   const [email, setEmail] = useState(null);
   const [country, setCountry] = useState(null);
   const options = useMemo(() => countryList().getData(), []);
-
+  const [visible, setVisible] = useState(false);
+  const [confirm, setConfirm] = useState([]);
+  const [confirmationData, setConfirmationData] = useState({});
   const stripe = new Stripe(
     'sk_test_51FrsMEJyECnw5rCL4g5bJkAmDbIWUonjxMQG1h6NDhCaDQ9e29456MxLFFmWRZCf30PZILvtaP0J4FXvHdieWO8e0092YqW109'
   );
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function handleSubmit() {
+    if (!method) {
+      setErrorMessage('Please select a method to add');
+      return;
+    }
+    if (!cardNumber) {
+      setErrorMessage('Please enter valid card number');
+      return;
+    }
+    if (!date) {
+      setErrorMessage('Please enter the expiration date');
+      return;
+    }
+    if (!cvc) {
+      setErrorMessage('Please enter the 3 digit security code');
+      return;
+    }
+    if (!nameCard) {
+      setErrorMessage('Please enter the name on the card');
+      return;
+    }
+    setLoading(true);
+    setErrorMessage('');
+    setError(false);
     const paymentMethod = await stripe.paymentMethods.create({
       type: method,
       card: {
@@ -112,16 +106,54 @@ const Content = () => {
       },
     });
     if (paymentMethod.error) {
-      console.log(error);
+      setErrorMessage(paymentMethod.error.message);
     } else {
-      window.addEventListener('successful added', (event) => {
-        console.log(`Received message: ${paymentMethod}`);
-      });
+      setVisible(true);
+      const confirmationData = Object.entries(paymentMethod.card).reduce(
+        (obj, [key, value]) => ({ ...obj, [key]: value }),
+        {}
+      );
+      setConfirmationData(confirmationData);
+      console.log(confirmationData);
     }
   }
 
+  const capital = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
   return (
     <SpaceBetween size="m">
+      <Modal
+        onDismiss={() => setVisible(false)}
+        visible={visible}
+        closeAriaLabel="Close modal"
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="primary" onClick={() => navigate(-1)}>
+                Back to Payment preferences
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+        header={
+          capital(`${confirmationData.funding}`) +
+          ' ' +
+          'card added successfully'
+        }
+      >
+        <ColumnLayout columns={2}>
+          <FormField label="Card Type">
+            <Box>{capital(`${confirmationData.brand}`)}</Box>
+          </FormField>
+          <FormField label="Last 4 digits">
+            <Box>{capital(`${confirmationData.last4}`)}</Box>
+          </FormField>
+          <FormField label="Confirmation Number">
+            <Box>{confirmationData.fingerprint}</Box>
+          </FormField>
+        </ColumnLayout>
+      </Modal>
       <Container
         header={
           <Header variant="h3" info={<Link>Info</Link>}>
@@ -150,18 +182,39 @@ const Content = () => {
       </Container>
       <Container header={<Header variant="h3">Card Information</Header>}>
         <SpaceBetween size="m">
-          <FormField label="Card number">
+          <FormField
+            label="Card number"
+            errorText={
+              errorMessage &&
+              errorMessage.includes('card number') &&
+              errorMessage
+            }
+          >
             <Input
               step={1}
               className="input-width-card"
               value={cardNumber}
-              onChange={({ detail }) => setCardNumber(detail.value)}
+              type="number"
+              onChange={({ detail }) => {
+                detail.value.length <= 16
+                  ? setCardNumber(detail.value)
+                  : setError(false);
+              }}
             />
           </FormField>
-          <FormField label="Expiry date">
+          <FormField
+            label="Expiry date"
+            errorText={
+              errorMessage &&
+              errorMessage.includes('expiration date') &&
+              errorMessage
+            }
+          >
             <DatePicker
               step={2}
-              onChange={({ detail }) => setDate(detail.value)}
+              onChange={({ detail }) => {
+                setDate(detail.value);
+              }}
               value={date}
               openCalendarAriaLabel={(selectedDate) =>
                 'Choose certificate expiry date' +
@@ -173,22 +226,42 @@ const Content = () => {
               todayAriaLabel="Today"
             />
           </FormField>
-          <FormField label="CVC">
+          <FormField
+            label="CVC"
+            errorText={
+              errorMessage &&
+              errorMessage.includes('security code') &&
+              errorMessage
+            }
+          >
             <Input
-              step={1}
+              step={3}
               className="input-width-number"
               value={cvc}
               inputMode="numeric"
               type="number"
-              onChange={({ detail }) => setCVC(detail.value)}
+              onChange={({ detail }) => {
+                detail.value.length <= 4
+                  ? setCVC(detail.value)
+                  : setError(true);
+              }}
             />
           </FormField>
-          <FormField label="Name on card">
+          <FormField
+            label="Name on card"
+            errorText={
+              errorMessage &&
+              errorMessage.includes('name on the card') &&
+              errorMessage
+            }
+          >
             <Input
               className="input-width-name"
-              step={3}
+              step={4}
               value={nameCard}
-              onChange={({ detail }) => setNameCard(detail.value)}
+              onChange={({ detail }) => {
+                detail.value !== 0 && setNameCard(detail.value);
+              }}
             />
           </FormField>
           <Checkbox
@@ -224,6 +297,7 @@ const Content = () => {
             <Input
               className="input-width-card"
               value={name}
+              step={5}
               onChange={({ detail }) => setName(detail.value)}
             />
           </FormField>
@@ -231,6 +305,7 @@ const Content = () => {
             <Input
               className="input-width-card"
               value={company}
+              step={6}
               onChange={({ detail }) => setCompany(detail.value)}
             />
           </FormField>
@@ -238,6 +313,7 @@ const Content = () => {
             <Select
               className="input-width-card"
               options={options}
+              step={7}
               errorText="Error fetching countries."
               placeholder="Choose a country"
               recoveryText="Retry"
@@ -253,11 +329,13 @@ const Content = () => {
               <Input
                 className="input-width-card"
                 value={address1}
+                step={8}
                 onChange={({ detail }) => setAddress1(detail.value)}
               />
               <Input
                 className="input-width-card"
                 value={address2}
+                step={9}
                 placeholder="Apartment, suite, unit floor, etc."
                 onChange={({ detail }) => setAddress2(detail.value)}
               />
@@ -267,12 +345,14 @@ const Content = () => {
             <FormField label="City">
               <Input
                 value={city}
+                step={10}
                 onChange={({ detail }) => setCity(detail.value)}
               />
             </FormField>
             <FormField label="State/province/region">
               <Input
                 value={state}
+                step={11}
                 onChange={({ detail }) => setState(detail.value)}
               />
             </FormField>
@@ -281,6 +361,7 @@ const Content = () => {
             <Input
               className="input-width-card"
               value={zipCode}
+              step={12}
               onChange={({ detail }) => setZipCode(detail.value)}
             />
           </FormField>
@@ -288,6 +369,7 @@ const Content = () => {
             <Input
               className="input-width-card"
               value={phone}
+              step={13}
               placeholder="+1 222-333-4444"
               inputMode="tel"
               onChange={({ detail }) => setPhone(detail.value)}
@@ -297,12 +379,14 @@ const Content = () => {
             <Input
               className="input-width-card"
               value={email}
+              step={14}
               inputMode="email"
               onChange={({ detail }) => setEmail(detail.value)}
             />
           </FormField>
         </SpaceBetween>
       </Container>
+      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
         <Button onClick={() => navigate(-1)}>Cancel</Button>
         <Button variant="primary" onClick={handleSubmit} loading={loading}>
@@ -313,30 +397,7 @@ const Content = () => {
   );
 };
 function AddPayment() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate(-1);
-    }, 1500);
-  };
-  return (
-    // <SpaceBetween size="m">
-    //   <MethodType />
-    //   <CardInformation />
-    //   <BillingInformation />
-    //   <SpaceBetween size="l" direction="horizontal" className="btn-right">
-    //     <Button onClick={() => navigate(-1)}>Cancel</Button>
-    //     <Button variant="primary" onClick={handleSubmit} loading={loading}>
-    //       Add card
-    //     </Button>
-    //   </SpaceBetween>
-    // </SpaceBetween>
-    <Content />
-  );
+  return <Content />;
 }
 
 export default AddPayment;
