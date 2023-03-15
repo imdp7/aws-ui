@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { AppFooter } from '../features/common/AppFooter';
 import { AppHeader } from '../features/common/TopNavigations';
 import {
@@ -27,6 +27,7 @@ import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import { appLayoutLabels } from '../features/common/labels';
 import { InfoLink } from '../features/common/common';
+import countryList from 'react-select-country-list';
 import {
   Navigation,
   userNav,
@@ -36,22 +37,40 @@ import {
 const Account = (props) => {
   const [edit, setEdit] = useState(false);
   const [email, setEmail] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [readOnlyWithErrors, setReadOnlyWithErrors] = useState(false);
-
-  const getErrorText = (errorMessage) => {
-    return readOnlyWithErrors ? errorMessage : undefined;
-  };
-
-  const fakeDataFetch = (delay) =>
-    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async () => {
     setLoading(true);
-    await fakeDataFetch(1500);
-    setLoading(false);
-    setEdit(false);
+    const timer = setTimeout(async () => {
+      if (!email) {
+        setErrorMessage('Please enter new email address');
+        setLoading(false);
+        return;
+      }
+      if (!oldPassword) {
+        setErrorMessage('Please enter old password');
+        setLoading(false);
+        return;
+      }
+      if (!password) {
+        setErrorMessage('Please enter new password');
+        setLoading(false);
+        return;
+      }
+      if (!rePassword) {
+        setErrorMessage('Please  Re-Enter new password');
+        setLoading(false);
+        return;
+      }
+      setErrorMessage('');
+      setLoading(false);
+      setEdit(false);
+    }, 1500);
+    return () => clearTimeout(timer);
   };
 
   const editHandler = () => {
@@ -64,12 +83,6 @@ const Account = (props) => {
         header={
           <Header
             variant="h2"
-            // description={<div>
-            // <>
-            // Please note that updating your contact informatin on this page will not update the informatino displayed on your pdf Invoices. If you
-            // wish to update the billing address information assocaited with your Invocie, please edit it thorugh the Payment Methoda page, loacted</> {" "}
-            // <Link>here</Link>
-            // </div>}
             info={
               <InfoLink
                 onFollow={() =>
@@ -108,7 +121,10 @@ const Account = (props) => {
                     onClick={() => {
                       setEdit(false);
                       setEmail('');
+                      setOldPassword('');
+                      setRePassword('');
                       setPassword('');
+                      setErrorMessage('');
                     }}
                   >
                     Cancel
@@ -126,6 +142,7 @@ const Account = (props) => {
             >
               <SpaceBetween size="xs">
                 <ColumnLayout borders="horizontal">
+                  {errorMessage && <Alert type="error">{errorMessage}</Alert>}
                   <ColumnLayout columns={2}>
                     <FormField label="Account ID:">
                       <Input value="610741917922" disabled />
@@ -135,9 +152,11 @@ const Account = (props) => {
                     </FormField>
                     <FormField
                       label="Enter new Email:"
-                      errorText={getErrorText(
-                        'You must specify a content origin.'
-                      )}
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('new email') &&
+                        errorMessage
+                      }
                     >
                       <Input
                         value={email}
@@ -147,15 +166,29 @@ const Account = (props) => {
                         placeholder="Enter New Email"
                       />
                     </FormField>
-                    <FormField label="Enter Old Password:">
+                    <FormField
+                      label="Enter Old Password:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('old password') &&
+                        errorMessage
+                      }
+                    >
                       <Input
-                        value={password}
+                        value={oldPassword}
                         type="password"
-                        onChange={({ detail }) => setPassword(detail.value)}
+                        onChange={({ detail }) => setOldPassword(detail.value)}
                         placeholder="Set Old Password"
                       />
                     </FormField>
-                    <FormField label="Enter New Password:">
+                    <FormField
+                      label="Enter New Password:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('new password') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={password}
                         type="password"
@@ -163,12 +196,19 @@ const Account = (props) => {
                         placeholder="Set New Password"
                       />
                     </FormField>
-                    <FormField label="Re-Enter Password:">
+                    <FormField
+                      label="Re-Enter New Password:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('Re-Enter new password') &&
+                        errorMessage
+                      }
+                    >
                       <Input
-                        value={password}
+                        value={rePassword}
                         type="password"
-                        onChange={({ detail }) => setPassword(detail.value)}
-                        placeholder="Set New Password"
+                        onChange={({ detail }) => setRePassword(detail.value)}
+                        placeholder="Re-Enter New Password"
                       />
                     </FormField>
                   </ColumnLayout>
@@ -204,24 +244,61 @@ const Information = (props) => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [postal, setPostal] = useState('');
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState(null);
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
   const [website, setWebsite] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const options = useMemo(() => countryList().getData(), []);
 
   const editHandler = () => {
     setEdit(true);
   };
 
-  const fakeDataFetch = (delay) =>
-    new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
-
   const handleSubmit = async () => {
     setLoading(true);
-    await fakeDataFetch(2500);
-    setLoading(false);
-    setEdit(false);
+    const timer = setTimeout(async () => {
+      if (!name) {
+        setErrorMessage('Please enter name');
+        setLoading(false);
+        return;
+      }
+      if (!address) {
+        setErrorMessage('Please enter address');
+        setLoading(false);
+        return;
+      }
+      if (!city) {
+        setErrorMessage('Please enter city');
+        setLoading(false);
+        return;
+      }
+      if (!state) {
+        setErrorMessage('Please enter state');
+        setLoading(false);
+        return;
+      }
+      if (!postal) {
+        setErrorMessage('Please enter postal/zip code');
+        setLoading(false);
+        return;
+      }
+      if (!country) {
+        setErrorMessage('Please enter the country');
+        setLoading(false);
+        return;
+      }
+      if (!phone) {
+        setErrorMessage('Please enter phone number');
+        setLoading(false);
+        return;
+      }
+      setErrorMessage('');
+      setLoading(false);
+      setEdit(false);
+    }, 1500);
+    return () => clearTimeout(timer);
   };
 
   return (
@@ -272,7 +349,7 @@ const Information = (props) => {
                       setCity('');
                       setState('');
                       setPostal('');
-                      setCountry('');
+                      setCountry(null);
                       setPhone('');
                       setCompany('');
                       setWebsite('');
@@ -293,8 +370,16 @@ const Information = (props) => {
             >
               <SpaceBetween size="xs">
                 <ColumnLayout borders="horizontal">
-                  <ColumnLayout columns={4}>
-                    <FormField label="Account Name:">
+                  {errorMessage && <Alert type="error">{errorMessage}</Alert>}
+                  <ColumnLayout columns={3}>
+                    <FormField
+                      label="Account Name:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('name') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={name}
                         inputMode="text"
@@ -303,7 +388,14 @@ const Information = (props) => {
                         placeholder="Enter Name"
                       />
                     </FormField>
-                    <FormField label="Address:">
+                    <FormField
+                      label="Address:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('address') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={address}
                         inputMode="text"
@@ -312,7 +404,14 @@ const Information = (props) => {
                         placeholder="Enter Address"
                       />
                     </FormField>
-                    <FormField label="City:">
+                    <FormField
+                      label="City:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('city') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={city}
                         inputMode="text"
@@ -321,7 +420,14 @@ const Information = (props) => {
                         placeholder="Enter City"
                       />
                     </FormField>
-                    <FormField label="State:">
+                    <FormField
+                      label="State:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('state') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={state}
                         inputMode="text"
@@ -331,7 +437,14 @@ const Information = (props) => {
                       />
                     </FormField>
 
-                    <FormField label="Postal Code:">
+                    <FormField
+                      label="Postal Code:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('postal') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={postal}
                         inputMode="numeric"
@@ -340,16 +453,37 @@ const Information = (props) => {
                         placeholder="Enter Postal"
                       />
                     </FormField>
-                    <FormField label="Country:">
-                      <Input
-                        value={country}
-                        inputMode="text"
-                        ariaRequired
-                        onChange={({ detail }) => setCountry(detail.value)}
-                        placeholder="Enter Country"
+                    <FormField
+                      label="Select Country"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('country') &&
+                        errorMessage
+                      }
+                    >
+                      <Select
+                        className="input-width-card"
+                        options={options}
+                        errorText="Error fetching countries."
+                        placeholder="Choose a country"
+                        recoveryText="Retry"
+                        filteringType="auto"
+                        selectedAriaLabel="Selected"
+                        triggerVariant="option"
+                        selectedOption={country}
+                        onChange={({ detail }) =>
+                          setCountry(detail.selectedOption)
+                        }
                       />
                     </FormField>
-                    <FormField label="Phone Number:">
+                    <FormField
+                      label="Phone Number:"
+                      errorText={
+                        errorMessage &&
+                        errorMessage.includes('phone') &&
+                        errorMessage
+                      }
+                    >
                       <Input
                         value={phone}
                         inputMode="tel"
@@ -386,26 +520,30 @@ const Information = (props) => {
             <ColumnLayout borders="horizontal">
               <ColumnLayout columns={4}>
                 <Box variant="awsui-key-label">Full Name:</Box>
-                <Box float="left">{name || 'Andy Jassy'}</Box>
+                <Box float="left">{name || '-'}</Box>
                 <Box variant="awsui-key-label">Address:</Box>
                 <Box float="left">{address || '-'}</Box>
                 <Box variant="awsui-key-label">City:</Box>
-                <Box float="left">{city || 'Newark'}</Box>
+                <Box float="left">{city || '-'}</Box>
                 <Box variant="awsui-key-label">State:</Box>
-                <Box float="left">{state || 'NJ'}</Box>
+                <Box float="left">{state || '-'}</Box>
                 <Box variant="awsui-key-label">Postal Code:</Box>
-                <Box float="left">{postal || '010101'}</Box>
+                <Box float="left">{postal || '-'}</Box>
                 <Box variant="awsui-key-label">Country:</Box>
-                <Box float="left">{country || 'US'}</Box>
+                <Box float="left">{country?.value || '-'}</Box>
                 <Box variant="awsui-key-label">Phone Number:</Box>
-                <Box float="left">{phone || '9998886628'}</Box>
+                <Box float="left">{phone || '-'}</Box>
                 <Box variant="awsui-key-label">Company Name:</Box>
-                <Box float="left">{company || 'Amazon'}</Box>
+                <Box float="left">{company || '-'}</Box>
                 <Box variant="awsui-key-label">Website URL:</Box>
                 <Box float="left">
-                  <Link href={website} external>
-                    {website || 'www.aws.com'}
-                  </Link>
+                  {website ? (
+                    <Link href={website} external>
+                      {website}
+                    </Link>
+                  ) : (
+                    '-'
+                  )}
                 </Box>
               </ColumnLayout>
             </ColumnLayout>

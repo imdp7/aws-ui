@@ -25,7 +25,7 @@ const DATA = {
 };
 
 function Panel2(props) {
-  const [value, setValue] = useState('1');
+  const [instanceNo, setInstanceNo] = useState('1');
   const [visible, setVisible] = useState(true);
   const [btn, setBtn] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -54,8 +54,8 @@ function Panel2(props) {
                   label="Number of Instances"
                 >
                   <Input
-                    onChange={({ detail }) => setValue(detail.value)}
-                    value={value}
+                    onChange={({ detail }) => setInstanceNo(detail.value)}
+                    value={instanceNo}
                     inputMode="numeric"
                     type="number"
                   />

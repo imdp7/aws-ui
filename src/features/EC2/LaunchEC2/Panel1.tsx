@@ -57,6 +57,7 @@ function Panel1({
     subnet: 'No preference (Default subnet in any availability zone)',
     PublicIP: 'Enable',
   };
+  const [errorMessage, setErrorMessage] = useState('');
 
   const definitions = [
     {
@@ -387,7 +388,15 @@ function Panel1({
           }
         >
           <SpaceBetween size="l">
-            <FormField label="Name" stretch={true}>
+            <FormField
+              label="Name"
+              stretch={true}
+              errorText={
+                errorMessage &&
+                errorMessage.includes('name and tags') &&
+                errorMessage
+              }
+            >
               <Input
                 value={value}
                 ariaRequired={true}
