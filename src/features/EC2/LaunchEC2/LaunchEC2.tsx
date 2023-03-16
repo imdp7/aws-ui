@@ -76,14 +76,15 @@ const DATA = {
 
 const Content = ({ loadHelpPanelContent }) => {
   const navigate = useNavigate();
-  const [instanceNo, setInstanceNo] = useState('1');
+  const [instanceNo, setInstanceNo] = useState(1);
   const [btn, setBtn] = useState(true);
   const [name, setName] = useState('');
   const [AMI, setAMI] = useState('');
   const [activeTabId, setActiveTabId] = useState('second');
   const [tiles, setTiles] = useState('Amazon');
   const [tile, setTile] = useState('item1');
-  const [storageNo, seStorageNo] = useState('');
+  const [storageNo, setStorageNo] = useState(1);
+  const [value, setValue] = useState(1);
 
   const [selectedOption, setSelectedOption] = useState({
     label: 't2.micro',
@@ -111,7 +112,6 @@ const Content = ({ loadHelpPanelContent }) => {
     PublicIP: 'Enable',
   };
   const [errorMessage, setErrorMessage] = useState('');
-
   const createInstance = async () => {
     setLoadings(true);
     const timer = setTimeout(async () => {
@@ -120,6 +120,7 @@ const Content = ({ loadHelpPanelContent }) => {
         setLoadings(false);
         return;
       }
+
       if (!keyPair) {
         setErrorMessage(
           'Please choose a key pair or choose the option to proceed with a key pair'
@@ -127,8 +128,21 @@ const Content = ({ loadHelpPanelContent }) => {
         setLoadings(false);
         return;
       }
+
+      if (storageNo <= 0) {
+        setErrorMessage('Number of storage volume cannot be less 1');
+        setLoadings(false);
+        return;
+      }
+
+      if (instanceNo <= 0) {
+        setErrorMessage('Number of instances cannot be less 1');
+        setLoadings(false);
+        return;
+      }
       setErrorMessage('');
       setLoadings(false);
+      return;
     }, 1500);
     return () => clearTimeout(timer);
   };
@@ -177,7 +191,7 @@ const Content = ({ loadHelpPanelContent }) => {
               value={value}
               placeholder="1"
             />
-            <div>GiB</div>
+            <Box>GiB</Box>
             <Select
               selectedOption={storage}
               onChange={({ detail }) => setStorage(detail.selectedOption)}
@@ -419,7 +433,6 @@ const Content = ({ loadHelpPanelContent }) => {
       setLoading('finished');
     }, 1500);
   };
-
   return (
     <SpaceBetween size="s" direction="horizontal">
       <Grid
@@ -430,6 +443,7 @@ const Content = ({ loadHelpPanelContent }) => {
         ]}
       >
         {errorMessage && <Alert type="error">{errorMessage}</Alert>}
+
         {/* Main Panel */}
         <div>
           <SpaceBetween size="xl" direction="vertical">
@@ -437,7 +451,7 @@ const Content = ({ loadHelpPanelContent }) => {
               id="distribution-panel"
               header={
                 <Header
-                  variant="h2"
+                  variant="h3"
                   info={
                     <InfoLink
                       id="certificate-method-info-link"
@@ -477,7 +491,9 @@ const Content = ({ loadHelpPanelContent }) => {
                   stretch={true}
                   errorText={
                     errorMessage &&
-                    errorMessage.includes('template name') &&
+                    errorMessage.includes(
+                      'The launch template name is required'
+                    ) &&
                     errorMessage
                   }
                 >
@@ -498,10 +514,11 @@ const Content = ({ loadHelpPanelContent }) => {
               variant="container"
               headerText="Application and OS Images (Amazon Machine Image)"
               defaultExpanded
+              headingTagOverride="h3"
               headerDescription="An AMI is a template that contains the software configuration (operating system, application server, and applications) required to launch your instance. Search or Browse for AMIs if you don’t see what you are looking for below"
               header={
                 <Header
-                  variant="h2"
+                  variant="h3"
                   info={
                     <InfoLink
                       id="certificate-method-info-link"
@@ -577,6 +594,7 @@ const Content = ({ loadHelpPanelContent }) => {
               variant="container"
               headerText="Instance Type"
               defaultExpanded
+              headingTagOverride="h3"
               //     headerDescription="here"
             >
               <Select
@@ -584,15 +602,16 @@ const Content = ({ loadHelpPanelContent }) => {
                 onChange={({ detail }) =>
                   setSelectedOption(detail.selectedOption)
                 }
-                options={[{}]}
+                options={[
+                  { label: 't2.micro', value: '1', description: 't2.micro' },
+                ]}
                 ariaRequired
                 expandToViewport
                 filteringType="auto"
                 loadingText="loading Instance"
                 selectedAriaLabel="Selected"
                 triggerVariant="option"
-                virtualScroll
-                statusType="loading"
+                statusType={loading}
               />
             </ExpandableSection>
 
@@ -608,9 +627,9 @@ const Content = ({ loadHelpPanelContent }) => {
                 <FormField
                   label="key pair name- required"
                   errorText={
-                    errorMessage &&
-                    errorMessage.includes('key pair') &&
-                    errorMessage
+                    errorMessage.includes(
+                      'Please choose a key pair or choose the option to proceed with a key pair'
+                    ) && errorMessage
                   }
                 >
                   <Select
@@ -623,12 +642,16 @@ const Content = ({ loadHelpPanelContent }) => {
                         label: 'Proceed without a key pair (Not Recommended',
                         value: '1',
                       },
+                      {
+                        label: 'test-key-pair-1',
+                        value: '2',
+                      },
                     ]}
                     empty="No key pair"
                     placeholder="Select"
                     filteringType="auto"
+                    recoveryText="Retry"
                     selectedAriaLabel="Selected"
-                    virtualScroll
                   />
                 </FormField>
                 <div>
@@ -845,9 +868,9 @@ const Content = ({ loadHelpPanelContent }) => {
               defaultExpanded
               className="header-panel"
             >
-              <SpaceBetween size="m" direction="vertical">
-                <ColumnLayout>
-                  <SpaceBetween size="xs" direction="horizontal">
+              <SpaceBetween size="xs" direction="vertical">
+                <SpaceBetween size="xs" direction="horizontal">
+                  <ColumnLayout columns={6}>
                     <Box>1x</Box>
                     <Input
                       inputMode="numeric"
@@ -873,17 +896,17 @@ const Content = ({ loadHelpPanelContent }) => {
                     />
                     <Box>Root volume</Box>
                     <Box>(Not encrypted)</Box>
-                  </SpaceBetween>
-                  <AttributeEditor
-                    removeButtonText="Remove"
-                    addButtonText="Add new Volume"
-                    empty="Need new volumes"
-                    definition={definitions}
-                    onAddButtonClick={onAddHeaderButtonClickHandler}
-                    onRemoveButtonClick={onRemoveHeaderButtonClickHandler}
-                    items={items}
-                  />
-                </ColumnLayout>
+                  </ColumnLayout>
+                </SpaceBetween>
+                <AttributeEditor
+                  removeButtonText="Remove"
+                  addButtonText="Add new Volume"
+                  empty="Need new volumes"
+                  definition={definitions}
+                  onAddButtonClick={onAddHeaderButtonClickHandler}
+                  onRemoveButtonClick={onRemoveHeaderButtonClickHandler}
+                  items={items}
+                />
                 <Alert
                   onDismiss={() => setVisible(false)}
                   visible={visible}
@@ -916,8 +939,15 @@ const Content = ({ loadHelpPanelContent }) => {
               >
                 <ColumnLayout borders="horizontal">
                   <FormField
-                    //     description="This is a description."
+                    description="Number of instances to be launched."
                     label="Number of Instances"
+                    errorText={
+                      errorMessage &&
+                      errorMessage.includes(
+                        'Number of instances cannot be less 1'
+                      ) &&
+                      errorMessage
+                    }
                   >
                     <Input
                       onChange={({ detail }) => setInstanceNo(detail.value)}
