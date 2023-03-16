@@ -378,7 +378,7 @@ export const IntelligentTiering = () => {
             </Box>
             <Button
               onClick={() =>
-                navigate('property/int_tiering_config/create', {
+                navigate('create', {
                   state: {
                     name: 'Create Intelligent-Tiering Archive configuration',
                     title: 'Intelligent-Tiering Archive configurations',
@@ -470,7 +470,7 @@ export const IntelligentTiering = () => {
                 <Button disabled>Delete</Button>
                 <Button
                   onClick={() =>
-                    navigate('create', {
+                    navigate('property/int_tiering_config', {
                       state: {
                         name: 'Create Intelligent-Tiering Archive configuration',
                         head: 'Archive configuration settings',
@@ -701,7 +701,7 @@ export const Notifications = () => {
               <Button disabled>Delete</Button>
               <Button
                 onClick={() =>
-                  navigate('create', {
+                  navigate('property/notification', {
                     state: {
                       name: 'Create event notification',
                       title: 'Event notification',
@@ -750,7 +750,7 @@ export const Notifications = () => {
               </Box>
               <Button
                 onClick={() =>
-                  navigate('property/notification/create', {
+                  navigate('create', {
                     state: {
                       name: 'Create event notification',
                       head: 'General configuration',

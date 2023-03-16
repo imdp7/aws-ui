@@ -42,18 +42,19 @@ const regions = [
     label: 'North America',
     options: [
       { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
+      { value: 'US East (Ohio) us-east-2' },
+      { value: 'US West (N. California) us-west-1' },
+      { value: 'US West (Oregeon) us-west-2' },
     ],
   },
   {
     label: 'Asia Pacific',
     options: [
-      { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
-      { value: 'US East (N. Virginia) us-east-1' },
+      { value: 'Asia Pacific (Mumbai)' },
+      { value: 'Asia Pacific (Osaka)' },
+      { value: 'Asia Pacific (Seoul)' },
+      { value: 'Asia Pacific (Sydney)' },
+      { value: 'Asia Pacific (Tokyo)' },
     ],
   },
 ];
@@ -128,6 +129,7 @@ const Tags = (props) => {
 const Content = ({ loadHelpPanelContent }, props) => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [region, setRegion] = useState('');
   const [control, setControl] = useState('first');
@@ -144,31 +146,33 @@ const Content = ({ loadHelpPanelContent }, props) => {
   const [bucketKey, setBucketKey] = useState('second');
   const [advance, setAdvance] = useState('first');
   const [advanceConfirm, setAdvanceConfirm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // await axios.post(
-    //   'https://crink7xwud.execute-api.us-east-1.amazonaws.com/default/createS3Function',
-    //   {key1: `${name}`}, {key2: `${region}`}, {key3: `${control}`}, {key4: `${ACLEnabled}`}, {key5: `${blockedAll}`}, {key5: `${blockedFirst}`},
-    //   {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
-    //   {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}`}
-    //   );
-    console.log(
-      'name',
-      name,
-      'region',
-      region,
-      'control',
-      control,
-      'ACLEnabled',
-      ACLEnabled,
-      'blockedAll',
-      blockedAll,
-      'blockedFirst',
-      blockedFirst
-    );
-    // {key6: `${blockedSecond}`}, {key7: `${blockedThird}`}, {key8: `${blockedFourth}`}, {key9: `${confirmBlocked}`}, {key10: `${bucketVersion}`},
-    // {key11: `${tags}`}, {key12: `${advance}`}, {key13: `${advanceConfirm}
+    setLoading(true);
+    const timer = setTimeout(async () => {
+      if (!name) {
+        setErrorMessage('Bucket name must not be empty');
+        setLoading(false);
+        return;
+      }
+      if (!region) {
+        setErrorMessage('Select a bucket region from the list');
+        setLoading(false);
+        return;
+      }
+      if (!confirmBlocked || !advanceConfirm) {
+        setErrorMessage(
+          'You must select the check box to continue creating the bucket.'
+        );
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      setErrorMessage('');
+    }, 1500);
+    return () => clearTimeout(timer);
   };
   return (
     <SpaceBetween size="m">
@@ -177,9 +181,9 @@ const Content = ({ loadHelpPanelContent }, props) => {
           <FormField
             label="Bucket Name"
             errorText={
-              name.length <= 3 && name.length !== 0
-                ? 'Bucket name cannot be empty and more than 3 characters.'
-                : null
+              errorMessage &&
+              errorMessage.includes('Bucket name') &&
+              errorMessage
             }
             constraintText={
               <>
@@ -200,11 +204,17 @@ const Content = ({ loadHelpPanelContent }, props) => {
               value={name}
               onChange={(event) => setName(event.detail.value)}
               placeholder="myawsbucket"
-              invalid={name.length <= 3 && name.length !== 0}
             />
           </FormField>
 
-          <FormField label="AWS Region">
+          <FormField
+            label="AWS Region"
+            errorText={
+              errorMessage &&
+              errorMessage.includes('bucket region') &&
+              errorMessage
+            }
+          >
             <Autosuggest
               onChange={({ detail }) => setRegion(detail.value)}
               value={region}
@@ -215,7 +225,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
             />
           </FormField>
           <FormField
-            label="Bucket Name"
+            label="Copy settings from existing bucket - optional"
             description="Only the bucket settings in the following configuration are copied."
           >
             <Button
@@ -483,13 +493,21 @@ const Content = ({ loadHelpPanelContent }, props) => {
                   unless public access is required for specific and verified use
                   cases such as static website hosting.
                 </>
-                <Checkbox
-                  onChange={({ detail }) => setConfirmBlocked(detail.checked)}
-                  checked={confirmBlocked}
+                <FormField
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('continue creating') &&
+                    errorMessage
+                  }
                 >
-                  I acknowledge that the current settings might result in this
-                  bucket and the objects within becoming public.
-                </Checkbox>
+                  <Checkbox
+                    onChange={({ detail }) => setConfirmBlocked(detail.checked)}
+                    checked={confirmBlocked}
+                  >
+                    I acknowledge that the current settings might result in this
+                    bucket and the objects within becoming public.
+                  </Checkbox>
+                </FormField>
               </SpaceBetween>
             </Alert>
           )}
@@ -739,14 +757,21 @@ const Content = ({ loadHelpPanelContent }, props) => {
                   bucket details after bucket creation to protect objects in
                   this bucket from being deleted or overwritten. Learn more
                 </>
-
-                <Checkbox
-                  onChange={({ detail }) => setAdvanceConfirm(detail.checked)}
-                  checked={advanceConfirm}
+                <FormField
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('continue creating') &&
+                    errorMessage
+                  }
                 >
-                  I acknowledge that enabling Object Lock will permanently allow
-                  objects in this bucket to be locked.
-                </Checkbox>
+                  <Checkbox
+                    onChange={({ detail }) => setAdvanceConfirm(detail.checked)}
+                    checked={advanceConfirm}
+                  >
+                    I acknowledge that enabling Object Lock will permanently
+                    allow objects in this bucket to be locked.
+                  </Checkbox>
+                </FormField>
               </Alert>
             </SpaceBetween>
           )}
@@ -756,9 +781,10 @@ const Content = ({ loadHelpPanelContent }, props) => {
         After creating the bucket you can upload files and folders to the
         bucket, and configure additional bucket settings.
       </Alert>
+      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
         <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button variant="primary" onClick={handleSubmit} loading={loading}>
           Create Bucket
         </Button>
       </SpaceBetween>

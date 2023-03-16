@@ -82,25 +82,7 @@ const CreateComponent = (props) => {
   const [activeHref, setActiveHref] = useState('buckets');
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(
-    <HelpPanels
-      title={state.name}
-      info={state.info}
-      des={state.description}
-      //       ul={[
-      //         {
-      //           h5: 'Manage access',
-      //           text: `Buckets are private and can only be accessed if you explicitly grant permissions. To review the public access settings for your buckets, make sure that you have the required permissions or you'll get an error. Use bucket policies, IAM policies, access control lists (ACLs), and S3 Access Points to manage access.`,
-      //         },
-      //         {
-      //           h5: 'Configure your bucket',
-      //           text: 'You can configure your bucket to support your use case. For example, host a static website, use S3 Versioning and replication for disaster recovery, S3 Lifecycle to manage storage costs, and logging to track requests.',
-      //         },
-      //         {
-      //           h5: 'Understand storage usage and activity',
-      //           text: 'The S3 Storage Lens account snapshot displays your total storage, object count, and average object size for all buckets in the account. View your S3 Storage Lens dashboard to analyze your usage and activity trends by AWS Region, storage class, bucket, or prefix.',
-      //         },
-      //       ]}
-    />
+    <HelpPanels title={state.name} info={state.info} des={state.description} />
   );
 
   const loadHelpPanelContent = (toolsContent) => {

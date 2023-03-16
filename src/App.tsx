@@ -23,6 +23,7 @@ import Upload from './features/S3/Upload';
 import EC2TypesList from './features/EC2/Instance-types-list';
 import CreateS3 from './features/S3/CreateS3';
 import EditBucket from './features/S3/components/EditBucket';
+import SingleComp from './features/S3/components/SingleComponent';
 import CreateComponent from './features/S3/components/CreateComponent';
 import SingleComponent from './features/EC2/components/SingleComponent';
 import LaunchTemplate from './features/EC2/components/LaunchTemplate';
@@ -88,9 +89,7 @@ const App = ({ user, signOut }): JSX.Element => {
             />
             <Route
               path="buckets/:id/:info/:subInfo"
-              element={
-                <SingleComponent user={user.username} signOut={signOut} />
-              }
+              element={<SingleComp user={user.username} signOut={signOut} />}
             />
             <Route
               path="buckets/create"
