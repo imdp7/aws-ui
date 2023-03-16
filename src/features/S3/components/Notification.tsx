@@ -30,16 +30,23 @@ const Notification = (props) => {
   const [prefix, setPrefix] = useState('');
   const [suffix, setSufffix] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [formData, setFormData] = useState({});
 
-  const handleRefresh = () => {
+  const handleSubmit = () => {
     setLoading(true);
     setTimeout(() => {
+      if (!name) {
+        setErrorMessage('Event name is required.');
+        setLoading(false);
+        return;
+      }
       setLoading(false);
       navigate(-1);
     }, 1500);
   };
 
-  const ObjectCreate = () => {
+  const ObjectCreate = ({ errorMessage }) => {
     const [AllObjects, setAllObjects] = useState(false);
     const [put, setPut] = useState(false);
     const [post, setPost] = useState(false);
@@ -599,6 +606,9 @@ const Notification = (props) => {
         <FormField
           label="Event name"
           constraintText="Event name can contain up to 255 characters."
+          errorText={
+            errorMessage && errorMessage.includes('Event name') && errorMessage
+          }
         >
           <Input
             placeholder="Event name"
@@ -656,7 +666,7 @@ const Notification = (props) => {
         }
       >
         <SpaceBetween size="s">
-          <ObjectCreate />
+          <ObjectCreate errorMessage={errorMessage} />
           <ObjectRemoval />
           <ObjectRestore />
           <ObjectACL />
@@ -691,9 +701,10 @@ const Notification = (props) => {
       >
         <Destination />
       </Container>
+      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
         <Button onClick={() => navigate(-1)}>Cancel</Button>
-        <Button variant="primary" onClick={handleRefresh} loading={loading}>
+        <Button variant="primary" onClick={handleSubmit} loading={loading}>
           Save changes
         </Button>
       </SpaceBetween>

@@ -205,21 +205,6 @@ export function DashboardHeader(props) {
     <Header
       variant="h2"
       description={props.des}
-      info={
-        <InfoLink
-          onFollow={() =>
-            props.loadHelpPanelContent(
-              <HelpPanels
-                title={props.title}
-                des={props?.des}
-                h5={props.h5}
-                ul={props.ul}
-              />
-            )
-          }
-          ariaLabel={'Information about service dashboard.'}
-        />
-      }
       actions={
         <>
           {props.buttonText ? (
