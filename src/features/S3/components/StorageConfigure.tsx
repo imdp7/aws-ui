@@ -39,22 +39,29 @@ const StorageConfigure = (props) => {
   const [account, setAccount] = useState('');
   const [destination2, setDestination2] = useState('');
 
+  const nameRef = useRef(null);
+  const prefixRef = useRef(null);
+  const tagsRef = useRef(null);
+
   const handleSubmit = () => {
     setLoading(true);
     setTimeout(() => {
       if (!name) {
         setErrorMessage('Config name must not be empty.');
         setLoading(false);
+        nameRef.current.focus();
         return;
       }
       if (!prefix) {
         setErrorMessage('You must specify a prefix or tags.');
         setLoading(false);
+        prefixRef.current.focus();
         return;
       }
       if (!tags) {
         setErrorMessage('You must specify a prefix or tags.');
         setLoading(false);
+        tagsRef.current.focus();
         return;
       }
       setLoading(false);
@@ -79,6 +86,7 @@ const StorageConfigure = (props) => {
             <Input
               onChange={({ detail }) => setName(detail.value)}
               value={name}
+              ref={nameRef}
               placeholder="my_configuration-1.1"
             />
           </FormField>
@@ -129,6 +137,7 @@ const StorageConfigure = (props) => {
                 <Input
                   onChange={({ detail }) => setPrefix(detail.value)}
                   value={prefix}
+                  ref={prefixRef}
                   placeholder="my_configuration-1.1"
                 />
               </FormField>
@@ -143,6 +152,7 @@ const StorageConfigure = (props) => {
               >
                 <TagEditor
                   tags={tags}
+                  ref={tagsRef}
                   i18nStrings={{
                     keyPlaceholder: 'Enter key',
                     valuePlaceholder: 'Enter value',
