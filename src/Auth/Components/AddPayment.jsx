@@ -51,7 +51,11 @@ const Content = () => {
   const stripe = new Stripe(
     'sk_test_51FrsMEJyECnw5rCL4g5bJkAmDbIWUonjxMQG1h6NDhCaDQ9e29456MxLFFmWRZCf30PZILvtaP0J4FXvHdieWO8e0092YqW109'
   );
-  const errorRef = useRef(null);
+  const methodRef = useRef(null);
+  const cardNumberRef = useRef(null);
+  const dateRef = useRef(null);
+  const cvcRef = useRef(null);
+  const nameCardRef = useRef(null);
 
   async function handleSubmit() {
     setLoading(true);
@@ -59,26 +63,31 @@ const Content = () => {
       if (!method) {
         setErrorMessage('Please select a method to add');
         setLoading(false);
+        methodRef.current.focus();
         return;
       }
       if (!cardNumber) {
         setErrorMessage('Please enter valid card number');
         setLoading(false);
+        cardNumberRef.current.focus();
         return;
       }
       if (!date) {
         setErrorMessage('Please enter the expiration date');
         setLoading(false);
+        dateRef.current.focus();
         return;
       }
       if (!cvc) {
         setErrorMessage('Please enter the 3 digit security code');
         setLoading(false);
+        cvcRef.current.focus();
         return;
       }
       if (!nameCard) {
         setErrorMessage('Please enter the name on the card');
         setLoading(false);
+        nameCardRef.current.focus();
         return;
       }
       setErrorMessage('');
@@ -166,6 +175,7 @@ const Content = () => {
       >
         <SpaceBetween size="m">
           <Tiles
+            ref={methodRef}
             onChange={({ detail }) => setMethod(detail.value)}
             value={method}
             columns={2}
@@ -203,6 +213,7 @@ const Content = () => {
                 }
               >
                 <Input
+                  ref={cardNumberRef}
                   step={1}
                   className="input-width-card"
                   value={cardNumber}
@@ -223,6 +234,7 @@ const Content = () => {
                 }
               >
                 <DatePicker
+                  ref={dateRef}
                   step={2}
                   onChange={({ detail }) => {
                     setDate(detail.value);
@@ -248,6 +260,7 @@ const Content = () => {
               >
                 <Input
                   step={3}
+                  ref={cvcRef}
                   className="input-width-number"
                   value={cvc}
                   inputMode="numeric"
@@ -270,6 +283,7 @@ const Content = () => {
                 <Input
                   className="input-width-name"
                   step={4}
+                  ref={nameCardRef}
                   value={nameCard}
                   onChange={({ detail }) => {
                     detail.value !== 0 && setNameCard(detail.value);

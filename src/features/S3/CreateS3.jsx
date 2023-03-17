@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
@@ -147,7 +147,11 @@ const Content = ({ loadHelpPanelContent }, props) => {
   const [advance, setAdvance] = useState('first');
   const [advanceConfirm, setAdvanceConfirm] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  // Refs
+  const nameRef = useRef(null);
+  const regionRef = useRef(null);
+  const confirmBlockedRef = useRef(null);
+  const advanceConfirmRef = useRef(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -155,22 +159,37 @@ const Content = ({ loadHelpPanelContent }, props) => {
       if (!name) {
         setErrorMessage('Bucket name must not be empty');
         setLoading(false);
+        nameRef.current.focus();
         return;
       }
       if (!region) {
         setErrorMessage('Select a bucket region from the list');
         setLoading(false);
+        regionRef.current.focus();
         return;
       }
-      if (!confirmBlocked || !advanceConfirm) {
+      if (
+        !blockedAll &&
+        (!blockedFirst || !blockedSecond || !blockedThird || !blockedFourth) &&
+        !confirmBlocked
+      ) {
         setErrorMessage(
           'You must select the check box to continue creating the bucket.'
         );
         setLoading(false);
+        confirmBlockedRef.current.focus();
         return;
       }
-      setLoading(false);
+      if (advance == 'second' && !advanceConfirm) {
+        setErrorMessage(
+          'You must select the check box to continue creating the bucket.'
+        );
+        setLoading(false);
+        advanceConfirmRef.current.focus();
+        return;
+      }
       setErrorMessage('');
+      setLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
   };
@@ -204,6 +223,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
               value={name}
               onChange={(event) => setName(event.detail.value)}
               placeholder="myawsbucket"
+              ref={nameRef}
             />
           </FormField>
 
@@ -222,6 +242,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
               enteredTextLabel={(value) => `Use: "${value}"`}
               placeholder="Select the AWS region"
               empty="Select available Region"
+              ref={regionRef}
             />
           </FormField>
           <FormField
@@ -503,6 +524,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
                   <Checkbox
                     onChange={({ detail }) => setConfirmBlocked(detail.checked)}
                     checked={confirmBlocked}
+                    ref={confirmBlockedRef}
                   >
                     I acknowledge that the current settings might result in this
                     bucket and the objects within becoming public.
@@ -767,6 +789,7 @@ const Content = ({ loadHelpPanelContent }, props) => {
                   <Checkbox
                     onChange={({ detail }) => setAdvanceConfirm(detail.checked)}
                     checked={advanceConfirm}
+                    ref={advanceConfirmRef}
                   >
                     I acknowledge that enabling Object Lock will permanently
                     allow objects in this bucket to be locked.
@@ -796,6 +819,7 @@ const CreateS3 = (props) => {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('buckets');
   const [toolsOpen, setToolsOpen] = useState(false);
+  const ref = useRef('appLayout');
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Create bucket"
@@ -849,6 +873,7 @@ const CreateS3 = (props) => {
         <AppHeader {...props} />
       </div>
       <AppLayout
+        ref={ref}
         headerSelector="#h"
         footerSelector="#f"
         contentType="table"

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { AppFooter } from '../features/common/AppFooter';
 import { AppHeader } from '../features/common/TopNavigations';
 import {
@@ -42,6 +42,11 @@ const Account = (props) => {
   const [rePassword, setRePassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  // Refs
+  const emailRef = useRef(null);
+  const oldPasswordRef = useRef(null);
+  const passwordRef = useRef(null);
+  const rePasswordRef = useRef(null);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -49,21 +54,25 @@ const Account = (props) => {
       if (!email) {
         setErrorMessage('Please enter new email address');
         setLoading(false);
+        emailRef.current.focus();
         return;
       }
       if (!oldPassword) {
         setErrorMessage('Please enter old password');
         setLoading(false);
+        oldPasswordRef.current.focus();
         return;
       }
       if (!password) {
         setErrorMessage('Please enter new password');
         setLoading(false);
+        passwordRef.current.focus();
         return;
       }
       if (!rePassword) {
         setErrorMessage('Please  Re-Enter new password');
         setLoading(false);
+        rePasswordRef.current.focus();
         return;
       }
       setErrorMessage('');
@@ -159,6 +168,7 @@ const Account = (props) => {
                       }
                     >
                       <Input
+                        ref={emailRef}
                         value={email}
                         inputMode="email"
                         ariaRequired
@@ -175,6 +185,7 @@ const Account = (props) => {
                       }
                     >
                       <Input
+                        ref={oldPasswordRef}
                         value={oldPassword}
                         type="password"
                         onChange={({ detail }) => setOldPassword(detail.value)}
@@ -190,6 +201,7 @@ const Account = (props) => {
                       }
                     >
                       <Input
+                        ref={passwordRef}
                         value={password}
                         type="password"
                         onChange={({ detail }) => setPassword(detail.value)}
@@ -205,6 +217,7 @@ const Account = (props) => {
                       }
                     >
                       <Input
+                        ref={rePasswordRef}
                         value={rePassword}
                         type="password"
                         onChange={({ detail }) => setRePassword(detail.value)}
@@ -252,6 +265,15 @@ const Information = (props) => {
   const [errorMessage, setErrorMessage] = useState('');
   const options = useMemo(() => countryList().getData(), []);
 
+  // Refs
+  const nameRef = useRef(null);
+  const addressRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const postalRef = useRef(null);
+  const countryRef = useRef(null);
+  const phoneRef = useRef(null);
+
   const editHandler = () => {
     setEdit(true);
   };
@@ -262,36 +284,43 @@ const Information = (props) => {
       if (!name) {
         setErrorMessage('Please enter name');
         setLoading(false);
+        nameRef.current.focus();
         return;
       }
       if (!address) {
         setErrorMessage('Please enter address');
         setLoading(false);
+        addressRef.current.focus();
         return;
       }
       if (!city) {
         setErrorMessage('Please enter city');
         setLoading(false);
+        cityRef.current.focus();
         return;
       }
       if (!state) {
         setErrorMessage('Please enter state');
         setLoading(false);
+        stateRef.current.focus();
         return;
       }
       if (!postal) {
         setErrorMessage('Please enter postal/zip code');
         setLoading(false);
+        postalRef.current.focus();
         return;
       }
       if (!country) {
         setErrorMessage('Please enter the country');
         setLoading(false);
+        countryRef.current.focus();
         return;
       }
       if (!phone) {
         setErrorMessage('Please enter phone number');
         setLoading(false);
+        phoneRef.current.focus();
         return;
       }
       setErrorMessage('');
@@ -383,6 +412,7 @@ const Information = (props) => {
                       <Input
                         value={name}
                         inputMode="text"
+                        ref={nameRef}
                         ariaRequired
                         onChange={({ detail }) => setName(detail.value)}
                         placeholder="Enter Name"
@@ -398,6 +428,7 @@ const Information = (props) => {
                     >
                       <Input
                         value={address}
+                        ref={addressRef}
                         inputMode="text"
                         ariaRequired
                         onChange={({ detail }) => setAddress(detail.value)}
@@ -414,6 +445,7 @@ const Information = (props) => {
                     >
                       <Input
                         value={city}
+                        ref={cityRef}
                         inputMode="text"
                         ariaRequired
                         onChange={({ detail }) => setCity(detail.value)}
@@ -430,6 +462,7 @@ const Information = (props) => {
                     >
                       <Input
                         value={state}
+                        ref={cityRef}
                         inputMode="text"
                         ariaRequired
                         onChange={({ detail }) => setState(detail.value)}
@@ -447,6 +480,7 @@ const Information = (props) => {
                     >
                       <Input
                         value={postal}
+                        ref={postalRef}
                         inputMode="numeric"
                         ariaRequired
                         onChange={({ detail }) => setPostal(detail.value)}
@@ -464,6 +498,7 @@ const Information = (props) => {
                       <Select
                         className="input-width-card"
                         options={options}
+                        ref={countryRef}
                         errorText="Error fetching countries."
                         placeholder="Choose a country"
                         recoveryText="Retry"
@@ -487,6 +522,7 @@ const Information = (props) => {
                       <Input
                         value={phone}
                         inputMode="tel"
+                        ref={phoneRef}
                         ariaRequired
                         onChange={({ detail }) => setPhone(detail.value)}
                         placeholder="Enter Phone"

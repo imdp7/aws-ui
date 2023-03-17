@@ -35,11 +35,11 @@ const Lifecycle = (props) => {
 
   const handleRefresh = () => {
     setError(true);
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   navigate(-1);
-    // }, 1500);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate(-1);
+    }, 1500);
   };
   const Configuration = () => {
     const [name, setName] = useState('');

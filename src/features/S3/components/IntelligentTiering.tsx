@@ -37,7 +37,12 @@ const IntelligentTiering = (props) => {
   const [daysArchieve, setDaysArchieve] = useState(null);
   const [daysDeepArchieve, setDaysDeepArchieve] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-
+  // Refs
+  const nameRef = useRef(null);
+  const prefixRef = useRef(null);
+  const tagsRef = useRef(null);
+  const archieveRef = useRef(null);
+  const daysArchievesRef = useRef(null);
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
@@ -46,26 +51,31 @@ const IntelligentTiering = (props) => {
           'Intelligent-Tiering archive configuration name is required'
         );
         setLoading(false);
+        nameRef.current.focus();
         return;
       }
       if (!prefix) {
         setErrorMessage('You must specify a prefix or tags.');
         setLoading(false);
+        prefixRef.current.focus();
         return;
       }
       if (!tags) {
         setErrorMessage('You must specify a prefix or tags.');
         setLoading(false);
+        tagsRef.current.focus();
         return;
       }
       if (!archieve && !deepArchieve) {
         setErrorMessage('At least one transition should be selected.');
         setLoading(false);
+        archieveRef.current.focus();
         return;
       }
       if (!daysArchieve && !daysDeepArchieve) {
         setErrorMessage('A valid integer is required.');
         setLoading(false);
+        daysArchieveRef.current.focus();
         return;
       }
       setLoading(false);
@@ -109,6 +119,7 @@ const IntelligentTiering = (props) => {
           >
             <Input
               value={name}
+              ref={nameRef}
               onChange={({ detail }) => setName(detail.value)}
               placeholder="Enter Configuration name"
             />
@@ -144,6 +155,7 @@ const IntelligentTiering = (props) => {
                 }
               >
                 <Input
+                  ref={prefixRef}
                   value={prefix}
                   onChange={({ detail }) => setPrefix(detail.value)}
                   placeholder="Enter Prefix"
@@ -209,6 +221,7 @@ const IntelligentTiering = (props) => {
                 tags={tags}
                 onChange={({ detail }) => setTags(detail.tags)}
                 keysRequest={() => Promise.resolve([])}
+                ref={tagsRef}
               />
             </SpaceBetween>
           )}
@@ -233,7 +246,7 @@ const IntelligentTiering = (props) => {
             variant="h2"
             description={
               <>
-                ntelligent-Tiering can tier down objects to the Archive Access
+                Intelligent-Tiering can tier down objects to the Archive Access
                 tier, the Deep Archive Access tier, or both. The number of days
                 until transition to the selected tiers can be extended up to a
                 total of 2 years.{' '}
@@ -261,6 +274,7 @@ const IntelligentTiering = (props) => {
             <Checkbox
               checked={archieve}
               onChange={({ detail }) => setArchieve(detail.checked)}
+              ref={archieveRef}
               description="When enabled, Intelligent-Tiering will automatically move objects that haven’t been accessed for a minimum of 90 days to the Archive Access tier."
             >
               Archive Access tier
@@ -279,6 +293,7 @@ const IntelligentTiering = (props) => {
                   }
                 >
                   <Input
+                    ref={daysArchievesRef}
                     value={daysArchieve}
                     onChange={({ detail }) => setDaysArchieve(detail.value)}
                     inputMode="numeric"
@@ -302,6 +317,7 @@ const IntelligentTiering = (props) => {
             )}
             <Checkbox
               checked={deepArchieve}
+              ref={archieveRef}
               onChange={({ detail }) => setDeepArchieve(detail.checked)}
               description="When enabled, Intelligent-Tiering will automatically move objects that haven’t been accessed for a minimum of 90 days to the Archive Access tier."
             >
@@ -322,6 +338,7 @@ const IntelligentTiering = (props) => {
                 >
                   <Input
                     value={daysDeepArchieve}
+                    ref={daysArchievesRef}
                     onChange={({ detail }) => setDaysDeepArchieve(detail.value)}
                     inputMode="numeric"
                     type="number"
