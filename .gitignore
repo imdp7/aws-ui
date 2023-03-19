@@ -4,6 +4,7 @@ dist
 dist-ssr
 *.local
 .env
+cypress
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
