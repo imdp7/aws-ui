@@ -198,7 +198,10 @@ function PaymentPreferences(props) {
           <BreadcrumbGroup
             items={[
               { text: 'Account', href: '/account' },
-              { text: 'AWS Billing', href: '/account/bills' },
+              {
+                text: 'AWS Billing',
+                href: '/account/billing/paymentPreferences',
+              },
               { text: 'Payment Preferences', href: '#' },
             ]}
           />

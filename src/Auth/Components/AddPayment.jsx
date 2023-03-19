@@ -45,6 +45,14 @@ const Content = () => {
   const [phone, setPhone] = useState(null);
   const [email, setEmail] = useState(null);
   const [country, setCountry] = useState(null);
+  const [routing, setRouting] = useState(null);
+  const [account_type, setAccount_Type] = useState({
+    value: 'checking',
+    label: 'Checking',
+  });
+  const [accountNo, setAccountNo] = useState(null);
+  const [reAccountNo, setReAccountNo] = useState(null);
+  const [accountName, setAccountName] = useState(null);
   const options = useMemo(() => countryList().getData(), []);
   const [visible, setVisible] = useState(false);
   const [confirmationData, setConfirmationData] = useState({});
@@ -56,6 +64,11 @@ const Content = () => {
   const dateRef = useRef(null);
   const cvcRef = useRef(null);
   const nameCardRef = useRef(null);
+  const RoutingRef = useRef(null);
+  const AccountTypeRef = useRef(null);
+  const AccountNoRef = useRef(null);
+  const ReAccountNoRef = useRef(null);
+  const AccountNameRef = useRef(null);
 
   async function handleSubmit() {
     setLoading(true);
@@ -66,64 +79,135 @@ const Content = () => {
         methodRef.current.focus();
         return;
       }
-      if (!cardNumber) {
-        setErrorMessage('Please enter valid card number');
-        setLoading(false);
-        cardNumberRef.current.focus();
-        return;
-      }
-      if (!date) {
-        setErrorMessage('Please enter the expiration date');
-        setLoading(false);
-        dateRef.current.focus();
-        return;
-      }
-      if (!cvc) {
-        setErrorMessage('Please enter the 3 digit security code');
-        setLoading(false);
-        cvcRef.current.focus();
-        return;
-      }
-      if (!nameCard) {
-        setErrorMessage('Please enter the name on the card');
-        setLoading(false);
-        nameCardRef.current.focus();
-        return;
-      }
-      setErrorMessage('');
-      setError(false);
-      const paymentMethod = await stripe.paymentMethods.create({
-        type: method,
-        card: {
-          number: cardNumber,
-          exp_month: '12',
-          exp_year: '24',
-          cvc: cvc,
-        },
-        billing_details: {
-          address: {
-            city: city,
-            country: country?.value,
-            line1: address1,
-            line2: address2,
-            postal_code: zipCode,
-            state: state,
+      if (method === 'card') {
+        setErrorMessage('');
+        if (!cardNumber) {
+          setErrorMessage('Please enter valid card number');
+          setLoading(false);
+          cardNumberRef.current.focus();
+          return;
+        }
+        if (!date) {
+          setErrorMessage('Please enter the expiration date');
+          setLoading(false);
+          dateRef.current.focus();
+          return;
+        }
+        if (!cvc) {
+          setErrorMessage('Please enter the 3 digit security code');
+          setLoading(false);
+          cvcRef.current.focus();
+          return;
+        }
+        if (!nameCard) {
+          setErrorMessage('Please enter the name on the card');
+          setLoading(false);
+          nameCardRef.current.focus();
+          return;
+        }
+        setErrorMessage('');
+        setError(false);
+        const paymentMethod = await stripe.paymentMethods.create({
+          type: method,
+          card: {
+            number: cardNumber,
+            exp_month: '12',
+            exp_year: '24',
+            cvc: cvc,
           },
-          email: email,
-          name: name,
-          phone: phone,
-        },
-      });
-      if (paymentMethod.error) {
-        setErrorMessage(paymentMethod.error.message);
-      } else {
-        setVisible(true);
-        const confirmationData = Object.entries(paymentMethod.card).reduce(
-          (obj, [key, value]) => ({ ...obj, [key]: value }),
-          {}
-        );
-        setConfirmationData(confirmationData);
-        console.log(confirmationData);
+          billing_details: {
+            address: {
+              city: city,
+              country: country?.value,
+              line1: address1,
+              line2: address2,
+              postal_code: zipCode,
+              state: state,
+            },
+            email: email,
+            name: name,
+            phone: phone,
+          },
+        });
+        if (paymentMethod.error) {
+          setErrorMessage(paymentMethod.error.message);
+        } else {
+          setVisible(true);
+          const confirmationData = Object.entries(paymentMethod.card).reduce(
+            (obj, [key, value]) => ({ ...obj, [key]: value }),
+            {}
+          );
+          setConfirmationData(confirmationData);
+          console.log(confirmationData);
+        }
+      }
+      if (method === 'bank') {
+        setErrorMessage('');
+        if (!account_type) {
+          setErrorMessage('Please select the bank account type');
+          setLoading(false);
+          AccountTypeRef.current.focus();
+          return;
+        }
+        if (!routing) {
+          setErrorMessage('Please enter the bank routing number');
+          setLoading(false);
+          RoutingRef.current.focus();
+          return;
+        }
+        if (!accountNo) {
+          setErrorMessage('Please enter the bank account number');
+          setLoading(false);
+          AccountNoRef.current.focus();
+          return;
+        }
+        if (!reAccountNo) {
+          setErrorMessage('Please re-enter the bank account number');
+          setLoading(false);
+          ReAccountNoRef.current.focus();
+          return;
+        }
+        if (!accountName) {
+          setErrorMessage('Please re-enter the bank account name');
+          setLoading(false);
+          AccountNameRef.current.focus();
+          return;
+        }
+        setErrorMessage('');
+        setLoading(false);
+        const bankAccount = await stripe.paymentMethods.create({
+          type: 'us_bank_account',
+          us_bank_account: {
+            account_holder_type: 'individual',
+            account_number: accountNo,
+            account_type: account_type?.value,
+            routing_number: routing,
+          },
+          billing_details: {
+            address: {
+              city: city,
+              country: country?.value,
+              line1: address1,
+              line2: address2,
+              postal_code: zipCode,
+              state: state,
+            },
+            email: email,
+            name: name,
+            phone: phone,
+          },
+        });
+        if (bankAccount.error) {
+          setErrorMessage(bankAccount.error.message);
+        } else {
+          setVisible(true);
+          const confirmationData = Object.entries(bankAccount).reduce(
+            (obj, [key, value]) => ({ ...obj, [key]: value }),
+            {}
+          );
+          setConfirmationData(confirmationData);
+          console.log(confirmationData);
+        }
       }
       setLoading(false);
     }, 1500);
@@ -149,7 +233,7 @@ const Content = () => {
           </Box>
         }
         header={
-          capital(`${confirmationData.funding}`) +
+          capital(`${confirmationData.funding || confirmationData.type}`) +
           ' ' +
           'card added successfully'
         }
@@ -159,7 +243,14 @@ const Content = () => {
             <Box>{capital(`${confirmationData.brand}`)}</Box>
           </FormField>
           <FormField label="Last 4 digits">
-            <Box>{capital(`${confirmationData.last4}`)}</Box>
+            <Box>
+              {capital(
+                `${
+                  confirmationData?.last4 ||
+                  confirmationData?.us_bank_account?.last4
+                }`
+              )}
+            </Box>
           </FormField>
           <FormField label="Confirmation Number">
             <Box>{confirmationData.fingerprint}</Box>
@@ -188,21 +279,22 @@ const Content = () => {
               {
                 label: 'Bank account (ACH)',
                 value: 'bank',
-                // disabled: true,
-                // description: `You don't qualify for this payment method. Accounts with at least one fully paid monthly invoice with USD payment currencies can add bank account as a payment method. You can change your payment currency to USD on the Account page.`,
                 description:
                   'Major bank account can be linked for recurring payments',
               },
             ]}
           />
-          {/* {errorMessage.includes('method to add') && (
-            <Alert type="error">{errorMessage}</Alert>
-          )} */}
         </SpaceBetween>
       </Container>
       {method == 'card' && (
         <>
-          <Container header={<Header variant="h3">Card Information</Header>}>
+          <Container
+            header={
+              <Header variant="h3" fitHeight>
+                Card Information
+              </Header>
+            }
+          >
             <SpaceBetween size="m">
               <FormField
                 label="Card number"
@@ -421,6 +513,227 @@ const Content = () => {
             </Button>
           </SpaceBetween>
         </>
+      )}
+      {method === 'bank' && (
+        <SpaceBetween size="m">
+          <Container
+            header={
+              <Header variant="h3" fitHeight>
+                Bank Details
+              </Header>
+            }
+          >
+            <SpaceBetween size="m">
+              <FormField
+                label="Account type"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('account type') &&
+                  errorMessage
+                }
+              >
+                <Select
+                  selectedOption={account_type}
+                  ref={AccountTypeRef}
+                  onChange={({ detail }) =>
+                    setAccount_Type(detail.selectedOption)
+                  }
+                  options={[
+                    {
+                      value: 'checking',
+                      label: 'Checking',
+                    },
+                    {
+                      value: 'savings',
+                      label: 'Savings',
+                    },
+                  ]}
+                />
+              </FormField>
+              <FormField
+                label="Routing number"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('routing number') &&
+                  errorMessage
+                }
+              >
+                <Input
+                  value={routing}
+                  ref={RoutingRef}
+                  onChange={({ detail }) => setRouting(detail.value)}
+                  placeholder="000000000"
+                />
+              </FormField>
+              <FormField
+                label="Account number"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('account number') &&
+                  errorMessage
+                }
+              >
+                <Input
+                  value={accountNo}
+                  ref={AccountNoRef}
+                  onChange={({ detail }) => setAccountNo(detail.value)}
+                  placeholder="000000000"
+                />
+              </FormField>
+              <FormField
+                label="Re-enter Account number"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('re-enter the bank account number') &&
+                  errorMessage
+                }
+              >
+                <Input
+                  value={reAccountNo}
+                  ref={ReAccountNoRef}
+                  onChange={({ detail }) => setReAccountNo(detail.value)}
+                  placeholder="000000000"
+                />
+              </FormField>
+              <FormField
+                label="Account holder name"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('bank account name') &&
+                  errorMessage
+                }
+              >
+                <Input
+                  value={accountName}
+                  ref={AccountNameRef}
+                  onChange={({ detail }) => setAccountName(detail.value)}
+                  placeholder="Andy Jassy"
+                />
+              </FormField>
+            </SpaceBetween>
+          </Container>
+          <Container
+            header={
+              <Header
+                variant="h3"
+                actions={
+                  <Select
+                    selectedOption={select}
+                    onChange={({ detail }) => setSelect(detail.selectedOption)}
+                    options={[
+                      { label: 'Use Existing address', value: '1' },
+                      { label: 'Contact address', value: '2' },
+                    ]}
+                    selectedAriaLabel="Selected"
+                  />
+                }
+              >
+                Billing information
+              </Header>
+            }
+          >
+            <SpaceBetween size="m">
+              <FormField label="Full name">
+                <Input
+                  className="input-width-card"
+                  value={name}
+                  step={5}
+                  onChange={({ detail }) => setName(detail.value)}
+                />
+              </FormField>
+              <FormField label="Company - optional">
+                <Input
+                  className="input-width-card"
+                  value={company}
+                  step={6}
+                  onChange={({ detail }) => setCompany(detail.value)}
+                />
+              </FormField>
+              <FormField label="Select Country">
+                <Select
+                  className="input-width-card"
+                  options={options}
+                  step={7}
+                  errorText="Error fetching countries."
+                  placeholder="Choose a country"
+                  recoveryText="Retry"
+                  filteringType="auto"
+                  selectedAriaLabel="Selected"
+                  triggerVariant="option"
+                  selectedOption={country}
+                  onChange={({ detail }) => setCountry(detail.selectedOption)}
+                />
+              </FormField>
+              <FormField label="Address">
+                <SpaceBetween size="xs">
+                  <Input
+                    className="input-width-card"
+                    value={address1}
+                    step={8}
+                    onChange={({ detail }) => setAddress1(detail.value)}
+                  />
+                  <Input
+                    className="input-width-card"
+                    value={address2}
+                    step={9}
+                    placeholder="Apartment, suite, unit floor, etc."
+                    onChange={({ detail }) => setAddress2(detail.value)}
+                  />
+                </SpaceBetween>
+              </FormField>
+              <SpaceBetween size="m" direction="horizontal">
+                <FormField label="City">
+                  <Input
+                    value={city}
+                    step={10}
+                    onChange={({ detail }) => setCity(detail.value)}
+                  />
+                </FormField>
+                <FormField label="State/province/region">
+                  <Input
+                    value={state}
+                    step={11}
+                    onChange={({ detail }) => setState(detail.value)}
+                  />
+                </FormField>
+              </SpaceBetween>
+              <FormField label="Zip code/postal code">
+                <Input
+                  className="input-width-card"
+                  value={zipCode}
+                  step={12}
+                  onChange={({ detail }) => setZipCode(detail.value)}
+                />
+              </FormField>
+              <FormField label="Phone number">
+                <Input
+                  className="input-width-card"
+                  value={phone}
+                  step={13}
+                  placeholder="+1 222-333-4444"
+                  inputMode="tel"
+                  onChange={({ detail }) => setPhone(detail.value)}
+                />
+              </FormField>
+              <FormField label="Billing contact email - optional">
+                <Input
+                  className="input-width-card"
+                  value={email}
+                  step={14}
+                  inputMode="email"
+                  onChange={({ detail }) => setEmail(detail.value)}
+                />
+              </FormField>
+            </SpaceBetween>
+          </Container>
+          {errorMessage && <Alert type="error">{errorMessage}</Alert>}
+          <SpaceBetween size="l" direction="horizontal" className="btn-right">
+            <Button onClick={() => navigate(-1)}>Cancel</Button>
+            <Button variant="primary" onClick={handleSubmit} loading={loading}>
+              Add Bank
+            </Button>
+          </SpaceBetween>
+        </SpaceBetween>
       )}
     </SpaceBetween>
   );

@@ -24,9 +24,15 @@ import {
 } from '../../features/EC2/commons/common-components';
 import { useLocation, useParams } from 'react-router-dom';
 import AddPayment from './AddPayment';
+import EditPayment from './EditPayment';
 
 const Content = ({ info, subInfo, state, loadHelpPanelContent }, props) => {
-  return <>{subInfo === 'add' && <AddPayment {...props} />}</>;
+  return (
+    <>
+      {subInfo === 'add' && <AddPayment {...props} />}
+      {subInfo === 'edit' && <EditPayment state={state} />}
+    </>
+  );
 };
 
 function SinglePaymentComponent(props) {
@@ -69,7 +75,17 @@ function SinglePaymentComponent(props) {
         content={
           <Provider store={store}>
             {!loading ? (
-              <ContentLayout header={<Header>{state?.title}</Header>}>
+              <ContentLayout
+                header={
+                  <Header
+                    actions={
+                      subInfo === 'edit' ? <Button>Delete</Button> : null
+                    }
+                  >
+                    {state?.title}
+                  </Header>
+                }
+              >
                 <SpaceBetween size={'m'}>
                   <Content
                     state={state}
@@ -112,9 +128,12 @@ function SinglePaymentComponent(props) {
               { text: 'AWS Billing', href: '/account/bills' },
               {
                 text: 'Payment Preferences',
-                href: `/account/bills/${info}`,
+                href: `/account/billing/paymentPreferences`,
               },
+
               { text: 'Add payment method', href: '#' },
+
+              { text: 'Edit payment method', href: '#' },
             ]}
           />
         }
