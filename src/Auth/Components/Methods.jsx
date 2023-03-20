@@ -11,7 +11,7 @@ import {
 } from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
-function Methods() {
+export function Methods() {
   const [selectedItems, setSelectedItems] = React.useState([
     {
       card: 'Mastercard ••••9441',

@@ -430,7 +430,7 @@ export const SettingsButton = () => {
 
 function Bills(props) {
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState('bills');
+  const [activeHref, setActiveHref] = useState('/account/bills');
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 

@@ -25,12 +25,13 @@ import {
   Link,
   Select,
   StatusIndicator,
+  Flashbar,
 } from '@cloudscape-design/components';
 import { HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import { appLayoutLabels } from '../features/common/labels';
-
+import Profile from './Components/Profile';
 import Methods from './Components/Methods';
 import {
   Navigation,
@@ -103,7 +104,7 @@ const TabsContent = (props) => {
     {
       label: 'Payment profiles',
       id: 'profiles',
-      content: <div>Hey</div>,
+      content: <Profile />,
     },
   ];
   return <Tabs tabs={tabs} ariaLabel="Resource details" />;
@@ -115,6 +116,24 @@ function PaymentPreferences(props) {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
+  const [items, setItems] = React.useState([
+    {
+      type: 'info',
+      dismissible: true,
+      dismissLabel: 'Dismiss message',
+      onDismiss: () => setItems([]),
+      header: 'The new Payment preferences page is available',
+      content: (
+        <>
+          We've redesigned the Payment methods page to the Payment preferences
+          page. All legacy navigation links redirect to the new Payment
+          preferences page. If you have any feedback, let us know{' '}
+          <Link color="inverted">here</Link>.
+        </>
+      ),
+      id: 'message_1',
+    },
+  ]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -206,6 +225,7 @@ function PaymentPreferences(props) {
             ]}
           />
         }
+        notifications={<Flashbar items={items} stackItems />}
       />
       <AppFooter />
     </>

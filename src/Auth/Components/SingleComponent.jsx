@@ -25,12 +25,46 @@ import {
 import { useLocation, useParams } from 'react-router-dom';
 import AddPayment from './AddPayment';
 import EditPayment from './EditPayment';
+import EditProfile from './EditProfile';
+
+const EditBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Edit payment method', href: '#' },
+];
+const AddBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Add payment method', href: '#' },
+];
+const EditProfileBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  {
+    text: 'Payment profiles',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Edit payment profiles', href: '#' },
+];
 
 const Content = ({ info, subInfo, state, loadHelpPanelContent }, props) => {
   return (
     <>
       {subInfo === 'add' && <AddPayment {...props} />}
       {subInfo === 'edit' && <EditPayment state={state} />}
+      {info === 'profiles' && <EditProfile state={state} />}
     </>
   );
 };
@@ -81,6 +115,7 @@ function SinglePaymentComponent(props) {
                     actions={
                       subInfo === 'edit' ? <Button>Delete</Button> : null
                     }
+                    description={state?.des}
                   >
                     {state?.title}
                   </Header>
@@ -123,18 +158,7 @@ function SinglePaymentComponent(props) {
         contentType="wizard"
         breadcrumbs={
           <BreadcrumbGroup
-            items={[
-              { text: 'Account', href: '/account' },
-              { text: 'AWS Billing', href: '/account/bills' },
-              {
-                text: 'Payment Preferences',
-                href: `/account/billing/paymentPreferences`,
-              },
-
-              { text: 'Add payment method', href: '#' },
-
-              { text: 'Edit payment method', href: '#' },
-            ]}
+            items={subInfo === 'edit' ? EditBreadcrumb : AddBreadcrumb}
           />
         }
       />

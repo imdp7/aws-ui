@@ -93,7 +93,7 @@ export const userNav = [
     type: 'section',
     defaultExpanded: true,
     items: [
-      { type: 'link', text: 'Bills', href: 'bills' },
+      { type: 'link', text: 'Bills', href: '/account/bills' },
       { type: 'link', text: 'Payments', href: 'payments' },
       { type: 'link', text: 'Credits', href: 'credits' },
       { type: 'link', text: 'Purchase Orders', href: 'purchase_orders' },

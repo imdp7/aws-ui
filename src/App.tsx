@@ -116,7 +116,7 @@ const App = ({ user, signOut }): JSX.Element => {
               }
             />
             <Route
-              path="billing/paymentPreferences/:info/:subInfo"
+              path="billing/paymentPreferences/:info/:subInfo/*"
               element={
                 <SinglePaymentComponent
                   user={user.username}
