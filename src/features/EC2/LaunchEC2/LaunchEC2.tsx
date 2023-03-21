@@ -83,7 +83,7 @@ const Content = ({ loadHelpPanelContent }) => {
   const [activeTabId, setActiveTabId] = useState('second');
   const [tiles, setTiles] = useState('Amazon');
   const [tile, setTile] = useState('item1');
-  const [storageNo, setStorageNo] = useState('');
+  const [storageNo, setStorageNo] = useState(1);
 
   const [selectedOption, setSelectedOption] = useState({
     label: 't2.micro',
@@ -943,7 +943,7 @@ const Content = ({ loadHelpPanelContent }) => {
                       type="number"
                     />
                   </FormField>
-                  <SpaceBetween size={'xs'}>
+                  <SpaceBetween size={'s'}>
                     {/* <ColumnLayout borders="horizontal" variant="text-grid"> */}
                     <Box variant="div">
                       <Link>Software Image (AMI)</Link>
