@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cards, Button, Box } from '@cloudscape-design/components';
+import { Cards, Button, Box } from '@awsui/components-react';
 
 function Card() {
   const [selectedItems, setSelectedItems] = React.useState([

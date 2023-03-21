@@ -2,7 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useState, useEffect } from 'react';
-import { useCollection } from '@cloudscape-design/collection-hooks';
+import { useCollection } from '@awsui/collection-hooks';
 import {
   Button,
   Pagination,
@@ -20,7 +20,7 @@ import {
   ColumnLayout,
   FormField,
   Icon,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   TableEmptyState,
   TableNoMatchState,

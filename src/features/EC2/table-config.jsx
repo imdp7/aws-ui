@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { Link, StatusIndicator } from '@cloudscape-design/components';
+import { Link, StatusIndicator } from '@awsui/components-react';
 import { Preferences } from './tableConfig.jsx';
 
 export const EC2Preferences = (props) => (

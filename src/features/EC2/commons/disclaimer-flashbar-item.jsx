@@ -14,7 +14,7 @@ export function useDisclaimerFlashbarItem(onDismiss) {
     statusIconAriaLabel: 'info',
     content: (
       <>
-        This demo is an example of Cloudscape Design System patterns and
+        This demo is an example of AWS Polaris 3.0 Design System patterns and
         components, and may not reflect the current patterns and components of
         AWS services.
       </>

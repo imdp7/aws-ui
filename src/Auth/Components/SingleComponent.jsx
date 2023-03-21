@@ -12,7 +12,7 @@ import {
   BreadcrumbGroup,
   SpaceBetween,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { HelpPanels } from '../../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
@@ -155,7 +155,7 @@ function SinglePaymentComponent(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={subInfo === 'edit' ? EditBreadcrumb : AddBreadcrumb}

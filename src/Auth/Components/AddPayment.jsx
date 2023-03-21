@@ -15,7 +15,7 @@ import {
   Select,
   Alert,
   ColumnLayout,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 import Stripe from 'stripe';
@@ -259,7 +259,7 @@ const Content = () => {
       </Modal>
       <Container
         header={
-          <Header variant="h3" info={<Link>Info</Link>}>
+          <Header variant="h2" info={<Link>Info</Link>}>
             Choose a payment method type
           </Header>
         }
@@ -290,7 +290,7 @@ const Content = () => {
         <>
           <Container
             header={
-              <Header variant="h3" fitHeight>
+              <Header variant="h2" fitHeight>
                 Card Information
               </Header>
             }
@@ -394,7 +394,7 @@ const Content = () => {
           <Container
             header={
               <Header
-                variant="h3"
+                variant="h2"
                 actions={
                   <Select
                     selectedOption={select}
@@ -518,7 +518,7 @@ const Content = () => {
         <SpaceBetween size="m">
           <Container
             header={
-              <Header variant="h3" fitHeight>
+              <Header variant="h2" fitHeight>
                 Bank Details
               </Header>
             }
@@ -615,7 +615,7 @@ const Content = () => {
           <Container
             header={
               <Header
-                variant="h3"
+                variant="h2"
                 actions={
                   <Select
                     selectedOption={select}

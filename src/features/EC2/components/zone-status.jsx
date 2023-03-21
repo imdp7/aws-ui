@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { Container, Header, PieChart } from '@cloudscape-design/components';
+import { Container, Header, PieChart } from '@awsui/components-react';
 import {
   colorChartsStatusPositive,
   colorChartsStatusHigh,

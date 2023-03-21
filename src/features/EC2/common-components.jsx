@@ -8,7 +8,7 @@ import {
   HelpPanel,
   Icon,
   SpaceBetween,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { resourcesBreadcrumbs } from '../common/breadcrumbs';
 import {
   ExternalLinkItem,

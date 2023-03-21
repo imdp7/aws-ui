@@ -1,12 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import {
-  Box,
-  Container,
-  Header,
-  ColumnLayout,
-} from '@cloudscape-design/components';
+import { Box, Container, Header, ColumnLayout } from '@awsui/components-react';
 import { CounterLink } from '../commons/common-components';
 import INSTANCES from '../../resources/ec2-instances';
 

@@ -10,6 +10,7 @@
   width: 100%;
   flex-wrap: wrap;
   justify-content: flex-end;
+  min-width: 1280px;
 }
 #layout span {
   margin: 0rem 0.5rem;

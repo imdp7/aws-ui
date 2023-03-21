@@ -11,7 +11,7 @@ import {
   Header,
   BreadcrumbGroup,
   Button,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { Provider } from 'react-redux';
 import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';
@@ -24,6 +24,7 @@ import { Content } from './commons/Home';
 import { useNavigate } from 'react-router-dom';
 function EC2_HomePage(props) {
   const [loading, setLoading] = useState(false);
+  const [navigationOpen, setNavigationOpen] = useState(false);
   const [activeHref, setActiveHref] = useState('Homepage');
 
   useEffect(() => {
@@ -47,8 +48,9 @@ function EC2_HomePage(props) {
         headerSelector="#h"
         footerSelector="#f"
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         toolsHide={true}
+        navigationOpen={navigationOpen}
         breadcrumbs={<BreadcrumbGroup items={[]} />}
         navigation={
           <Navigation
@@ -74,10 +76,9 @@ function EC2_HomePage(props) {
                     actions={
                       <SpaceBetween size="m">
                         <Container
-                          variant="stacked"
                           header={
                             <Header
-                              variant="h3"
+                              variant="h2"
                               description="Create your first instance server. Select and a trigger for flow."
                             >
                               {props.head}

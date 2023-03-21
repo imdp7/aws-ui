@@ -11,7 +11,7 @@ import {
   Alert,
   Input,
   Select,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 import { Methods } from './Methods';
@@ -33,14 +33,15 @@ function EditProfile(props) {
       id_m: '123dass112a',
       expiry: '2025/02',
       currency: 'USD - US Dollar',
+      provider: 'AWS Marketplace',
     },
   ]);
 
   return (
-    <SpaceBetween size="xxs">
+    <SpaceBetween size="m">
       <Container
         header={
-          <Header variant="h3" fitHeight>
+          <Header variant="h2" fitHeight>
             Payment profile details
           </Header>
         }

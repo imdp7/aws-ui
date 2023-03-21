@@ -15,7 +15,7 @@ import {
   SideNavigation,
   Popover,
   SpaceBetween,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { appLayoutLabels, externalLinkProps } from '../../common/labels';
 import {
   getHeaderCounterText,
@@ -141,7 +141,7 @@ export const userNav = [
       {
         type: 'link',
         text: 'Billing Preferences',
-        href: 'billing_preferences',
+        href: 'billing/billing_preferences',
       },
       {
         type: 'link',
@@ -151,10 +151,10 @@ export const userNav = [
       {
         type: 'link',
         text: 'Consolidated Billing',
-        href: 'consolidated_billing',
+        href: 'billing/consolidated_billing',
         info: <Link external variant="link" />,
       },
-      { type: 'link', text: 'tax Settings', href: 'tax_settings' },
+      { type: 'link', text: 'Tax Settings', href: 'tax_settings' },
     ],
   },
 ];

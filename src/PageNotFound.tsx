@@ -7,7 +7,7 @@ import {
   Link,
   SpaceBetween,
   Container,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { AppHeader } from './features/common/TopNavigations';
 import { AppFooter } from './features/common/AppFooter';
 
@@ -62,7 +62,7 @@ function PageNotFound(props) {
       <AppLayout
         content={<NotFound />}
         navigationHide={true}
-        contentType="wizard"
+        contentType="table"
         headerSelector="#h"
         footerSelector="#f"
         disableBodyScroll={true}

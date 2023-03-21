@@ -21,7 +21,7 @@ import {
   StatusIndicator,
   SpaceBetween,
   Table,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useAsyncData } from '../commons/use-async-data';
 import DataProvider from '../commons/data-provider';
 import { TableHeader, TableEmptyState } from '../commons/common-components';
@@ -344,7 +344,7 @@ export const StatusCheck = (props) => {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           description="Status checks detect problems that may impair i-0f878c0d33c858284 (test) from running 
      your applications."
           info={<Link>Info</Link>}

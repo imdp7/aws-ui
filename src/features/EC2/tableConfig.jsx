@@ -5,7 +5,7 @@ import {
   CollectionPreferences,
   StatusIndicator,
   Link,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { addColumnSortLabels } from '../common/labels';
 
 export const COLUMN_DEFINITIONS = addColumnSortLabels([

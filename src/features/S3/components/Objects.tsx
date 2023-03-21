@@ -12,7 +12,7 @@ import {
   Header,
   CollectionPreferences,
   Link,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { dataBucketFiles } from '../../resources/s3Bucket';

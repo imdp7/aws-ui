@@ -11,7 +11,7 @@ import {
   Box,
   CollectionPreferences,
   Pagination,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../common/localStorage';
 import {

@@ -15,7 +15,7 @@ import {
   Box,
   Tiles,
   ExpandableSection,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { InfoLink } from '../commons/common-components';
 import { HelpPanels } from '../components/header';
 
@@ -27,7 +27,7 @@ const Name = () => {
   return (
     <Container
       header={
-        <Header variant="h3">Launch template name and description</Header>
+        <Header variant="h2">Launch template name and description</Header>
       }
     >
       <SpaceBetween size="s">
@@ -181,7 +181,7 @@ const Contents = () => {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           description="Specify the details of your launch template below. Leaving a field blank will result in the field not being included in the launch template."
         >
           Launch template contents
@@ -247,7 +247,7 @@ const Instances = () => {
     return () => clearTimeout();
   };
   return (
-    <Container header={<Header variant="h3">Instance type</Header>}>
+    <Container header={<Header variant="h2">Instance type</Header>}>
       <ColumnLayout columns={2} variant="text-grid">
         <FormField label="Instance type">
           <Select
@@ -300,7 +300,7 @@ const KeyPair = ({ loadHelpPanelContent }) => {
       id="distribution-panel"
       header={
         <Header
-          variant="h3"
+          variant="h2"
           info={
             <InfoLink
               id="certificate-method-info-link"

@@ -6,7 +6,6 @@ import '@aws-amplify/ui-react/styles.css';
 import awsExports from './aws-exports';
 import './App.css';
 import HomePage from './HomPage';
-import '@awsui/global-styles/index.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EC2 from './features/EC2/EC2';
 import { S3 } from './features/S3/S3';

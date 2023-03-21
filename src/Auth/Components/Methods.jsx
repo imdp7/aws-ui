@@ -8,7 +8,7 @@ import {
   Badge,
   SpaceBetween,
   ButtonDropdown,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useNavigate } from 'react-router-dom';
 
 export function Methods() {
@@ -97,7 +97,7 @@ export function Methods() {
             <Button>Add payment method</Button>
           </Box>
         }
-        filter={<TextFilter filteringPlaceholder="Find payment methods" />}
+        filter={<TextFilter filteringPlaceholder="Find payment method" />}
         header={
           <Header
             counter={

@@ -6,7 +6,7 @@ import {
   Box,
   StatusIndicator,
   Popover,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { addColumnSortLabels } from '../../common/labels';
 
 export const StatusComponent = ({ status }) => {

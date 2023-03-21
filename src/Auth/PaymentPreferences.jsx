@@ -26,7 +26,7 @@ import {
   Select,
   StatusIndicator,
   Flashbar,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
@@ -52,7 +52,7 @@ const DefaultPayment = () => {
   return (
     <Container
       header={
-        <Header variant="h3" actions={<Button>Edit</Button>}>
+        <Header variant="h2" actions={<Button>Edit</Button>}>
           Default payment preferences
         </Header>
       }
@@ -212,7 +212,7 @@ function PaymentPreferences(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={[

@@ -21,7 +21,7 @@ import {
   Badge,
   Container,
   ExpandableSection,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { InfoLink } from '../commons/common-components';
 import { HelpPanels } from '../components/header';
 
@@ -609,7 +609,7 @@ function Panel1({
             </FormField>
             <Box>
               <Header
-                variant="h3"
+                variant="h2"
                 description="A security group is a set of firewall rules that control the traffic for your instance. Add rules to allow specific traffic to reach your instance."
               >
                 Firewall (security groups)
@@ -630,7 +630,7 @@ function Panel1({
                 <SpaceBetween size="m">
                   <Box>
                     We'll create a new security group called '
-                    <strong>launch-wizard-1</strong>' with the following rules:
+                    <strong>launch-table-1</strong>' with the following rules:
                   </Box>
                   <ColumnLayout columns={2}>
                     <Box>

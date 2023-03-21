@@ -7,7 +7,7 @@ import {
   Link,
   StatusIndicator,
   Table,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 
 export default function Events() {
   const eventsDefinition = [

@@ -11,7 +11,7 @@ import {
   ColumnLayout,
   Badge,
   FormField,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 
 const GetStarted = () => {
   return (
@@ -28,7 +28,7 @@ const GetStarted = () => {
         </Box>
         <ColumnLayout columns={2} variant="text-grid">
           <div>
-            <Box variant="h3">Benefits</Box>
+            <Box variant="h2">Benefits</Box>
             <ul>
               <SpaceBetween size="m">
                 <li>
@@ -54,7 +54,7 @@ const GetStarted = () => {
             </ul>
           </div>
           <div>
-            <Box variant="h3">
+            <Box variant="h2">
               You might not benefit from payment profiles if
             </Box>
             <ul>
@@ -77,7 +77,7 @@ const GetStarted = () => {
             </ul>
           </div>
         </ColumnLayout>
-        <Box variant="h3">How it Works</Box>
+        <Box variant="h2">How it Works</Box>
         <ul>
           <SpaceBetween size="s">
             <li>
@@ -196,7 +196,7 @@ const PaymentProfiles = () => {
           id_m: 'ajkd123jkda',
           name: 'Andy Jassy',
           expiry: '2035/01/01',
-          provider: 'AWS Martketplace',
+          provider: 'AWS Marketplace',
           image:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/2560px-Visa.svg.png',
           type: 'null',
@@ -256,7 +256,7 @@ const PaymentProfiles = () => {
 function Profile() {
   return (
     <SpaceBetween size="m">
-      <Box>
+      <Box fontSize="heading-s" variant="div">
         Use payment profiles to customize your AWS payments by assigning payment
         methods to each AWS service provider. Automatically pay your AWS bills
         using payment methods other than your default payment method.

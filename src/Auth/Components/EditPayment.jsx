@@ -11,7 +11,7 @@ import {
   Alert,
   Input,
   Select,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ function EditPayment(props) {
     <SpaceBetween size="m">
       <Container
         header={
-          <Header variant="h3" fitHeight>
+          <Header variant="h2" fitHeight>
             Payment method details
           </Header>
         }
@@ -82,7 +82,7 @@ function EditPayment(props) {
           </FormField>
         </SpaceBetween>
       </Container>
-      <Container header={<Header variant="h3">Billing Address</Header>}>
+      <Container header={<Header variant="h2">Billing Address</Header>}>
         <SpaceBetween size="m">
           <FormField label="Full name">
             <Input
