@@ -32,6 +32,10 @@ export const S3Header = {
   text: 'Amazon S3',
   href: '/S3/home',
 };
+export const CloudWatchHeader = {
+  text: 'CloudWatch',
+  href: '/cloudWatch/home',
+};
 
 export const ProfileHeader = {
   text: 'Account',
@@ -344,6 +348,112 @@ export const ec2navItems = [
     type: 'link',
     href: '/density_settings',
     text: 'Density settings',
+  },
+];
+export const cloudWatchNavItems = [
+  { type: 'link', text: 'Dashboard', href: 'dashboard' },
+  {
+    text: 'Alarms',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'In alarm', href: 'alarmsV1' },
+      { type: 'link', text: 'All alarms', href: 'alarmsV2' },
+      { type: 'link', text: 'Billing', href: 'alarmsV3billing' },
+    ],
+  },
+  {
+    text: 'Logs',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'Log groups', href: 'log-groups' },
+      { type: 'link', text: 'Log insights', href: 'log-insights' },
+    ],
+  },
+  {
+    text: 'Metrics',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'All metrics', href: 'metricsV2' },
+      { type: 'link', text: 'Explorer', href: 'explorer' },
+      { type: 'link', text: 'Streams', href: 'streams' },
+    ],
+  },
+  {
+    text: 'X-Ray traces',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'Service map', href: 'service-map' },
+      { type: 'link', text: 'Traces', href: 'traces' },
+    ],
+  },
+  {
+    text: 'Events',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'Rules', href: 'rules' },
+      { type: 'link', text: 'Event Buses', href: 'event-buses' },
+    ],
+  },
+  {
+    text: 'Application monitoring',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'ServiceLens Map', href: 'servicelens-map' },
+      { type: 'link', text: 'Resource Health', href: 'resource-health' },
+      { type: 'link', text: 'Internet Monitor', href: 'internet-monitor' },
+      {
+        type: 'link',
+        text: 'Synthetics Canaries',
+        href: 'synthetics-canaries',
+      },
+      {
+        type: 'link',
+        text: 'Evidently',
+        href: 'evidently',
+      },
+      {
+        type: 'link',
+        text: 'RUM',
+        href: 'rum',
+      },
+    ],
+  },
+  {
+    text: 'Insights',
+    type: 'section',
+    defaultExpanded: false,
+    items: [
+      { type: 'link', text: 'Container insights', href: 'container-insights' },
+      { type: 'link', text: 'Lambda insights', href: 'lambda-insights' },
+      {
+        type: 'link',
+        text: 'Contributor insights',
+        href: 'contributor-insights',
+      },
+      {
+        type: 'link',
+        text: 'Application insights',
+        href: 'application-insights',
+      },
+    ],
+  },
+
+  { type: 'divider' },
+  {
+    type: 'link',
+    href: 'settings',
+    text: 'Settings',
+  },
+  {
+    type: 'link',
+    href: 'home',
+    text: 'Getting Started',
   },
 ];
 

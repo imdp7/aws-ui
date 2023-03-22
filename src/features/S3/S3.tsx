@@ -10,6 +10,7 @@ import {
   SpaceBetween,
   Spinner,
   Header,
+  Box,
   BreadcrumbGroup,
   Button,
 } from '@awsui/components-react';
@@ -102,7 +103,14 @@ export const S3 = (props): JSX.Element => {
                       </SpaceBetween>
                     }
                   >
-                    {props.title}
+                    <Box
+                      variant="span"
+                      fontSize="display-l"
+                      fontWeight="heavy"
+                      padding={{ top: 's', left: 'l', bottom: 'n' }}
+                    >
+                      {props.title}
+                    </Box>
                   </Header>
                 }
               >

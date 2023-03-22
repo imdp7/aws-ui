@@ -31,6 +31,8 @@ import Bills from './Auth/Bills';
 import PaymentPreferences from './Auth/PaymentPreferences';
 import AddPayment from './Auth/Components/SingleComponent';
 import SinglePaymentComponent from './Auth/Components/SingleComponent';
+import Cloudwatch_Home from './features/Cloudwatch/Cloudwatch_Home';
+import Dashboard from './features/Cloudwatch/Dashboard';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -49,6 +51,23 @@ const App = ({ user, signOut }): JSX.Element => {
             path="/"
             element={<HomePage user={user.username} signOut={signOut} />}
           />
+          <Route path="cloudwatch">
+            <Route
+              path="home"
+              index
+              element={
+                <Cloudwatch_Home
+                  user={user.username}
+                  signOut={signOut}
+                  title="CloudWatch Home"
+                />
+              }
+            />
+            <Route
+              path="dashboard"
+              element={<Dashboard user={user.username} signOut={signOut} />}
+            />
+          </Route>
           <Route path="s3">
             <Route
               path="home"

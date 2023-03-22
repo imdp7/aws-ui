@@ -29,7 +29,10 @@ export const Content = (props) => {
     >
       <Container header={<Header variant="h2">How it works</Header>}>
         {props.image ? (
-          <img width="100%" src={`${props.image}`} />
+          <Container>
+            <img width="100%" src={`${props.image}`} />
+            <Box>{props.description}</Box>
+          </Container>
         ) : (
           <div>
             <YouTube videoId="_I14_sXHO8U" opts={opts} />
