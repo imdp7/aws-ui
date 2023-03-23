@@ -24,20 +24,27 @@ import {
 } from '../EC2/commons/common-components';
 import { useNavigate } from 'react-router-dom';
 import CustomDashboard from './Components/CustomDashboard';
+import { InfoLink, ValueWithLabel } from '../common/common';
+import { HelpPanels } from '../EC2/components/header';
+import AutomaticDashboards from './Components/AutomaticDashboards';
 
-const Content = () => {
+const Content = ({ loadHelpPanelContent }) => {
   return (
     <Tabs
       tabs={[
         {
           label: 'Custom dashboards',
           id: 'first',
-          content: <CustomDashboard />,
+          content: (
+            <CustomDashboard loadHelpPanelContent={loadHelpPanelContent} />
+          ),
         },
         {
           label: 'Automatic dashboards',
           id: 'second',
-          content: 'Second tab content area',
+          content: (
+            <AutomaticDashboards loadHelpPanelContent={loadHelpPanelContent} />
+          ),
         },
       ]}
     />
@@ -46,6 +53,18 @@ const Content = () => {
 function Dashboard(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('dashboard');
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [toolsContent, setToolsContent] = useState(
+    <HelpPanels
+      title="Dashboards"
+      info="Amazon CloudWatch dashboards are customizable home pages in the CloudWatch console that you can use to monitor your resources in a single view, even those resources that are spread across different Regions. You can use CloudWatch dashboards to create customized views of the metrics and alarms for your AWS resources."
+      des="To get started with CloudWatch dashboards, you must first create a dashboard. You can create multiple dashboards. There is no limit on the number of CloudWatch dashboards in your AWS account. All dashboards are global and can contain metrics from all Regions."
+    />
+  );
+  const loadHelpPanelContent = (toolsContent) => {
+    setToolsOpen(true);
+    setToolsContent(toolsContent);
+  };
 
   useEffect(() => {
     document.title = 'CloudWatch Management Console';
@@ -67,6 +86,9 @@ function Dashboard(props) {
         headerSelector="#h"
         footerSelector="#f"
         ariaLabels={appLayoutLabels}
+        toolsOpen={toolsOpen}
+        tools={toolsContent}
+        onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
@@ -84,7 +106,7 @@ function Dashboard(props) {
         }
         content={
           <Provider store={store}>
-            <Content />
+            <Content loadHelpPanelContent={loadHelpPanelContent} />
           </Provider>
         }
         navigation={

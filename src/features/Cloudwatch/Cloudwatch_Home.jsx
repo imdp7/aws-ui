@@ -26,7 +26,6 @@ import { useNavigate } from 'react-router-dom';
 function Cloudwatch_Home(props) {
   const [loading, setLoading] = useState(false);
   const [activeHref, setActiveHref] = useState('home');
-
   useEffect(() => {
     document.title = 'CloudWatch Management Console';
   }, [location]);

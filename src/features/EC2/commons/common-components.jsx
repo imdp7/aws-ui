@@ -351,7 +351,7 @@ export const ec2navItems = [
   },
 ];
 export const cloudWatchNavItems = [
-  { type: 'link', text: 'Dashboard', href: 'dashboard' },
+  { type: 'link', text: 'Dashboards', href: 'dashboard' },
   {
     text: 'Alarms',
     type: 'section',

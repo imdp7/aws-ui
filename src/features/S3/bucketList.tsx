@@ -47,10 +47,11 @@ import { Provider } from 'react-redux';
 import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { store } from '../../app/store';
 import { DashboardHeader, HelpPanels } from '../EC2/components/header';
-import { useCollection } from '@awsui/collection-hooks';
+import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useLocalStorage } from '../common/localStorage';
 import useLocationHash from '../EC2/components/use-location-hash';
 import useNotifications from '../EC2/commons/use-notifications';
+import { useNavigate } from 'react-router-dom';
 
 const defaultEngine = { value: '0', label: 'Any Region' };
 const defaultClass = { value: '0', label: 'Any Version Control' };
@@ -257,6 +258,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
   };
 
   const tabelRef = useRef();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -306,12 +308,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
                   >
                     Delete
                   </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      (window.location.href = '/S3/buckets/create')
-                    }
-                  >
+                  <Button variant="primary" onClick={() => navigate('create')}>
                     Create Bucket
                   </Button>
                 </SpaceBetween>

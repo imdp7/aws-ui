@@ -4,16 +4,19 @@ import {
   Box,
   Button,
   TextFilter,
+  Input,
   Header,
   Link,
   Pagination,
+  Select,
   CollectionPreferences,
   SpaceBetween,
 } from '@awsui/components-react';
 import { InfoLink, ValueWithLabel } from '../../common/common';
 import { HelpPanels } from '../../EC2/components/header';
-function CustomDashboard({ loadHelpPanelContent }) {
+function AutomaticDashboards({ loadHelpPanelContent }) {
   const [selectedItems, setSelectedItems] = React.useState([]);
+  const [resourceGroup, setResourceGroup] = React.useState([]);
   return (
     <>
       <Table
@@ -78,10 +81,35 @@ function CustomDashboard({ loadHelpPanelContent }) {
           </Box>
         }
         filter={
-          <TextFilter
-            filteringPlaceholder="Filter dashboards"
-            filteringText=""
-          />
+          <div className="input-container">
+            <div className="input-filter">
+              <Input
+                data-testid="input-filter"
+                type="search"
+                // value={filterProps.filteringText}
+                // onChange={(event) => {
+                //   actions.setFiltering(event.detail.value);
+                // }}
+                placeholder="Find instances"
+                label="Find instances"
+                ariaDescribedby={null}
+              />
+            </div>
+            <div className="select-filter">
+              <Select
+                data-testid="engine-filter"
+                options={[{ label: '-', value: '1' }]}
+                selectedAriaLabel="Selected"
+                selectedOption={resourceGroup}
+                onChange={(event) => {
+                  setResourceGroup(event.detail.selectedOption);
+                }}
+                ariaDescribedby={null}
+                expandToViewport={true}
+                placeholder="Filter by resource group"
+              />
+            </div>
+          </div>
         }
         header={
           <Header
@@ -101,17 +129,8 @@ function CustomDashboard({ loadHelpPanelContent }) {
                 }
               />
             }
-            actions={
-              <SpaceBetween size="s" direction="horizontal">
-                <Button disabled={selectedItems.length === 0}>
-                  Share dashboard
-                </Button>
-                <Button disabled={selectedItems.length === 0}>Delete</Button>
-                <Button variant="primary">Create dashboard</Button>
-              </SpaceBetween>
-            }
           >
-            Custom Dashboards
+            Automatic Dashboards
           </Header>
         }
         pagination={
@@ -144,4 +163,4 @@ function CustomDashboard({ loadHelpPanelContent }) {
   );
 }
 
-export default CustomDashboard;
+export default AutomaticDashboards;
