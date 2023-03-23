@@ -45,10 +45,10 @@ function AutomaticDashboards({ loadHelpPanelContent }) {
             sortingField: 'name',
           },
           {
-            id: 'sharing',
-            header: 'Sharing',
-            cell: (e) => e.sharing,
-            sortingField: 'sharing',
+            id: 'inAlarm',
+            header: 'In alarm',
+            cell: (e) => e.inAlarm,
+            sortingField: 'inAlarm',
           },
           {
             id: 'favorite',
@@ -56,28 +56,21 @@ function AutomaticDashboards({ loadHelpPanelContent }) {
             cell: (e) => e.favorite,
             sortingField: 'sharing',
           },
-          {
-            id: 'lastUpdated',
-            header: 'Last Updated (UTC)',
-            cell: (e) => e.lastUpdated,
-            sortingField: 'lastUpdated',
-          },
         ]}
         items={[]}
         loadingText="Loading resources"
         selectionType="single"
         trackBy="name"
-        visibleColumns={['name', 'sharing', 'favorite', 'lastUpdated']}
+        visibleColumns={['name', 'inAlarm', 'favorite']}
         empty={
           <Box textAlign="center" color="inherit">
-            <b>No dashboards</b>
+            <b>No automatic dashboards</b>
             <Box variant="p" color="inherit">
-              You have not created any dashboards.
+              You don't have any services running.
             </Box>
             <Box padding={{ bottom: 's' }}>
-              <Link>Read more about Dashboards</Link>
+              <Link>Read more about Automatic Dashboards</Link>
             </Box>
-            <Button>Create Dashboard</Button>
           </Box>
         }
         filter={
@@ -90,8 +83,8 @@ function AutomaticDashboards({ loadHelpPanelContent }) {
                 // onChange={(event) => {
                 //   actions.setFiltering(event.detail.value);
                 // }}
-                placeholder="Find instances"
-                label="Find instances"
+                placeholder="Filter dashboards"
+                label="Filter dashboards"
                 ariaDescribedby={null}
               />
             </div>
@@ -121,9 +114,18 @@ function AutomaticDashboards({ loadHelpPanelContent }) {
                 onFollow={() =>
                   loadHelpPanelContent(
                     <HelpPanels
-                      title="Dashboards"
-                      info="Amazon CloudWatch dashboards are customizable home pages in the CloudWatch console that you can use to monitor your resources in a single view, even those resources that are spread across different Regions. You can use CloudWatch dashboards to create customized views of the metrics and alarms for your AWS resources."
-                      des="To get started with CloudWatch dashboards, you must first create a dashboard. You can create multiple dashboards. There is no limit on the number of CloudWatch dashboards in your AWS account. All dashboards are global and can contain metrics from all Regions."
+                      title="Automatic dashboards"
+                      info="Use automatic dashboards to focus on metrics and alarms for a single AWS service. You can drill down further in that AWS service by also focusing on one resource group."
+                      ul={[
+                        {
+                          h5: 'To focus on a single service',
+                          text: 'Choose the service name from the table. The dashboard opens, with graphs of key metrics from that service. To see the alarms for the service, choose the *In Alarm* check box near the top of the screen, below the dashboard selector.',
+                        },
+                        {
+                          h5: 'To focus on a Resource Group',
+                          text: 'You can focus the view on metrics and alarms from a single resource group. The view changes to show only the services that have resources that are tagged as part of this resource group. You can drill down further by focusing on both a single resource group and a single service at the same time.',
+                        },
+                      ]}
                     />
                   )
                 }
