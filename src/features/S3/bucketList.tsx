@@ -47,7 +47,7 @@ import { Provider } from 'react-redux';
 import { appLayoutLabels, paginationLabels } from '../common/labels';
 import { store } from '../../app/store';
 import { DashboardHeader, HelpPanels } from '../EC2/components/header';
-import { useCollection } from '@awsui/components-react';
+import { useCollection } from '@awsui/collection-hooks';
 import { useLocalStorage } from '../common/localStorage';
 import useLocationHash from '../EC2/components/use-location-hash';
 import useNotifications from '../EC2/commons/use-notifications';
