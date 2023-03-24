@@ -20,6 +20,8 @@ import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 import Stripe from 'stripe';
 
+// write a function to add validation webhook for stripe payments
+
 const Content = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ const Content = () => {
     label: 'Use existing address',
     value: '1',
   });
-  const [nameCard, setNameCard] = useState('');
+  const [nameBilling, setNameBilling] = useState('');
   const [company, setCompany] = useState('');
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState(null);
@@ -44,7 +46,7 @@ const Content = () => {
   const [zipCode, setZipCode] = useState(null);
   const [phone, setPhone] = useState(null);
   const [email, setEmail] = useState(null);
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState({});
   const [routing, setRouting] = useState(null);
   const [account_type, setAccount_Type] = useState({
     value: 'checking',
@@ -63,51 +65,62 @@ const Content = () => {
   const cardNumberRef = useRef(null);
   const dateRef = useRef(null);
   const cvcRef = useRef(null);
-  const nameCardRef = useRef(null);
+  const nameRef = useRef(null);
   const RoutingRef = useRef(null);
   const AccountTypeRef = useRef(null);
   const AccountNoRef = useRef(null);
   const ReAccountNoRef = useRef(null);
+  const nameBillingRef = useRef(null);
   const AccountNameRef = useRef(null);
-
+  const address1Ref = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const zipCodeRef = useRef(null);
+  const countryRef = useRef(null);
+  const phoneRef = useRef(null);
   async function handleSubmit() {
-    setLoading(true);
-    const timer = setTimeout(async () => {
-      if (!method) {
-        setErrorMessage('Please select a method to add');
-        setLoading(false);
-        methodRef.current.focus();
-        return;
-      }
+    try {
+      setLoading(true);
+
+      // Validate form fields
+      if (!method) throw new Error('Please select a method to add');
       if (method === 'card') {
-        setErrorMessage('');
-        if (!cardNumber) {
-          setErrorMessage('Please enter valid card number');
-          setLoading(false);
-          cardNumberRef.current.focus();
-          return;
-        }
-        if (!date) {
-          setErrorMessage('Please enter the expiration date');
-          setLoading(false);
-          dateRef.current.focus();
-          return;
-        }
-        if (!cvc) {
-          setErrorMessage('Please enter the 3 digit security code');
-          setLoading(false);
-          cvcRef.current.focus();
-          return;
-        }
-        if (!nameCard) {
-          setErrorMessage('Please enter the name on the card');
-          setLoading(false);
-          nameCardRef.current.focus();
-          return;
-        }
-        setErrorMessage('');
-        setError(false);
-        const paymentMethod = await stripe.paymentMethods.create({
+        if (!cardNumber) throw new Error('Please enter valid card number');
+        if (!date) throw new Error('Please enter the expiration date');
+        if (!cvc) throw new Error('Please enter the 3 digit security code');
+        if (!name) throw new Error('Please enter the name on the card');
+        if (!nameBilling) throw new Error('Please enter the billing name');
+        if (!country.value) throw new Error('Please select billing country');
+        if (!address1) throw new Error('Please enter billing address street');
+        if (!city) throw new Error('Please enter billing city');
+        if (!state) throw new Error('Please enter billing state');
+        if (!zipCode)
+          throw new Error('Please enter billing zip code / postal code');
+        if (!phone) throw new Error('Please enter billing phone number');
+      } else if (method === 'bank') {
+        if (!account_type)
+          throw new Error('Please select the bank account type');
+        if (!routing) throw new Error('Please enter the bank routing number');
+        if (!accountNo) throw new Error('Please enter the bank account number');
+        if (!reAccountNo)
+          throw new Error('Please re-enter the bank account number');
+        if (!accountName) throw new Error('Please enter the bank account name');
+        if (!nameBilling) throw new Error('Please enter the billing name');
+        if (!country.value) throw new Error('Please select billing country');
+        if (!address1) throw new Error('Please enter billing address street');
+        if (!city) throw new Error('Please enter billing city');
+        if (!state) throw new Error('Please enter billing state');
+        if (!zipCode)
+          throw new Error('Please enter billing zip code / postal code');
+        if (!phone) throw new Error('Please enter billing phone number');
+      } else {
+        throw new Error(`Unknown payment method: ${method}`);
+      }
+      setErrorMessage('');
+      // Create payment method
+      let paymentMethod;
+      if (method === 'card') {
+        paymentMethod = await stripe.paymentMethods.create({
           type: method,
           card: {
             number: cardNumber,
@@ -129,53 +142,8 @@ const Content = () => {
             phone: phone,
           },
         });
-        if (paymentMethod.error) {
-          setErrorMessage(paymentMethod.error.message);
-        } else {
-          setVisible(true);
-          const confirmationData = Object.entries(paymentMethod.card).reduce(
-            (obj, [key, value]) => ({ ...obj, [key]: value }),
-            {}
-          );
-          setConfirmationData(confirmationData);
-          console.log(confirmationData);
-        }
-      }
-      if (method === 'bank') {
-        setErrorMessage('');
-        if (!account_type) {
-          setErrorMessage('Please select the bank account type');
-          setLoading(false);
-          AccountTypeRef.current.focus();
-          return;
-        }
-        if (!routing) {
-          setErrorMessage('Please enter the bank routing number');
-          setLoading(false);
-          RoutingRef.current.focus();
-          return;
-        }
-        if (!accountNo) {
-          setErrorMessage('Please enter the bank account number');
-          setLoading(false);
-          AccountNoRef.current.focus();
-          return;
-        }
-        if (!reAccountNo) {
-          setErrorMessage('Please re-enter the bank account number');
-          setLoading(false);
-          ReAccountNoRef.current.focus();
-          return;
-        }
-        if (!accountName) {
-          setErrorMessage('Please re-enter the bank account name');
-          setLoading(false);
-          AccountNameRef.current.focus();
-          return;
-        }
-        setErrorMessage('');
-        setLoading(false);
-        const bankAccount = await stripe.paymentMethods.create({
+      } else if (method === 'bank') {
+        paymentMethod = await stripe.paymentMethods.create({
           type: 'us_bank_account',
           us_bank_account: {
             account_holder_type: 'individual',
@@ -193,25 +161,67 @@ const Content = () => {
               state: state,
             },
             email: email,
-            name: name,
+            name: accountName,
             phone: phone,
           },
         });
-        if (bankAccount.error) {
-          setErrorMessage(bankAccount.error.message);
-        } else {
-          setVisible(true);
-          const confirmationData = Object.entries(bankAccount).reduce(
-            (obj, [key, value]) => ({ ...obj, [key]: value }),
-            {}
-          );
-          setConfirmationData(confirmationData);
-          console.log(confirmationData);
-        }
       }
+
+      // Display confirmation data
+      const confirmationData =
+        method === 'card' ? paymentMethod.card : paymentMethod;
+      setVisible(true);
+      setConfirmationData(confirmationData);
+      console.log(confirmationData);
+      setError(false);
+    } catch (error) {
+      setErrorMessage(error.message);
+      setError(true);
+      if (error.message === 'Please enter valid card number') {
+        focusOnError(cardNumberRef);
+      } else if (error.message === 'Please enter the expiration date') {
+        focusOnError(dateRef);
+      } else if (error.message === 'Please enter the 3 digit security code') {
+        focusOnError(cvcRef);
+      } else if (error.message === 'Please enter the name on the card') {
+        focusOnError(nameRef);
+      } else if (error.message === 'Please enter the billing name') {
+        focusOnError(nameBillingRef);
+      } else if (error.message === 'Please select billing country') {
+        focusOnError(countryRef);
+      } else if (error.message === 'Please select the bank account type') {
+        focusOnError(AccountTypeRef);
+      } else if (error.message === 'Please enter the bank routing number') {
+        focusOnError(RoutingRef);
+      } else if (error.message === 'Please enter the bank account number') {
+        focusOnError(AccountNoRef);
+      } else if (error.message === 'Please re-enter the bank account number') {
+        focusOnError(ReAccountNoRef);
+      } else if (error.message === 'Please enter the bank account name') {
+        focusOnError(AccountNameRef);
+      } else if (error.message === 'Please enter the billing name') {
+        focusOnError(AccountNameRef);
+      } else if (error.message === 'Please enter billing address street') {
+        focusOnError(address1Ref);
+      } else if (error.message === 'Please enter billing city') {
+        focusOnError(cityRef);
+      } else if (error.message === 'Please enter billing state') {
+        focusOnError(stateRef);
+      } else if (
+        error.message === 'Please enter billing Zip code / postal code'
+      ) {
+        focusOnError(zipCodeRef);
+      } else if (error.message === 'Please enter billing phone number') {
+        focusOnError(phoneRef);
+      }
+    } finally {
       setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
+    }
+  }
+  function focusOnError(ref) {
+    if (ref && ref.current) {
+      ref.current.focus();
+    }
   }
 
   const capital = (str) => {
@@ -375,10 +385,10 @@ const Content = () => {
                 <Input
                   className="input-width-name"
                   step={4}
-                  ref={nameCardRef}
-                  value={nameCard}
+                  ref={nameRef}
+                  value={name}
                   onChange={({ detail }) => {
-                    detail.value !== 0 && setNameCard(detail.value);
+                    detail.value !== 0 && setName(detail.value);
                   }}
                 />
               </FormField>
@@ -412,12 +422,20 @@ const Content = () => {
             }
           >
             <SpaceBetween size="m">
-              <FormField label="Full name">
+              <FormField
+                label="Full name"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing name') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
-                  value={name}
+                  ref={nameBillingRef}
+                  value={nameBilling}
                   step={5}
-                  onChange={({ detail }) => setName(detail.value)}
+                  onChange={({ detail }) => setNameBilling(detail.value)}
                 />
               </FormField>
               <FormField label="Company - optional">
@@ -428,10 +446,18 @@ const Content = () => {
                   onChange={({ detail }) => setCompany(detail.value)}
                 />
               </FormField>
-              <FormField label="Select Country">
+              <FormField
+                label="Select Country"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing country') &&
+                  errorMessage
+                }
+              >
                 <Select
                   className="input-width-card"
                   options={options}
+                  ref={countryRef}
                   step={7}
                   errorText="Error fetching countries."
                   placeholder="Choose a country"
@@ -443,11 +469,19 @@ const Content = () => {
                   onChange={({ detail }) => setCountry(detail.selectedOption)}
                 />
               </FormField>
-              <FormField label="Address">
+              <FormField
+                label="Address"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing address') &&
+                  errorMessage
+                }
+              >
                 <SpaceBetween size="xs">
                   <Input
                     className="input-width-card"
                     value={address1}
+                    ref={address1Ref}
                     step={8}
                     onChange={({ detail }) => setAddress1(detail.value)}
                   />
@@ -461,33 +495,65 @@ const Content = () => {
                 </SpaceBetween>
               </FormField>
               <SpaceBetween size="m" direction="horizontal">
-                <FormField label="City">
+                <FormField
+                  label="City"
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('billing city') &&
+                    errorMessage
+                  }
+                >
                   <Input
                     value={city}
+                    ref={cityRef}
                     step={10}
                     onChange={({ detail }) => setCity(detail.value)}
                   />
                 </FormField>
-                <FormField label="State/province/region">
+                <FormField
+                  label="State/province/region"
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('billing state') &&
+                    errorMessage
+                  }
+                >
                   <Input
                     value={state}
+                    ref={stateRef}
                     step={11}
                     onChange={({ detail }) => setState(detail.value)}
                   />
                 </FormField>
               </SpaceBetween>
-              <FormField label="Zip code/postal code">
+              <FormField
+                label="Zip code/postal code"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing zip code') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
                   value={zipCode}
+                  ref={zipCodeRef}
                   step={12}
                   onChange={({ detail }) => setZipCode(detail.value)}
                 />
               </FormField>
-              <FormField label="Phone number">
+              <FormField
+                label="Phone number"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing phone') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
                   value={phone}
+                  ref={phoneRef}
                   step={13}
                   placeholder="+1 222-333-4444"
                   inputMode="tel"
@@ -633,12 +699,20 @@ const Content = () => {
             }
           >
             <SpaceBetween size="m">
-              <FormField label="Full name">
+              <FormField
+                label="Full name"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing name') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
-                  value={name}
+                  ref={nameBillingRef}
+                  value={nameBilling}
                   step={5}
-                  onChange={({ detail }) => setName(detail.value)}
+                  onChange={({ detail }) => setNameBilling(detail.value)}
                 />
               </FormField>
               <FormField label="Company - optional">
@@ -649,10 +723,18 @@ const Content = () => {
                   onChange={({ detail }) => setCompany(detail.value)}
                 />
               </FormField>
-              <FormField label="Select Country">
+              <FormField
+                label="Select Country"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing country') &&
+                  errorMessage
+                }
+              >
                 <Select
                   className="input-width-card"
                   options={options}
+                  ref={countryRef}
                   step={7}
                   errorText="Error fetching countries."
                   placeholder="Choose a country"
@@ -664,11 +746,19 @@ const Content = () => {
                   onChange={({ detail }) => setCountry(detail.selectedOption)}
                 />
               </FormField>
-              <FormField label="Address">
+              <FormField
+                label="Address"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing address') &&
+                  errorMessage
+                }
+              >
                 <SpaceBetween size="xs">
                   <Input
                     className="input-width-card"
                     value={address1}
+                    ref={address1Ref}
                     step={8}
                     onChange={({ detail }) => setAddress1(detail.value)}
                   />
@@ -682,33 +772,65 @@ const Content = () => {
                 </SpaceBetween>
               </FormField>
               <SpaceBetween size="m" direction="horizontal">
-                <FormField label="City">
+                <FormField
+                  label="City"
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('billing city') &&
+                    errorMessage
+                  }
+                >
                   <Input
                     value={city}
+                    ref={cityRef}
                     step={10}
                     onChange={({ detail }) => setCity(detail.value)}
                   />
                 </FormField>
-                <FormField label="State/province/region">
+                <FormField
+                  label="State/province/region"
+                  errorText={
+                    errorMessage &&
+                    errorMessage.includes('billing state') &&
+                    errorMessage
+                  }
+                >
                   <Input
                     value={state}
+                    ref={stateRef}
                     step={11}
                     onChange={({ detail }) => setState(detail.value)}
                   />
                 </FormField>
               </SpaceBetween>
-              <FormField label="Zip code/postal code">
+              <FormField
+                label="Zip code/postal code"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing zip code') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
                   value={zipCode}
+                  ref={zipCodeRef}
                   step={12}
                   onChange={({ detail }) => setZipCode(detail.value)}
                 />
               </FormField>
-              <FormField label="Phone number">
+              <FormField
+                label="Phone number"
+                errorText={
+                  errorMessage &&
+                  errorMessage.includes('billing phone') &&
+                  errorMessage
+                }
+              >
                 <Input
                   className="input-width-card"
                   value={phone}
+                  ref={phoneRef}
                   step={13}
                   placeholder="+1 222-333-4444"
                   inputMode="tel"

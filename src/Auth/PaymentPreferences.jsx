@@ -60,7 +60,7 @@ const DefaultPayment = () => {
       <SpaceBetween size="m">
         <ColumnLayout columns={4} variant="text-grid">
           <FormField label="Payment method">
-            <Box>Mastercard ****</Box>
+            <Box>Mastercard 9441</Box>
             <Box>Darshan Patel</Box>
             <Box>Expires on 00/20xx</Box>
           </FormField>

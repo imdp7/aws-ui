@@ -142,11 +142,13 @@ const PaymentProfiles = () => {
         sections: [
           {
             id: 'provider',
-            content: (item) => (
-              <FormField label="Service Provider">
-                <Box>{item.provider}</Box>
-              </FormField>
-            ),
+            content: (item) => {
+              return (
+                <FormField label="Service Provider">
+                  <Box>{item.provider}</Box>
+                </FormField>
+              );
+            },
           },
           {
             id: 'currency',
