@@ -37,7 +37,7 @@ import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import { getPanelContent, useSplitPanel } from './utils';
 import { SPLIT_PANEL_I18NSTRINGS } from './split-panel-config';
-import { useCollection } from '@awsui/collection-hooks';
+import { useCollection } from '@cloudscape-design/collection-hooks';
 
 function EC2_Instances_List(props) {
   const [instances, setInstances] = useState(INSTANCES);

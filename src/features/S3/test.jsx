@@ -130,7 +130,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
   const onDeleteConfirm = () => {
     const deleted = locationInstance ? [locationInstance] : selectedItems;
     const updated = buckets.map((it) =>
-      deleted.includes(it) ? { ...it, timestamp: Date.now() } : it
+      deleted.includes(it) ? { ...it,state:'deleting', timestamp: Date.now() } : it
     );
     setBuckets(updated);
     setSelectedItems([]);
@@ -143,13 +143,13 @@ const TableContent = ({ loadHelpPanelContent }) => {
 
   useEffect(() => {
     setDeletedTotal(BUCKETS.length - buckets.length);
-    notifyInProgress(buckets.filter((it) => it).length);
+    notifyInProgress(buckets.filter((it) => it.state === 'deleting').length);
   }, [buckets, notifyInProgress]);
 
   useEffect(() => {
     setInterval(() => {
       setBuckets((buckets) =>
-        buckets.filter((it) => Date.now() - it.timestamp < 5000)
+        buckets.filter((it) => it.state !== 'deleting' | Date.now() - it.timestamp < 5000)
       );
     }, 5000);
   }, []);
@@ -219,7 +219,6 @@ const TableContent = ({ loadHelpPanelContent }) => {
     actions.setFiltering('');
     setEngine(defaultEngine);
     setInstanceClass(defaultClass);
-    setPlatform(defaultPlatform);
   }
   const CopyARN = (props) => {
     const [copy, setCopy] = useState(false);
@@ -254,12 +253,15 @@ const TableContent = ({ loadHelpPanelContent }) => {
       </Box>
     );
   };
+
+  const tabelRef = useRef();
   const navigate = useNavigate();
 
   return (
     <>
       <SpaceBetween size="xxs">
         <Table
+          ref={tabelRef}
           {...collectionProps}
           columnDefinitions={columnDefinitions}
           visibleColumns={preferences.visibleContent}
@@ -611,10 +613,9 @@ export default function BucketList(props) {
 
   useEffect(() => {
     document.title = 'S3 Management Console';
-    setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [location]);
 

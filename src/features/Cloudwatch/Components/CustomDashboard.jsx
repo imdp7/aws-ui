@@ -6,16 +6,78 @@ import {
   TextFilter,
   Header,
   Link,
+  Modal,
   Pagination,
   CollectionPreferences,
   SpaceBetween,
+  Input,
+  Icon,
+  FormField,
+  Badge,
 } from '@awsui/components-react';
 import { InfoLink, ValueWithLabel } from '../../common/common';
 import { HelpPanels } from '../../EC2/components/header';
 function CustomDashboard({ loadHelpPanelContent }) {
   const [selectedItems, setSelectedItems] = React.useState([]);
+  const [visible, setVisible] = React.useState(false);
+  const [name, setName] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  const handleClick = () => {
+    setVisible(true);
+  };
+  const handleSubmit = () => {
+    if (!name) {
+      setErrorMessage('Dashboard name is required');
+      return;
+    }
+    setVisible(false);
+  };
+  const handleCancel = () => {
+    setErrorMessage('');
+    setName('');
+    setVisible(false);
+  };
+
   return (
     <>
+      <Modal
+        onDismiss={() => {
+          setVisible(false);
+          setErrorMessage('');
+          setName('');
+        }}
+        visible={visible}
+        closeAriaLabel="Close modal"
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="link" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={handleSubmit}>
+                Create dashboard
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+        header="Create new dashboard"
+      >
+        <FormField
+          label="Dashboard name"
+          constraintText='Valid characters in dashboard names include "0-9A-Za-z-_".'
+          errorText={
+            errorMessage &&
+            errorMessage.includes('Dashboard name') &&
+            errorMessage
+          }
+        >
+          <Input
+            value={name}
+            onChange={({ detail }) => setName(detail.value)}
+          />
+        </FormField>
+      </Modal>
       <Table
         onSelectionChange={({ detail }) =>
           setSelectedItems(detail.selectedItems)
@@ -50,7 +112,8 @@ function CustomDashboard({ loadHelpPanelContent }) {
           {
             id: 'favorite',
             header: 'Favorite',
-            cell: (e) => e.favorite,
+            cell: (e) =>
+              e.favorite === true ? <Icon name="heart" size="medium" /> : null,
             sortingField: 'sharing',
           },
           {
@@ -60,7 +123,14 @@ function CustomDashboard({ loadHelpPanelContent }) {
             sortingField: 'lastUpdated',
           },
         ]}
-        items={[]}
+        items={[
+          {
+            name: 'test-1',
+            sharing: 'true',
+            favorite: true,
+            lastUpdated: 'n/a',
+          },
+        ]}
         loadingText="Loading resources"
         selectionType="single"
         trackBy="name"
@@ -74,7 +144,7 @@ function CustomDashboard({ loadHelpPanelContent }) {
             <Box padding={{ bottom: 's' }}>
               <Link>Read more about Dashboards</Link>
             </Box>
-            <Button>Create Dashboard</Button>
+            <Button onClick={handleClick}>Create Dashboard</Button>
           </Box>
         }
         filter={
@@ -107,7 +177,9 @@ function CustomDashboard({ loadHelpPanelContent }) {
                   Share dashboard
                 </Button>
                 <Button disabled={selectedItems.length === 0}>Delete</Button>
-                <Button variant="primary">Create dashboard</Button>
+                <Button variant="primary" onClick={handleClick}>
+                  Create dashboard
+                </Button>
               </SpaceBetween>
             }
           >

@@ -645,7 +645,7 @@ export function EC2_Instances_Detail(props) {
         breadcrumbs={<Breadcrumbs id={id} />}
         navigation={
           <Navigation
-            activeHref="/ec2_instance/instances"
+            activeHref="instances"
             header={EC2Header}
             items={ec2navItems}
           />
