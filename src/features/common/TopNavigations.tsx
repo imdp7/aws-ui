@@ -11,7 +11,7 @@ import {
   ColumnLayout,
   SpaceBetween,
   Modal,
-} from '@cloudscape-design/components';
+} from '@@awsui/components-react';
 import '../../App.css';
 import classes from '../../app.module.scss';
 import {
