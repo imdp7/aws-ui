@@ -21,7 +21,7 @@ import {
   Input,
   Link,
   Select,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { DashboardHeader, HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
@@ -613,7 +613,7 @@ const Payment = (props) => {
       <Container
         header={
           <Header
-            variant="h3"
+            variant="h2"
             info={
               <InfoLink
                 onFollow={() =>
@@ -919,7 +919,7 @@ function Profile(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={[

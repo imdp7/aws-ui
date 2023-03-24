@@ -23,7 +23,7 @@ import {
   Input,
   Autosuggest,
   Select,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -419,7 +419,7 @@ function Upload(props) {
                 fitHeight
                 header={
                   <Header
-                    variant="h3"
+                    variant="h2"
                     description={
                       <>
                         Amazon S3 offers a range of storage classes designed for

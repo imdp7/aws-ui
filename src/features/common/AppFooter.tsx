@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../App.css';
-import { Link } from '@cloudscape-design/components';
+import { Link } from '@awsui/components-react';
 export function AppFooter(): JSX.Element {
   return (
     <div

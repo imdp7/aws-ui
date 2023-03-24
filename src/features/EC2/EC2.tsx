@@ -2,12 +2,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useEffect, useState } from 'react';
-import AppLayout from '@cloudscape-design/components/app-layout';
-import BreadcrumbGroup from '@cloudscape-design/components/breadcrumb-group';
-import ContentLayout from '@cloudscape-design/components/content-layout';
-import Grid from '@cloudscape-design/components/grid';
-import SpaceBetween from '@cloudscape-design/components/space-between';
-import '@cloudscape-design/global-styles/dark-mode-utils.css';
+import AppLayout from '@awsui/components-react/app-layout';
+import BreadcrumbGroup from '@awsui/components-react/breadcrumb-group';
+import ContentLayout from '@awsui/components-react/content-layout';
+import Grid from '@awsui/components-react/grid';
+import SpaceBetween from '@awsui/components-react/space-between';
+import '@awsui/global-styles/dark-mode-utils.css';
 import './styles/dashboard.scss';
 import './styles/density-switch-images.scss';
 import { appLayoutLabels } from '../common/labels';
@@ -35,7 +35,7 @@ import { Provider } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { store } from '../../app/store';
 import { AppFooter } from '../common/AppFooter';
-import { Flashbar, Spinner } from '@cloudscape-design/components';
+import { Flashbar, Spinner } from '@awsui/components-react';
 import { EC2Header } from './commons/common-components';
 
 function Breadcrumbs() {
@@ -91,7 +91,7 @@ function Content(props) {
 
 export default function EC2(props): JSX.Element {
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [activeHref, setActiveHref] = React.useState('dashboard');
+  const [activeHref, setActiveHref] = React.useState('/ec2_instance/dashboard');
   const [loading, setLoading] = useState(true);
   const { notifications, notifyInProgress } = useNotifications({
     resourceName: 'instance',
@@ -100,7 +100,7 @@ export default function EC2(props): JSX.Element {
     <HelpPanels
       title="EC2 Instances"
       des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
-        resizeable computing capacity&mdash;literally, servers in Amazon's data
+        resizable computing capacity&mdash;literally, servers in Amazon's data
         centers&mdash;that you use to build and host your software systems."
     />
   );
@@ -140,8 +140,8 @@ export default function EC2(props): JSX.Element {
                       buttonText="Launch instance"
                       link="'/ec2_instance/LaunchInstances"
                       des="Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides
-                         resizeable computing capacity&mdash;literally, servers in Amazon's data
-                         centers&mdash;that you use to build and host your software systems."
+                         resizable computing capacity&mdash;literally, servers in Amazon's data
+                         centers."
                     />
                   }
                 >

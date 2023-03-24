@@ -8,7 +8,7 @@ import {
   Link,
   SpaceBetween,
   AppLayout,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { AppHeader } from '../common/TopNavigations';
 import { InfoLink } from '../EC2/commons/common-components';
 import { HelpPanels } from '../EC2/components/header';
@@ -119,7 +119,7 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
             <>
               <Link variant="secondary" href={`/${d[2]}`}>
                 <Container key={i}>
-                  <Box variant="h3">{d[0]}</Box>
+                  <Box variant="h2">{d[0]}</Box>
                   <Box key={i}>{d[2]}</Box>
                 </Container>
               </Link>
@@ -188,7 +188,7 @@ ual machines, or instances, that run on the AWSimport props from '../../../node_
         // disableContentPaddings={true}
         toolsOpen={toolsOpen}
         tools={toolsContent}
-        contentType="wizard"
+        contentType="table"
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         footerSelector="#f"

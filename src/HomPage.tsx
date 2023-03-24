@@ -24,7 +24,7 @@ import {
   Button,
   Spinner,
   Modal,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
 import { HelpPanels } from './features/EC2/components/header';
@@ -35,6 +35,7 @@ import Card from './components/Card';
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
   ['S3', `${s3}`, 's3/home'],
+  ['CloudWatch', `${s3}`, 'cloudwatch/home'],
   ['Amazon RDS', `${rds}`, 'rds'],
   ['Cloudfront', `${ec2}`, 'cloudfront'],
   ['SQS', `${ec2}`, 'sqs'],
@@ -364,14 +365,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
           header={
             <Header
               variant="h2"
-              description="Start building with simple wizards and automated workflows."
+              description="Start building with simple tables and automated workflows."
               info={
                 <InfoLink
                   onFollow={() =>
                     loadHelpPanelContent(
                       <HelpPanels
                         title="Build a solution"
-                        des="Access workflows and wizards that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
+                        des="Access workflows and tables that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
                       />
                     )
                   }

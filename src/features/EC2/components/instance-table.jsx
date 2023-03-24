@@ -2,7 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useState, useEffect } from 'react';
-import { useCollection } from '@cloudscape-design/collection-hooks';
+import { useCollection } from '@awsui/collection-hooks';
 import {
   Button,
   Pagination,
@@ -20,7 +20,7 @@ import {
   ColumnLayout,
   FormField,
   Icon,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   TableEmptyState,
   TableNoMatchState,
@@ -29,7 +29,7 @@ import {
 import { paginationLabels } from '../../common/labels';
 import { getFilterCounterText } from '../../common/tableCounterStrings';
 import { useLocalStorage } from '../../common/localStorage';
-
+import { useColumnWidths } from '../commons/use-column-widths';
 import { ItemState, StatusCheck } from './item-state';
 import { useNavigate } from 'react-router-dom';
 import CopyText from '../commons/copy-text';
@@ -51,7 +51,7 @@ const COLUMN_DEFINITIONS = [
       ariaLabel: 'Name',
       editIconAriaLabel: 'editable',
       errorIconAriaLabel: 'Name Error',
-      editingCell: (item, { currentValue, setValue }) => {
+      editingCell: (item, { setValue, currentValue }) => {
         return (
           <Input
             autoFocus={true}
@@ -60,6 +60,7 @@ const COLUMN_DEFINITIONS = [
           />
         );
       },
+      cell: (item) => item.name,
     },
   },
 
@@ -146,23 +147,10 @@ export default function InstancesTable({
   onDelete,
   loading,
 }) {
-  const {
-    items,
-    actions,
-    filteredItemsCount,
-    collectionProps,
-    filterProps,
-    paginationProps,
-  } = useCollection(instances, {
-    filtering: {
-      empty: <TableEmptyState resourceName="Instance" link="LaunchInstances" />,
-      noMatch: (
-        <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
-      ),
-    },
-    pagination: { pageSize: 50 },
-    selection: {},
-  });
+  const [columnDefinitions, saveWidths] = useColumnWidths(
+    'React-TableSelectFilter-Widths',
+    COLUMN_DEFINITIONS
+  );
   const [refresh, setRefresh] = useState(false);
   const [visible, setVisible] = useState(false);
   const [preferences, setPreferences] = useLocalStorage(
@@ -191,6 +179,32 @@ export default function InstancesTable({
       contentDensity: 'comfortable',
     }
   );
+  const {
+    items,
+    actions,
+    filteredItemsCount,
+    collectionProps,
+    filterProps,
+    paginationProps,
+  } = useCollection(instances, {
+    filtering: {
+      empty: <TableEmptyState resourceName="Instance" link="LaunchInstances" />,
+      noMatch: (
+        <TableNoMatchState onClearFilter={() => actions.setFiltering('')} />
+      ),
+      sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
+    },
+    pagination: { pageSize: preferences.pageSize },
+    selection: {},
+  });
+
+  const [currentPageItemsSnapshot, setCurrentPageItemsSnapshot] =
+    useState(null);
+
+  const persistChanges = () => {
+    setTableItems(tableItems);
+    setCurrentPageItemsSnapshot(null);
+  };
 
   const handleRefresh = () => {
     setRefresh(true);
@@ -205,10 +219,9 @@ export default function InstancesTable({
   useEffect(() => {
     setDeleteInputText('');
   }, [visible]);
+
   const deletingItemsSelected =
     selectedItems.filter((it) => it.state === 'deleting').length > 0;
-
-  const deleteConsentText = 'delete';
 
   const navigate = useNavigate();
 
@@ -344,11 +357,12 @@ export default function InstancesTable({
         {...collectionProps}
         selectedItems={selectedItems}
         onSelectionChange={onSelectionChange}
-        columnDefinitions={COLUMN_DEFINITIONS}
+        columnDefinitions={columnDefinitions}
         items={items}
         resizableColumns={preferences.resizable}
         contentDensity={preferences.contentDensity}
         selectionType="multi"
+        onColumnWidthsChange={saveWidths}
         visibleColumns={preferences.visibleContent}
         wrapLines={preferences.wrapLines}
         stripedRows={preferences.stripedRows}
@@ -636,10 +650,9 @@ export default function InstancesTable({
                         {
                           id: 'fleetManager',
                           text: 'Fleet Manager',
+                          href: '#',
                           external: true,
-                          externalIconAriaLabel: 'external',
-                          iconName: 'external',
-                          iconAlign: 'right',
+                          externalIconAriaLabel: ' (opens in new tab)',
                         },
                       ],
                     },

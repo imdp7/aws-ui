@@ -25,12 +25,13 @@ import {
   Link,
   Select,
   StatusIndicator,
-} from '@cloudscape-design/components';
+  Flashbar,
+} from '@awsui/components-react';
 import { HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import { appLayoutLabels } from '../features/common/labels';
-
+import Profile from './Components/Profile';
 import Methods from './Components/Methods';
 import {
   Navigation,
@@ -51,7 +52,7 @@ const DefaultPayment = () => {
   return (
     <Container
       header={
-        <Header variant="h3" actions={<Button>Edit</Button>}>
+        <Header variant="h2" actions={<Button>Edit</Button>}>
           Default payment preferences
         </Header>
       }
@@ -103,7 +104,7 @@ const TabsContent = (props) => {
     {
       label: 'Payment profiles',
       id: 'profiles',
-      content: <div>Hey</div>,
+      content: <Profile />,
     },
   ];
   return <Tabs tabs={tabs} ariaLabel="Resource details" />;
@@ -115,6 +116,24 @@ function PaymentPreferences(props) {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
+  const [items, setItems] = React.useState([
+    {
+      type: 'info',
+      dismissible: true,
+      dismissLabel: 'Dismiss message',
+      onDismiss: () => setItems([]),
+      header: 'The new Payment preferences page is available',
+      content: (
+        <>
+          We've redesigned the Payment methods page to the Payment preferences
+          page. All legacy navigation links redirect to the new Payment
+          preferences page. If you have any feedback, let us know{' '}
+          <Link color="inverted">here</Link>.
+        </>
+      ),
+      id: 'message_1',
+    },
+  ]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -193,16 +212,20 @@ function PaymentPreferences(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={[
               { text: 'Account', href: '/account' },
-              { text: 'AWS Billing', href: '/account/bills' },
+              {
+                text: 'AWS Billing',
+                href: '/account/billing/paymentPreferences',
+              },
               { text: 'Payment Preferences', href: '#' },
             ]}
           />
         }
+        notifications={<Flashbar items={items} stackItems />}
       />
       <AppFooter />
     </>

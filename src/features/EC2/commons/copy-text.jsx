@@ -2,12 +2,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  StatusIndicator,
-  Popover,
-} from '@cloudscape-design/components';
+import { Box, Button, StatusIndicator, Popover } from '@awsui/components-react';
 import { copyToClipboard } from '../../common/clipboard';
 
 const SUCCESS_STATUS = 'success';

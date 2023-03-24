@@ -10,9 +10,10 @@ import {
   SpaceBetween,
   Spinner,
   Header,
+  Box,
   BreadcrumbGroup,
   Button,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { Provider } from 'react-redux';
 import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';
@@ -48,7 +49,7 @@ export const S3 = (props): JSX.Element => {
         headerSelector="#h"
         footerSelector="#f"
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         toolsHide={true}
         breadcrumbs={<BreadcrumbGroup items={[]} />}
         navigation={
@@ -78,7 +79,7 @@ export const S3 = (props): JSX.Element => {
                           variant="stacked"
                           header={
                             <Header
-                              variant="h3"
+                              variant="h2"
                               description="Every object in S3 is stored in a bucket. To upload files and folders to S3."
                             >
                               {props.head}
@@ -102,7 +103,14 @@ export const S3 = (props): JSX.Element => {
                       </SpaceBetween>
                     }
                   >
-                    {props.title}
+                    <Box
+                      variant="span"
+                      fontSize="display-l"
+                      fontWeight="heavy"
+                      padding={{ top: 's', left: 'l', bottom: 'n' }}
+                    >
+                      {props.title}
+                    </Box>
                   </Header>
                 }
               >

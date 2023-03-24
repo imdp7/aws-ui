@@ -23,11 +23,12 @@ import {
   Alert,
   AttributeEditor,
   Autosuggest,
+  Modal,
   Tabs,
   Badge,
   Container,
   ExpandableSection,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { DashboardHeader, HelpPanels } from '../components/header';
 import { appLayoutLabels } from '../../common/labels';
 import {
@@ -37,7 +38,7 @@ import {
 } from '../commons/common-components';
 import { Navigation } from '../commons/common-components';
 import useNotifications from '../commons/use-notifications';
-import { Spinner } from '@cloudscape-design/components';
+import { Spinner } from '@awsui/components-react';
 import { InfoLink } from '../commons/common-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,14 +78,13 @@ const DATA = {
 const Content = ({ loadHelpPanelContent }) => {
   const navigate = useNavigate();
   const [instanceNo, setInstanceNo] = useState(1);
-  const [btn, setBtn] = useState(true);
   const [name, setName] = useState('');
   const [AMI, setAMI] = useState('');
   const [activeTabId, setActiveTabId] = useState('second');
   const [tiles, setTiles] = useState('Amazon');
   const [tile, setTile] = useState('item1');
   const [storageNo, setStorageNo] = useState(1);
-  const [value, setValue] = useState(1);
+  const [modal, setModal] = React.useState(false);
 
   const [selectedOption, setSelectedOption] = useState({
     label: 't2.micro',
@@ -112,12 +112,17 @@ const Content = ({ loadHelpPanelContent }) => {
     PublicIP: 'Enable',
   };
   const [errorMessage, setErrorMessage] = useState('');
+
+  const nameRef = useRef(null);
+  const keyPairRef = useRef(null);
+  const instanceNoRef = useRef(null);
   const createInstance = async () => {
     setLoadings(true);
     const timer = setTimeout(async () => {
       if (!name) {
         setErrorMessage('The launch template name is required');
         setLoadings(false);
+        nameRef.current.focus();
         return;
       }
 
@@ -126,6 +131,13 @@ const Content = ({ loadHelpPanelContent }) => {
           'Please choose a key pair or choose the option to proceed with a key pair'
         );
         setLoadings(false);
+        keyPairRef.current.focus();
+        return;
+      }
+      if (instanceNo <= 0) {
+        setErrorMessage('Launch instances cannot be less than 1');
+        setLoadings(false);
+        instanceNoRef.current.focus();
         return;
       }
 
@@ -142,6 +154,7 @@ const Content = ({ loadHelpPanelContent }) => {
       }
       setErrorMessage('');
       setLoadings(false);
+      setModal(true);
       return;
     }, 1500);
     return () => clearTimeout(timer);
@@ -187,8 +200,8 @@ const Content = ({ loadHelpPanelContent }) => {
             <Input
               inputMode="numeric"
               type="number"
-              onChange={({ detail }) => setValue(detail.value)}
-              value={value}
+              onChange={({ detail }) => setStorageNo(detail.value)}
+              value={storageNo}
               placeholder="1"
             />
             <Box>GiB</Box>
@@ -223,19 +236,20 @@ const Content = ({ loadHelpPanelContent }) => {
     });
 
     return (
-      <SpaceBetween size="m">
+      <SpaceBetween size="l">
         <Tiles
           onChange={({ detail }) => setTiles(detail.value)}
           value={tiles}
-          columns={4}
+          columns={6}
           items={[
             {
               label: 'macOS',
               image: (
                 <img
+                  className="awsui-util-hide-in-dark-mode"
                   src="https://www.freepnglogos.com/uploads/apple-logo-png/file-apple-logo-black-svg-wikimedia-commons-1.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -245,9 +259,10 @@ const Content = ({ loadHelpPanelContent }) => {
               label: 'Amazon',
               image: (
                 <img
+                  className="awsui-util-hide-in-dark-mode"
                   src="https://pngimg.com/uploads/amazon/amazon_PNG5.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -258,8 +273,8 @@ const Content = ({ loadHelpPanelContent }) => {
               image: (
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/888/888879.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -270,8 +285,8 @@ const Content = ({ loadHelpPanelContent }) => {
               image: (
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -282,8 +297,8 @@ const Content = ({ loadHelpPanelContent }) => {
               image: (
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Red_Hat_logo.svg/2560px-Red_Hat_logo.svg.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -294,8 +309,8 @@ const Content = ({ loadHelpPanelContent }) => {
               image: (
                 <img
                   src="https://en.opensuse.org/images/c/cd/Button-colour.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -306,8 +321,8 @@ const Content = ({ loadHelpPanelContent }) => {
               image: (
                 <img
                   src="https://www.freepnglogos.com/uploads/search-png/search-png-design-web-design-4.png"
-                  height="50"
-                  width="50"
+                  height="40"
+                  width="40"
                   alt="placeholder"
                 />
               ),
@@ -315,78 +330,73 @@ const Content = ({ loadHelpPanelContent }) => {
             },
           ]}
         />
-        <Box display="block" variant="code">
-          Amazon Machine Image (AMI)
-        </Box>
-        <Select
-          selectedOption={selectedOption}
-          onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-          options={[
-            {
-              label: 'Option 1',
-              value: '1',
-              iconName: 'settings',
-              description: 'sub value',
-              tags: ['CPU-v2', '2Gb RAM'],
-              labelTag: '128Gb',
-            },
-            {
-              label: 'Option 2',
-              value: '2',
-              iconName: 'settings',
-              description: 'sub value',
-              tags: ['CPU-v2', '2Gb RAM'],
-              labelTag: '128Gb',
-            },
-            {
-              label: 'Option 3',
-              value: '3',
-              iconName: 'settings',
-              description: 'sub value',
-              tags: ['CPU-v2', '2Gb RAM'],
-              labelTag: '128Gb',
-            },
-          ]}
-          selectedAriaLabel="Selected"
-          triggerVariant="option"
-        />
-        <Box display="block" variant="code">
-          Description
-        </Box>
-        <Box display="block" variant="awsui-key-label">
-          Amazon Linux 2 Kernel 5.10 AMI 2.0.20221103.3 x86_64 HVM gp2
-        </Box>
-
+        <FormField label="Amazon Machine Image (AMI)">
+          <Select
+            selectedOption={selectedOption}
+            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+            options={[
+              {
+                label: 'Option 1',
+                value: '1',
+                iconName: 'settings',
+                description: 'sub value',
+                tags: ['CPU-v2', '2Gb RAM'],
+                labelTag: '128Gb',
+              },
+              {
+                label: 'Option 2',
+                value: '2',
+                iconName: 'settings',
+                description: 'sub value',
+                tags: ['CPU-v2', '2Gb RAM'],
+                labelTag: '128Gb',
+              },
+              {
+                label: 'Option 3',
+                value: '3',
+                iconName: 'settings',
+                description: 'sub value',
+                tags: ['CPU-v2', '2Gb RAM'],
+                labelTag: '128Gb',
+              },
+            ]}
+            selectedAriaLabel="Selected"
+            triggerVariant="option"
+          />
+        </FormField>
+        <FormField label="Description">
+          <Box display="block" variant="awsui-key-label">
+            Amazon Linux 2 Kernel 5.10 AMI 2.0.20221103.3 x86_64 HVM gp2
+          </Box>
+        </FormField>
         <ColumnLayout columns={3}>
           <Box>
-            <SpaceBetween size={'m'}>
-              <Box display="block" variant="code">
-                Architecture
-              </Box>
-              <Select
-                // empty
-                onChange={({ detail }) =>
-                  setArchitecture(detail.selectedOption)
-                }
-                selectedOption={architecture}
-                loadingText="loading"
-                options={[
-                  { label: '64-bit (x86)', value: '1' },
-                  { label: '64-bit (ARM)', value: '2' },
-                ]}
-              />
+            <SpaceBetween size="m">
+              <FormField label="Architecture">
+                <Select
+                  // empty
+                  onChange={({ detail }) =>
+                    setArchitecture(detail.selectedOption)
+                  }
+                  selectedOption={architecture}
+                  loadingText="loading"
+                  options={[
+                    { label: '64-bit (x86)', value: '1' },
+                    { label: '64-bit (ARM)', value: '2' },
+                  ]}
+                />
+              </FormField>
             </SpaceBetween>
           </Box>
           <Box>
-            <SpaceBetween size={'m'}>
-              <Box display="block" variant="code">
-                AMI
-              </Box>
-              <Box>ami-0b0dcb5067f052a63</Box>
+            <SpaceBetween size="m">
+              <FormField label="AMI">
+                <Box>ami-0b0dcb5067f052a63</Box>
+              </FormField>
             </SpaceBetween>
           </Box>
           <Box>
-            <SpaceBetween size={'m'}>
+            <SpaceBetween size="m">
               <div></div>
               <Badge color="green">Verified Provider</Badge>
             </SpaceBetween>
@@ -435,6 +445,65 @@ const Content = ({ loadHelpPanelContent }) => {
   };
   return (
     <SpaceBetween size="s" direction="horizontal">
+      <Modal
+        size="large"
+        onDismiss={() => setModal(false)}
+        visible={modal}
+        closeAriaLabel="Close modal"
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button
+                variant="link"
+                onClick={() => navigate('/ec2_instance/instances')}
+              >
+                Back
+              </Button>
+              <Button variant="primary">View Instance</Button>
+            </SpaceBetween>
+          </Box>
+        }
+        header="Instances created successfully"
+      >
+        <SpaceBetween size="m">
+          <ColumnLayout columns={3} variant="text-grid">
+            <FormField label="Instance name">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {name}
+              </Box>
+            </FormField>
+            <FormField label="Instance family">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {selectedOption.label}
+              </Box>
+            </FormField>
+            <FormField label="Key Pair">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {keyPair.label}
+              </Box>
+            </FormField>
+            <FormField label="Security Group">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {ip.description}
+              </Box>
+            </FormField>
+
+            <FormField label="Storage volume">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {storage.label}
+              </Box>
+            </FormField>
+            <FormField label="Total storage disk (Gibs)">
+              <Box color="text-label" fontWeight="bold" variant="p">
+                {storageNo}
+              </Box>
+            </FormField>
+          </ColumnLayout>
+          <Alert type="success">
+            {instanceNo} instances launch running successfully
+          </Alert>
+        </SpaceBetween>
+      </Modal>
       <Grid
         gridDefinition={[
           { colspan: { l: 12, m: 12, default: 12 } },
@@ -499,6 +568,7 @@ const Content = ({ loadHelpPanelContent }) => {
                 >
                   <Input
                     value={name}
+                    ref={nameRef}
                     ariaRequired={true}
                     placeholder="Eg.Web Server"
                     onChange={(event) => setName(event.detail.value)}
@@ -634,6 +704,7 @@ const Content = ({ loadHelpPanelContent }) => {
                 >
                   <Select
                     selectedOption={keyPair}
+                    ref={keyPairRef}
                     onChange={({ detail }) => setKeyPair(detail.selectedOption)}
                     statusType={loading}
                     loadingText="Loading key pair"
@@ -728,7 +799,7 @@ const Content = ({ loadHelpPanelContent }) => {
                 </FormField>
                 <Box>
                   <Header
-                    variant="h3"
+                    variant="h2"
                     description="A security group is a set of firewall rules that control the traffic for your instance. Add rules to allow specific traffic to reach your instance."
                   >
                     Firewall (security groups)
@@ -752,7 +823,7 @@ const Content = ({ loadHelpPanelContent }) => {
                     <SpaceBetween size="m">
                       <Box>
                         We'll create a new security group called '
-                        <strong>launch-wizard-1</strong>' with the following
+                        <strong>launch-table-1</strong>' with the following
                         rules:
                       </Box>
                       <ColumnLayout columns={2}>
@@ -952,11 +1023,12 @@ const Content = ({ loadHelpPanelContent }) => {
                     <Input
                       onChange={({ detail }) => setInstanceNo(detail.value)}
                       value={instanceNo}
+                      ref={instanceNoRef}
                       inputMode="numeric"
                       type="number"
                     />
                   </FormField>
-                  <SpaceBetween size={'xs'}>
+                  <SpaceBetween size={'s'}>
                     {/* <ColumnLayout borders="horizontal" variant="text-grid"> */}
                     <Box variant="div">
                       <Link>Software Image (AMI)</Link>
@@ -1123,7 +1195,7 @@ function LaunchEC2(props): JSX.Element {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         notifications={<Flashbar items={notifications} />}
-        contentType="wizard"
+        contentType="table"
         headerSelector="#h"
       />
       <AppFooter />

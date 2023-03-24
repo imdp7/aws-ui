@@ -16,7 +16,7 @@ import {
   FormField,
   ColumnLayout,
   Select,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Lifecycle = (props) => {

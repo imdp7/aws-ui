@@ -9,7 +9,7 @@ import {
   TextFilter,
   Box,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { SettingsButton } from '../Bills';
 import { COLUMN_DEFINITIONS_SAVINGS } from './TableFilter';
 function Savings(props) {
@@ -24,7 +24,7 @@ function Savings(props) {
       <Container
         header={
           <Header
-            variant="h3"
+            variant="h2"
             actions={
               <SpaceBetween size="m" direction="horizontal">
                 <SettingsButton />

@@ -21,7 +21,7 @@ import {
   SpaceBetween,
   Spinner,
   SplitPanel,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   ec2navItems,
   Navigation,
@@ -210,7 +210,7 @@ function InstancesPage({
           />
         }
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         toolsHide="true"
       />
       <AppFooter />

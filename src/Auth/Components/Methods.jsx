@@ -8,13 +8,19 @@ import {
   Badge,
   SpaceBetween,
   ButtonDropdown,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useNavigate } from 'react-router-dom';
 
-function Methods() {
+export function Methods() {
   const [selectedItems, setSelectedItems] = React.useState([
     {
+      card: 'Mastercard ••••9441',
+      image:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/989px-Mastercard-logo.svg.png',
       name: 'Darshan Patel',
+      id_m: '123dass112a',
+      expiry: '2025/02',
+      type: 'Default',
     },
   ]);
   const navigate = useNavigate();
@@ -34,9 +40,9 @@ function Methods() {
           sections: [
             {
               id: 'image',
-              content: () => (
-                <div className="card-section-image">
-                  <img src={item.image} alt={item.image} />
+              content: (item) => (
+                <div>
+                  <img className="card-section-image" src={item?.image} />
                 </div>
               ),
             },
@@ -61,23 +67,27 @@ function Methods() {
         items={[
           {
             card: 'Mastercard ••••9441',
+            id_m: '123dass112a',
             image:
               'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/989px-Mastercard-logo.svg.png',
             name: 'Darshan Patel',
-            expiry: 'Expires on 01/2025',
+            expiry: '2025/02',
             type: 'Default',
           },
           {
             card: 'Visa ••••6031',
+            id_m: 'ajkd123jkda',
             name: 'Andy Jassy',
-            expiry: 'Expires on 01/2025',
+            expiry: '2035/01',
+            image:
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/2560px-Visa.svg.png',
             type: 'null',
           },
         ]}
         loadingText="Loading Payment methods"
         selectionType="single"
         trackBy="name"
-        visibleSections={['card', 'name', 'expiry', 'type']}
+        visibleSections={['card', 'image', 'name', 'expiry', 'type']}
         empty={
           <Box textAlign="center" color="inherit">
             <b>No payment methods</b>
@@ -87,29 +97,30 @@ function Methods() {
             <Button>Add payment method</Button>
           </Box>
         }
-        filter={<TextFilter filteringPlaceholder="Find payment methods" />}
+        filter={<TextFilter filteringPlaceholder="Find payment method" />}
         header={
           <Header
             counter={
-              selectedItems.length ? '(' + selectedItems.length + '/1)' : '(0)'
+              selectedItems.length ? '(' + selectedItems.length + '/2)' : '(0)'
             }
             actions={
               <SpaceBetween direction="horizontal" size="s">
-                <Button
-                  disabled={
-                    selectedItems.length == 0 ||
-                    selectedItems[0].type === 'Default'
-                  }
-                >
+                <Button disabled={selectedItems[0].type === 'Default'}>
                   Set as default
                 </Button>
-                <Button>Edit</Button>
                 <Button
-                  disabled={
-                    selectedItems.length == 0 ||
-                    selectedItems[0].type === 'Default'
+                  onClick={() =>
+                    navigate(`${selectedItems[0].id_m}/edit`, {
+                      state: {
+                        title: 'Edit payment Details',
+                        details: selectedItems[0],
+                      },
+                    })
                   }
                 >
+                  Edit
+                </Button>
+                <Button disabled={selectedItems[0].type === 'Default'}>
                   Delete
                 </Button>
                 <Button

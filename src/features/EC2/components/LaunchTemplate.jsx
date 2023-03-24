@@ -26,7 +26,7 @@ import {
   Tabs,
   TextFilter,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   Navigation,
   ec2navItems,
@@ -152,7 +152,7 @@ function LaunchTemplate(props) {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         notifications={<Flashbar items={notifications} stackItems />}
-        contentType="wizard"
+        contentType="table"
       />
       <AppFooter />
     </>

@@ -9,7 +9,7 @@ import {
   TextFilter,
   Box,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { SettingsButton } from '../Bills';
 import {
   COLUMN_DEFINITIONS_INVOICES,
@@ -27,7 +27,7 @@ function Invoices(props) {
       <Container
         header={
           <Header
-            variant="h3"
+            variant="h2"
             actions={
               <SpaceBetween size="m" direction="horizontal">
                 <SettingsButton />
@@ -96,7 +96,7 @@ function Invoices(props) {
       <Container
         header={
           <Header
-            variant="h3"
+            variant="h2"
             description="Tax invoices for all applicable service providers"
             actions={<SettingsButton />}
           >

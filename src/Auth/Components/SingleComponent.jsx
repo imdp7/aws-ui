@@ -12,7 +12,7 @@ import {
   BreadcrumbGroup,
   SpaceBetween,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { HelpPanels } from '../../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
@@ -24,9 +24,49 @@ import {
 } from '../../features/EC2/commons/common-components';
 import { useLocation, useParams } from 'react-router-dom';
 import AddPayment from './AddPayment';
+import EditPayment from './EditPayment';
+import EditProfile from './EditProfile';
+
+const EditBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Edit payment method', href: '#' },
+];
+const AddBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Add payment method', href: '#' },
+];
+const EditProfileBreadcrumb = [
+  { text: 'Account', href: '/account' },
+  { text: 'AWS Billing', href: '/account/bills' },
+  {
+    text: 'Payment Preferences',
+    href: `/account/billing/paymentPreferences`,
+  },
+  {
+    text: 'Payment profiles',
+    href: `/account/billing/paymentPreferences`,
+  },
+  { text: 'Edit payment profiles', href: '#' },
+];
 
 const Content = ({ info, subInfo, state, loadHelpPanelContent }, props) => {
-  return <>{subInfo === 'add' && <AddPayment {...props} />}</>;
+  return (
+    <>
+      {subInfo === 'add' && <AddPayment {...props} />}
+      {subInfo === 'edit' && <EditPayment state={state} />}
+      {info === 'profiles' && <EditProfile state={state} />}
+    </>
+  );
 };
 
 function SinglePaymentComponent(props) {
@@ -69,7 +109,18 @@ function SinglePaymentComponent(props) {
         content={
           <Provider store={store}>
             {!loading ? (
-              <ContentLayout header={<Header>{state?.title}</Header>}>
+              <ContentLayout
+                header={
+                  <Header
+                    actions={
+                      subInfo === 'edit' ? <Button>Delete</Button> : null
+                    }
+                    description={state?.des}
+                  >
+                    {state?.title}
+                  </Header>
+                }
+              >
                 <SpaceBetween size={'m'}>
                   <Content
                     state={state}
@@ -104,18 +155,10 @@ function SinglePaymentComponent(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
-            items={[
-              { text: 'Account', href: '/account' },
-              { text: 'AWS Billing', href: '/account/bills' },
-              {
-                text: 'Payment Preferences',
-                href: `/account/bills/${info}`,
-              },
-              { text: 'Add payment method', href: '#' },
-            ]}
+            items={subInfo === 'edit' ? EditBreadcrumb : AddBreadcrumb}
           />
         }
       />

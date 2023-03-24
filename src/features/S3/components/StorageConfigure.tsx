@@ -20,7 +20,7 @@ import {
   FormField,
   Autosuggest,
   S3ResourceSelector,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const StorageConfigure = (props) => {
@@ -119,7 +119,7 @@ const StorageConfigure = (props) => {
           </FormField>
           {rule === 'first' && (
             <>
-              <Box variant="h3">Filter Type</Box>
+              <Box variant="h2">Filter Type</Box>
               <Box>
                 You can filter objects by prefix, object tags, or a combination
                 both.

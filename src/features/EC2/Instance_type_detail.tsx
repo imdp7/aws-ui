@@ -22,7 +22,7 @@ import {
   TextFilter,
   ContentLayout,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import CopyText from './commons/copy-text';
 import {
   Storage,
@@ -51,7 +51,7 @@ const split = (item, index) => {
 
 const Details = (props) => {
   return (
-    <Container header={<Header variant="h3">Details</Header>}>
+    <Container header={<Header variant="h2">Details</Header>}>
       {/* <DetailComp {...props} /> */}
     </Container>
   );
@@ -127,7 +127,7 @@ const DetailComp = (props) => {
 };
 const Compute = (props) => {
   return (
-    <Container header={<Header variant="h3">Compute</Header>}>
+    <Container header={<Header variant="h2">Compute</Header>}>
       {/* <ComputeComp {...props} /> */}
     </Container>
   );
@@ -154,7 +154,7 @@ const ComputeComp = (props) => {
 };
 const Pricing = (props) => {
   return (
-    <Container header={<Header variant="h3">Compute</Header>}>
+    <Container header={<Header variant="h2">Compute</Header>}>
       <PricingComp {...props} />
     </Container>
   );
@@ -188,7 +188,7 @@ const PricingComp = (props) => {
 };
 const Accelerators = (props) => {
   return (
-    <Container header={<Header variant="h3">Accelerators</Header>}>
+    <Container header={<Header variant="h2">Accelerators</Header>}>
       <AcceleratorsComp {...props} />
     </Container>
   );
@@ -362,7 +362,7 @@ function Instance_type_detail(props) {
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
         notifications={<Flashbar items={notifications} stackItems />}
-        contentType="wizard"
+        contentType="table"
       />
       <AppFooter />
     </>

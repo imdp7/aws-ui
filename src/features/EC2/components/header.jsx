@@ -12,7 +12,7 @@ import {
   TutorialPanel,
   Link,
   Box,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { ExternalLinkItem, InfoLink } from '../commons/common-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -203,8 +203,9 @@ export function DashboardHeader(props) {
   const navigate = useNavigate();
   return (
     <Header
-      variant="h2"
-      description={props.des}
+      className="header-title"
+      variant="h1"
+      description={<span className="header-context">{props.des}</span>}
       actions={
         <>
           {props.buttonText ? (

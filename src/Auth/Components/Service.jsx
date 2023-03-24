@@ -10,7 +10,7 @@ import {
   TextFilter,
   Box,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';
 import { SettingsButton } from '../Bills';
 function Service(props) {
@@ -25,7 +25,7 @@ function Service(props) {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           actions={
             <SpaceBetween size="m" direction="horizontal">
               <Button iconName="expand">Expand all</Button>

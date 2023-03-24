@@ -13,6 +13,7 @@
 - EC2 Instance
 - S3
 - User Account
+- Payment and invoicing using Stripe API.
 
 ## Home Page
 

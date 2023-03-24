@@ -9,7 +9,7 @@ import {
   Link,
   Alert,
   LinkProps,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { useNavigate } from 'react-router-dom';
 import classes from './home.module.scss';
 
@@ -80,7 +80,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n', left: 'l' }}>
+            <Box variant="h2" padding={{ top: 'n', left: 'l' }}>
               EC2 Instance
             </Box>
             <Box variant="p">
@@ -102,7 +102,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={s3} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               S3
             </Box>
             <Box variant="p">
@@ -124,7 +124,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               CloudFront
             </Box>
             <Box variant="p">
@@ -146,7 +146,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               SQS
             </Box>
             <Box variant="p">
@@ -168,7 +168,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               Amazon Connect
             </Box>
             <Box variant="p">
@@ -190,7 +190,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               VPC
             </Box>
             <Box variant="p">
@@ -212,7 +212,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               IAM
             </Box>
             <Box variant="p">
@@ -234,7 +234,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               Amazon Rekognition
             </Box>
             <Box variant="p">
@@ -256,7 +256,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={ec2} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               Cloudshell
             </Box>
             <Box variant="p">
@@ -278,7 +278,7 @@ const HomeFeatures = (): JSX.Element => {
             }}
           >
             <img src={rds} alt="logo" />
-            <Box variant="h3" padding={{ top: 'n' }}>
+            <Box variant="h2" padding={{ top: 'n' }}>
               RDS
             </Box>
             <Box variant="p">

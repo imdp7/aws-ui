@@ -5,7 +5,7 @@ import {
   AppLayout,
   BreadcrumbGroup,
   Spinner,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { AppHeader } from '../../common/TopNavigations';
 import { AppFooter } from '../../common/AppFooter';
 import { Provider } from 'react-redux';

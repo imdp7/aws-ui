@@ -8,7 +8,7 @@ import {
   Link,
   StatusIndicator,
   Table,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 
 export default function Alarms() {
   const alarmsDefinition = [

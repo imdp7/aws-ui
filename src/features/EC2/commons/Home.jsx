@@ -8,15 +8,11 @@ import {
   SpaceBetween,
   ColumnLayout,
   Link,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import YouTube from 'react-youtube';
 
 const opts = {
   width: '100%',
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 1,
-  },
 };
 
 export const Content = (props) => {
@@ -28,12 +24,15 @@ export const Content = (props) => {
         { colspan: { l: 8, m: 8, default: 12 } },
         { colspan: { l: 4, m: 4, default: 12 } },
         { colspan: { l: 8, m: 8, default: 12 } },
-        { colspan: { l: 3, m: 3, default: 12 } },
+        { colspan: { l: 4, m: 4, default: 12 } },
       ]}
     >
       <Container header={<Header variant="h2">How it works</Header>}>
         {props.image ? (
-          <img width="100%" src={`${props.image}`} />
+          <Container>
+            <img width="100%" src={`${props.image}`} />
+            <Box>{props.description}</Box>
+          </Container>
         ) : (
           <div>
             <YouTube videoId="_I14_sXHO8U" opts={opts} />

@@ -10,6 +10,7 @@ import {
   ContentLayout,
   Header,
   BreadcrumbGroup,
+  ButtonDropdown,
   SpaceBetween,
   Spinner,
   ColumnLayout,
@@ -25,7 +26,7 @@ import {
   Link,
   Select,
   StatusIndicator,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
@@ -55,7 +56,7 @@ const SummaryInfo = ({ loadHelpPanelContent }) => {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           description="Total charges and payment information"
           info={<Link>Info</Link>}
         >
@@ -250,7 +251,7 @@ const HighestEstimated = () => {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           description="Viewing Amazon Web Services, Inc."
           actions={
             <SpaceBetween size="m" direction="horizontal">
@@ -361,7 +362,7 @@ const Profiler = (props) => {
   );
 };
 
-export const SettingsButton = () => {
+export const SettingsButton = (props) => {
   const [preferences, setPreferences] = React.useState({
     pageSize: 10,
     wrapLines: true,
@@ -430,7 +431,7 @@ export const SettingsButton = () => {
 
 function Bills(props) {
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState('bills');
+  const [activeHref, setActiveHref] = useState('/account/bills');
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
@@ -474,7 +475,37 @@ function Bills(props) {
                       <SpaceBetween size="m" direction="horizontal">
                         <Button iconName="download">Download all to CSV</Button>
                         <Button>Print</Button>
-                        <Button variant="primary">March</Button>
+                        <ButtonDropdown
+                          expandableGroups
+                          expandToViewport
+                          variant="primary"
+                          items={[
+                            { text: 'March 2023', id: '1', disabled: false },
+                            { text: 'February 2023', id: '2', disabled: false },
+                            { text: 'January 2023', id: '3' },
+                            {
+                              id: '4',
+                              text: '2022',
+                              items: [
+                                { id: 'p_1', text: 'December 2022' },
+                                { id: 'p_2', text: 'November 2022' },
+                                {
+                                  id: 'p_3',
+                                  text: 'October 2022',
+                                },
+                                {
+                                  id: 'p_4',
+                                  text: 'September 2022',
+                                },
+                                { id: 'p_5', text: 'August 2022' },
+                                { id: 'p_6', text: 'July 2022' },
+                                { id: 'p_7', text: 'June 2022' },
+                              ],
+                            },
+                          ]}
+                        >
+                          March 2023
+                        </ButtonDropdown>
                         <SettingsButton />
                       </SpaceBetween>
                     }
@@ -514,7 +545,7 @@ function Bills(props) {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         breadcrumbs={
           <BreadcrumbGroup
             items={[

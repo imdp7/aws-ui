@@ -9,7 +9,7 @@ import {
   FormField,
   TextFilter,
   Box,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { SettingsButton } from '../Bills';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';
 function Account(props) {
@@ -24,7 +24,7 @@ function Account(props) {
     <Container
       header={
         <Header
-          variant="h3"
+          variant="h2"
           actions={
             <SpaceBetween size="m" direction="horizontal">
               <SettingsButton />

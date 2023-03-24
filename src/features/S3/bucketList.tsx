@@ -30,7 +30,7 @@ import {
   Alert,
   Modal,
   Flashbar,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   Notifications,
   TableEmptyState,
@@ -51,6 +51,7 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 import { useLocalStorage } from '../common/localStorage';
 import useLocationHash from '../EC2/components/use-location-hash';
 import useNotifications from '../EC2/commons/use-notifications';
+import { useNavigate } from 'react-router-dom';
 
 const defaultEngine = { value: '0', label: 'Any Region' };
 const defaultClass = { value: '0', label: 'Any Version Control' };
@@ -127,10 +128,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
   const onDeleteInit = () => setShowDeleteModal(true);
   const onDeleteDiscard = () => setShowDeleteModal(false);
   const onDeleteConfirm = () => {
-    const deleted = locationInstance
-      ? [locationInstance]
-      : collectionProps.selectedItems;
-
+    const deleted = locationInstance ? [locationInstance] : selectedItems;
     const updated = buckets.map((it) =>
       deleted.includes(it) ? { ...it, timestamp: Date.now() } : it
     );
@@ -221,6 +219,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
     actions.setFiltering('');
     setEngine(defaultEngine);
     setInstanceClass(defaultClass);
+    setPlatform(defaultPlatform);
   }
   const CopyARN = (props) => {
     const [copy, setCopy] = useState(false);
@@ -255,14 +254,12 @@ const TableContent = ({ loadHelpPanelContent }) => {
       </Box>
     );
   };
-
-  const tabelRef = useRef();
+  const navigate = useNavigate();
 
   return (
     <>
       <SpaceBetween size="xxs">
         <Table
-          ref={tabelRef}
           {...collectionProps}
           columnDefinitions={columnDefinitions}
           visibleColumns={preferences.visibleContent}
@@ -306,12 +303,7 @@ const TableContent = ({ loadHelpPanelContent }) => {
                   >
                     Delete
                   </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      (window.location.href = '/S3/buckets/create')
-                    }
-                  >
+                  <Button variant="primary" onClick={() => navigate('create')}>
                     Create Bucket
                   </Button>
                 </SpaceBetween>
@@ -619,9 +611,10 @@ export default function BucketList(props) {
 
   useEffect(() => {
     document.title = 'S3 Management Console';
+    setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [location]);
 

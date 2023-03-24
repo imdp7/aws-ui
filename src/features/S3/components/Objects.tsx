@@ -12,7 +12,8 @@ import {
   Header,
   CollectionPreferences,
   Link,
-} from '@cloudscape-design/components';
+  ButtonDropdown,
+} from '@awsui/components-react';
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { dataBucketFiles } from '../../resources/s3Bucket';
@@ -230,9 +231,78 @@ export const ObjectsPane = (props) => {
                     Open
                   </Button>
                   <Button disabled={selectedItems.length === 0}>Delete</Button>
-                  <Button iconName="caret-down" iconAlign="right">
+                  <ButtonDropdown
+                    items={[
+                      {
+                        text: 'Download as',
+                        id: 'downloadAs',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Share with presigned URL',
+                        id: 'presignURL',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Calculate total size',
+                        id: 'totalSize',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Copy',
+                        id: 'copy',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Move',
+                        id: 'move',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Initiate restore',
+                        id: 'initRestore',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        text: 'Query with S3',
+                        id: 'query',
+                        disabled: selectedItems.length === 0 ? true : false,
+                      },
+                      {
+                        id: 'actions',
+                        text: 'Edit actions',
+                        disabled: selectedItems.length === 0 ? true : false,
+                        items: [
+                          {
+                            id: 'rename',
+                            text: 'Rename Object',
+                          },
+                          {
+                            id: 'storageClass',
+                            text: 'Edit storage class',
+                          },
+                          {
+                            id: 'serverEncryption',
+                            text: 'Edit server-side encryption',
+                          },
+                          {
+                            id: 'metadata',
+                            text: 'Edit metadata',
+                          },
+                          {
+                            id: 'tags',
+                            text: 'Edit tags',
+                          },
+                          {
+                            id: 'publicACL',
+                            text: 'Make public using ACL',
+                          },
+                        ],
+                      },
+                    ]}
+                  >
                     Actions
-                  </Button>
+                  </ButtonDropdown>
                   <Button>Create Folder</Button>
                   <Button
                     iconName="upload"

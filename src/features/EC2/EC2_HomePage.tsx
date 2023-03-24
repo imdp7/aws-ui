@@ -9,9 +9,10 @@ import {
   SpaceBetween,
   Spinner,
   Header,
+  Box,
   BreadcrumbGroup,
   Button,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import { Provider } from 'react-redux';
 import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';
@@ -47,7 +48,7 @@ function EC2_HomePage(props) {
         headerSelector="#h"
         footerSelector="#f"
         ariaLabels={appLayoutLabels}
-        contentType="wizard"
+        contentType="table"
         toolsHide={true}
         breadcrumbs={<BreadcrumbGroup items={[]} />}
         navigation={
@@ -70,42 +71,60 @@ function EC2_HomePage(props) {
                 header={
                   <Header
                     variant="h1"
-                    description="Create your first flow. Select the app to connect, and a trigger for starting your flow."
+                    description={
+                      <Box
+                        className="header-context"
+                        variant="span"
+                        fontSize="heading-xs"
+                        fontWeight="light"
+                        padding={{ top: 's', left: 'l', bottom: 'n' }}
+                      >
+                        Amazon Elastic Compute Cloud (Amazon EC2) is a web
+                        service that provides secure, resizable compute capacity
+                        in the cloud.
+                      </Box>
+                    }
                     actions={
-                      <SpaceBetween size="m">
-                        <Container
-                          variant="stacked"
-                          header={
-                            <Header
-                              variant="h3"
-                              description="Create your first instance server. Select and a trigger for flow."
-                            >
-                              {props.head}
-                            </Header>
-                          }
-                        >
-                          <SpaceBetween size="m" direction="horizontal">
-                            <Button
-                              variant="primary"
-                              onClick={() =>
-                                navigate(`/ec2_instance/${props.link}`)
-                              }
-                            >
-                              Create Instance
-                            </Button>
-                            <Button
-                              onClick={() =>
-                                navigate(`/ec2_instance/${props.instances}`)
-                              }
-                            >
-                              View Instances
-                            </Button>
-                          </SpaceBetween>
-                        </Container>
-                      </SpaceBetween>
+                      <Container
+                        fitHeight
+                        header={
+                          <Header
+                            variant="h2"
+                            description="Create your first instance server. Select and a
+                                trigger for flow."
+                          >
+                            {props.head}
+                          </Header>
+                        }
+                      >
+                        <SpaceBetween size="m" direction="horizontal">
+                          <Button
+                            variant="primary"
+                            onClick={() =>
+                              navigate(`/ec2_instance/${props.link}`)
+                            }
+                          >
+                            Create Instance
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              navigate(`/ec2_instance/${props.instances}`)
+                            }
+                          >
+                            View Instances
+                          </Button>
+                        </SpaceBetween>
+                      </Container>
                     }
                   >
-                    {props.title}
+                    <Box
+                      variant="span"
+                      fontSize="display-l"
+                      fontWeight="heavy"
+                      padding={{ top: 's', left: 'l', bottom: 'n' }}
+                    >
+                      {props.title}
+                    </Box>
                   </Header>
                 }
               >

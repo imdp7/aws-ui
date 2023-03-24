@@ -24,7 +24,7 @@ import {
   Link,
   Alert,
   ExpandableSection,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import {
   Notifications,
   Navigation,

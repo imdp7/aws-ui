@@ -6,7 +6,7 @@ import {
   Button,
   Container,
   Alert,
-} from '@cloudscape-design/components';
+} from '@awsui/components-react';
 import CopyText from '../commons/copy-text';
 import { useNavigate } from 'react-router-dom';
 

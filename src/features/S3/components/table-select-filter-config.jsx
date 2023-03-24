@@ -1,12 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import {
-  Link,
-  Box,
-  StatusIndicator,
-  Popover,
-} from '@cloudscape-design/components';
+import { Link, Box, StatusIndicator, Popover } from '@awsui/components-react';
 import { addColumnSortLabels } from '../../common/labels';
 
 export const StatusComponent = ({ status }) => {
@@ -116,6 +111,7 @@ export const VISIBLE_CONTENT_OPTIONS = [
     options: [
       { id: 'name', label: 'Bucket Name', editable: false },
       { id: 'awsRegion', label: 'AWS Region' },
+      { id: 'privateAccess', label: 'Access' },
       { id: 'version', label: 'Version Control' },
       { id: 'platformDetails', label: 'Platform' },
       { id: 'createdAt', label: 'Created At' },
