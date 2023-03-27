@@ -6,6 +6,7 @@ import {
   SpaceBetween,
   DatePicker,
   Box,
+  Modal,
   Button,
   Badge,
   Alert,
@@ -23,7 +24,7 @@ function EditPayment(props) {
   const [date, setDate] = useState(details.expiry);
   const [name, setName] = useState(details.name);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [showModal, setShowModal] = useState(false);
   const [nameCard, setNameCard] = useState(details.name);
   const [company, setCompany] = useState('');
   const [address1, setAddress1] = useState('');
@@ -35,6 +36,11 @@ function EditPayment(props) {
   const [email, setEmail] = useState(null);
   const [country, setCountry] = useState(null);
   const dateRef = useRef();
+  const onNavigate = (evt) => {
+    // keep the locked href for our demo pages
+    evt.preventDefault();
+    setShowModal(true);
+  };
   return (
     <SpaceBetween size="m">
       <Container
@@ -179,11 +185,39 @@ function EditPayment(props) {
       </Container>
       {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       <SpaceBetween size="l" direction="horizontal" className="btn-right">
-        <Button onClick={() => navigate(-1)}>Cancel</Button>
+        <Button onClick={onNavigate}>Cancel</Button>
         <Button variant="primary" loading={loading}>
           Save changes
         </Button>
       </SpaceBetween>
+      <Modal
+        visible={showModal}
+        header="Leave page"
+        closeAriaLabel="Close modal"
+        onDismiss={() => setShowModal(false)}
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button
+                variant="link"
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => navigate(-1)}>
+                Leave
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+      >
+        <Alert type="warning" statusIconAriaLabel="Warning">
+          Are you sure that you want to leave the current page? The changes that
+          you made won't be saved.
+        </Alert>
+      </Modal>
     </SpaceBetween>
   );
 }

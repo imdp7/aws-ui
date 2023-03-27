@@ -61,6 +61,8 @@ const Content = () => {
   const stripe = new Stripe(
     'sk_test_51FrsMEJyECnw5rCL4g5bJkAmDbIWUonjxMQG1h6NDhCaDQ9e29456MxLFFmWRZCf30PZILvtaP0J4FXvHdieWO8e0092YqW109'
   );
+  const [showModal, setShowModal] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const methodRef = useRef(null);
   const cardNumberRef = useRef(null);
   const dateRef = useRef(null);
@@ -223,6 +225,13 @@ const Content = () => {
       ref.current.focus();
     }
   }
+
+  const onNavigate = (evt) => {
+    // keep the locked href for our demo pages
+    evt.preventDefault();
+    setDirty(true);
+    setShowModal(true);
+  };
 
   const capital = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -573,7 +582,7 @@ const Content = () => {
           </Container>
           {errorMessage && <Alert type="error">{errorMessage}</Alert>}
           <SpaceBetween size="l" direction="horizontal" className="btn-right">
-            <Button onClick={() => navigate(-1)}>Cancel</Button>
+            <Button onClick={onNavigate}>Cancel</Button>
             <Button variant="primary" onClick={handleSubmit} loading={loading}>
               Add card
             </Button>
@@ -850,13 +859,41 @@ const Content = () => {
           </Container>
           {errorMessage && <Alert type="error">{errorMessage}</Alert>}
           <SpaceBetween size="l" direction="horizontal" className="btn-right">
-            <Button onClick={() => navigate(-1)}>Cancel</Button>
+            <Button onClick={onNavigate}>Cancel</Button>
             <Button variant="primary" onClick={handleSubmit} loading={loading}>
               Add Bank
             </Button>
           </SpaceBetween>
         </SpaceBetween>
       )}
+      <Modal
+        visible={showModal}
+        header="Leave page"
+        closeAriaLabel="Close modal"
+        onDismiss={() => setShowModal(false)}
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button
+                variant="link"
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => navigate(-1)}>
+                Leave
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+      >
+        <Alert type="warning" statusIconAriaLabel="Warning">
+          Are you sure that you want to leave the current page? The changes that
+          you made won't be saved.
+        </Alert>
+      </Modal>
     </SpaceBetween>
   );
 };

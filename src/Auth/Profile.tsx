@@ -14,6 +14,7 @@ import {
   Spinner,
   ColumnLayout,
   Box,
+  Modal,
   ExpandableSection,
   FormField,
   Checkbox,
@@ -42,6 +43,7 @@ const Account = (props) => {
   const [rePassword, setRePassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
   // Refs
   const emailRef = useRef(null);
   const oldPasswordRef = useRef(null);
@@ -54,7 +56,7 @@ const Account = (props) => {
       if (!email) {
         setErrorMessage('Please enter new email address');
         setLoading(false);
-        emailRef.current.focus();
+        emailRef.current.focusToolsClose();
         return;
       }
       if (!oldPassword) {
@@ -84,6 +86,20 @@ const Account = (props) => {
 
   const editHandler = () => {
     setEdit(true);
+  };
+
+  const CancelHandler = (evt) => {
+    evt.preventDefault();
+    setShowModal(true);
+  };
+  const defaultHandler = () => {
+    setShowModal(false);
+    setEdit(false);
+    setEmail('');
+    setOldPassword('');
+    setRePassword('');
+    setPassword('');
+    setErrorMessage('');
   };
 
   return (
@@ -127,14 +143,7 @@ const Account = (props) => {
                   <Button
                     formAction="none"
                     variant="link"
-                    onClick={() => {
-                      setEdit(false);
-                      setEmail('');
-                      setOldPassword('');
-                      setRePassword('');
-                      setPassword('');
-                      setErrorMessage('');
-                    }}
+                    onClick={CancelHandler}
                   >
                     Cancel
                   </Button>
@@ -246,6 +255,34 @@ const Account = (props) => {
           </SpaceBetween>
         )}
       </Container>
+      <Modal
+        visible={showModal}
+        header="Leave page"
+        closeAriaLabel="Close modal"
+        onDismiss={() => setShowModal(false)}
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button
+                variant="link"
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={defaultHandler}>
+                Leave
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+      >
+        <Alert type="warning" statusIconAriaLabel="Warning">
+          Are you sure that you want to leave the current page? The changes that
+          you made won't be saved.
+        </Alert>
+      </Modal>
     </>
   );
 };

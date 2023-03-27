@@ -21,22 +21,22 @@ const data = [
   {
     title: 'Running',
     value: 60,
-    lastUpdate: 'Dec 7, 2020',
+    lastUpdate: 'Dec 7, 2022',
   },
   {
     title: 'Failed',
     value: 30,
-    lastUpdate: 'Dec 6, 2020',
+    lastUpdate: 'Dec 6, 2022',
   },
   {
     title: 'In-progress',
     value: 10,
-    lastUpdate: 'Dec 6, 2020',
+    lastUpdate: 'Dec 6, 2022',
   },
   {
     title: 'Pending',
     value: 0,
-    lastUpdate: 'Dec 7, 2020',
+    lastUpdate: 'Dec 7, 2022',
   },
 ];
 
@@ -119,13 +119,13 @@ const BucketMetrics = () => {
                 title: 'Costs',
                 type: 'bar',
                 data: [
-                  { x: 'Jun 2019', y: 6562 },
-                  { x: 'Jul 2019', y: 8768 },
-                  { x: 'Aug 2019', y: 9742 },
-                  { x: 'Sep 2019', y: 10464 },
-                  { x: 'Oct 2019', y: 16777 },
-                  { x: 'Nov 2019', y: 9956 },
-                  { x: 'Dec 2019', y: 5876 },
+                  { x: 'Jun 2022', y: 6562 },
+                  { x: 'Jul 2022', y: 8768 },
+                  { x: 'Aug 2022', y: 9742 },
+                  { x: 'Sep 2022', y: 10464 },
+                  { x: 'Oct 2022', y: 16777 },
+                  { x: 'Nov 2022', y: 9956 },
+                  { x: 'Dec 2022', y: 5876 },
                 ],
                 valueFormatter: (e) => '$' + e.toLocaleString('en-US'),
               },
@@ -133,13 +133,13 @@ const BucketMetrics = () => {
                 title: 'Costs last year',
                 type: 'line',
                 data: [
-                  { x: 'Jun 2019', y: 5373 },
-                  { x: 'Jul 2019', y: 7563 },
-                  { x: 'Aug 2019', y: 7900 },
-                  { x: 'Sep 2019', y: 12342 },
-                  { x: 'Oct 2019', y: 14311 },
-                  { x: 'Nov 2019', y: 11830 },
-                  { x: 'Dec 2019', y: 8505 },
+                  { x: 'Jun 2022', y: 5373 },
+                  { x: 'Jul 2022', y: 7563 },
+                  { x: 'Aug 2022', y: 7900 },
+                  { x: 'Sep 2022', y: 12342 },
+                  { x: 'Oct 2022', y: 14311 },
+                  { x: 'Nov 2022', y: 11830 },
+                  { x: 'Dec 2022', y: 8505 },
                 ],
                 valueFormatter: (e) => '$' + e.toLocaleString('en-US'),
               },
@@ -152,17 +152,17 @@ const BucketMetrics = () => {
               {
                 title: 'Peak cost',
                 type: 'threshold',
-                x: 'Sep 2019',
+                x: 'Sep 2022',
               },
             ]}
             xDomain={[
-              'Jun 2019',
-              'Jul 2019',
-              'Aug 2019',
-              'Sep 2019',
-              'Oct 2019',
-              'Nov 2019',
-              'Dec 2019',
+              'Jun 2022',
+              'Jul 2022',
+              'Aug 2022',
+              'Sep 2022',
+              'Oct 2022',
+              'Nov 2022',
+              'Dec 2022',
             ]}
             yDomain={[0, 20000]}
             i18nStrings={{
@@ -419,7 +419,7 @@ const BucketMetrics = () => {
   );
 };
 
-const Analysis = () => {
+export const Analysis = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -462,7 +462,7 @@ const Analysis = () => {
           </Box>
           <Button
             onClick={() =>
-              navigate('metrics/storage_class_analysis/create', {
+              navigate('create', {
                 state: {
                   name: 'Create Configuration',
                   title: 'Storage Class Analysis',

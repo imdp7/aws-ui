@@ -27,6 +27,7 @@ import { Notifications } from './Properties';
 import { IntelligentTiering } from './Properties';
 import { Inventory, Lifecycle } from './Management';
 import { Replication } from './Management';
+import { Analysis } from './Metrics';
 function SingleComp({ loadHelpPanelContent, state, info, subInfo, id }) {
   return (
     <>
@@ -69,6 +70,15 @@ function SingleComp({ loadHelpPanelContent, state, info, subInfo, id }) {
       )}
       {subInfo == 'inventory' && (
         <Inventory
+          loadHelpPanelContent={loadHelpPanelContent}
+          state={state}
+          info={info}
+          id={id}
+          subInfo={subInfo}
+        />
+      )}
+      {subInfo == 'storage_class_analysis' && (
+        <Analysis
           loadHelpPanelContent={loadHelpPanelContent}
           state={state}
           info={info}

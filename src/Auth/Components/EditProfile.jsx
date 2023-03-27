@@ -14,7 +14,7 @@ import {
 } from '@awsui/components-react';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
-import { Methods } from './Methods';
+
 function EditProfile(props) {
   const navigate = useNavigate();
   const options = useMemo(() => countryList().getData(), []);
