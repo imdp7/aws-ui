@@ -15,7 +15,7 @@ import {
   SideNavigation,
   Popover,
   SpaceBetween,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { appLayoutLabels, externalLinkProps } from '../../common/labels';
 import {
   getHeaderCounterText,

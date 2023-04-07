@@ -8,7 +8,7 @@ import {
   Link,
   SpaceBetween,
   AppLayout,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { InfoLink } from '../EC2/commons/common-components';
 import { HelpPanels } from '../EC2/components/header';

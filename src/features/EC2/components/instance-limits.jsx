@@ -8,7 +8,7 @@ import {
   Link,
   StatusIndicator,
   Table,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 
 export default function InstancesLimits() {
   const [selectedItems, setSelectedItems] = useState([]);

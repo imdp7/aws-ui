@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { StatusIndicator, Box } from '@awsui/components-react';
+import { StatusIndicator, Box } from '@cloudscape-design/components';
 
 export function ItemState({ state }) {
   if (state === 'deleting') {

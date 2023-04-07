@@ -12,7 +12,7 @@ import {
   Alert,
   Flashbar,
   Spinner,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
 const DATA = {

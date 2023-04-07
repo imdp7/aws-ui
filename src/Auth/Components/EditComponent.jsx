@@ -19,7 +19,7 @@ import {
   ColumnLayout,
   Grid,
   FormField,
-} from '@@awsui/components-react';
+} from '@@cloudscape-design/components';
 import { HelpPanels } from '../../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { applyDensity, disableMotion } from '@awsui/global-styles';
-import '@awsui/global-styles/index.css';
+import { applyDensity, disableMotion } from '@cloudscape-design/global-styles';
+import '@cloudscape-design/global-styles/index.css';
 import * as localStorage from './localStorage';
 import { createPropertyStorage } from './createPropertyStorage';
 

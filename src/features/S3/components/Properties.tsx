@@ -14,7 +14,7 @@ import {
   Alert,
   CollectionPreferences,
   Pagination,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import CopyText from '../../EC2/commons/copy-text';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../common/localStorage';

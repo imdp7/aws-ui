@@ -31,7 +31,7 @@ import {
   Icon,
   Link,
   SpaceBetween,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from '../common/common';
 

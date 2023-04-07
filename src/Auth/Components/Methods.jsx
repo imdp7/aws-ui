@@ -8,7 +8,7 @@ import {
   Badge,
   SpaceBetween,
   ButtonDropdown,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
 export function Methods() {

@@ -10,7 +10,7 @@ import {
   Header,
   StatusIndicator,
   ColumnLayout,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { ExternalLinkItem, InfoLink } from '../commons/common-components';
 
 function ServiceHealthInfo() {

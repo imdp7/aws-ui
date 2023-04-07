@@ -9,7 +9,7 @@ import {
   Alert,
   RadioGroup,
   Button,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
 function ItemState({ state }) {

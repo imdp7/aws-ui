@@ -22,7 +22,7 @@ import {
   TextFilter,
   ContentLayout,
   Spinner,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import CopyText from './commons/copy-text';
 import {
   Storage,

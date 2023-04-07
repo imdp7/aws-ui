@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { CollectionPreferences } from '@awsui/components-react';
+import { CollectionPreferences } from '@cloudscape-design/components';
 import { addColumnSortLabels } from '../../features/common/labels';
 
 export const COLUMN_DEFINITIONS_SERVICE = addColumnSortLabels([

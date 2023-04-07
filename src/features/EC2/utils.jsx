@@ -7,7 +7,7 @@ import {
   BreadcrumbGroup,
   ColumnLayout,
   Box,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import {
   COLUMN_DEFINITIONS_PANEL_CONTENT_SINGLE,
   SELECTION_LABELS,

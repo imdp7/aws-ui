@@ -11,7 +11,7 @@ import {
   Tabs,
   Spinner,
   Button,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import InstanceConnect from './InstanceConnect';
 import SSHClient from './SSHClient';
 import SerialConsole from './SerialConsole';

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { Link } from '@awsui/components-react';
+import { Link } from '@cloudscape-design/components';
 
 export const ORIGINS_COLUMN_DEFINITIONS = [
   {

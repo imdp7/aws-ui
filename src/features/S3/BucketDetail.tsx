@@ -6,7 +6,7 @@ import {
   SpaceBetween,
   ContentLayout,
   Tabs,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {

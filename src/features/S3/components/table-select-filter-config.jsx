@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { Link, Box, StatusIndicator, Popover } from '@awsui/components-react';
+import { Link, Box, StatusIndicator, Popover } from '@cloudscape-design/components';
 import { addColumnSortLabels } from '../../common/labels';
 
 export const StatusComponent = ({ status }) => {

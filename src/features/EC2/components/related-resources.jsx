@@ -7,7 +7,7 @@ import {
   Container,
   Header,
   Link,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { externalLinkProps } from '../../common/labels';
 
 export function AccountAttributes() {

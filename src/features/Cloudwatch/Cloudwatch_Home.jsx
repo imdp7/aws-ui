@@ -12,7 +12,7 @@ import {
   Header,
   BreadcrumbGroup,
   Button,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { Provider } from 'react-redux';
 import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';

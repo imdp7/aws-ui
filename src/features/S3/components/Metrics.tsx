@@ -14,7 +14,7 @@ import {
   BarChart,
   LineChart,
   Pagination,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
 const data = [

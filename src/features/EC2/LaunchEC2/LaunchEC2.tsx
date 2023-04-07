@@ -28,7 +28,7 @@ import {
   Badge,
   Container,
   ExpandableSection,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { DashboardHeader, HelpPanels } from '../components/header';
 import { appLayoutLabels } from '../../common/labels';
 import {
@@ -38,7 +38,7 @@ import {
 } from '../commons/common-components';
 import { Navigation } from '../commons/common-components';
 import useNotifications from '../commons/use-notifications';
-import { Spinner } from '@awsui/components-react';
+import { Spinner } from '@cloudscape-design/components';
 import { InfoLink } from '../commons/common-components';
 import { useNavigate } from 'react-router-dom';
 

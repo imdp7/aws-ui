@@ -10,7 +10,7 @@ import {
   TextFilter,
   Box,
   Spinner,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';
 import { SettingsButton } from '../Bills';
 function Service(props) {

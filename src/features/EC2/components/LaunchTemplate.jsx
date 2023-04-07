@@ -26,7 +26,7 @@ import {
   Tabs,
   TextFilter,
   Spinner,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import {
   Navigation,
   ec2navItems,

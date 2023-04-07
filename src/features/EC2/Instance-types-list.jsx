@@ -20,7 +20,7 @@ import {
   SpaceBetween,
   Spinner,
   SplitPanel,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import {
   ec2navItems,
   Navigation,

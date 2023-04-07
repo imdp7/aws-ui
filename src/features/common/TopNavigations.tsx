@@ -11,7 +11,7 @@ import {
   ColumnLayout,
   SpaceBetween,
   Modal,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import '../../App.css';
 import classes from '../../app.module.scss';
 import {
@@ -20,7 +20,7 @@ import {
   Density,
   applyDensity,
   disableMotion,
-} from '@awsui/global-styles';
+} from '@cloudscape-design/global-styles';
 import { useNavigate } from 'react-router-dom';
 
 interface State {

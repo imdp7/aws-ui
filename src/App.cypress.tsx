@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 it('renders App Header', () => {
   mount(
     <BrowserRouter>
-      <App />
+      <App user={undefined} signOut={undefined} />
     </BrowserRouter>
   );
   cy.get('#h').contains('App Header');

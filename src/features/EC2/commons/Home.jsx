@@ -8,7 +8,7 @@ import {
   SpaceBetween,
   ColumnLayout,
   Link,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import YouTube from 'react-youtube';
 
 const opts = {

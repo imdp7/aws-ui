@@ -15,7 +15,7 @@ import {
   Select,
   Alert,
   ColumnLayout,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 import Stripe from 'stripe';

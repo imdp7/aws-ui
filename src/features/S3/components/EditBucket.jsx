@@ -19,7 +19,7 @@ import {
   FormField,
   Autosuggest,
   S3ResourceSelector,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { AppHeader } from '../../common/TopNavigations';
 import { AppFooter } from '../../common/AppFooter';
 import { Provider } from 'react-redux';

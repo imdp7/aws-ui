@@ -13,7 +13,7 @@ import {
   Box,
   BreadcrumbGroup,
   Button,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { Provider } from 'react-redux';
 import { appLayoutLabels } from '../common/labels';
 import { store } from '../../app/store';
@@ -72,7 +72,18 @@ export const S3 = (props): JSX.Element => {
                 header={
                   <Header
                     variant="h1"
-                    description="Amazon S3 is an object storage service that offers industry-leading scalability, data availability, security, and performance."
+                    description={
+                      <Box
+                        className="header-context"
+                        variant="span"
+                        fontSize="heading-xs"
+                        fontWeight="light"
+                      >
+                        Amazon S3 is an object storage service that offers
+                        industry-leading scalability, data availability,
+                        security, and performance.
+                      </Box>
+                    }
                     actions={
                       <SpaceBetween size="m">
                         <Container

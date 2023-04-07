@@ -15,7 +15,7 @@ import {
   StatusIndicator,
   ExpandableSection,
   Checkbox,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 
 const Overview = () => {

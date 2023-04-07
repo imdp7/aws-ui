@@ -21,7 +21,7 @@ import {
   S3ResourceSelector,
   Spinner,
   Input,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const IntelligentTiering = (props) => {

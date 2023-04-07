@@ -15,7 +15,7 @@ import {
   Box,
   Tiles,
   ExpandableSection,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { InfoLink } from '../commons/common-components';
 import { HelpPanels } from '../components/header';
 

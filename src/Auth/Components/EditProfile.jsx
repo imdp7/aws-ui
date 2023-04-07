@@ -11,7 +11,7 @@ import {
   Alert,
   Input,
   Select,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import countryList from 'react-select-country-list';
 import { useNavigate } from 'react-router-dom';
 

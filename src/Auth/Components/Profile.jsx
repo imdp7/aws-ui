@@ -11,7 +11,7 @@ import {
   ColumnLayout,
   Badge,
   FormField,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 
 const GetStarted = () => {
   return (

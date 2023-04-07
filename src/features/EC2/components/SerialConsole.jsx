@@ -9,7 +9,7 @@ import {
   Link,
   Alert,
   ColumnLayout,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import CopyText from '../commons/copy-text';
 import { useNavigate } from 'react-router-dom';
 

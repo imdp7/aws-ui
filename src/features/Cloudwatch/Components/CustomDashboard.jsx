@@ -14,7 +14,7 @@ import {
   Icon,
   FormField,
   Badge,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { InfoLink, ValueWithLabel } from '../../common/common';
 import { HelpPanels } from '../../EC2/components/header';
 function CustomDashboard({ loadHelpPanelContent }) {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Link, LinkProps } from '@awsui/components-react';
-import { CancelableEventHandler } from '@awsui/components-react/internal/events';
+import { Box, Link, LinkProps } from '@cloudscape-design/components';
+import { CancelableEventHandler } from '@cloudscape-design/components/internal/events';
 
 export interface InfoLinkProps {
   onFollow: CancelableEventHandler<LinkProps.FollowDetail>;

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { useCollection } from '@awsui/collection-hooks';
+import { useCollection } from '@cloudscape-design/collection-hooks';
 import {
   Button,
   Pagination,
@@ -9,7 +9,7 @@ import {
   TextFilter,
   SpaceBetween,
   Link,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import {
   TableEmptyState,
   TableNoMatchState,

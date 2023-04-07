@@ -22,7 +22,7 @@ import {
   Input,
   Link,
   Select,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { DashboardHeader, HelpPanels } from '../features/EC2/components/header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';

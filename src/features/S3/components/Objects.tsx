@@ -13,7 +13,7 @@ import {
   CollectionPreferences,
   Link,
   ButtonDropdown,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useLocalStorage } from '../../common/localStorage';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { dataBucketFiles } from '../../resources/s3Bucket';

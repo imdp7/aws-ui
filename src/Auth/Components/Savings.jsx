@@ -9,7 +9,7 @@ import {
   TextFilter,
   Box,
   Spinner,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { SettingsButton } from '../Bills';
 import { COLUMN_DEFINITIONS_SAVINGS } from './TableFilter';
 function Savings(props) {

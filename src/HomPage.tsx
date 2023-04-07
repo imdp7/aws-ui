@@ -1,9 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { AppHeader } from './features/common/TopNavigations';
 import './App.css';
 import classes from './app.module.scss';
@@ -24,7 +20,9 @@ import {
   Button,
   Spinner,
   Modal,
-} from '@awsui/components-react';
+  ButtonDropdown,
+} from '@cloudscape-design/components';
+import { Board, BoardItem } from '@cloudscape-design/board-components';
 import { useOutletContext } from 'react-router';
 import { InfoLink, ValueWithLabel } from './features/common/common';
 import { HelpPanels } from './features/EC2/components/header';
@@ -143,7 +141,7 @@ function strReduce(string = '') {
 }
 
 const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
-  const [visible, setVisible] = React.useState(true);
+  const [visible, setVisible] = useState(true);
 
   const navigate = useNavigate();
 
@@ -155,66 +153,33 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   };
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
 
-  const RecenltyVisited = () => {
+  const RecentlyVisited = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Recently Visited"
-                        des="Jump in where you left off and navigate to the AWS services you most recently worked with."
-                        h5="To view all AWS services choose View all AWS services at the bottom of the widget."
-                      />
-                    )
-                  }
-                />
-              }
+        <ColumnLayout columns={4} borders="horizontal">
+          {arrayData.map((d) => (
+            <div
+              key={d[0]}
+              style={{
+                display: 'flex',
+                justifyItems: 'center',
+                textAlign: 'center',
+                fontSize: '10px',
+              }}
             >
-              Recently visited
-            </Header>
-          }
-          footer={
-            <Box
-              variant="h5"
-              tagOverride="h5"
-              //padding={{ bottom: 's', top: 'l' }}
-              textAlign="center"
-            >
-              <Link href="/console/services">View all AWS services</Link>
-            </Box>
-          }
-        >
-          <ColumnLayout columns={4} borders="horizontal">
-            {arrayData.map((d) => (
-              <div
-                key={d[0]}
-                style={{
-                  display: 'flex',
-                  justifyItems: 'center',
-                  textAlign: 'center',
-                  fontSize: '10px',
-                }}
-              >
-                <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                  <Link
-                    variant="secondary"
-                    href={`${d[2]}`}
-                    onFollow={defaultOnFollowHandler}
-                  >
-                    {d[0]}
-                  </Link>{' '}
-                </Box>
-              </div>
-            ))}
-          </ColumnLayout>
-        </Container>
+              <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+              <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                <Link
+                  variant="secondary"
+                  href={`${d[2]}`}
+                  onFollow={defaultOnFollowHandler}
+                >
+                  {d[0]}
+                </Link>{' '}
+              </Box>
+            </div>
+          ))}
+        </ColumnLayout>
       </>
     );
   };
@@ -222,37 +187,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const Health = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="AWS Health"
-                        des="View events that might affect your AWS infrastructure and account. Use these alerts to get notified about changes that can affect your AWS resources, then follow the guidance to diagnose and resolve issues."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              AWS Health
-            </Header>
-          }
-          footer={
-            <Box
-              variant="h5"
-              tagOverride="h5"
-              //padding={{ bottom: 's', top: 'l' }}
-              textAlign="center"
-            >
-              <Link href="/console/services">Go to AWS Health</Link>
-            </Box>
-          }
-        >
+        <ColumnLayout>
           <Box variant="awsui-key-label" color="text-status-inactive">
             Open Issues
           </Box>
@@ -286,7 +221,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               7 days ago
             </Box>
           </Grid>
-        </Container>
+        </ColumnLayout>
       </>
     );
   };
@@ -294,66 +229,34 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const CostUsage = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Cost and usage"
-                        des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              Cost and Usage
-            </Header>
-          }
-          footer={
-            <Box
-              variant="h5"
-              tagOverride="h5"
-              //padding={{ bottom: 's', top: 'l' }}
-              textAlign="center"
-            >
-              <Link href="/console/services">Go to AWS Cost Management</Link>
-            </Box>
-          }
-        >
-          <SpaceBetween size="s">
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Open Issues
-            </Box>
-            <ColumnLayout columns={4}>
-              {arrayData.map((d) => (
-                <div
-                  key={d[0]}
-                  style={{
-                    display: 'flex',
-                    justifyItems: 'center',
-                    textAlign: 'center',
-                  }}
-                >
-                  <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                  <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                    <Link
-                      variant="secondary"
-                      href={`${d[2]}`}
-                      onFollow={defaultOnFollowHandler}
-                    >
-                      {d[0]}
-                    </Link>{' '}
-                  </Box>
-                </div>
-              ))}
-            </ColumnLayout>
-          </SpaceBetween>
-        </Container>
+        <SpaceBetween size="s">
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Open Issues
+          </Box>
+          <ColumnLayout columns={4}>
+            {arrayData.map((d) => (
+              <div
+                key={d[0]}
+                style={{
+                  display: 'flex',
+                  justifyItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
+                <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                  <Link
+                    variant="secondary"
+                    href={`${d[2]}`}
+                    onFollow={defaultOnFollowHandler}
+                  >
+                    {d[0]}
+                  </Link>{' '}
+                </Box>
+              </div>
+            ))}
+          </ColumnLayout>
+        </SpaceBetween>
       </>
     );
   };
@@ -361,57 +264,34 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const BuildSolution = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              description="Start building with simple tables and automated workflows."
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Build a solution"
-                        des="Access workflows and tables that introduce you to AWS services. You can use these tools to create the resources required to build your intended solution."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              Build a solution
-            </Header>
-          }
-        >
-          <SpaceBetween size="s">
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              Open Issues
-            </Box>
-            <ColumnLayout columns={4}>
-              {arrayData.map((d) => (
-                <div
-                  key={d[0]}
-                  style={{
-                    display: 'flex',
-                    justifyItems: 'center',
-                    textAlign: 'center',
-                  }}
-                >
-                  <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                  <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                    <Link
-                      variant="secondary"
-                      href={`${d[2]}`}
-                      onFollow={defaultOnFollowHandler}
-                    >
-                      {d[0]}
-                    </Link>{' '}
-                  </Box>
-                </div>
-              ))}
-            </ColumnLayout>
-          </SpaceBetween>
-        </Container>
+        <SpaceBetween size="s">
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            Open Issues
+          </Box>
+          <ColumnLayout columns={4} variant="text-grid">
+            {arrayData.map((d) => (
+              <div
+                key={d[0]}
+                style={{
+                  display: 'flex',
+                  justifyItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
+                <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+                <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
+                  <Link
+                    variant="secondary"
+                    href={`${d[2]}`}
+                    onFollow={defaultOnFollowHandler}
+                  >
+                    {d[0]}
+                  </Link>{' '}
+                </Box>
+              </div>
+            ))}
+          </ColumnLayout>
+        </SpaceBetween>
       </>
     );
   };
@@ -419,37 +299,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const TrustedAdviser = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Trusted Advisor"
-                        des="Accounts with AWS Business Support or AWS Enterprise Support can see an overview of automated checks on the Trusted Advisor widget. Core security checks and checks for service quotas are available to all accounts on the Trusted Advisor console, inclusive of AWS Developer Support and AWS Basic Support plans."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              Trusted Advisor
-            </Header>
-          }
-          footer={
-            <Box
-              variant="h5"
-              tagOverride="h5"
-              //padding={{ bottom: 's', top: 'l' }}
-              textAlign="center"
-            >
-              <Link href="/console/services">Go to Trusted Advisor</Link>
-            </Box>
-          }
-        >
+        <ColumnLayout>
           <Box variant="awsui-key-label" color="text-status-error">
             Action recommended
           </Box>
@@ -489,7 +339,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               </Link>
             </Box>
           </Grid>
-        </Container>
+        </ColumnLayout>
       </>
     );
   };
@@ -497,62 +347,40 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const ExlporeAWS = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Explore AWS"
-                        des="Explore AWS products, services, resources, events, and more."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              Explore AWS
-            </Header>
-          }
-        >
-          <SpaceBetween size="m">
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              <Link external fontSize="heading-s">
-                {' '}
-                AWS Certifications
-              </Link>
-              <Box>Propel your career forward with AWS Certification.</Box>
+        <SpaceBetween size="m">
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            <Link external fontSize="heading-s">
+              {' '}
+              AWS Certifications
+            </Link>
+            <Box>Propel your career forward with AWS Certification.</Box>
+          </Box>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            <Link external fontSize="heading-s">
+              {' '}
+              Free AWS Training
+            </Link>
+            <Box>
+              Advance your career with AWS Cloud Practitioner Essentials—a free,
+              six-hour, foundational course.
             </Box>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              <Link external fontSize="heading-s">
-                {' '}
-                Free AWS Training
-              </Link>
-              <Box>
-                Advance your career with AWS Cloud Practitioner Essentials—a
-                free, six-hour, foundational course.
-              </Box>
+          </Box>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            <Link external fontSize="heading-s">
+              AWS Training
+            </Link>
+            <Box>Free digital courses to help you develop your skills.</Box>
+          </Box>
+          <Box variant="awsui-key-label" color="text-status-inactive">
+            <Link external fontSize="heading-s">
+              Free AWS Digital Training
+            </Link>
+            <Box>
+              Learn the AWS Cloud today to create opportunities tomorrow: find
+              out how.
             </Box>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              <Link external fontSize="heading-s">
-                AWS Training
-              </Link>
-              <Box>Free digital courses to help you develop your skills.</Box>
-            </Box>
-            <Box variant="awsui-key-label" color="text-status-inactive">
-              <Link external fontSize="heading-s">
-                Free AWS Digital Training
-              </Link>
-              <Box>
-                Learn the AWS Cloud today to create opportunities tomorrow: find
-                out how.
-              </Box>
-            </Box>
-          </SpaceBetween>
-        </Container>
+          </Box>
+        </SpaceBetween>
       </>
     );
   };
@@ -611,37 +439,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const AWSBlogs = () => {
     return (
       <>
-        <Container
-          header={
-            <Header
-              variant="h2"
-              info={
-                <InfoLink
-                  onFollow={() =>
-                    loadHelpPanelContent(
-                      <HelpPanels
-                        title="Cost and usage"
-                        des="Visualize, manage, and understand your AWS costs and usage. Compare your current and previous month’s costs, and view a cost breakdown for each of your AWS services. Upon registering for Cost Explorer, the current month's data will be available for viewing in about 24 hours. The rest of your data will take a few days to populate."
-                      />
-                    )
-                  }
-                />
-              }
-            >
-              Recent AWS Blogs
-            </Header>
-          }
-          footer={
-            <Box
-              variant="h5"
-              tagOverride="h5"
-              //padding={{ bottom: 's', top: 'l' }}
-              textAlign="center"
-            >
-              <Link href="/console/services">Go to AWS Cost Management</Link>
-            </Box>
-          }
-        >
+        <ColumnLayout>
           <Box variant="awsui-key-label" color="text-status-inactive">
             Open Issues
           </Box>
@@ -675,10 +473,68 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
               7 days ago
             </Box>
           </Grid>
-        </Container>
+        </ColumnLayout>
       </>
     );
   };
+  const [items, setItems] = useState([
+    {
+      id: '1',
+      rowSpan: 4,
+      columnSpan: 3,
+      data: {
+        title: 'Recently Visited',
+        footer: (
+          <Box textAlign="center">
+            <Link href="/console/services">View all AWS services</Link>
+          </Box>
+        ),
+        content: <RecentlyVisited />,
+      },
+    },
+    {
+      id: '2',
+      rowSpan: 4,
+      columnSpan: 1,
+      data: { title: 'AWS Blogs', content: <AWSBlogs /> },
+    },
+    {
+      id: '3',
+      rowSpan: 4,
+      columnSpan: 1,
+      data: { title: 'AWS Health', content: <Health /> },
+    },
+    {
+      id: '4',
+      rowSpan: 4,
+      columnSpan: 2,
+      data: { title: 'Cost and Usage', content: <CostUsage /> },
+    },
+    {
+      id: '5',
+      rowSpan: 4,
+      columnSpan: 1,
+      data: { title: 'Trusted Advisor', content: <TrustedAdviser /> },
+    },
+    {
+      id: '6',
+      rowSpan: 4,
+      columnSpan: 2,
+      data: { title: 'Build a Solution', content: <BuildSolution /> },
+    },
+    {
+      id: '7',
+      rowSpan: 4,
+      columnSpan: 1,
+      data: { title: 'Explore AWS', content: <ExlporeAWS /> },
+    },
+    {
+      id: '8',
+      rowSpan: 4,
+      columnSpan: 1,
+      data: { title: 'AWS Blogs', content: <AWSBlogs /> },
+    },
+  ]);
   return (
     <>
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
@@ -692,30 +548,131 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
         >
           {' '}
         </Alert>
-        <Grid
-          gridDefinition={[
-            { colspan: { default: 12, m: 8 } },
-            { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, m: 8 } },
-            { colspan: { default: 12, m: 8 } },
-            { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, xs: 4 } },
-            { colspan: { default: 12, xs: 4 } },
-          ]}
-        >
-          <RecenltyVisited />
-          <AWSBlogs />
-          <Health />
-          <CostUsage />
-          <BuildSolution />
-          <TrustedAdviser />
-          <ExlporeAWS />
-          {/*<LatestAnnouncement />*/}
-          <ExlporeAWS />
-          <AWSBlogs />
-        </Grid>
+
+        <Board
+          renderItem={(item, actions) => (
+            <BoardItem
+              header={<Header>{item.data.title}</Header>}
+              footer={item.data.footer}
+              i18nStrings={{
+                dragHandleAriaLabel: 'Drag handle',
+                dragHandleAriaDescription:
+                  'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
+                resizeHandleAriaLabel: 'Resize handle',
+                resizeHandleAriaDescription:
+                  'Use Space or Enter to activate resize, arrow keys to move, Space or Enter to submit, or Escape to discard.',
+              }}
+              settings={
+                <ButtonDropdown
+                  items={[{ id: 'remove', text: 'Remove' }]}
+                  ariaLabel="Board item settings"
+                  variant="icon"
+                  onItemClick={() => actions.removeItem()}
+                />
+              }
+            >
+              {item.data.content}
+            </BoardItem>
+          )}
+          onItemsChange={(event) => setItems(event.detail.items)}
+          items={items}
+          i18nStrings={(() => {
+            function createAnnouncement(
+              operationAnnouncement,
+              conflicts,
+              disturbed
+            ) {
+              const conflictsAnnouncement =
+                conflicts.length > 0
+                  ? `Conflicts with ${conflicts
+                      .map((c) => c.data.title)
+                      .join(', ')}.`
+                  : '';
+              const disturbedAnnouncement =
+                disturbed.length > 0
+                  ? `Disturbed ${disturbed.length} items.`
+                  : '';
+              return [
+                operationAnnouncement,
+                conflictsAnnouncement,
+                disturbedAnnouncement,
+              ]
+                .filter(Boolean)
+                .join(' ');
+            }
+            return {
+              liveAnnouncementDndStarted: (operationType) =>
+                operationType === 'resize' ? 'Resizing' : 'Dragging',
+              liveAnnouncementDndItemReordered: (operation) => {
+                const columns = `column ${operation.placement.x + 1}`;
+                const rows = `row ${operation.placement.y + 1}`;
+                return createAnnouncement(
+                  `Item moved to ${
+                    operation.direction === 'horizontal' ? columns : rows
+                  }.`,
+                  operation.conflicts,
+                  operation.disturbed
+                );
+              },
+              liveAnnouncementDndItemResized: (operation) => {
+                const columnsConstraint = operation.isMinimalColumnsReached
+                  ? ' (minimal)'
+                  : '';
+                const rowsConstraint = operation.isMinimalRowsReached
+                  ? ' (minimal)'
+                  : '';
+                const sizeAnnouncement =
+                  operation.direction === 'horizontal'
+                    ? `columns ${operation.placement.width}${columnsConstraint}`
+                    : `rows ${operation.placement.height}${rowsConstraint}`;
+                return createAnnouncement(
+                  `Item resized to ${sizeAnnouncement}.`,
+                  operation.conflicts,
+                  operation.disturbed
+                );
+              },
+              liveAnnouncementDndItemInserted: (operation) => {
+                const columns = `column ${operation.placement.x + 1}`;
+                const rows = `row ${operation.placement.y + 1}`;
+                return createAnnouncement(
+                  `Item inserted to ${columns}, ${rows}.`,
+                  operation.conflicts,
+                  operation.disturbed
+                );
+              },
+              liveAnnouncementDndCommitted: (operationType) =>
+                `${operationType} committed`,
+              liveAnnouncementDndDiscarded: (operationType) =>
+                `${operationType} discarded`,
+              liveAnnouncementItemRemoved: (op) =>
+                createAnnouncement(
+                  `Removed item ${op.item.data.title}.`,
+                  [],
+                  op.disturbed
+                ),
+              navigationAriaLabel: 'Board navigation',
+              navigationAriaDescription:
+                'Click on non-empty item to move focus over',
+              navigationItemAriaLabel: (item) =>
+                item ? item.data.title : 'Empty',
+            };
+          })()}
+          empty={
+            <Box textAlign="center" color="inherit">
+              <SpaceBetween size="xxs">
+                <div>
+                  <Box variant="strong" color="inherit">
+                    No items
+                  </Box>
+                  <Box variant="p" color="inherit">
+                    There are no items on the dashboard.
+                  </Box>
+                </div>
+                <Button iconName="add-plus">Add an item</Button>
+              </SpaceBetween>
+            </Box>
+          }
+        />
       </SpaceBetween>
     </>
   );
@@ -724,7 +681,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
 const HomePage = (props): JSX.Element => {
   const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels

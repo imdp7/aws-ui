@@ -7,7 +7,7 @@ import {
   Link,
   SpaceBetween,
   Container,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { AppHeader } from './features/common/TopNavigations';
 import { AppFooter } from './features/common/AppFooter';
 

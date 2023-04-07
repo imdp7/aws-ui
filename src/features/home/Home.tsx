@@ -9,7 +9,7 @@ import {
   Link,
   Alert,
   LinkProps,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useNavigate } from 'react-router-dom';
 import classes from './home.module.scss';
 

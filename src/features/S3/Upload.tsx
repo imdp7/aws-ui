@@ -23,7 +23,7 @@ import {
   Input,
   Autosuggest,
   Select,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { AppFooter } from '../common/AppFooter';
 import {
@@ -37,7 +37,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import ObjectsPane from './components/Objects';
 import { InfoLink } from '../common/common';
-import { BaseNavigationDetail } from '@awsui/components-react/internal/events';
+import { BaseNavigationDetail } from '@cloudscape-design/components/internal/events';
 
 const StorageItems = [
   {

@@ -12,7 +12,7 @@ import {
   TutorialPanel,
   Link,
   Box,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { ExternalLinkItem, InfoLink } from '../commons/common-components';
 import { useNavigate } from 'react-router-dom';
 

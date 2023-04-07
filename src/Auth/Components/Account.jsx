@@ -9,7 +9,7 @@ import {
   FormField,
   TextFilter,
   Box,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { SettingsButton } from '../Bills';
 import { COLUMN_DEFINITIONS_SERVICE } from './TableFilter';
 function Account(props) {

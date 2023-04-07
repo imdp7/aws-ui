@@ -21,7 +21,7 @@ import {
   StatusIndicator,
   SpaceBetween,
   Table,
-} from '@awsui/components-react';
+} from '@cloudscape-design/components';
 import { useAsyncData } from '../commons/use-async-data';
 import DataProvider from '../commons/data-provider';
 import { TableHeader, TableEmptyState } from '../commons/common-components';

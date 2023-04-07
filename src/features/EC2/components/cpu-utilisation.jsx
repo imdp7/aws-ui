@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import React from 'react';
-import { BarChart, Container, Header } from '@awsui/components-react';
+import { BarChart, Container, Header } from '@cloudscape-design/components';
 import {
   commonChartProps,
   cpuSeries,
