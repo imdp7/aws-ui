@@ -73,7 +73,7 @@ export const AppHeader = (props: State): JSX.Element => {
         identity={{
           href: '/',
           logo: {
-            src: 'https://www.awsgearshop.com/media/logo/stores/4/aws_corporate_logo.ng',
+            src: 'https://www.awsgearshop.com/media/logo/stores/4/aws_corporate_logo.png',
             alt: 'Service',
           },
         }}
