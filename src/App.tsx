@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Amplify, I18n } from 'aws-amplify';
 import { withAuthenticator, translations } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -33,12 +33,84 @@ import AddPayment from './Auth/Components/SingleComponent';
 import SinglePaymentComponent from './Auth/Components/SingleComponent';
 import Cloudwatch_Home from './features/Cloudwatch/Cloudwatch_Home';
 import Dashboard from './features/Cloudwatch/Dashboard';
+import { url } from './features/common/endpoints/url';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
 
 Amplify.configure(awsExports);
 const App = ({ user, signOut }): JSX.Element => {
+  const checkUserExistence = async (sub: IUser) => {
+    try {
+      const response = await fetch(`${url.accounts}/${sub}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 404) {
+        return data;
+      }
+    } catch (error) {
+      console.error('Error checking sub existence:', error);
+      throw error; // Propagate the error to the caller
+    }
+  };
+
+  const postUserDataToServer = async (userData: IUser) => {
+    try {
+      const userExists = await checkUserExistence(userData.user.sub);
+
+      if (userExists) return;
+
+      const postResponse = await fetch(url.accounts, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (postResponse.ok) {
+        console.log('User data successfully posted to the server');
+      } else {
+        console.error('Failed to post user data to the server');
+      }
+    } catch (error) {
+      console.error('Error while posting user data:', error);
+    }
+  };
+
+  const storeUserLocally = (userData) => {
+    // Store user information in local storage
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
+  useEffect(() => {
+    // Check if the user is already logged in
+    if (user) {
+      // If user is logged in and not processed yet, store the user information locally
+      const userData = {
+        user: {
+          email: user?.attributes.email,
+          email_verified: user?.attributes.email_verified,
+          sub: user?.attributes.sub,
+        },
+        preferences: {
+          mode: 'Light', // Provide default values or retrieve from local storage
+          density: 'Comfortable',
+          motion: false,
+        },
+        region: 'us-east-1',
+      };
+
+      storeUserLocally(userData);
+      postUserDataToServer(userData);
+    }
+  }, [user]);
+
   return (
     <>
       <Router>

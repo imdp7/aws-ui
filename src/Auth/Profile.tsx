@@ -34,6 +34,8 @@ import {
   userNav,
   ProfileHeader,
 } from '../features/EC2/commons/common-components';
+import { url } from '../features/common/endpoints/url';
+import { getUserCache } from '../features/common/utils/Cache';
 
 const Account = (props) => {
   const [edit, setEdit] = useState(false);
@@ -80,6 +82,7 @@ const Account = (props) => {
       setErrorMessage('');
       setLoading(false);
       setEdit(false);
+      await updateProfileOnServer();
     }, 1500);
     return () => clearTimeout(timer);
   };
@@ -100,6 +103,40 @@ const Account = (props) => {
     setRePassword('');
     setPassword('');
     setErrorMessage('');
+  };
+
+  // Function to make the API request
+  const updateProfileOnServer = async () => {
+    try {
+      const response = await fetch(url.profile, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...props,
+          sub: props.currUser,
+          account: {
+            email: email,
+            hash: password,
+          },
+        }),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Profile updated successfully:', result);
+        // Handle success state or show a success message
+      } else {
+        const errorResult = await response.json();
+        console.error('Failed to update profile:', errorResult);
+        // Handle error state or show an error message
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Handle error state or show an error message
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -314,6 +351,33 @@ const Information = (props) => {
   const editHandler = () => {
     setEdit(true);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch the data from the server based on props.currUser
+        const response = await fetch(`${url.profile}/${props.currUser}`);
+        if (response.ok) {
+          const result = await response.json();
+          setName(result.contact_information.full_name);
+          setAddress(result.contact_information.address);
+          setCity(result.contact_information.city);
+          setState(result.contact_information.state);
+          setPostal(result.contact_information.postal_code);
+          setPhone(result.contact_information.phone);
+          setCountry(result.contact_information.country);
+        } else {
+          console.error('Failed to fetch profile data:', response.statusText);
+          setErrorMessage('Failed to fetch profile data. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+        setErrorMessage('Failed to fetch profile data. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [edit, props.currUser, loading]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -363,8 +427,50 @@ const Information = (props) => {
       setErrorMessage('');
       setLoading(false);
       setEdit(false);
+      await updateProfileOnServer();
     }, 1500);
     return () => clearTimeout(timer);
+  };
+
+  // Function to make the API request
+  const updateProfileOnServer = async () => {
+    try {
+      const response = await fetch(url.profile, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...props,
+          sub: props.currUser,
+          contact_information: {
+            full_name: name,
+            address: address,
+            city: city,
+            state: state,
+            postal_code: postal,
+            country: country?.label,
+            phone: phone,
+            company_name: company,
+            website_url: website,
+          },
+        }),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Profile updated successfully:', result);
+        // Handle success state or show a success message
+      } else {
+        const errorResult = await response.json();
+        console.error('Failed to update profile:', errorResult);
+        // Handle error state or show an error message
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Handle error state or show an error message
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -410,15 +516,6 @@ const Information = (props) => {
                     variant="link"
                     onClick={() => {
                       setEdit(false);
-                      setName('');
-                      setAddress('');
-                      setCity('');
-                      setState('');
-                      setPostal('');
-                      setCountry(null);
-                      setPhone('');
-                      setCompany('');
-                      setWebsite('');
                     }}
                   >
                     Cancel
@@ -542,7 +639,7 @@ const Information = (props) => {
                         filteringType="auto"
                         selectedAriaLabel="Selected"
                         triggerVariant="option"
-                        selectedOption={country}
+                        selectedOption={country?.value}
                         onChange={({ detail }) =>
                           setCountry(detail.selectedOption)
                         }
@@ -603,7 +700,7 @@ const Information = (props) => {
                 <Box variant="awsui-key-label">Postal Code:</Box>
                 <Box float="left">{postal || '-'}</Box>
                 <Box variant="awsui-key-label">Country:</Box>
-                <Box float="left">{country?.value || '-'}</Box>
+                <Box float="left">{country || '-'}</Box>
                 <Box variant="awsui-key-label">Phone Number:</Box>
                 <Box float="left">{phone || '-'}</Box>
                 <Box variant="awsui-key-label">Company Name:</Box>
@@ -632,6 +729,26 @@ const Payment = (props) => {
   const [currency, setCurrency] = useState({ label: 'US Dollar', value: '1' });
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch the data from the server based on props.currUser
+        const response = await fetch(`${url.profile}/${props.currUser}`);
+        if (response.ok) {
+          const result = await response.json();
+          setCurrency(result.payment_currency);
+        } else {
+          console.error('Failed to fetch profile data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [edit, props.currUser, loading]);
+
   const editHandler = () => {
     setEdit(true);
   };
@@ -641,10 +758,40 @@ const Payment = (props) => {
   const handleSubmit = async () => {
     setLoading(true);
     await fakeDataFetch(2500);
+    await updateProfileOnServer();
     setLoading(false);
     setEdit(false);
   };
-
+  // Function to make the API request
+  const updateProfileOnServer = async () => {
+    try {
+      const response = await fetch(url.profile, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...props,
+          sub: props.currUser,
+          payment_currency: currency.label,
+        }),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Profile updated successfully:', result);
+        // Handle success state or show a success message
+      } else {
+        const errorResult = await response.json();
+        console.error('Failed to update profile:', errorResult);
+        // Handle error state or show an error message
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Handle error state or show an error message
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <Container
@@ -880,12 +1027,16 @@ function Profile(props) {
   const [activeHref, setActiveHref] = useState('profile');
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [currUser, setCurrUser] = useState(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const fetchData = async () => {
+      const usr = await getUserCache();
+      setCurrUser(usr.user.sub);
       setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
+    };
+
+    fetchData();
   }, []);
 
   const [toolsContent, setToolsContent] = useState(
@@ -928,6 +1079,7 @@ function Profile(props) {
                 <SpaceBetween size={'m'}>
                   <Profiler
                     loadHelpPanelContent={loadHelpPanelContent}
+                    currUser={currUser}
                     {...props}
                   />
                 </SpaceBetween>
