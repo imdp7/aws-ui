@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // Route for handling POST requests to create a new profile
 router.post('/', async (req, res) => {
   const { sub } = req.body;
-
+  console.log(req.body);
   try {
     // Check if the email is already associated with an existing profile
     const existingProfile = await Profile.findOne({ sub });

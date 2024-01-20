@@ -21,6 +21,8 @@ import {
   Spinner,
   Modal,
   ButtonDropdown,
+  Popover,
+  StatusIndicator,
 } from '@cloudscape-design/components';
 import { Board, BoardItem } from '@cloudscape-design/board-components';
 import { useOutletContext } from 'react-router';
@@ -29,6 +31,8 @@ import { HelpPanels } from './features/EC2/components/header';
 import { appLayoutLabels } from './features/common/labels';
 import { AppFooter } from './features/common/AppFooter';
 import Card from './components/Card';
+import { url } from './features/common/endpoints/url';
+import { setServicesCache } from './features/common/utils/Cache';
 
 const arrayData = [
   ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
@@ -154,12 +158,34 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
   const updateTools = useOutletContext<(element: JSX.Element) => void>();
 
   const RecentlyVisited = () => {
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+      const fetchServices = async () => {
+        try {
+          const response = await fetch(`${url.services}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const data = await response.json();
+          setServices(data[0].services);
+          await setServicesCache(data[0].services);
+        } catch (error) {
+          console.error('Error checking sub existence:', error);
+          throw error;
+        }
+      };
+      fetchServices();
+    }, []);
     return (
       <>
         <ColumnLayout columns={4} borders="horizontal">
-          {arrayData.map((d) => (
+          {services.map((d) => (
             <div
-              key={d[0]}
+              key={d?._id}
               style={{
                 display: 'flex',
                 justifyItems: 'center',
@@ -167,14 +193,14 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
                 fontSize: '10px',
               }}
             >
-              <img src={`${d[1]}`} alt="logo" height="35" width="35" />
+              <img src={`${d?.img}`} alt="logo" height="35" width="35" />
               <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
                 <Link
                   variant="secondary"
-                  href={`${d[2]}`}
+                  href={`${d?.link}`}
                   onFollow={defaultOnFollowHandler}
                 >
-                  {d[0]}
+                  {d?.title}
                 </Link>{' '}
               </Box>
             </div>
@@ -226,35 +252,83 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
     );
   };
 
+  const CustomPopoverContent = ({ header, popoverContent, linkText }) => (
+    <SpaceBetween size="xxs">
+      <Box color="text-body-secondary" display="inline">
+        <Popover
+          header={header}
+          size="medium"
+          triggerType="text"
+          content={popoverContent}
+          renderWithPortal={true}
+          dismissAriaLabel="Close"
+        >
+          <Box
+            color="text-body-secondary"
+            fontSize="heading-s"
+            data-testid="new-feature-announcement-trigger"
+          >
+            {header}
+          </Box>
+        </Popover>
+      </Box>
+      <Box>
+        <Link fontSize="heading-xl" variant="primary">
+          {linkText}
+        </Link>
+      </Box>
+    </SpaceBetween>
+  );
+
   const CostUsage = () => {
     return (
       <>
-        <SpaceBetween size="s">
-          <Box variant="awsui-key-label" color="text-status-inactive">
-            Open Issues
-          </Box>
-          <ColumnLayout columns={4}>
-            {arrayData.map((d) => (
-              <div
-                key={d[0]}
-                style={{
-                  display: 'flex',
-                  justifyItems: 'center',
-                  textAlign: 'center',
-                }}
-              >
-                <img src={`${d[1]}`} alt="logo" height="35" width="35" />
-                <Box variant="div" padding={{ top: 'n', left: 'xs' }}>
-                  <Link
-                    variant="secondary"
-                    href={`${d[2]}`}
-                    onFollow={defaultOnFollowHandler}
-                  >
-                    {d[0]}
-                  </Link>{' '}
-                </Box>
-              </div>
-            ))}
+        <SpaceBetween size="m">
+          <ColumnLayout columns={2} variant="text-grid">
+            <SpaceBetween size="m">
+              <CustomPopoverContent
+                header="Current month costs"
+                popoverContent={undefined}
+                linkText="$0.00"
+              />
+              <CustomPopoverContent
+                header="Forecasted month end costs"
+                popoverContent={undefined}
+                linkText="$0.03"
+              />
+              <CustomPopoverContent
+                header="Last month costs"
+                popoverContent={undefined}
+                linkText="$0.00"
+              />
+              <CustomPopoverContent
+                header="Average month costs"
+                popoverContent={undefined}
+                linkText="$0.20"
+              />
+            </SpaceBetween>
+            <SpaceBetween size="m">
+              <CustomPopoverContent
+                header="Current month costs"
+                popoverContent={undefined}
+                linkText="$0.00"
+              />
+              <CustomPopoverContent
+                header="Forecasted month end costs"
+                popoverContent={undefined}
+                linkText="$0.03"
+              />
+              <CustomPopoverContent
+                header="Last month costs"
+                popoverContent={undefined}
+                linkText="$0.00"
+              />
+              <CustomPopoverContent
+                header="Average month costs"
+                popoverContent={undefined}
+                linkText="$0.20"
+              />
+            </SpaceBetween>
           </ColumnLayout>
         </SpaceBetween>
       </>
@@ -481,7 +555,7 @@ const HomeFeatures = ({ loadHelpPanelContent }): JSX.Element => {
     {
       id: '1',
       rowSpan: 4,
-      columnSpan: 3,
+      columnSpan: 2,
       data: {
         title: 'Recently Visited',
         footer: (

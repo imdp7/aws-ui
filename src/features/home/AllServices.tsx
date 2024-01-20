@@ -8,44 +8,22 @@ import {
   Link,
   SpaceBetween,
   AppLayout,
+  Autosuggest,
 } from '@cloudscape-design/components';
 import { AppHeader } from '../common/TopNavigations';
 import { InfoLink } from '../EC2/commons/common-components';
 import { HelpPanels } from '../EC2/components/header';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import ec2 from '../../../assets/ec2/Res_Amazon-EC2_A1-Instance_48_Dark.png';
-import s3 from '../../../assets/s3/Res_Amazon-Simple-Storage-Service_Bucket_48_Dark.png';
-import rds from '../../../assets/rds/Res_Amazon-Aurora_Amazon-RDS-Instance_48_Dark.png';
 import classes from '../../app.module.scss';
 import { appLayoutLabels } from '../common/labels';
 import { AppFooter } from '../common/AppFooter';
-const arrayData = [
-  ['EC2 Instance', `${ec2}`, 'ec2_instance/home'],
-  ['S3', `${s3}`, 's3/home'],
-  ['Amazon RDS', `${rds}`, 'rds'],
-  ['Cloudfront', `${ec2}`, 'cloudfront'],
-  ['SQS', `${ec2}`, 'sqs'],
-  ['Amazon Connect', `${ec2}`, 'connect'],
-  ['VPC', `${ec2}`, 'vpc'],
-  ['IAM', `${ec2}`, 'iam'],
-  ['Rekognition', `${ec2}`, 'rekognition'],
-  ['Cloudshell', `${ec2}`, 'cloudshell'],
-  ['Amazon Kendra', `${ec2}`, 'kendra'],
-  ['Route 53', `${ec2}`, 'route53'],
-  ['API Gateway', `${ec2}`, 'apigateway'],
-  ['AWS Amplify', `${ec2}`, 'awsamplify'],
-  ['CodeStar', `${ec2}`, 'codestar'],
-  ['AWS MGN', `${s3}`, 'awsmgn'],
-];
+import { getServicesCache } from '../common/utils/Cache';
 
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
-  const updateTools = useOutletContext<(element: JSX.Element) => void>();
   return (
     <SpaceBetween size="m">
       <Box
         margin={{ bottom: 'l' }}
         padding={{ horizontal: 'xxxl', vertical: 'l' }}
-        className={classes.home_header}
       >
         <Header
           variant="h1"
@@ -89,6 +67,21 @@ const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
 };
 
 const Content = ({ loadHelpPanelContent }): JSX.Element => {
+  const [services, setServices] = React.useState([]);
+  const [search, setSearch] = React.useState('');
+
+  useEffect(() => {
+    const getCacheData = async () => {
+      const data = await getServicesCache();
+      setServices(data);
+    };
+    getCacheData();
+  }, []);
+
+  const filteredServices = services.filter((option) =>
+    Object.values(option).join(' ').toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <SpaceBetween size="l">
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
@@ -96,6 +89,21 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
         header={
           <Header
             variant="h2"
+            actions={
+              <Autosuggest
+                value={search}
+                options={filteredServices.map((option) => ({
+                  value: option.title,
+                  label: option.title,
+                  iconUrl: option.img,
+                  link: option.link,
+                }))}
+                onChange={({ detail }) => setSearch(detail.value)}
+                ariaLabel="Search services"
+                placeholder="Search services"
+                empty="No matches found"
+              />
+            }
             info={
               <InfoLink
                 onFollow={() =>
@@ -115,15 +123,23 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
         }
       >
         <ColumnLayout columns={3}>
-          {arrayData.map((d, i) => (
-            <>
-              <Link variant="secondary" href={`/${d[2]}`}>
-                <Container key={i}>
-                  <Box variant="h2">{d[0]}</Box>
-                  <Box key={i}>{d[2]}</Box>
-                </Container>
-              </Link>
-            </>
+          {filteredServices.map((d) => (
+            <div key={d?._id}>
+              <Container
+                header={
+                  <Header>
+                    <SpaceBetween size="m" direction="horizontal">
+                      <img src={d?.img} height={40} width={40} />
+                      <Link variant="secondary" href={`${d?.link}`}>
+                        <Box variant="h2">{d?.title}</Box>
+                      </Link>
+                    </SpaceBetween>
+                  </Header>
+                }
+              >
+                <Box variant="p">{d?.description}</Box>
+              </Container>
+            </div>
           ))}
         </ColumnLayout>
       </Container>
@@ -132,16 +148,12 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
 };
 
 function AllServices(props): JSX.Element {
-  const [visible, setVisible] = React.useState(true);
-  const [tools, setTools] = useState<JSX.Element>();
   const [toolsOpen, setToolsOpen] = useState<boolean>(false);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="All Services"
       info="Console Home displays widgets with important information about your AWS environment."
-      des="Amazon EC2 allows you to create virtimport { AppHeader } from '../common/TopNavigations';
-ual machines, or instances, that run on the AWSimport props from '../../../node_modules/ramda/es/props';
- Cloud. Quickly get started by following the simple steps below."
+      des="Amazon EC2 allows you to create virtual machines, or instances, that run on the AWS Cloud. Quickly get started by following the simple steps below."
       ul={[
         {
           h5: 'Customize your Console Home',
@@ -158,18 +170,6 @@ ual machines, or instances, that run on the AWSimport props from '../../../node_
     setToolsOpen(true);
     setToolsContent(toolsContent);
   };
-  const updateTools = (element: JSX.Element): void => {
-    setTools(element);
-    setToolsOpen(true);
-  };
-  const navigate = useNavigate();
-
-  //   const defaultOnFollowHandler = (
-  //     event: CustomEvent<LinkProps.FollowDetail>
-  //   ): void => {
-  //     navigate(event.detail.href as string);
-  //     event.preventDefault();
-  //   };
 
   useEffect(() => {
     document.title = 'AWS Services';

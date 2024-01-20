@@ -639,7 +639,7 @@ const Information = (props) => {
                         filteringType="auto"
                         selectedAriaLabel="Selected"
                         triggerVariant="option"
-                        selectedOption={country?.value}
+                        selectedOption={country}
                         onChange={({ detail }) =>
                           setCountry(detail.selectedOption)
                         }
@@ -776,6 +776,7 @@ const Payment = (props) => {
           payment_currency: currency.label,
         }),
       });
+
       if (response.ok) {
         const result = await response.json();
         console.log('Profile updated successfully:', result);
@@ -792,6 +793,7 @@ const Payment = (props) => {
       setLoading(false);
     }
   };
+
   return (
     <>
       <Container
@@ -882,7 +884,7 @@ const Payment = (props) => {
               <ColumnLayout borders="horizontal">
                 <ColumnLayout columns={4}>
                   <Box variant="awsui-key-label">Selected Currency:</Box>
-                  <Box float="left">{currency.label}</Box>
+                  <Box float="left">{currency?.label}</Box>
                   <Box></Box>
                 </ColumnLayout>
               </ColumnLayout>

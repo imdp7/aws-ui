@@ -16,6 +16,8 @@ const accountRoutes = require('./routes/accounts');
 const regionRoutes = require('./routes/regions');
 const profileRoutes = require('./routes/profile');
 const instancesRoutes = require('./routes/services/ec2/ec2_instances');
+const ec2AMIRoutes = require('./routes/services/ec2/utils/ami');
+const servicesRoutes = require('./routes/services/services');
 
 app.use(cors());
 app.use(express.json());
@@ -23,8 +25,11 @@ app.use(bodyParser.json());
 app.use('/api', indexRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/regions', regionRoutes);
+app.use('/api/regions', regionRoutes);
 app.use('/api/profile', profileRoutes);
-// app.use('/api/services/ec2', instancesRoutes);
+app.use('/api/services/ec2', instancesRoutes);
+app.use('/api/services/ec2/ami', ec2AMIRoutes);
+app.use('/api/services', servicesRoutes);
 
 //connect to db on mongodb atlas
 mongoose

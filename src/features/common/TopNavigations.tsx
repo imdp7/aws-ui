@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { TopNavigation, Input, Modal } from '@cloudscape-design/components';
+import {
+  TopNavigation,
+  Modal,
+  Autosuggest,
+} from '@cloudscape-design/components';
 import '../../App.css';
 import { useNavigate } from 'react-router-dom';
 import PreferencesModal from '../../components/PreferenceModal';
 import { getRegions } from './services/regionsService';
+import { setUserCache, getUserCache, getRegionsCache } from './utils/Cache';
+import { url } from './endpoints/url';
 interface State {
   user: string;
   signOut: () => void;
@@ -26,7 +32,8 @@ const s3_region = [
 ];
 
 export const AppHeader = (props: State): JSX.Element => {
-  const [searchValue, setSearchValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
   const [redirectURL, setRedirectURL] = useState('');
   const [visible, setVisible] = React.useState(false);
   const [selection, setSelection] = React.useState(ec2_region || s3_region);
@@ -49,15 +56,47 @@ export const AppHeader = (props: State): JSX.Element => {
   // Fetch regions when the component mounts
   React.useEffect(() => {
     const fetchRegions = async () => {
-      const regionsData = await getRegions();
-      if (regionsData) {
-        setRegions(regionsData[0]?.regions);
+      const cacheRegions = await getRegionsCache();
+      if (cacheRegions) {
+        setRegions(cacheRegions[0].regions);
+      } else {
+        const regionsData = await getRegions();
+        if (regionsData) {
+          setRegions(regionsData[0]?.regions);
+        }
       }
     };
-
+    const fetchServices = async () => {
+      const res = await fetch(url.services);
+      const data = await res.json();
+      const updatedOptions = [
+        {
+          label: 'Services',
+          options: data[0].services?.map((option) => ({
+            value: option?.title, // Replace `option.value` with the correct property name
+            label: option?.title,
+            iconUrl: option?.img,
+            link: option?.link,
+          })),
+        },
+      ];
+      setOptions(updatedOptions);
+    };
     fetchRegions();
-  }, []); // Empty dependency array ensures it only runs once when the component mounts
+    fetchServices();
+  }, []);
 
+  const updateRegion = async (selectedRegion) => {
+    console.log('Updating regions', selectedRegion);
+    const existingData = await getUserCache();
+    setUserCache({ ...existingData, region: selectedRegion });
+    setSelection(selectedRegion);
+  };
+
+  const handleOnSelect = (e) => {
+    navigate(e.detail.selectedOption.link);
+    console.log(e);
+  };
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
       <Modal
@@ -132,10 +171,7 @@ export const AppHeader = (props: State): JSX.Element => {
             disableUtilityCollapse: false,
             text: `${selection[0].text || selection}`,
             title: 'Zones',
-            onItemClick: (e) => {
-              e.preventDefault();
-              setSelection(({ detail }) => e.detail.id);
-            },
+            onItemClick: (e) => updateRegion(e.detail.id),
             items: regions,
           },
           {
@@ -197,12 +233,16 @@ export const AppHeader = (props: State): JSX.Element => {
           overflowMenuDismissIconAriaLabel: 'Close menu',
         }}
         search={
-          <Input
-            ariaLabel="Input field"
-            value={searchValue}
-            type="search"
+          <Autosuggest
+            onChange={({ detail }) => setInputValue(detail.value)}
+            value={inputValue.toUpperCase()}
+            options={options}
+            ariaLabel="Autosuggest example with suggestions"
             placeholder="Search"
-            onChange={({ detail }) => setSearchValue(detail.value)}
+            empty="No matches found"
+            loadingText="Loading"
+            recoveryText="Retry"
+            onSelect={(e) => handleOnSelect(e)}
           />
         }
       />

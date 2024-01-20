@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState, useRef } from 'react';
 import { AppHeader } from '../../common/TopNavigations';
@@ -41,6 +42,8 @@ import useNotifications from '../commons/use-notifications';
 import { Spinner } from '@cloudscape-design/components';
 import { InfoLink } from '../commons/common-components';
 import { useNavigate } from 'react-router-dom';
+import { url } from '../../common/endpoints/url';
+import { getUserCache } from '../../common/utils/Cache';
 
 function Breadcrumbs() {
   const breadcrumbItems = [
@@ -77,31 +80,34 @@ const DATA = {
 
 const Content = ({ loadHelpPanelContent }) => {
   const navigate = useNavigate();
-  const [instanceNo, setInstanceNo] = useState(1);
-  const [name, setName] = useState('');
-  const [AMI, setAMI] = useState('');
-  const [activeTabId, setActiveTabId] = useState('second');
-  const [tiles, setTiles] = useState('Amazon');
-  const [tile, setTile] = useState('item1');
-  const [storageNo, setStorageNo] = useState(1);
-  const [modal, setModal] = React.useState(false);
-
-  const [selectedOption, setSelectedOption] = useState({
-    label: 't2.micro',
-    value: '1',
-    iconName: 'settings',
-    description: 'sub value',
-    tags: ['CPU-v2', '2Gb RAM'],
-    labelTag: '128Gb',
+  const [instance, setInstance] = useState({
+    instanceNo: 1,
+    name: '',
+    AMI: '',
+    activeTabId: 'second',
+    operatingSystem: 'Amazon Linux',
+    ami: {},
+    tile: 'item1',
+    storageNo: 1,
+    architecture: { label: '64-bit (x86)', value: '1' },
+    type: {
+      label: 't2.micro',
+      value: '1',
+      iconName: 'settings',
+      description: 'sub value',
+      tags: ['CPU-v2', '2Gb RAM'],
+      labelTag: '128Gb',
+    },
+    keyPair: '',
+    storage: {
+      label: 'General Purpose SSD (gp2)',
+      value: '2',
+    },
+    ip: { label: '0.0.0.0', description: 'Anywhere' },
   });
 
-  const [keyPair, setKeyPair] = useState('');
-  const [storage, setStorage] = useState({
-    label: 'General Purpose SSD (gp2)',
-    value: '2',
-  });
-  const [ip, setIP] = useState({ label: '0.0.0.0', description: 'Anywhere' });
   const [visible, setVisible] = React.useState(true);
+  const [modal, setModal] = React.useState(false);
   const [items, setItems] = useState([]);
   const [checked, setChecked] = useState(true);
   const [loadings, setLoadings] = useState(false);
@@ -119,14 +125,14 @@ const Content = ({ loadHelpPanelContent }) => {
   const createInstance = async () => {
     setLoadings(true);
     const timer = setTimeout(async () => {
-      if (!name) {
+      if (!instance.name) {
         setErrorMessage('The launch template name is required');
         setLoadings(false);
         nameRef.current.focus();
         return;
       }
 
-      if (!keyPair) {
+      if (!instance.keyPair) {
         setErrorMessage(
           'Please choose a key pair or choose the option to proceed with a key pair'
         );
@@ -134,30 +140,54 @@ const Content = ({ loadHelpPanelContent }) => {
         keyPairRef.current.focus();
         return;
       }
-      if (instanceNo <= 0) {
+      if (instance.instanceNo <= 0) {
         setErrorMessage('Launch instances cannot be less than 1');
         setLoadings(false);
         instanceNoRef.current.focus();
         return;
       }
 
-      if (storageNo <= 0) {
+      if (instance.storageNo <= 0) {
         setErrorMessage('Number of storage volume cannot be less 1');
         setLoadings(false);
         return;
       }
 
-      if (instanceNo <= 0) {
-        setErrorMessage('Number of instances cannot be less 1');
-        setLoadings(false);
-        return;
-      }
+      await updateInstanceToServer();
       setErrorMessage('');
       setLoadings(false);
       setModal(true);
       return;
     }, 1500);
     return () => clearTimeout(timer);
+  };
+
+  const updateInstanceToServer = async () => {
+    const user = await getUserCache();
+    try {
+      const response = await fetch(`${url.createInstances}/${user.user.sub}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(instance),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('inctance created successfully:', result);
+        // Handle success state or show a success message
+      } else {
+        const errorResult = await response.json();
+        console.error('Failed to create instance:', errorResult);
+        // Handle error state or show an error message
+      }
+    } catch (error) {
+      console.error('Error creating instnace:', error);
+      // Handle error state or show an error message
+    } finally {
+      setLoadings(false);
+    }
   };
 
   const definitions = [
@@ -200,14 +230,24 @@ const Content = ({ loadHelpPanelContent }) => {
             <Input
               inputMode="numeric"
               type="number"
-              onChange={({ detail }) => setStorageNo(detail.value)}
-              value={storageNo}
+              onChange={({ detail }) =>
+                setInstance((prevState) => ({
+                  ...prevState,
+                  storageNo: detail.value,
+                }))
+              }
+              value={instance.storageNo}
               placeholder="1"
             />
             <Box>GiB</Box>
             <Select
-              selectedOption={storage}
-              onChange={({ detail }) => setStorage(detail.selectedOption)}
+              selectedOption={instance.storage}
+              onChange={({ detail }) =>
+                setInstance((prevState) => ({
+                  ...prevState,
+                  storage: detail.selectedOption,
+                }))
+              }
               options={[
                 { label: 'General Purpose SSD (gp3)', value: '1' },
                 { label: 'General Purpose SSD (gp2)', value: '2' },
@@ -227,20 +267,59 @@ const Content = ({ loadHelpPanelContent }) => {
   ];
 
   const Card = () => {
-    const [selectedItems, setSelectedItems] = React.useState([
-      { name: 'Amazon' },
-    ]);
-    const [architecture, setArchitecture] = React.useState({
-      label: '64-bit (x86)',
-      value: '1',
-    });
+    const [amis, setAMIS] = React.useState([]);
+
+    useEffect(() => {
+      const fetchAMI = async () => {
+        try {
+          const response = await fetch(`${url.ami}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const data = await response.json();
+          // Filter the array based on instance.operatingSystem
+          const filteredAMIs = data.filter(
+            (ami) =>
+              ami.os.type.toLowerCase() ===
+              instance.operatingSystem.toLowerCase()
+          );
+          const convertToDesiredFormat = (originalObject) => {
+            return {
+              label: originalObject.text,
+              value: originalObject._id,
+              description: originalObject.virtualization,
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: originalObject.freeTier,
+            };
+          };
+          const convertedAMIs = filteredAMIs[0].os.items.map((ami) =>
+            convertToDesiredFormat(ami)
+          );
+
+          setAMIS(convertedAMIs);
+          console.log(convertedAMIs);
+        } catch (error) {
+          console.error('Error checking sub existence:', error);
+          throw error;
+        }
+      };
+      fetchAMI();
+    }, [instance.operatingSystem]);
 
     return (
       <SpaceBetween size="l">
         <Tiles
-          onChange={({ detail }) => setTiles(detail.value)}
-          value={tiles}
-          columns={6}
+          onChange={({ detail }) =>
+            setInstance((prevState) => ({
+              ...prevState,
+              operatingSystem: detail.value,
+            }))
+          }
+          value={instance.operatingSystem}
+          columns={4}
           items={[
             {
               label: 'macOS',
@@ -256,7 +335,7 @@ const Content = ({ loadHelpPanelContent }) => {
               value: 'macOS',
             },
             {
-              label: 'Amazon',
+              label: 'Amazon Linux',
               image: (
                 <img
                   className="awsui-util-hide-in-dark-mode"
@@ -266,7 +345,7 @@ const Content = ({ loadHelpPanelContent }) => {
                   alt="placeholder"
                 />
               ),
-              value: 'Amazon',
+              value: 'Amazon Linux',
             },
             {
               label: 'Ubuntu',
@@ -317,6 +396,18 @@ const Content = ({ loadHelpPanelContent }) => {
               value: 'SUSE-Linux',
             },
             {
+              label: 'Debain',
+              image: (
+                <img
+                  src="https://cdn.freebiesupply.com/logos/large/2x/debian-2-logo-png-transparent.png"
+                  height="40"
+                  width="40"
+                  alt="placeholder"
+                />
+              ),
+              value: 'Debain',
+            },
+            {
               label: 'Browse',
               image: (
                 <img
@@ -332,41 +423,23 @@ const Content = ({ loadHelpPanelContent }) => {
         />
         <FormField label="Amazon Machine Image (AMI)">
           <Select
-            selectedOption={selectedOption}
-            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-            options={[
-              {
-                label: 'Option 1',
-                value: '1',
-                iconName: 'settings',
-                description: 'sub value',
-                tags: ['CPU-v2', '2Gb RAM'],
-                labelTag: '128Gb',
-              },
-              {
-                label: 'Option 2',
-                value: '2',
-                iconName: 'settings',
-                description: 'sub value',
-                tags: ['CPU-v2', '2Gb RAM'],
-                labelTag: '128Gb',
-              },
-              {
-                label: 'Option 3',
-                value: '3',
-                iconName: 'settings',
-                description: 'sub value',
-                tags: ['CPU-v2', '2Gb RAM'],
-                labelTag: '128Gb',
-              },
-            ]}
+            selectedOption={instance.ami}
+            onChange={({ detail }) =>
+              setInstance((prevState) => ({
+                ...prevState,
+                ami: detail.selectedOption,
+              }))
+            }
+            options={amis}
+            empty="No options"
             selectedAriaLabel="Selected"
             triggerVariant="option"
           />
         </FormField>
         <FormField label="Description">
           <Box display="block" variant="awsui-key-label">
-            Amazon Linux 2 Kernel 5.10 AMI 2.0.20221103.3 x86_64 HVM gp2
+            {instance.ami.label} - {instance.ami.value} -
+            {instance.ami.description}
           </Box>
         </FormField>
         <ColumnLayout columns={3}>
@@ -376,9 +449,12 @@ const Content = ({ loadHelpPanelContent }) => {
                 <Select
                   // empty
                   onChange={({ detail }) =>
-                    setArchitecture(detail.selectedOption)
+                    setInstance((prevState) => ({
+                      ...prevState,
+                      architecture: detail.selectedOption,
+                    }))
                   }
-                  selectedOption={architecture}
+                  selectedOption={instance.architecture}
                   loadingText="loading"
                   options={[
                     { label: '64-bit (x86)', value: '1' },
@@ -391,7 +467,7 @@ const Content = ({ loadHelpPanelContent }) => {
           <Box>
             <SpaceBetween size="m">
               <FormField label="AMI">
-                <Box>ami-0b0dcb5067f052a63</Box>
+                <Box>{instance.ami.label}</Box>
               </FormField>
             </SpaceBetween>
           </Box>
@@ -405,6 +481,7 @@ const Content = ({ loadHelpPanelContent }) => {
       </SpaceBetween>
     );
   };
+
   const readOnlyWithErrors = false;
   const onAddHeaderButtonClickHandler = () => {
     !readOnlyWithErrors && setItems([...items, {}]);
@@ -469,38 +546,38 @@ const Content = ({ loadHelpPanelContent }) => {
           <ColumnLayout columns={3} variant="text-grid">
             <FormField label="Instance name">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {name}
+                {instance.name}
               </Box>
             </FormField>
             <FormField label="Instance family">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {selectedOption.label}
+                {instance.type.label}
               </Box>
             </FormField>
             <FormField label="Key Pair">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {keyPair.label}
+                {instance.keyPair.label}
               </Box>
             </FormField>
             <FormField label="Security Group">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {ip.description}
+                {instance.ip.description}
               </Box>
             </FormField>
 
             <FormField label="Storage volume">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {storage.label}
+                {instance.storage.label}
               </Box>
             </FormField>
             <FormField label="Total storage disk (Gibs)">
               <Box color="text-label" fontWeight="bold" variant="p">
-                {storageNo}
+                {instance.storageNo}
               </Box>
             </FormField>
           </ColumnLayout>
           <Alert type="success">
-            {instanceNo} instances launch running successfully
+            {instance.instanceNo} instances launch running successfully
           </Alert>
         </SpaceBetween>
       </Modal>
@@ -567,11 +644,16 @@ const Content = ({ loadHelpPanelContent }) => {
                   }
                 >
                   <Input
-                    value={name}
+                    value={instance.name}
                     ref={nameRef}
                     ariaRequired={true}
                     placeholder="Eg.Web Server"
-                    onChange={(event) => setName(event.detail.value)}
+                    onChange={(event) =>
+                      setInstance((prevState) => ({
+                        ...prevState,
+                        name: event.detail.value,
+                      }))
+                    }
                   />
                 </FormField>
               </SpaceBetween>
@@ -623,8 +705,13 @@ const Content = ({ loadHelpPanelContent }) => {
               <Container>
                 <SpaceBetween size="m">
                   <Autosuggest
-                    onChange={({ detail }) => setAMI(detail.value)}
-                    value={AMI}
+                    onChange={({ detail }) =>
+                      setInstance((prevState) => ({
+                        ...prevState,
+                        AMI: detail.value,
+                      }))
+                    }
+                    value={instance.AMI}
                     options={[
                       { value: 'Suggestion 1' },
                       { value: 'Suggestion 2' },
@@ -638,9 +725,12 @@ const Content = ({ loadHelpPanelContent }) => {
                   />
                   <Tabs
                     onChange={({ detail }) =>
-                      setActiveTabId(detail.activeTabId)
+                      setInstance((prevState) => ({
+                        ...prevState,
+                        activeTabId: detail.activeTabId,
+                      }))
                     }
-                    activeTabId={activeTabId}
+                    activeTabId={instance.activeTabId}
                     tabs={[
                       {
                         label: 'Recent',
@@ -668,9 +758,12 @@ const Content = ({ loadHelpPanelContent }) => {
               //     headerDescription="here"
             >
               <Select
-                selectedOption={selectedOption}
+                selectedOption={instance.type}
                 onChange={({ detail }) =>
-                  setSelectedOption(detail.selectedOption)
+                  setInstance((prevState) => ({
+                    ...prevState,
+                    type: detail.selectedOption,
+                  }))
                 }
                 options={[
                   { label: 't2.micro', value: '1', description: 't2.micro' },
@@ -703,9 +796,14 @@ const Content = ({ loadHelpPanelContent }) => {
                   }
                 >
                   <Select
-                    selectedOption={keyPair}
+                    selectedOption={instance.keyPair}
                     ref={keyPairRef}
-                    onChange={({ detail }) => setKeyPair(detail.selectedOption)}
+                    onChange={({ detail }) =>
+                      setInstance((prevState) => ({
+                        ...prevState,
+                        keyPair: detail.selectedOption,
+                      }))
+                    }
                     statusType={loading}
                     loadingText="Loading key pair"
                     options={[
@@ -728,7 +826,9 @@ const Content = ({ loadHelpPanelContent }) => {
                 <div>
                   <SpaceBetween size={'xl'} direction="horizontal">
                     <Button iconName="refresh" onClick={handleRefresh} />
-                    <Link>Add new Key Value Pair</Link>
+                    <Link onFollow={() => setModal(true)}>
+                      Add new Key Value Pair
+                    </Link>
                   </SpaceBetween>
                 </div>
               </ColumnLayout>
@@ -806,9 +906,12 @@ const Content = ({ loadHelpPanelContent }) => {
                   </Header>
                   <Tiles
                     onChange={({ detail }) => {
-                      setTile(detail.value);
+                      setInstance((prevState) => ({
+                        ...prevState,
+                        tile: detail.value,
+                      }));
                     }}
-                    value={tile}
+                    value={instance.tile}
                     items={[
                       { label: 'Create Security Group', value: 'item1' },
                       {
@@ -818,7 +921,7 @@ const Content = ({ loadHelpPanelContent }) => {
                     ]}
                   />
                 </Box>
-                {tile == 'item1' && (
+                {instance.tile == 'item1' && (
                   <div>
                     <SpaceBetween size="m">
                       <Box>
@@ -861,9 +964,12 @@ const Content = ({ loadHelpPanelContent }) => {
                         </Box>
                         <Box>
                           <Select
-                            selectedOption={ip}
+                            selectedOption={instance.ip}
                             onChange={({ detail }) =>
-                              setIP(detail.selectedOption)
+                              setInstance((prevState) => ({
+                                ...prevState,
+                                ip: detail.selectedOption,
+                              }))
                             }
                             options={[
                               { label: '0.0.0.0', description: 'Anywhere' },
@@ -893,7 +999,7 @@ const Content = ({ loadHelpPanelContent }) => {
                   </div>
                 )}
 
-                {tile == 'item2' && (
+                {instance.tile == 'item2' && (
                   <FormField
                     label="Security groups"
                     stretch={true}
@@ -913,9 +1019,12 @@ const Content = ({ loadHelpPanelContent }) => {
                     }
                   >
                     <Select
-                      selectedOption={selectedOption}
+                      selectedOption={instance.selectedOption}
                       onChange={({ detail }) =>
-                        setSelectedOption(detail.selectedOption)
+                        setInstance((prevState) => ({
+                          ...prevState,
+                          selectedOption: detail.selectedOption,
+                        }))
                       }
                       options={[
                         { label: 'Option 1', value: '1' },
@@ -946,15 +1055,23 @@ const Content = ({ loadHelpPanelContent }) => {
                     <Input
                       inputMode="numeric"
                       type="number"
-                      onChange={({ detail }) => setStorageNo(detail.value)}
-                      value={storageNo}
+                      onChange={({ detail }) =>
+                        setInstance((prevState) => ({
+                          ...prevState,
+                          storageNo: detail.value,
+                        }))
+                      }
+                      value={instance.storageNo}
                       placeholder="1"
                     />
                     <Box>GiB</Box>
                     <Select
-                      selectedOption={storage}
+                      selectedOption={instance.storage}
                       onChange={({ detail }) =>
-                        setStorage(detail.selectedOption)
+                        setInstance((prevState) => ({
+                          ...prevState,
+                          storage: detail.selectedOption,
+                        }))
                       }
                       options={[
                         { label: 'General Purpose SSD (gp3)', value: '1' },
@@ -1021,8 +1138,13 @@ const Content = ({ loadHelpPanelContent }) => {
                     }
                   >
                     <Input
-                      onChange={({ detail }) => setInstanceNo(detail.value)}
-                      value={instanceNo}
+                      onChange={({ detail }) =>
+                        setInstance((prevState) => ({
+                          ...prevState,
+                          instanceNo: detail.value,
+                        }))
+                      }
+                      value={instance.instanceNo}
                       ref={instanceNoRef}
                       inputMode="numeric"
                       type="number"

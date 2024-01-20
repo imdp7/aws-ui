@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require('express');
 const router = express.Router();
-const EC2_Instances = require('../../../schema/services/ec2/ec2_instancesSchema');
+const EC2_Instances =
+  require('../../../schema/services/ec2/ec2_instancesSchema').default;
 
 // Route for handling GET requests to retrieve profiles
 router.get('/instances', async (req, res) => {
@@ -17,11 +18,10 @@ router.get('/instances', async (req, res) => {
 
 // Route for handling POST requests to create a new profile
 router.post('/instances', async (req, res) => {
-  const { sub } = req.body;
-
+  const { name } = req.body;
   try {
     // Check if the instance is already associated with an existing profile
-    const existingInstance = await EC2_Instances.findOne({ sub });
+    const existingInstance = await EC2_Instances.findOne({ name });
 
     if (existingInstance) {
       return res.status(400).json({
@@ -43,23 +43,22 @@ router.post('/instances', async (req, res) => {
   }
 });
 
-router.put('/instances/:sub', async (req, res) => {
-  const sub = req.params.sub;
+router.post('/instances/:sub', async (req, res) => {
+  const name = req.body.name;
   try {
     // Find the profile by user.sub
-    let instance = await EC2_Instances.findOne({ sub });
-
-    if (!instance) {
-      return res.status(404).json({ error: 'EC2 Instance not found' });
+    let instance = await EC2_Instances.findOne({ name });
+    if (instance) {
+      return res.status(404).json({ error: 'EC2 Instance exists with name' });
     }
 
-    // Update preferences
-    instance = Object.assign(instance, req.body);
-    console.log('EC2 Instance :', instance);
-    // Save the updated profile
-    const updatedInstance = await instance.save();
+    // Create a new profile
+    const newInstances = new EC2_Instances(req.body);
 
-    res.status(200).json(updatedInstance);
+    // Save the new profile
+    const savedInstances = await newInstances.save();
+
+    res.status(200).json(savedInstances);
   } catch (error) {
     console.error('Error updating EC2 Instance:', error);
     res.status(500).send('Internal Server Error');

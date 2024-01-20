@@ -15,3 +15,12 @@ export const getRegionsCache = () => {
 export const setRegionsCache = (data) => {
   return localStorage.setItem('regions', JSON.stringify(data));
 };
+
+export const getServicesCache = () => {
+  const cachedData = localStorage.getItem('services');
+  return cachedData ? JSON.parse(cachedData) : null;
+};
+
+export const setServicesCache = (data) => {
+  return localStorage.setItem('services', JSON.stringify(data));
+};

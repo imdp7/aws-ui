@@ -66,6 +66,7 @@ const PreferencesModal = () => {
 
   const updateLocalCache = (sub, preferences) => {
     const currentCache = getUserCache();
+    console.log(`Updating local cache`, currentCache);
     if (currentCache) {
       const updatedCache = {
         ...currentCache,
