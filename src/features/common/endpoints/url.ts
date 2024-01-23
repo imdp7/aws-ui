@@ -1,6 +1,5 @@
 // rest.ts
-const BASE_URL =
-  'http://localhost:3000/api' || import.meta.env.VITE_SERVER_BASE_URL;
+const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 export const url = {
   regions: `${BASE_URL}/regions`,
