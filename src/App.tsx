@@ -34,6 +34,8 @@ import SinglePaymentComponent from './Auth/Components/SingleComponent';
 import Cloudwatch_Home from './features/Cloudwatch/Cloudwatch_Home';
 import Dashboard from './features/Cloudwatch/Dashboard';
 import { url } from './features/common/endpoints/url';
+import { IUser } from './features/common/models/IUser.model';
+import Settings from './Auth/Settings';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('en');
@@ -189,6 +191,10 @@ const App = ({ user, signOut }): JSX.Element => {
           <Route
             path="console/services"
             element={<AllServices user={user.username} signOut={signOut} />}
+          />
+          <Route
+            path="settings/home"
+            element={<Settings user={user.username} signOut={signOut} />}
           />
           <Route path="account">
             <Route

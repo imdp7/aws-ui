@@ -46,6 +46,8 @@ export const AppHeader = (props: State): JSX.Element => {
     props.signOut();
   } else if (redirectURL == 'profile') {
     navigate('/account/profile');
+  } else if (redirectURL == 'userSettings') {
+    navigate('/settings/home');
   }
 
   const onFollowHandler = (e) => {
@@ -151,9 +153,10 @@ export const AppHeader = (props: State): JSX.Element => {
             iconName: 'settings',
             ariaLabel: 'Settings',
             title: 'Settings',
-            // onItemClick: (evt) => {
-            //   onFollowHandler(evt);
-            // },
+            onItemClick: (evt) => {
+              setRedirectURL(evt.detail.id);
+              onFollowHandler(evt);
+            },
             items: [
               {
                 id: 'settings-org',
@@ -163,6 +166,7 @@ export const AppHeader = (props: State): JSX.Element => {
                 id: 'settings-project',
                 text: 'Project settings',
               },
+              { id: 'userSettings', text: 'More User Settings' },
             ],
           },
           {
