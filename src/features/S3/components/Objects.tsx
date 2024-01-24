@@ -71,7 +71,6 @@ export const ObjectsPane = (props) => {
   // function addData(newData){
   //   fs.writeFileSync('NewData.js',`const myArray = ${ Json.stringify(newData)}; export default myArray;`)
   //   dataBucketFiles.push(newData);
-  //   console.log("data uploaded", dataBucketFiles)
   // }
 
   const removeAsset = () => {};

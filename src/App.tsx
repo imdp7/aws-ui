@@ -75,9 +75,7 @@ const App = ({ user, signOut }): JSX.Element => {
         body: JSON.stringify(userData),
       });
 
-      if (postResponse.ok) {
-        console.log('User data successfully posted to the server');
-      } else {
+      if (!postResponse.ok) {
         console.error('Failed to post user data to the server');
       }
     } catch (error) {

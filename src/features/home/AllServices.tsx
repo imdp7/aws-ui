@@ -16,7 +16,7 @@ import { HelpPanels } from '../EC2/components/header';
 import classes from '../../app.module.scss';
 import { appLayoutLabels } from '../common/labels';
 import { AppFooter } from '../common/AppFooter';
-import { getServicesCache } from '../common/utils/Cache';
+import { getServices } from '../common/services/allServices';
 
 const HomeHeader = ({ loadHelpPanelContent }): JSX.Element => {
   return (
@@ -71,28 +71,44 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
   const [search, setSearch] = React.useState('');
 
   useEffect(() => {
-    const getCacheData = async () => {
-      const data = await getServicesCache();
-      setServices(data);
-    };
-    getCacheData();
-  }, []);
+    const getServicesData = async () => {
+      try {
+        const data = await getServices();
 
-  const filteredServices = services.filter((option) =>
-    Object.values(option).join(' ').toLowerCase().includes(search.toLowerCase())
-  );
+        if (Array.isArray(data)) {
+          const filteredServices = data.filter((option) =>
+            Object.values(option)
+              .join(' ')
+              .toLowerCase()
+              .includes(search.toLowerCase())
+          );
+          setServices(filteredServices);
+        } else {
+          console.error(
+            'Received unexpected data format from getServices:',
+            data
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    getServicesData();
+  }, []);
 
   return (
     <SpaceBetween size="l">
       <HomeHeader loadHelpPanelContent={loadHelpPanelContent} />
       <Container
+        fitHeight
         header={
           <Header
             variant="h2"
             actions={
               <Autosuggest
                 value={search}
-                options={filteredServices.map((option) => ({
+                options={services.map((option) => ({
                   value: option.title,
                   label: option.title,
                   iconUrl: option.img,
@@ -123,7 +139,7 @@ const Content = ({ loadHelpPanelContent }): JSX.Element => {
         }
       >
         <ColumnLayout columns={3}>
-          {filteredServices.map((d) => (
+          {services.map((d) => (
             <div key={d?._id}>
               <Container
                 header={

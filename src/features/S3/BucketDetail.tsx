@@ -32,7 +32,6 @@ function BucketDetail(props) {
   const [activeHref, setActiveHref] = useState('buckets');
   const [activeTabId, setActiveTabId] = useState('objects');
   const [toolsOpen, setToolsOpen] = useState(false);
-  console.log(activeTabId);
   const [toolsContent, setToolsContent] = useState(
     <HelpPanels
       title="Buckets"

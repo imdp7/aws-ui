@@ -173,14 +173,9 @@ const Content = ({ loadHelpPanelContent }) => {
         body: JSON.stringify(instance),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log('inctance created successfully:', result);
-        // Handle success state or show a success message
-      } else {
+      if (!response.ok) {
         const errorResult = await response.json();
         console.error('Failed to create instance:', errorResult);
-        // Handle error state or show an error message
       }
     } catch (error) {
       console.error('Error creating instnace:', error);
@@ -300,7 +295,6 @@ const Content = ({ loadHelpPanelContent }) => {
           );
 
           setAMIS(convertedAMIs);
-          console.log(convertedAMIs);
         } catch (error) {
           console.error('Error checking sub existence:', error);
           throw error;

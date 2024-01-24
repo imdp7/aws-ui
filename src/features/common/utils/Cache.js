@@ -7,6 +7,15 @@ export const setUserCache = (data) => {
   return localStorage.setItem('user', JSON.stringify(data));
 };
 
+export const getProfileCache = () => {
+  const cachedData = localStorage.getItem('profile');
+  return cachedData ? JSON.parse(cachedData) : null;
+};
+
+export const setProfileCache = (data) => {
+  return localStorage.setItem('profile', JSON.stringify(data));
+};
+
 export const getRegionsCache = () => {
   const cachedData = localStorage.getItem('regions');
   return cachedData ? JSON.parse(cachedData) : null;

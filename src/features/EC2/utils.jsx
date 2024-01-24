@@ -43,7 +43,6 @@ export const getPanelContentSingle = (items) => {
   }
 
   const item = items[0];
-  console.log(item);
 
   return {
     header: item.id,
@@ -56,7 +55,6 @@ export const getPanelContentSingles = (items) => {
   }
 
   const item = items[0];
-  console.log(item);
 
   return {
     header: item.type && `Instance type: ${item.type}`,

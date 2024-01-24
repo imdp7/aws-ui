@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import PreferencesModal from '../../components/PreferenceModal';
 import { getRegions } from './services/regionsService';
 import { setUserCache, getUserCache, getRegionsCache } from './utils/Cache';
-import { url } from './endpoints/url';
+import { getServices } from './services/allServices';
 interface State {
   user: string;
   signOut: () => void;
@@ -34,28 +34,36 @@ const s3_region = [
 export const AppHeader = (props: State): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
-  const [redirectURL, setRedirectURL] = useState('');
   const [visible, setVisible] = React.useState(false);
   const [selection, setSelection] = React.useState(ec2_region || s3_region);
   const [regions, setRegions] = useState([]); // State to store regions
 
   const navigate = useNavigate();
 
-  if (redirectURL == 'signout') {
+  const logOut = () => {
     navigate('/');
     props.signOut();
-  } else if (redirectURL == 'profile') {
-    navigate('/account/profile');
-  } else if (redirectURL == 'userSettings') {
-    navigate('/settings/home');
-  }
-
-  const onFollowHandler = (e) => {
-    e.preventDefault();
-    e.detail.id === 'preferences' ? setVisible(true) : null;
   };
 
-  // Fetch regions when the component mounts
+  const handleItemClick = (evt) => {
+    switch (evt.detail.id) {
+      case 'signout':
+        logOut();
+        break;
+      case 'profile':
+        navigate('/account/profile');
+        break;
+      case 'userSettings':
+        navigate('/settings/home');
+        break;
+      case 'preferences':
+        setVisible(true);
+        break;
+      default:
+        break;
+    }
+  };
+
   React.useEffect(() => {
     const fetchRegions = async () => {
       const cacheRegions = await getRegionsCache();
@@ -69,13 +77,12 @@ export const AppHeader = (props: State): JSX.Element => {
       }
     };
     const fetchServices = async () => {
-      const res = await fetch(url.services);
-      const data = await res.json();
+      const data = await getServices();
       const updatedOptions = [
         {
           label: 'Services',
-          options: data[0].services?.map((option) => ({
-            value: option?.title, // Replace `option.value` with the correct property name
+          options: data.map((option) => ({
+            value: option?.title,
             label: option?.title,
             iconUrl: option?.img,
             link: option?.link,
@@ -89,16 +96,15 @@ export const AppHeader = (props: State): JSX.Element => {
   }, []);
 
   const updateRegion = async (selectedRegion) => {
-    console.log('Updating regions', selectedRegion);
     const existingData = await getUserCache();
     setUserCache({ ...existingData, region: selectedRegion });
     setSelection(selectedRegion);
   };
 
-  const handleOnSelect = (e) => {
-    navigate(e.detail.selectedOption.link);
-    console.log(e);
+  const handleOnSelect = (evt) => {
+    navigate(evt.detail.selectedOption.link);
   };
+
   return (
     <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
       <Modal
@@ -154,8 +160,7 @@ export const AppHeader = (props: State): JSX.Element => {
             ariaLabel: 'Settings',
             title: 'Settings',
             onItemClick: (evt) => {
-              setRedirectURL(evt.detail.id);
-              onFollowHandler(evt);
+              handleItemClick(evt);
             },
             items: [
               {
@@ -183,8 +188,7 @@ export const AppHeader = (props: State): JSX.Element => {
             text: `${props.user}`,
             iconName: 'user-profile',
             onItemClick: (evt) => {
-              setRedirectURL(evt.detail.id);
-              onFollowHandler(evt);
+              handleItemClick(evt);
             },
             items: [
               {
@@ -246,7 +250,7 @@ export const AppHeader = (props: State): JSX.Element => {
             empty="No matches found"
             loadingText="Loading"
             recoveryText="Retry"
-            onSelect={(e) => handleOnSelect(e)}
+            onSelect={(evt) => handleOnSelect(evt)}
           />
         }
       />

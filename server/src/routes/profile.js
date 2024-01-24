@@ -54,7 +54,7 @@ router.put('/:sub', async (req, res) => {
     }
 
     // Update preferences
-    profile = Object.assign(profile, req.body);
+    profile.set({ ...profile, ...req.body });
     console.log('Profile :', profile);
     // Save the updated profile
     const updatedProfile = await profile.save();

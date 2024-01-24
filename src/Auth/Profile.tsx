@@ -36,10 +36,11 @@ import {
 } from '../features/EC2/commons/common-components';
 import { url } from '../features/common/endpoints/url';
 import { getUserCache } from '../features/common/utils/Cache';
+import { getProfile } from '../features/common/services/profile.service';
 
-const Account = (props) => {
+const Account = ({ currUser, ...props }) => {
   const [edit, setEdit] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(currUser.account.email);
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
@@ -51,6 +52,26 @@ const Account = (props) => {
   const oldPasswordRef = useRef(null);
   const passwordRef = useRef(null);
   const rePasswordRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch the data from the server based on currUser
+        const response = await fetch(`${url.profile}/${currUser.sub}`);
+        if (response.ok) {
+          const result = await response.json();
+          setEmail(result.account.email);
+        } else {
+          console.error('Failed to fetch profile data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [edit, currUser.account, loading]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -108,14 +129,14 @@ const Account = (props) => {
   // Function to make the API request
   const updateProfileOnServer = async () => {
     try {
-      const response = await fetch(url.profile, {
-        method: 'POST',
+      const response = await fetch(`${url.profile}/${currUser.sub}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...props,
-          sub: props.currUser,
+          sub: currUser.sub,
           account: {
             email: email,
             hash: password,
@@ -324,17 +345,19 @@ const Account = (props) => {
   );
 };
 
-const Information = (props) => {
+const Information = ({ currUser, ...props }) => {
   const [edit, setEdit] = useState(false);
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [postal, setPostal] = useState('');
-  const [country, setCountry] = useState(null);
-  const [phone, setPhone] = useState('');
-  const [company, setCompany] = useState('');
-  const [website, setWebsite] = useState('');
+  const [name, setName] = useState(currUser.contact_information.full_name);
+  const [address, setAddress] = useState(currUser.contact_information.address);
+  const [city, setCity] = useState(currUser.contact_information.city);
+  const [state, setState] = useState(currUser.contact_information.state);
+  const [postal, setPostal] = useState(
+    currUser.contact_information.postal_code
+  );
+  const [country, setCountry] = useState(currUser.contact_information.country);
+  const [phone, setPhone] = useState(currUser.contact_information.phone);
+  const [company, setCompany] = useState(currUser.contact_information.company);
+  const [website, setWebsite] = useState(currUser.contact_information.website);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const options = useMemo(() => countryList().getData(), []);
@@ -354,8 +377,8 @@ const Information = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch the data from the server based on props.currUser
-        const response = await fetch(`${url.profile}/${props.currUser}`);
+        // Fetch the data from the server based on currUser
+        const response = await fetch(`${url.profile}/${currUser.sub}`);
         if (response.ok) {
           const result = await response.json();
           setName(result.contact_information.full_name);
@@ -377,7 +400,7 @@ const Information = (props) => {
       }
     };
     fetchData();
-  }, [edit, props.currUser, loading]);
+  }, [edit, currUser.contact_information, loading]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -435,21 +458,21 @@ const Information = (props) => {
   // Function to make the API request
   const updateProfileOnServer = async () => {
     try {
-      const response = await fetch(url.profile, {
-        method: 'POST',
+      const response = await fetch(`${url.profile}/${currUser.sub}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...props,
-          sub: props.currUser,
+          sub: currUser.sub,
           contact_information: {
             full_name: name,
             address: address,
             city: city,
             state: state,
             postal_code: postal,
-            country: country?.label,
+            country: country,
             phone: phone,
             company_name: company,
             website_url: website,
@@ -639,7 +662,7 @@ const Information = (props) => {
                         filteringType="auto"
                         selectedAriaLabel="Selected"
                         triggerVariant="option"
-                        selectedOption={country}
+                        selectedOption={country.label || country}
                         onChange={({ detail }) =>
                           setCountry(detail.selectedOption)
                         }
@@ -724,16 +747,19 @@ const Information = (props) => {
   );
 };
 
-const Payment = (props) => {
+const Payment = ({ currUser, ...props }) => {
   const [edit, setEdit] = useState(false);
-  const [currency, setCurrency] = useState({ label: 'US Dollar', value: '1' });
+  const [currency, setCurrency] = useState({
+    label: currUser.payment_currency,
+    value: currUser.payment_currency,
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch the data from the server based on props.currUser
-        const response = await fetch(`${url.profile}/${props.currUser}`);
+        // Fetch the data from the server based on currUser
+        const response = await fetch(`${url.profile}/${currUser.sub}`);
         if (response.ok) {
           const result = await response.json();
           setCurrency(result.payment_currency);
@@ -747,7 +773,7 @@ const Payment = (props) => {
       }
     };
     fetchData();
-  }, [edit, props.currUser, loading]);
+  }, [edit, loading]);
 
   const editHandler = () => {
     setEdit(true);
@@ -765,14 +791,14 @@ const Payment = (props) => {
   // Function to make the API request
   const updateProfileOnServer = async () => {
     try {
-      const response = await fetch(url.profile, {
-        method: 'POST',
+      const response = await fetch(`${url.profile}/${currUser.sub}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...props,
-          sub: props.currUser,
+          sub: currUser.sub,
           payment_currency: currency.label,
         }),
       });
@@ -837,7 +863,10 @@ const Payment = (props) => {
                     variant="link"
                     onClick={() => {
                       setEdit(false);
-                      setCurrency(currency);
+                      setCurrency({
+                        label: currency.label,
+                        value: currency.value,
+                      });
                     }}
                   >
                     Cancel
@@ -864,11 +893,11 @@ const Payment = (props) => {
                         }
                         selectedOption={currency}
                         options={[
-                          { label: 'US Dollar', value: '1' },
-                          { label: 'Europe Euro', value: '2' },
-                          { label: 'Canada CA', value: '3' },
-                          { label: 'China YEN', value: '4' },
-                          { label: 'India RS', value: '5' },
+                          { label: 'US Dollar', value: 'US Dollar' },
+                          { label: 'Europe Euro', value: 'Europe Euro' },
+                          { label: 'Canada CA', value: 'Canada CA' },
+                          { label: 'China YEN', value: 'China YEN' },
+                          { label: 'India RS', value: 'India RS' },
                         ]}
                         selectedAriaLabel="Selected"
                       />
@@ -884,7 +913,7 @@ const Payment = (props) => {
               <ColumnLayout borders="horizontal">
                 <ColumnLayout columns={4}>
                   <Box variant="awsui-key-label">Selected Currency:</Box>
-                  <Box float="left">{currency?.label}</Box>
+                  <Box float="left">{currency.label || currency}</Box>
                   <Box></Box>
                 </ColumnLayout>
               </ColumnLayout>
@@ -1033,9 +1062,27 @@ function Profile(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const usr = await getUserCache();
-      setCurrUser(usr.user.sub);
-      setLoading(false);
+      try {
+        // Get user information from cache
+        const usr = await getUserCache();
+
+        // Check if user information is available
+        if (usr && usr.user && usr.user.sub) {
+          // Use the user.sub to fetch the profile
+          const user = await getProfile(usr.user.sub);
+
+          // Update state with the fetched profile
+          setCurrUser(user);
+          setLoading(false);
+        } else {
+          // Handle the case where user information is not available in cache
+          console.error('User information not available in cache');
+        }
+      } catch (error) {
+        // Handle any errors that may occur during the fetch
+        console.error('Error fetching profile:', error);
+        setLoading(false);
+      }
     };
 
     fetchData();
